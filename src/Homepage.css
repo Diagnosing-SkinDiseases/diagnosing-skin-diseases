@@ -1,0 +1,85 @@
+.Homepage {
+  font-family: 'Arial', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.banner {
+  background-image: url('../public/banner.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 15em;
+  color: white;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.homepage-text{
+  text-align: left;
+  color: #007bff;
+  font-weight: bold;
+}
+
+.container-fluid {
+  padding-right: 3rem;
+  padding-left: 3rem;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.card {
+  display: flex;
+  text-align: center;
+  border: none;
+  border-radius: 2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 3rem;
+  font-weight: bold;
+}
+
+.card-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1rem;
+  background-color: #007bff;
+  color: white;
+  padding: 1rem;
+  min-height: 100px;
+}
+
+.card-title {
+  margin: 0;
+}
+
+.btn-primary {
+  font-size: 1.2rem;
+  /* Larger font size for the buttons */
+  border-radius: .5rem;
+  /* Rounded corners for the buttons */
+  border: none;
+  /* No border for the buttons */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Optional: add shadow for better visibility */
+  height: auto;
+  /* Adjust height as needed */
+  margin: 0;
+  /* Adjust margin as needed, remove if not necessary */
+}
+
+/* Adjust padding and margin for the buttons as needed */
+.btn-primary:not(:last-child) {
+  margin-bottom: 16px;
+  /* Space between buttons */
+}
+
+.footer {
+  background-color: #007bff;
+  color: white;
+  padding: 1rem 0;
+  width: 100%;
+  position: relative;
+  text-align: center;
+  margin-top: auto;
+}
