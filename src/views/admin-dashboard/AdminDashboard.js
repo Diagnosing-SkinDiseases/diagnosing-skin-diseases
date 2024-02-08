@@ -37,7 +37,11 @@ const AdminDashboard = () => {
 
   const handleSearch = (searchQuery) => {
     console.log("Searching for", searchQuery);
-    // Implement logic to perform search based on searchQuery
+     const query = searchQuery.toLowerCase();
+     const newFilteredItems = items.filter((item) =>
+       item.title.toLowerCase().includes(query)
+     );
+     setFilteredItems(newFilteredItems);
   };
 
   return (
