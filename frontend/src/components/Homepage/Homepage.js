@@ -2,7 +2,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Homepage.css';
-import NavBar from "./NavBar";
+import NavBar from "../NavBar/NavBar";
 
 const Card = ({ title }) => {
   return (
