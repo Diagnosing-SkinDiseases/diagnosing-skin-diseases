@@ -28,6 +28,11 @@ const Controls = ({ onAdd, onFilterChange, onSearch }) => {
         label={labels.buttonLabels.add.tree}
         onClick={() => onAdd("tree")}
       />
+      <FilterComponent
+        labels={labels}
+        value={filter}
+        onChange={handleFilterChange}
+      />
     </div>
   );
 };
@@ -40,5 +45,42 @@ const AddButton = ({ label, onClick }) => {
   );
 };
 
+const FilterComponent = ({ labels, value, onChange }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(value);
+
+  const handleDropdownToggle = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleOptionSelect = (key) => {
+    setSelectedOption(key);
+    onChange(key);
+    setIsOpen(false);
+  };
+
+  return (
+    <div className="select-wrapper">
+      <div
+        className={`select ${isOpen ? "open" : ""}`}
+        onClick={handleDropdownToggle}
+      >
+        <p className="select-option">{labels.filterOption[selectedOption]}</p>
+        <span className="select-icon">&#9660;</span>
+        {isOpen && (
+          <div className="select-content-container">
+            <ul className="select-content">
+              {Object.entries(labels.filterOption).map(([key, value]) => (
+                <li key={key} onClick={() => handleOptionSelect(key)}>
+                  {value}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
 export default Controls;
