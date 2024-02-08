@@ -11,6 +11,8 @@
     display: inline-block;
     margin: 4px 2px;
     transition-duration: 0.4s;
+    width: 8em;
+    height: 2.5em;
 }
 
 .add-button:hover {
@@ -22,7 +24,8 @@
 /* ---------- Filter ---------- */
 .select-wrapper {
     position: relative;
-    width: 300px;
+    width: 12em;
+    height: 2.5em;
     font-family: 'Roboto', sans-serif;
     color: black;
     font-weight: 300;
@@ -114,8 +117,8 @@
 /* ---------- Search Bar ---------- */
 .search-form {
     position: relative;
-    width: 300px;
-    /* Adjust width as needed */
+    width: 24em;
+    height: 2.5em;
     font-family: 'Roboto', sans-serif;
     color: black;
     font-weight: 300;
