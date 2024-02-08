@@ -33,6 +33,12 @@ const Controls = ({ onAdd, onFilterChange, onSearch }) => {
         value={filter}
         onChange={handleFilterChange}
       />
+      <SearchField
+        value={input}
+        onChange={handleSearchChange}
+        onSubmit={handleSearchSubmit}
+        placeholder={labels.searchPlaceholder}
+      />
     </div>
   );
 };
@@ -82,5 +88,23 @@ const FilterComponent = ({ labels, value, onChange }) => {
     </div>
   );
 };
+
+const SearchField = ({ value, onChange, onSubmit, placeholder }) => {
+  return (
+    <form onSubmit={onSubmit} className="search-form">
+      <button className="search-button">
+        <FontAwesomeIcon icon={faMagnifyingGlass} />
+      </button>
+      <input
+        type="text"
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        className="search-input"
+      />
+    </form>
+  );
+};
+
 
 export default Controls;
