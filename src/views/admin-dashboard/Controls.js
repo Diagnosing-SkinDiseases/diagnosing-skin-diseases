@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import labels from "./labels.json";
+import Button from "./Button";
+import "./styles/Controls.css"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
@@ -23,33 +25,29 @@ const Controls = ({ onAdd, onFilterChange, onSearch }) => {
   };
 
   return (
-    <div className="controls">
-      <AddButton
-        label={labels.buttonLabels.add.tree}
-        onClick={() => onAdd("tree")}
-      />
-      <FilterComponent
-        labels={labels}
-        value={filter}
-        onChange={handleFilterChange}
-      />
-      <SearchField
-        value={input}
-        onChange={handleSearchChange}
-        onSubmit={handleSearchSubmit}
-        placeholder={labels.searchPlaceholder}
-      />
+    <div className="controls-wrapper">
+      <div className="controls">
+        <Button
+          label={labels.buttonLabels.add.tree}
+          onClick={() => onAdd("tree")}
+          className="button"
+        />
+        <FilterComponent
+          labels={labels}
+          value={filter}
+          onChange={handleFilterChange}
+        />
+        <SearchField
+          value={input}
+          onChange={handleSearchChange}
+          onSubmit={handleSearchSubmit}
+          placeholder={labels.searchPlaceholder}
+        />
+      </div>
     </div>
   );
 };
 
-const AddButton = ({ label, onClick }) => {
-  return (
-    <button onClick={onClick} className="add-button">
-      {label}
-    </button>
-  );
-};
 
 const FilterComponent = ({ labels, value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
