@@ -22,7 +22,17 @@ const AdminDashboard = () => {
     // Implement logic to add a tree/article/definition
   };
   const handleFilterChange = (newFilterValue) => {
-    
+    console.log("Changing filter to:", newFilterValue);
+    setFilterValue(newFilterValue); 
+
+    const newFilteredItems = items.filter((item) => {
+      if (newFilterValue === "published") return item.published;
+      if (newFilterValue === "unpublished") return !item.published;
+      return true; // Default case for "all"
+    });
+
+    console.log("Filtered items:", newFilteredItems);
+    setFilteredItems(newFilteredItems);
   };
 
   const handleSearch = (searchQuery) => {
