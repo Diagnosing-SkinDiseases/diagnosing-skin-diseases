@@ -5,7 +5,7 @@
             "article" : "Add an article",
             "definition" : "Add a definition"
         },
-        "state": {
+        "publish": {
             "publish" : "Publish",
             "unpublish" : "Unpublish"
         }
@@ -15,5 +15,9 @@
         "published" : "Published",
         "unpublished" : "Unpublished"
     },
-    "searchPlaceholder": "Search"
+    "searchPlaceholder": "Search",
+    "publishState" : {
+        "published" : "Published",
+        "added" : "Added"
+    }
 }
