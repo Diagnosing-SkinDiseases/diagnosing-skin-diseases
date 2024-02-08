@@ -111,6 +111,42 @@
 }
 
 
+/* ---------- Search Bar ---------- */
+.search-form {
+    position: relative;
+    width: 300px;
+    /* Adjust width as needed */
+    font-family: 'Roboto', sans-serif;
+    color: black;
+    font-weight: 300;
+    margin: 20px auto;
+    border: solid 1px #ccc;
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+}
+
+.search-input {
+    padding: 10px;
+    width: calc(100% - 40px);
+    /* Adjust width to accommodate button */
+    border: none;
+    outline: none;
+}
+
+.search-button {
+    width: 40px;
+    background-color: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: gray;
+}
+
 /* ---------- General ---------- */
 
 .admin-dashboard .controls {
