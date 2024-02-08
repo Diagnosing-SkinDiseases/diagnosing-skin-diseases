@@ -1,0 +1,19 @@
+{
+    "buttonLabels": {
+        "add": {
+            "tree" : "Add a tree",
+            "article" : "Add an article",
+            "definition" : "Add a definition"
+        },
+        "state": {
+            "publish" : "Publish",
+            "unpublish" : "Unpublish"
+        }
+    },
+    "filterOption" : {
+        "all" : "All",
+        "published" : "Published",
+        "unpublished" : "Unpublished"
+    },
+    "searchPlaceholder": "Search"
+}
