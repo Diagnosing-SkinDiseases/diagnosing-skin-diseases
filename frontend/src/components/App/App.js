@@ -1,10 +1,27 @@
-import './App.css';
+import "./App.css";
+import NavBarComponent from "../NavBar/NavBar";
+import { Routes, Route } from "react-router-dom";
+import Homepage from "../Homepage/Homepage";
+import Article from "../Article/Article";
 
 function App() {
   return (
-    <div className="App">
-      <div>"Hello World"</div>
-    </div>
+    <>
+      <NavBarComponent></NavBarComponent>
+      <Routes>
+        {/* Homepage */}
+        <Route path="/" element={<Homepage></Homepage>}></Route>
+        {/* Article */}
+        <Route path="/article" element={<Article></Article>}></Route>
+        {/* Admin */}
+        <Route path="/admin" element={<div>Admin</div>}></Route>
+        {/* Article List */}
+        <Route path="/article-list" element={<div>Article List</div>}></Route>
+        {/* Glossary */}
+        <Route path="/glossary" element={<div>Glossary</div>}></Route>
+      </Routes>
+      <footer className="footer">Footer</footer>
+    </>
   );
 }
 
