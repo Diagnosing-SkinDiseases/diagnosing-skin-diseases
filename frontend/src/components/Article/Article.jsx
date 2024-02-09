@@ -1,6 +1,7 @@
 import ArticleBG from "./ArticleBG";
 import ContentType from "./enums";
 import "./article.css";
+import { useEffect } from "react";
 
 function convertImageToBase64(filePath) {
   return new Promise((resolve, reject) => {
@@ -96,7 +97,17 @@ const sampleData = {
   ],
 };
 
+console.log("Rendering...");
+
+const greet = () => {
+  console.log("Hello world");
+};
+
 const Article = () => {
+  useEffect(() => {
+    greet();
+  }, []);
+
   return (
     <>
       <ArticleBG data={sampleData}></ArticleBG>
