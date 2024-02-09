@@ -6,7 +6,7 @@
 }
 
 .banner {
-  background-image: url('../../../public/banner.jpg');
+  background-image: url('/public/banner.jpg');
   background-size: cover;
   background-position: center;
   height: 15em;
