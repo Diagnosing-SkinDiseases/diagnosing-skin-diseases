@@ -1,8 +1,7 @@
 // Homepage.js
-import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './Homepage.css';
-import NavBar from "../NavBar/NavBar";
+import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./Homepage.css";
 
 const Card = ({ title }) => {
   return (
@@ -14,7 +13,7 @@ const Card = ({ title }) => {
       </div>
     </div>
   );
-}
+};
 
 function Homepage() {
   const cardTitles = [
@@ -25,22 +24,22 @@ function Homepage() {
     "Place Holder",
     "Place Holder",
     "Place Holder",
-    "Place Holder"
+    "Place Holder",
   ];
 
   return (
     <div className="Homepage">
-      <NavBar />
       <div className="banner">Place Holder for Banner</div>
       <div className="container-fluid">
-        <h2 className="homepage-text my-4">Primary Lesions & Diagnostic Groups</h2>
+        <h2 className="homepage-text my-4">
+          Primary Lesions & Diagnostic Groups
+        </h2>
         <div className="row justify-content-center">
           {cardTitles.map((title, index) => (
             <Card key={index} title={title} />
           ))}
         </div>
       </div>
-      <footer className="footer">Footer</footer>
     </div>
   );
 }
