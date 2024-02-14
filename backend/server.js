@@ -4,6 +4,7 @@ const port = 3000;
 const userRouter = require("./routers/userRouter.js");
 const glossaryRouter = require("./routers/glossaryRouter.js");
 const treeRouter = require("./routers/treeRouter.js");
+const articleRouter = require("./routers/articleRouter.js");
 
 // App configurations
 app.use(express.json());
@@ -21,6 +22,9 @@ app.use("/api", glossaryRouter);
 
 // Tree endpoints
 app.use("/api", treeRouter);
+
+// Article endpoints
+app.use("/api", articleRouter);
 
 // Server start
 app.listen(port, () => {
