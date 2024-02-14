@@ -16,7 +16,7 @@ app.get("/", (req, res) => {
 app.use("/api", userRouter);
 
 // Glossary endpoints
-app.use("glossary", glossaryRouter);
+app.use("/api", glossaryRouter);
 
 // Server start
 app.listen(port, () => {
