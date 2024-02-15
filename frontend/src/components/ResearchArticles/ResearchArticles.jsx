@@ -1,7 +1,5 @@
 import { useState } from "react";
 import AlphabetButtons from "./AlphabetButtons";
-import Navbar from "./NavBar";
-import PlaceholderBanner from "./Placeholder";
 import ResearchArticle from "./ResearchArticleHeader";
 import "./ResearchArticles.css";
 import SampleWords from "./SampleArticles";
@@ -18,8 +16,6 @@ const ResearchArticles = () => {
 
   return (
     <div className="App">
-      <Navbar /> {/* Render the Navbar component */}
-      <PlaceholderBanner /> {/* Render the PlaceholderBanner component */}
       <ResearchArticle /> {/* Render the ResearchArticles component */}
       <AlphabetButtons onButtonClick={handleButtonClick} />{" "}
       {/* Render the AlphabetButtons component */}
