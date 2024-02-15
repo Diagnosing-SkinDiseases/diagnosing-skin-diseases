@@ -41,13 +41,14 @@ nav li {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  background-color: #ccc;
+  background-color: #8dbbf7;
   padding: 10px;
 }
 
 .alphabet-selector button {
-  border: 1px solid #dee2e6;
-  background-color: white;
+  border: 1px solid #007bff;
+  background-color: #007bff;
+  color: #fff;
   padding: 10px;
   cursor: pointer;
   border-radius: 5px;
@@ -56,10 +57,9 @@ nav li {
   flex: 0 0 calc(7.5% - 10px);
 }
 
-.alphabet-selector button.selected {
-  background-color: #007bff;
-  color: white;
-  border-color: #007bff;
+.alphabet-selector button:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
 }
 
 .search-bar {
