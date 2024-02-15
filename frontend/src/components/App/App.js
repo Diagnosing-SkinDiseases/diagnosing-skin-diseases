@@ -8,6 +8,7 @@ import AdminDashboard from "../AdminDashboard/AdminDashboard";
 import ContentEditor from "../AdminDashboard/ContentEditor";
 import ContentTypeEnum from "../AdminDashboard/ContentTypeEnum";
 import testData from "../AdminDashboard/testData.json";
+import ResearchArticles from "../ResearchArticles/ResearchArticles";
 
 function App() {
   // test data for demo only
@@ -44,7 +45,10 @@ function App() {
         ></Route>
 
         {/* Article List */}
-        <Route path="/article-list" element={<div>Article List</div>}></Route>
+        <Route
+          path="/article-list"
+          element={<ResearchArticles></ResearchArticles>}
+        ></Route>
         {/* Glossary */}
         <Route path="/glossary" element={<Glossary></Glossary>}></Route>
       </Routes>
