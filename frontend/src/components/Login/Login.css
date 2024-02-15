@@ -1,8 +1,3 @@
-/* Apply a background color to the whole page */
-.login {
-  background-color: #4b6cc1; /* Adjust the color to match the image background */
-}
-
 /* Style the card for the login form */
 .login-card {
   background: white;
@@ -41,7 +36,7 @@
   padding: 10px;
   border: none;
   border-radius: 20px;
-  background-color: #7f7fd5;
+  background-color: #007bff;
   color: white;
   font-weight: bold;
   text-transform: uppercase;
@@ -50,7 +45,7 @@
 
 /* Hover state for the login button */
 .login-card button:hover {
-  background-color: #696fbf;
+  background-color: #0056b3;
 }
 
 /* Ensure the form items align properly */
