@@ -1,23 +1,9 @@
 {
-<<<<<<< HEAD
-  "name": "diagnosing-skin-diseases",
-  "version": "0.1.0",
-  "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^5.3.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.22.0",
-    "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
-=======
-  "dependencies": {
-    "bootstrap": "^5.3.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-router-dom": "^6.22.0"
   },
   "devDependencies": {
     "@babel/core": "^7.23.9",
@@ -36,7 +22,6 @@
     "webpack": "^5.90.1",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
->>>>>>> Olga_Zimina_UI_Admin_DashBoard_Trees_List
   },
   "scripts": {
     "start": "react-scripts start",
