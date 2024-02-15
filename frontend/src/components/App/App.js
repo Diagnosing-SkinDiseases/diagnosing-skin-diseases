@@ -7,6 +7,7 @@ import AdminDashboard from "../AdminDashboard/AdminDashboard";
 import ContentEditor from "../AdminDashboard/ContentEditor";
 import ContentTypeEnum from "../AdminDashboard/ContentTypeEnum";
 import testData from "../AdminDashboard/testData.json";
+import ResearchArticles from "../ResearchArticles/ResearchArticles";
 import Glossary from "../Glossary/Glossary";
 
 function App() {
@@ -21,7 +22,10 @@ function App() {
         {/* Admin */}
         <Route path="/admin" element={<div>Admin</div>}></Route>
         {/* Article List */}
-        <Route path="/article-list" element={<div>Article List</div>}></Route>
+        <Route
+          path="/article-list"
+          element={<ResearchArticles></ResearchArticles>}
+        ></Route>
         {/* Glossary */}
         <Route path="/glossary" element={<div>Glossary</div>}></Route>
       </Routes>
