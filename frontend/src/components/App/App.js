@@ -3,7 +3,6 @@ import NavBarComponent from "../NavBar/NavBar";
 import { Routes, Route } from "react-router-dom";
 import Homepage from "../Homepage/Homepage";
 import Article from "../Article/Article";
-import Glossary from "../Glossary/Glossary";
 
 function App() {
   return (
@@ -19,7 +18,7 @@ function App() {
         {/* Article List */}
         <Route path="/article-list" element={<div>Article List</div>}></Route>
         {/* Glossary */}
-        <Route path="/glossary" element={<Glossary></Glossary>}></Route>
+        <Route path="/glossary" element={<div>Glossary</div>}></Route>
       </Routes>
       <footer className="footer">Footer</footer>
     </>
