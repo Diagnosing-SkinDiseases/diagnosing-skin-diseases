@@ -10,8 +10,8 @@ const Card = ({ title }) => {
         <div className="card-body">
           <h5 className="card-title">{title}</h5>
           <div className="btn-container">
-            <button className="btn btn-primary about-btn" type="button" herf="#">About</button>
-            <button className="btn btn-primary enter-tree-btn" type="button" herf="#">Enter Tree</button>
+            <button className="btn btn-primary about-btn" type="button" href="#">About</button>
+            <button className="btn btn-primary enter-tree-btn" type="button" href="#">Start Diagnosis</button>
           </div>
         </div>
       </div>

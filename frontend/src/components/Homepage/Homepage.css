@@ -1,3 +1,7 @@
+:root {
+  --theme_blue: #007bff;
+}
+
 .Homepage {
   font-family: 'Arial', sans-serif;
   min-height: 100vh;
@@ -17,7 +21,7 @@
 
 .homepage-text {
   text-align: left;
-  color: #007bff;
+  color: var(--theme_blue);
   font-weight: bold;
 }
 
@@ -29,6 +33,7 @@
 }
 
 .card {
+  width: auto;
   display: flex;
   text-align: center;
   border: none;
@@ -36,71 +41,62 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 3rem;
   font-weight: bold;
-  background-color: #007bff;
-  /* Card background color */
+  background-color: var(--theme_blue);
   color: white;
-  /* Card text color */
 }
 
 .card-body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  /* Aligns items to both ends */
   align-items: flex-start;
-  /* Aligns items to the start of the flex-direction */
   border-radius: 1rem;
-  background-color: #007bff;
+  background-color: var(--theme_blue);
   color: white;
-  padding: 1rem;
-  min-height: 100px;
+  padding: 2rem;
+  min-height: 150px;
   position: relative;
-  /* Needed for absolute positioning of children */
 }
 
 .card-title {
   margin: 0;
   margin-bottom: auto;
-  /* Pushes everything else down */
 }
 
 .btn-container {
   display: flex;
   justify-content: flex-end;
-  /* Aligns buttons to the right */
   position: absolute;
-  /* Positions the buttons absolutely */
-  bottom: 10px;
-  /* Positions the buttons 10px from the bottom */
-  right: 10px;
-  /* Positions the buttons 10px from the right */
-  gap: 10px;
-  /* Adds space between buttons */
+  bottom: 16px;
+  right: 16px;
 }
 
-.btn-primary {
-  font-size: 1rem;
+.about-btn,
+.enter-tree-btn {
+  background-color: white;
+  color: var(--theme_blue);
+  width: auto;
   border-radius: 20px;
-  border: none;
-  height: auto;
+  border: 1px solid var(--theme_blue);
+  font-size: 1rem;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
   box-shadow: none;
   font-weight: bold;
+  white-space: nowrap;
 }
 
-.about-btn, .enter-tree-btn {
-  background-color: white;
-  /* Solid white */
-  color: #007bff;
-  /* Text color to match card background */
-}
-
-/* Add hover effects */
-.btn-primary:hover {
-  opacity: 0.8;
+.about-btn:hover,
+.enter-tree-btn:hover {
+  background-color: #053f7d;
+  color: white !important;
 }
 
 .footer {
-  background-color: #007bff;
+  background-color: var(--theme_blue);
   color: white;
   padding: 1rem 0;
   width: 100%;
