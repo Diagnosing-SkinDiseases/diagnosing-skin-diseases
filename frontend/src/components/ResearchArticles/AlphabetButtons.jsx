@@ -12,7 +12,7 @@ const AlphabetButtons = ({ onButtonClick }) => {
     <div className="alphabet-buttons-container">
       <div className="row">
         {alphabet.map((letter) => (
-          <div className="col" key={letter}>
+          <div className="col-1" key={letter}>
             <button
               className="alphabet-button"
               onClick={() => handleClick(letter)}
