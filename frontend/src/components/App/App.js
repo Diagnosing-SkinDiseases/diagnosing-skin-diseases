@@ -8,11 +8,13 @@ import AdminDashboard from "../AdminDashboard/AdminDashboard";
 import ContentEditor from "../AdminDashboard/ContentEditor";
 import ContentTypeEnum from "../AdminDashboard/ContentTypeEnum";
 import testData from "../AdminDashboard/testData.json";
-import Glossary from "../Glossary/Glossary";
 
 function App() {
+  // test data for demo only
+  const { trees, definitions, articles } = testData;
+
   return (
-    <>
+    <div className="app-container">
       <NavBarComponent></NavBarComponent>
       <Routes>
         {/* Homepage */}
@@ -20,14 +22,34 @@ function App() {
         {/* Article */}
         <Route path="/article" element={<Article></Article>}></Route>
         {/* Admin */}
-        <Route path="/admin" element={<div>Admin</div>}></Route>
+        {/* Admin - Trees */}
+        <Route
+          path="/admin/trees"
+          element={<AdminDashboard data={trees} />}
+        ></Route>
+        {/* Admin - Articles */}
+        <Route
+          path="/admin/articles"
+          element={<AdminDashboard data={articles} />}
+        ></Route>
+        {/* Admin - Glossary */}
+        <Route
+          path="/admin/definitions"
+          element={<AdminDashboard data={definitions} />}
+        ></Route>
+        {/* Admin - Glossary - Add */}
+        <Route
+          path="/admin/definitions/add"
+          element={<ContentEditor contentType={ContentTypeEnum.DEFINITION} />}
+        ></Route>
+
         {/* Article List */}
         <Route path="/article-list" element={<div>Article List</div>}></Route>
         {/* Glossary */}
         <Route path="/glossary" element={<Glossary></Glossary>}></Route>
       </Routes>
       <footer className="footer">Footer</footer>
-    </>
+    </div>
   );
 }
 
