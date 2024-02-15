@@ -11,7 +11,7 @@ nav ul {
   padding: 0;
   margin: 0;
   display: flex;
-  gap: 20px; 
+  gap: 20px;
 }
 
 nav li {
@@ -21,9 +21,9 @@ nav li {
 
 .banner {
   text-align: center;
-  background-color: #004085; 
+  background-color: #004085;
   color: white;
-  padding: 40px 0; 
+  padding: 40px 0;
 }
 
 .glossary-header {
@@ -46,7 +46,7 @@ nav li {
 }
 
 .alphabet-selector button {
-  border: 1px solid #dee2e6; 
+  border: 1px solid #dee2e6;
   background-color: white;
   padding: 10px;
   cursor: pointer;
@@ -57,9 +57,9 @@ nav li {
 }
 
 .alphabet-selector button.selected {
-  background-color: #007bff; 
-  color: white; 
-  border-color: #007bff; 
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
 }
 
 .search-bar {
@@ -76,19 +76,19 @@ nav li {
 
 .search-bar button {
   padding: 5px 10px;
-  background-color: #007bff; 
+  background-color: #007bff;
   border: none;
   color: white;
   cursor: pointer;
 }
 
-.selected-letter-banner {
-  background-color: #007bff; 
-  color: white; 
+.letter-banner {
+  background-color: #007bff;
+  color: white;
   text-align: center;
   padding: 10px;
-  margin: 20px 0; 
-  font-size: 1.5em; 
+  margin: 20px 0;
+  font-size: 1.5em;
   font-weight: bold;
 }
 
@@ -115,7 +115,7 @@ nav li {
   background-color: #007bff;
   color: white;
   padding: 10px 0;
-  margin-top: auto; 
+  margin-top: auto;
   width: 100%;
 }
 
@@ -152,6 +152,6 @@ nav li {
   }
 
   .alphabet-selector button {
-    flex: 0 0 calc(10% - 10px); 
+    flex: 0 0 calc(10% - 10px);
   }
 }
