@@ -39,12 +39,13 @@ const ArticleContent = ({ data: { title, totalContent } }) => {
       {/* Content */}
       <div className="container px-5">
         {/* Title */}
-        <div className="container my-4 p-0 article-title">
+        <div className="container mt-4 p-0 article-title text-center">
           <h1>{title}</h1>
+          <hr></hr>
         </div>
 
         {/* Article */}
-        <div className="container p-4">
+        <div className="container p-4 pt-2">
           {/* Dynamic Content*/}
           {totalContent.map(parseData)}
         </div>
