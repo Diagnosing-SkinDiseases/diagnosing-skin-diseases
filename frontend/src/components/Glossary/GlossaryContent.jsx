@@ -1,7 +1,7 @@
 import React from 'react';
 import GlossaryItem from './GlossaryItem';
 
-function GlossaryContent({ items, selectedLetter, searchTerm }) {
+function GlossaryContent({ items, selectedLetter, searchTerm, selectedItems, onSelectItem }) {
   // Filter items based on selectedLetter and searchTerm
   const filteredItems = items.filter(item => {
     // Check if item starts with the selected letter
@@ -34,7 +34,7 @@ function GlossaryContent({ items, selectedLetter, searchTerm }) {
           <div className="letter-banner">{letter}</div>
           <ul className="glossary-list">
             {items.map((item, index) => (
-              <GlossaryItem key={index} item={item} className="glossary-list-item" />
+              <GlossaryItem key={index} item={item} onSelectItem={onSelectItem} selectedItems={selectedItems} className="glossary-list-item" />
             ))}
           </ul>
         </React.Fragment>

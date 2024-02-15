@@ -7,6 +7,7 @@ import GlossaryContent from "./GlossaryContent";
 function App() {
   const [selectedLetter, setSelectedLetter] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedItems, setSelectedItems] = useState([]);
   const glossaryItems = [
     { term: "Lorem", definition: "Lorem ipsum dolor sit amet..." },
     { term: "Ipsum", definition: "Ipsum is simply dummy text..." },
@@ -43,6 +44,19 @@ function App() {
     setSearchTerm(""); // Clear the searchTerm when selecting a letter
   }
 
+  function handleSelectItem(item) {
+    const index = selectedItems.findIndex(
+      (selectedItem) => selectedItem.term === item.term
+    );
+    if (index > -1) {
+      setSelectedItems(
+        selectedItems.filter((selectedItem) => selectedItem.term !== item.term)
+      );
+    } else {
+      setSelectedItems([...selectedItems, item]);
+    }
+  }
+
   return (
     <div className="Glossary">
       <div className="banner"></div>
@@ -61,6 +75,8 @@ function App() {
           items={glossaryItems}
           selectedLetter={selectedLetter}
           searchTerm={searchTerm}
+          selectedItems={selectedItems}
+          onSelectItem={handleSelectItem}
         />
       </div>
     </div>

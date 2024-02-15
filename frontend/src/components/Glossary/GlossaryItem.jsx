@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
-function GlossaryItem({ item }) {
-  const [isExpanded, setIsExpanded] = useState(false);
+function GlossaryItem({ item, onSelectItem, selectedItems }) {
+  const isSelected = selectedItems.some(selectedItem => selectedItem.term === item.term);
 
   return (
-    <li onClick={() => setIsExpanded(!isExpanded)} style={{ cursor: 'pointer' }}>
+    <li onClick={() => onSelectItem(item)} style={{ cursor: 'pointer', background: isSelected ? 'grey' : 'none' }}>
       <h3>{item.term}</h3>
-      {isExpanded && <p>{item.definition}</p>}
+      {isSelected && <p>{item.definition}</p>}
     </li>
   );
 }
