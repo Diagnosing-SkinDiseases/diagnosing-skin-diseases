@@ -1,48 +1,47 @@
 import React, { useState } from 'react';
 
-const LoginForm = ({ correctEmail, correctPassword }) => {
+const LoginForm = ({ usersDB }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginStatus, setLoginStatus] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("Login Attempt with Email:", correctEmail, "Password:", correctPassword);
-    if (email === correctEmail && password === correctPassword) {
-      // If the credentials match the props, log the user in
-      console.log("Login successful");
+    // Find user in the mock database
+    const user = usersDB.find(user => user.email === email && user.password === password);
+    if (user) {
       setLoginStatus('Login successful!');
+      console.log("User ID:", user.id); 
     } else {
-      // If the credentials do not match, set an error message
-      console.log("Login failed");
-      setLoginStatus('Invalid email or password.');
+      setLoginStatus('Login failed');
     }
   };
 
   return (
     <div className="login-card">
-    <h2>Login</h2>
-    <form onSubmit={handleSubmit}>
-      <input
-        type="email"
-        placeholder="email address"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      <button type="submit">Login</button>
-    </form>
-    {loginStatus && <div>{loginStatus}</div>}
-  </div>
-);
+      <h2>Login</h2>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="email"
+          placeholder="email address"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button type="submit">Login</button>
+      </form>
+      <div>{loginStatus}</div>
+    </div>
+  );
 };
+
 
 export default LoginForm;
 

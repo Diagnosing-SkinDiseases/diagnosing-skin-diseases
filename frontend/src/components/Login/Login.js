@@ -3,17 +3,14 @@ import LoginForm from "./LoginForm";
 import "./Login.css";
 
 function App() {
-  const credentials = {
-    correctEmail: `1@1`,
-    correctPassword: `1`,
-  };
+  const usersDB = [
+    { id: 1, email: "user1@example.com", password: "pass1" },
+    { id: 2, email: "user2@example.com", password: "pass2" },
+  ];
 
   return (
     <div className="Login">
-      <LoginForm
-        correctEmail={credentials.correctEmail}
-        correctPassword={credentials.correctPassword}
-      />
+      <LoginForm usersDB={usersDB} />
     </div>
   );
 }
