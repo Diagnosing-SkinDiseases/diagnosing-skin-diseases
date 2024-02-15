@@ -1,8 +1,9 @@
 import "./App.css";
 import NavBarComponent from "../NavBar/NavBar";
 import { Routes, Route } from "react-router-dom";
-import Homepage from "../Homepage/Homepage";
+import Homepage from "../Homepage/homepage";
 import Article from "../Article/Article";
+import UserTree from "../UserTree/UserTree";
 
 function App() {
   return (
@@ -11,6 +12,8 @@ function App() {
       <Routes>
         {/* Homepage */}
         <Route path="/" element={<Homepage></Homepage>}></Route>
+        {/* User Tree */}
+        <Route path="/user-tree" element={<UserTree></UserTree>}></Route>
         {/* Article */}
         <Route path="/article" element={<Article></Article>}></Route>
         {/* Admin */}
