@@ -15,7 +15,7 @@
   margin-bottom: 1rem;
 }
 
-.homepage-text{
+.homepage-text {
   text-align: left;
   color: #007bff;
   font-weight: bold;
@@ -36,42 +36,67 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 3rem;
   font-weight: bold;
+  background-color: #007bff;
+  /* Card background color */
+  color: white;
+  /* Card text color */
 }
 
 .card-body {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  /* Aligns items to both ends */
+  align-items: flex-start;
+  /* Aligns items to the start of the flex-direction */
   border-radius: 1rem;
   background-color: #007bff;
   color: white;
   padding: 1rem;
   min-height: 100px;
+  position: relative;
+  /* Needed for absolute positioning of children */
 }
 
 .card-title {
   margin: 0;
+  margin-bottom: auto;
+  /* Pushes everything else down */
+}
+
+.btn-container {
+  display: flex;
+  justify-content: flex-end;
+  /* Aligns buttons to the right */
+  position: absolute;
+  /* Positions the buttons absolutely */
+  bottom: 10px;
+  /* Positions the buttons 10px from the bottom */
+  right: 10px;
+  /* Positions the buttons 10px from the right */
+  gap: 10px;
+  /* Adds space between buttons */
 }
 
 .btn-primary {
-  font-size: 1.2rem;
-  /* Larger font size for the buttons */
-  border-radius: .5rem;
-  /* Rounded corners for the buttons */
+  font-size: 1rem;
+  border-radius: 20px;
   border: none;
-  /* No border for the buttons */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  /* Optional: add shadow for better visibility */
   height: auto;
-  /* Adjust height as needed */
-  margin: 0;
-  /* Adjust margin as needed, remove if not necessary */
+  box-shadow: none;
+  font-weight: bold;
 }
 
-/* Adjust padding and margin for the buttons as needed */
-.btn-primary:not(:last-child) {
-  margin-bottom: 16px;
-  /* Space between buttons */
+.about-btn, .enter-tree-btn {
+  background-color: white;
+  /* Solid white */
+  color: #007bff;
+  /* Text color to match card background */
+}
+
+/* Add hover effects */
+.btn-primary:hover {
+  opacity: 0.8;
 }
 
 .footer {
