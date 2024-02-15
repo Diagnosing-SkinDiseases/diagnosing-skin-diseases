@@ -1,3 +1,7 @@
+:root {
+  --theme_blue: #007bff;
+}
+
 .Homepage {
   font-family: 'Arial', sans-serif;
   min-height: 100%;
@@ -15,9 +19,9 @@
   margin-bottom: 1rem;
 }
 
-.homepage-text{
+.homepage-text {
   text-align: left;
-  color: #007bff;
+  color: var(--theme_blue);
   font-weight: bold;
 }
 
@@ -29,6 +33,7 @@
 }
 
 .card {
+  width: auto;
   display: flex;
   text-align: center;
   border: none;
@@ -36,46 +41,62 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 3rem;
   font-weight: bold;
+  background-color: var(--theme_blue);
+  color: white;
 }
 
 .card-body {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
   border-radius: 1rem;
-  background-color: #007bff;
+  background-color: var(--theme_blue);
   color: white;
-  padding: 1rem;
-  min-height: 100px;
+  padding: 2rem;
+  min-height: 150px;
+  position: relative;
 }
 
 .card-title {
   margin: 0;
+  margin-bottom: auto;
 }
 
-.btn-primary {
-  font-size: 1.2rem;
-  /* Larger font size for the buttons */
-  border-radius: .5rem;
-  /* Rounded corners for the buttons */
-  border: none;
-  /* No border for the buttons */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  /* Optional: add shadow for better visibility */
-  height: auto;
-  /* Adjust height as needed */
-  margin: 0;
-  /* Adjust margin as needed, remove if not necessary */
+.btn-container {
+  display: flex;
+  justify-content: flex-end;
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
 }
 
-/* Adjust padding and margin for the buttons as needed */
-.btn-primary:not(:last-child) {
-  margin-bottom: 16px;
-  /* Space between buttons */
+.about-btn,
+.enter-tree-btn {
+  background-color: white;
+  color: var(--theme_blue);
+  width: auto;
+  border-radius: 20px;
+  border: 1px solid var(--theme_blue);
+  font-size: 1rem;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  box-shadow: none;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.about-btn:hover,
+.enter-tree-btn:hover {
+  background-color: #053f7d;
+  color: white !important;
 }
 
 .footer {
-  background-color: #007bff;
+  background-color: var(--theme_blue);
   color: white;
   padding: 1rem 0;
   width: 100%;

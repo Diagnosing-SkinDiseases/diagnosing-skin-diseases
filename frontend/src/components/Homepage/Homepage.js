@@ -6,9 +6,13 @@ import "./Homepage.css";
 const Card = ({ title }) => {
   return (
     <div className="col-lg-3 col-md-4 col-sm-6 my-2">
-      <div className="card h-100">
+      <div className="card h-100 card-custom">
         <div className="card-body">
           <h5 className="card-title">{title}</h5>
+          <div className="btn-container">
+            <button className="btn btn-primary about-btn" type="button" href="#">About</button>
+            <button className="btn btn-primary enter-tree-btn" type="button" href="#">Start Diagnosis</button>
+          </div>
         </div>
       </div>
     </div>
