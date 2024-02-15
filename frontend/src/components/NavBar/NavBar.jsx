@@ -59,7 +59,7 @@ const NavBarComponent = () => {
           </div>
         </div>
       </nav>
-      <NavSubtab show={subTabExpanded} title="Sub-tab Placeholder"/>
+      <NavSubtab show={subTabExpanded} title="Sub-tab Placeholder" />
     </div>
   );
 };
