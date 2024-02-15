@@ -1,31 +1,26 @@
 import React, { useState } from "react"; 
-import Controls from "./Controls";
-import List from "./List";
-import NavBar from "../NavBar";
-import "./AdminDashboard.css"; 
-import { faListSquares } from "@fortawesome/free-solid-svg-icons";
+import Controls from "./ListComponents/Controls";
+import List from "./ListComponents/List";
+import NavBar from "../NavBar/NavBar";
+import "./styles/AdminDashboard.css"; 
 
-const AdminDashboard = () => {
-  const [filterValue, setFilterValue] = useState("all"); 
-  const items = [
-    { title: "Erythematous Rashes", published: true },
-    { title: "Papules", published: false },
-    { title: "Lorem Ipsum", published: false },
-    { title: "Lorem Ipsum", published: false },
-    { title: "Lorem Ipsum", published: false },
-    // ...other items
-  ];
-  const [filteredItems, setFilteredItems] = useState(items);
+// AdminDashboard component for managing items and filters
+const AdminDashboard = ({ data}) => {
 
+  // State to manage filtered items
+  const [filteredItems, setFilteredItems] = useState(data);
+
+  // Handles the add button click
   const handleAdd = (type) => {
     console.log("Add", type);
     // Implement logic to add a tree/article/definition
   };
+
+  // Handles the filter change
   const handleFilterChange = (newFilterValue) => {
     console.log("Changing filter to:", newFilterValue);
-    setFilterValue(newFilterValue); 
 
-    const newFilteredItems = items.filter((item) => {
+    const newFilteredItems = data.filter((item) => {
       if (newFilterValue === "published") return item.published;
       if (newFilterValue === "unpublished") return !item.published;
       return true; // Default case for "all"
@@ -35,10 +30,11 @@ const AdminDashboard = () => {
     setFilteredItems(newFilteredItems);
   };
 
+  // Handles the search
   const handleSearch = (searchQuery) => {
     console.log("Searching for", searchQuery);
      const query = searchQuery.toLowerCase();
-     const newFilteredItems = items.filter((item) =>
+     const newFilteredItems = data.filter((item) =>
        item.title.toLowerCase().includes(query)
      );
      setFilteredItems(newFilteredItems);

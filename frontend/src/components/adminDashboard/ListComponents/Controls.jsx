@@ -1,24 +1,28 @@
 import React, { useState } from "react";
-import labels from "./labels.json";
-import Button from "./Button";
-import "./styles/Controls.css"; 
+import labels from "../labels.json";
+import Button from "../GeneralComponents/Button";
+import "../styles/Controls.css"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
+// Controls component containing add button, filter component, and search field
 const Controls = ({ onAdd, onFilterChange, onSearch }) => {
   const [filter, setFilter] = useState("all");
   const [input, setInput] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
+  // const [searchResults, setSearchResults] = useState([]);
 
+  // Handles the change of the filter option
   const handleFilterChange = (event) => {
     setFilter(event);
     onFilterChange(event);
   };
 
+  // Handles the change of the search input
   const handleSearchChange = (event) => {
     setInput(event.target.value);
   };
 
+  // Handles the submit of the search
   const handleSearchSubmit = (event) => {
     event.preventDefault();
     onSearch(input);
@@ -48,15 +52,17 @@ const Controls = ({ onAdd, onFilterChange, onSearch }) => {
   );
 };
 
-
+// Filter component 
 const FilterComponent = ({ labels, value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(value);
 
+  // Handles the toggle of the dropdown
   const handleDropdownToggle = () => {
     setIsOpen(!isOpen);
   };
 
+  // Handles the selection of an option
   const handleOptionSelect = (key) => {
     setSelectedOption(key);
     onChange(key);
@@ -87,6 +93,7 @@ const FilterComponent = ({ labels, value, onChange }) => {
   );
 };
 
+// SearchField component 
 const SearchField = ({ value, onChange, onSubmit, placeholder }) => {
   return (
     <form onSubmit={onSubmit} className="search-form">

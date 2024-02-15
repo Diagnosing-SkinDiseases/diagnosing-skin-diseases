@@ -19,5 +19,21 @@
     "publishState" : {
         "published" : "Published",
         "added" : "Added"
-    }
+    },
+    "definitionLabels": {
+        "title": "Term",
+        "definition": "Definition"
+    },
+    "articlePlaceholders": {
+        "title": "Title",
+        "contentLabel": "Article text"
+    },
+    "contentEditorBtns": {
+        "save": "Save",
+        "preview": "Preview", 
+        "publish": "Publish",
+        "addGroup": "Add section",
+        "deleteGroup": "Delete section"
+    },
+    "imageLabel" : "Upload image"
 }

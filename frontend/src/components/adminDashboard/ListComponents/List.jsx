@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import labels from "./labels.json";
-import Button from "./Button";
-import "./styles/List.css"; 
+import labels from "../labels.json";
+import Button from "../GeneralComponents/Button";
+import "../styles/List.css"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
@@ -29,7 +29,7 @@ const Item = ({ title, published, onPublish, onEdit, onDelete }) => (
   </div>
 );
 
-const List = ({ initialItems = [] }) => {
+const List = ({ initialItems = [], searchQuery  }) => {
   const [items, setItems] = useState(initialItems);
 
   // Effect hook to update state when initialItems prop changes
@@ -37,6 +37,7 @@ const List = ({ initialItems = [] }) => {
     setItems(initialItems);
   }, [initialItems]);
 
+  // Toggles the publish state of an item
   const handlePublishToggle = (index) => {
     const newItems = items.map((item, i) => {
       if (i === index) {
@@ -47,11 +48,13 @@ const List = ({ initialItems = [] }) => {
     setItems(newItems);
   };
 
+  // Handles the edit button click
   const handleEditBtn = (index) => {
     console.log("Edit clicked", index);
     // Implement logic to open edit screen
   };
 
+  // Handles the delete button click
   const handleDeleteBtn = (index) => {
     console.log("Delete clicked", index);
     const newItems = items.filter((_, i) => i !== index);
@@ -72,7 +75,9 @@ const List = ({ initialItems = [] }) => {
           />
         ))
       ) : (
-        <p>No items to display.</p>
+          <div className="item">
+            <span className="title">No search results found.</span>
+          </div>
       )}
     </div>
   );
