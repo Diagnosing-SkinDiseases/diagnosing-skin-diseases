@@ -1,0 +1,142 @@
+.navbar {
+  background-color: #007bff;
+  padding: 20px 0;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+}
+
+.navbar-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.navbar-item {
+  margin-right: 20px;
+}
+
+.navbar-link {
+  text-decoration: none;
+  color: #fff;
+  padding-inline: 80px;
+}
+
+.navbar-link:hover {
+  background-color: #5bc0de;
+}
+
+.banner {
+  background-color: #55a2f0;
+  padding: 20px;
+  margin-top: 64px;
+  text-align: center;
+}
+
+.research-articles {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  padding-left: 100px;
+  padding-right: 100px;
+  margin-top: 20px;
+}
+
+.research-title {
+  color: #007bff;
+  margin-right: auto;
+}
+
+.search-bar {
+  margin-left: auto;
+}
+
+.search-bar input {
+  width: 300px;
+  border-radius: 20px;
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+}
+
+.blue-background-box {
+  background-color: #007bff;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.alphabet-buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+.alphabet-buttons .row {
+  display: flex;
+  justify-content: center;
+}
+
+.alphabet-buttons .col {
+  padding: 5px;
+}
+
+.alphabet-button {
+  width: 40px;
+  height: 40px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 0;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px 5px 35px;
+}
+
+.alphabet-button:hover {
+  background-color: #0056b3;
+}
+
+.alphabet-button:hover {
+  background-color: #0056b3;
+}
+
+.alphabet-buttons-container {
+  margin-top: 10px;
+  background-color: #8dbbf7;
+  padding: 20px;
+  border-radius: 10px;
+  margin-inline: 100px;
+  height: 100px;
+}
+
+.selected-letter-container {
+  background-color: #007bff;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  margin-top: 20px;
+  margin-inline: 100px;
+}
+
+.selected-letter-display {
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+  padding-top: 10px;
+  margin-left: 80px;
+}
+.sample-words {
+  margin-top: 30px;
+  margin-left: 200px;
+}
+
+.col {
+  margin-bottom: 10px;
+}
