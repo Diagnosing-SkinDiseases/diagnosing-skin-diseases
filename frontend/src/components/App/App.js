@@ -9,7 +9,8 @@ import ContentEditor from "../AdminDashboard/ContentEditor";
 import ContentTypeEnum from "../AdminDashboard/ContentTypeEnum";
 import testData from "../AdminDashboard/testData.json";
 import ResearchArticles from "../ResearchArticles/ResearchArticles";
-import UserTree from "../UserTree/UserTree"
+import UserTree from "../UserTree/UserTree";
+import Login from "../Login/Login";
 
 function App() {
   // test data for demo only
@@ -46,7 +47,6 @@ function App() {
           path="/admin/definitions/add"
           element={<ContentEditor contentType={ContentTypeEnum.DEFINITION} />}
         ></Route>
-
         {/* Article List */}
         <Route
           path="/article-list"
@@ -55,6 +55,8 @@ function App() {
         {/* Glossary */}
         <Route path="/glossary" element={<Glossary></Glossary>}></Route>
       </Routes>
+      {/*Login*/}
+      <Route path="/login" element={<Login></Login>}></Route>
       <footer className="footer">Footer</footer>
     </div>
   );
