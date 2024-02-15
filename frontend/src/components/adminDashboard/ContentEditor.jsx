@@ -1,10 +1,9 @@
 import React from 'react';
-import NavBar from "../NavBar/NavBar";
 import EditorButtons from './EditorComponents/EditorButtons';
 import ContentTypeEnum from './ContentTypeEnum';
 import Definition from './EditorComponents/Definition';
 import Article from './EditorComponents/Article';
-import Tree from './EditorComponents/Tree';
+// import Tree from './EditorComponents/Tree';
 import "./styles/List.css"; 
 import "./styles/AdminDashboard.css"; 
 
@@ -18,7 +17,7 @@ const ContentEditor = ({ contentType }) => {
       case ContentTypeEnum.ARTICLE:
         return <Article />;
       case ContentTypeEnum.TREE:
-        return <Tree />;
+        // return <Tree />;
       default:
         return <div>Please select a content type.</div>;
     }
@@ -26,7 +25,6 @@ const ContentEditor = ({ contentType }) => {
 
   return (
     <div className="admin-dashboard">
-      <NavBar />
       <div className="editor">
         {renderContent()}
         <EditorButtons 

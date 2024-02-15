@@ -1,7 +1,6 @@
 import React, { useState } from "react"; 
 import Controls from "./ListComponents/Controls";
 import List from "./ListComponents/List";
-import NavBar from "../NavBar/NavBar";
 import "./styles/AdminDashboard.css"; 
 
 // AdminDashboard component for managing items and filters
@@ -42,7 +41,6 @@ const AdminDashboard = ({ data}) => {
 
   return (
     <div className="admin-dashboard">
-      <NavBar/>
       <Controls
         onAdd={handleAdd}
         onFilterChange={handleFilterChange}
