@@ -44,7 +44,7 @@ const ArticleContent = ({ data: { title, totalContent } }) => {
         </div>
 
         {/* Article */}
-        <div className="container article-container p-4">
+        <div className="container p-4">
           {/* Dynamic Content*/}
           {totalContent.map(parseData)}
         </div>

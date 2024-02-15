@@ -6,8 +6,8 @@ const ArticleBG = ({ data }) => {
   return (
     <>
       {/* Background */}
-      <div className="container pb-5">
-        <div className="row justify-content-center">
+      <div className="container pb-5 mt-5">
+        <div className="row justify-content-center article-container">
           <ArticleContent data={data}></ArticleContent>
         </div>
       </div>
