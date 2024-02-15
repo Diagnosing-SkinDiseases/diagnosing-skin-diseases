@@ -54,9 +54,10 @@ function App() {
         ></Route>
         {/* Glossary */}
         <Route path="/glossary" element={<Glossary></Glossary>}></Route>
+        {/*Login*/}
+        <Route path="/login" element={<Login></Login>}></Route>
       </Routes>
-      {/*Login*/}
-      <Route path="/login" element={<Login></Login>}></Route>
+
       <footer className="footer">Footer</footer>
     </div>
   );
