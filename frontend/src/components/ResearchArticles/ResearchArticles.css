@@ -23,27 +23,6 @@
   border: 1px solid #ced4da;
 }
 
-.blue-background-box {
-  background-color: #007bff;
-  padding: 20px;
-  border-radius: 10px;
-  margin-top: 20px;
-}
-
-.alphabet-buttons {
-  display: flex;
-  flex-direction: column;
-}
-
-.alphabet-buttons .row {
-  display: flex;
-  justify-content: center;
-}
-
-.alphabet-buttons .col {
-  padding: 5px;
-}
-
 .alphabet-button {
   width: 40px;
   height: 40px;
@@ -63,17 +42,14 @@
   background-color: #0056b3;
 }
 
-.alphabet-button:hover {
-  background-color: #0056b3;
-}
-
 .alphabet-buttons-container {
-  margin-top: 10px;
   background-color: #8dbbf7;
-  padding: 20px;
+  padding-left: 20px;
   border-radius: 10px;
+  padding-top: 20px;
+  padding-right: 20px;
   margin-inline: 100px;
-  height: 100px;
+  height: auto;
 }
 
 .selected-letter-container {
