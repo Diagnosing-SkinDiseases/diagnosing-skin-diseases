@@ -9,6 +9,7 @@ import ContentEditor from "../AdminDashboard/ContentEditor";
 import ContentTypeEnum from "../AdminDashboard/ContentTypeEnum";
 import testData from "../AdminDashboard/testData.json";
 import ResearchArticles from "../ResearchArticles/ResearchArticles";
+import UserTree from "../UserTree/UserTree"
 
 function App() {
   // test data for demo only
@@ -20,6 +21,8 @@ function App() {
       <Routes>
         {/* Homepage */}
         <Route path="/" element={<Homepage></Homepage>}></Route>
+        {/* User - Trees */}
+        <Route path="/user/trees" element={<UserTree></UserTree>}></Route>
         {/* Article */}
         <Route path="/article" element={<Article></Article>}></Route>
         {/* Admin */}
