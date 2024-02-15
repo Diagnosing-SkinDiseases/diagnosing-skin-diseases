@@ -1,0 +1,23 @@
+{
+  "trees": [
+    { "title": "Erythematous Rashes", "published": true, "text": "test" },
+    { "title": "Papules", "published": false, "text": "test" },
+    { "title": "Lorem Ipsum", "published": false, "text": "test" },
+    { "title": "Lorem Ipsum", "published": false, "text": "test" },
+    { "title": "Lorem Ipsum", "published": false, "text": "test" }
+  ],
+  "definitions": [
+    { "title": "Term 1", "published": true, "text": "Definition 1" },
+    { "title": "Term 2", "published": false, "text": "Definition 2" },
+    { "title": "Lorem Ipsum", "published": false, "text": "test" },
+    { "title": "Lorem Ipsum", "published": false, "text": "test" },
+    { "title": "Lorem Ipsum", "published": false, "text": "test" }
+  ],
+  "articles": [
+    { "title": "Article 1", "published": true, "text": "content" },
+    { "title": "Article 2", "published": false, "text": "content" },
+    { "title": "Lorem Ipsum", "published": false, "text": "test" },
+    { "title": "Lorem Ipsum", "published": false, "text": "test" },
+    { "title": "Lorem Ipsum", "published": false, "text": "test" }
+  ]
+}
