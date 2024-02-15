@@ -1,19 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const LoginForm = ({ usersDB }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loginStatus, setLoginStatus] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loginStatus, setLoginStatus] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
     // Find user in the mock database
-    const user = usersDB.find(user => user.email === email && user.password === password);
+    const user = usersDB.find(
+      (user) => user.email === email && user.password === password
+    );
     if (user) {
-      setLoginStatus('Login successful!');
-      console.log("User ID:", user.id); 
+      setLoginStatus("Login successful!");
+      console.log("User ID:", user.id);
     } else {
-      setLoginStatus('Login failed');
+      setLoginStatus("Login failed");
     }
   };
 
@@ -42,6 +44,4 @@ const LoginForm = ({ usersDB }) => {
   );
 };
 
-
 export default LoginForm;
-

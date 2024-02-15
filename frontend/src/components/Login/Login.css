@@ -1,5 +1,5 @@
 /* Apply a background color to the whole page */
-body {
+.login {
   background-color: #4b6cc1; /* Adjust the color to match the image background */
 }
 
