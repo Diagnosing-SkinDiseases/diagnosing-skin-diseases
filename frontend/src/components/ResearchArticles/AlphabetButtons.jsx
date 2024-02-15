@@ -1,3 +1,4 @@
+import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 
 const AlphabetButtons = ({ onButtonClick }) => {
@@ -9,19 +10,17 @@ const AlphabetButtons = ({ onButtonClick }) => {
 
   return (
     <div className="alphabet-buttons-container">
-      <div className="alphabet-buttons">
-        <div className="row">
-          {alphabet.map((letter) => (
-            <div className="col" key={letter}>
-              <button
-                className="alphabet-button"
-                onClick={() => handleClick(letter)}
-              >
-                {letter}
-              </button>
-            </div>
-          ))}
-        </div>
+      <div className="row">
+        {alphabet.map((letter) => (
+          <div className="col" key={letter}>
+            <button
+              className="alphabet-button"
+              onClick={() => handleClick(letter)}
+            >
+              {letter}
+            </button>
+          </div>
+        ))}
       </div>
     </div>
   );
