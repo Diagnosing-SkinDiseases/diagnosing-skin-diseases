@@ -29,7 +29,8 @@
     width: 100%;
 }
 
-.btn-primary {
+.btn-back-to-current-node,
+.btn-jump-to-this-node {
     color: white;
     background-color: var(--theme_blue);
     border: none;
@@ -37,10 +38,6 @@
     outline: none;
     transition: background-color 0.3s;
     flex: 1;
-}
-
-.btn-back-to-current-node,
-.btn-jump-to-this-node {
     font-size: 0.8rem;
     border-radius: 5px 0 0 5px;
     margin-left: 0.3rem;
@@ -48,6 +45,7 @@
     border-radius: 10px;
 }
 
-.btn-primary:hover {
+.btn-back-to-current-node:hover,
+.btn-jump-to-this-node:hover {
     background-color: #0056b3;
 }
