@@ -1,0 +1,60 @@
+/* Apply a background color to the whole page */
+body {
+  background-color: #4b6cc1; /* Adjust the color to match the image background */
+}
+
+/* Style the card for the login form */
+.login-card {
+  background: white;
+  padding: 2em;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px; /* Adjust width as necessary */
+  margin: 0 auto;
+  margin-top: 10%;
+}
+
+/* Style the heading */
+.login-card h2 {
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+/* Style the form inputs */
+.login-card input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+/* Style the placeholder text */
+.login-card input::placeholder {
+  color: #aaa;
+}
+
+/* Style the login button */
+.login-card button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  background-color: #7f7fd5;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+/* Hover state for the login button */
+.login-card button:hover {
+  background-color: #696fbf;
+}
+
+/* Ensure the form items align properly */
+.login-card form {
+  display: flex;
+  flex-direction: column;
+}
