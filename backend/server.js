@@ -37,12 +37,11 @@ app.use("/api", treeRouter);
 app.use("/api", articleRouter);
 
 // Connect to db
+const mongoUri = `mongodb+srv://${mongoUser}:${mongoPassword}@cluster0.1anl6wt.mongodb.net/${mongoDB}?retryWrites=true&w=majority`;
 mongoose
-  .connect(
-    `mongodb+srv://${mongoUser}:${mongoPassword}@testprojectone.yhtttpf.mongodb.net/${mongoDB}?retryWrites=true&w=majority`
-  )
+  .connect(mongoUri)
   .then(() => {
-    console.log("Connected to MongoDB!");
+    console.log(`Connected to MongoDB! Database: ${mongoDB}`);
     // Server start
     app.listen(port, () => {
       console.log(`Server is running on http://localhost:${port}`);
