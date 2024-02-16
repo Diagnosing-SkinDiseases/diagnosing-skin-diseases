@@ -11,7 +11,7 @@ const {
 // Create
 userRouter.post("/user/create", createUser);
 
-// Read all users
+// Read all
 userRouter.get("/user/read/all", getAllUsers);
 
 // Read
