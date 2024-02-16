@@ -1,6 +1,9 @@
+// Module imports
 const express = require("express");
 const app = express();
+const mongoose = require("mongoose");
 
+// Routers
 const userRouter = require("./routers/userRouter.js");
 const glossaryRouter = require("./routers/glossaryRouter.js");
 const treeRouter = require("./routers/treeRouter.js");
@@ -32,7 +35,18 @@ app.use("/api", treeRouter);
 // Article endpoints
 app.use("/api", articleRouter);
 
-// Server start
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+// Connect to db
+mongoose
+  .connect(
+    `mongodb+srv://${mongoUser}:${mongoPassword}@testprojectone.yhtttpf.mongodb.net/?retryWrites=true&w=majority`
+  )
+  .then(() => {
+    console.log("Connected to MongoDB!");
+    // Server start
+    app.listen(port, () => {
+      console.log(`Server is running on http://localhost:${port}`);
+    });
+  })
+  .catch((error) => {
+    console.log(error);
+  });
