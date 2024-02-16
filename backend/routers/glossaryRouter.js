@@ -1,52 +1,26 @@
 const express = require("express");
-const glossaryRouter = express.Router();
+const glossaryItemRouter = express.Router();
+const {
+  createGlossaryItem,
+  getAllGlossaryItems,
+  getGlossaryItem,
+  updateGlossaryItem,
+  deleteGlossaryItem,
+} = require("../controllers/glossaryItemController");
 
 // Create
-glossaryRouter.post("/glossary/create", (req, res) => {
-  const isEmpty = Object.keys(req.body).length === 0;
-  console.log(req.body);
-  let term;
-  if (isEmpty) {
-    term = "Empty";
-  } else {
-    term = req.body.term;
-  }
-  console.log(term);
-  res.send(`Create: ${term}`);
-});
+glossaryItemRouter.post("/glossaryItem/create", createGlossaryItem);
+
+// Read all users
+glossaryItemRouter.get("/glossaryItem/read/all", getAllGlossaryItems);
 
 // Read
-glossaryRouter.get("/glossary/read", (req, res) => {
-  let response = req.query.term ? `${req.query.term}!` : "unknown";
-  res.send(`Read: ${response}`);
-});
+glossaryItemRouter.get("/glossaryItem/read", getGlossaryItem);
 
 // Update
-glossaryRouter.patch("/glossary/update", (req, res) => {
-  const isEmpty = Object.keys(req.body).length === 0;
-  console.log(req.body);
-  let term;
-  if (isEmpty) {
-    term = "Empty";
-  } else {
-    term = req.body.term;
-  }
-  console.log(term);
-  res.send(`Update: ${term}`);
-});
+glossaryItemRouter.patch("/glossaryItem/update", updateGlossaryItem);
 
 // Delete
-glossaryRouter.delete("/glossary/delete", (req, res) => {
-  const isEmpty = Object.keys(req.body).length === 0;
-  console.log(req.body);
-  let term;
-  if (isEmpty) {
-    term = "Empty";
-  } else {
-    term = req.body.term;
-  }
-  console.log(term);
-  res.send(`Delete: ${term}`);
-});
+glossaryItemRouter.delete("/glossaryItem/delete", deleteGlossaryItem);
 
-module.exports = glossaryRouter;
+module.exports = glossaryItemRouter;
