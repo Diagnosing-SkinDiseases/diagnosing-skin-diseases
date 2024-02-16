@@ -1,18 +1,9 @@
 const express = require("express");
 const userRouter = express.Router();
-const User = require("../models/userModel");
+const { createUser } = require("../controllers/userController");
 
 // Create
-userRouter.post("/user/create", async (req, res) => {
-  let { username, email, password } = req.body;
-
-  try {
-    const user = await User.create({ username, email, password });
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
+userRouter.post("/user/create", createUser);
 
 // Read
 userRouter.get("/user/read", (req, res) => {
