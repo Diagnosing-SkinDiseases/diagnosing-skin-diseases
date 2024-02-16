@@ -1,10 +1,16 @@
 const express = require("express");
 const app = express();
-const port = 3000;
+
 const userRouter = require("./routers/userRouter.js");
 const glossaryRouter = require("./routers/glossaryRouter.js");
 const treeRouter = require("./routers/treeRouter.js");
 const articleRouter = require("./routers/articleRouter.js");
+
+// Dotenv access
+require("dotenv").config();
+const port = process.env.PORT;
+const mongoUser = process.env.USER;
+const mongoPassword = process.env.PASSWORD;
 
 // App configurations
 app.use(express.json());
