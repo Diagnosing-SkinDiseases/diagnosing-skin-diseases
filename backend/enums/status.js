@@ -3,4 +3,4 @@ const Status = {
   UNPUBLISHED: "UNPUBLISHED",
 };
 
-export default Status;
+module.exports = Status;
