@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 
 // Routers
 const userRouter = require("./routers/userRouter.js");
-const glossaryRouter = require("./routers/glossaryRouter.js");
+const glossaryItemRouter = require("./routers/glossaryRouter.js");
 const treeRouter = require("./routers/treeRouter.js");
 const articleRouter = require("./routers/articleRouter.js");
 
@@ -28,7 +28,7 @@ app.get("/", (req, res) => {
 app.use("/api", userRouter);
 
 // Glossary endpoints
-app.use("/api", glossaryRouter);
+app.use("/api", glossaryItemRouter);
 
 // Tree endpoints
 app.use("/api", treeRouter);
