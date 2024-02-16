@@ -1,52 +1,26 @@
 const express = require("express");
 const treeRouter = express.Router();
+const {
+  createTree,
+  getAllTrees,
+  getTree,
+  updateTree,
+  deleteTree,
+} = require("../controllers/treeController");
 
 // Create
-treeRouter.post("/tree/create", (req, res) => {
-  const isEmpty = Object.keys(req.body).length === 0;
-  console.log(req.body);
-  let name;
-  if (isEmpty) {
-    name = "Empty";
-  } else {
-    name = req.body.name;
-  }
-  console.log(name);
-  res.send(`Create: ${name}`);
-});
+treeRouter.post("/tree/create", createTree);
+
+// Read all
+treeRouter.get("/tree/read/all", getAllTrees);
 
 // Read
-treeRouter.get("/tree/read", (req, res) => {
-  let response = req.query.name ? `${req.query.name}!` : "unknown";
-  res.send(`Read: ${response}`);
-});
+treeRouter.get("/tree/read", getTree);
 
 // Update
-treeRouter.patch("/tree/update", (req, res) => {
-  const isEmpty = Object.keys(req.body).length === 0;
-  console.log(req.body);
-  let name;
-  if (isEmpty) {
-    name = "Empty";
-  } else {
-    name = req.body.name;
-  }
-  console.log(name);
-  res.send(`Update: ${name}`);
-});
+treeRouter.patch("/tree/update", updateTree);
 
 // Delete
-treeRouter.delete("/tree/delete", (req, res) => {
-  const isEmpty = Object.keys(req.body).length === 0;
-  console.log(req.body);
-  let name;
-  if (isEmpty) {
-    name = "Empty";
-  } else {
-    name = req.body.name;
-  }
-  console.log(name);
-  res.send(`Delete: ${name}`);
-});
+treeRouter.delete("/tree/delete", deleteTree);
 
 module.exports = treeRouter;
