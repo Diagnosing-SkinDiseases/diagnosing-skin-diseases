@@ -1,42 +1,26 @@
 const express = require("express");
 const userRouter = express.Router();
-const { createUser } = require("../controllers/userController");
+const {
+  createUser,
+  getAllUsers,
+  getUser,
+  updateUser,
+  deleteUser,
+} = require("../controllers/userController");
 
 // Create
 userRouter.post("/user/create", createUser);
 
+// Read all users
+userRouter.get("/user/read/all", getAllUsers);
+
 // Read
-userRouter.get("/user/read", (req, res) => {
-  let response = req.query.user ? `Hello ${req.query.user}!` : "Hello User!";
-  res.send(`Read: ${response}`);
-});
+userRouter.get("/user/read", getUser);
 
 // Update
-userRouter.patch("/user/update", (req, res) => {
-  const isEmpty = Object.keys(req.body).length === 0;
-  console.log(req.body);
-  let user;
-  if (isEmpty) {
-    user = "Empty";
-  } else {
-    user = req.body.user;
-  }
-  console.log(user);
-  res.send(`Update: ${user}`);
-});
+userRouter.patch("/user/update", updateUser);
 
 // Delete
-userRouter.delete("/user/delete", (req, res) => {
-  const isEmpty = Object.keys(req.body).length === 0;
-  console.log(req.body);
-  let user;
-  if (isEmpty) {
-    user = "Empty";
-  } else {
-    user = req.body.user;
-  }
-  console.log(user);
-  res.send(`Delete: ${user}`);
-});
+userRouter.delete("/user/delete", deleteUser);
 
 module.exports = userRouter;
