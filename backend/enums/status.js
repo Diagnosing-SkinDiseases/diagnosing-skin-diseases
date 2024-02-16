@@ -1,0 +1,4 @@
+const Status = {
+  PUBLISHED: "PUBLISHED",
+  UNPUBLISHED: "UNPUBLISHED",
+};
