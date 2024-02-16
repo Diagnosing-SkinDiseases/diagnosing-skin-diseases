@@ -14,6 +14,7 @@ require("dotenv").config();
 const port = process.env.PORT;
 const mongoUser = process.env.USER;
 const mongoPassword = process.env.PASSWORD;
+const mongoDB = process.env.DATABASE;
 
 // App configurations
 app.use(express.json());
@@ -38,7 +39,7 @@ app.use("/api", articleRouter);
 // Connect to db
 mongoose
   .connect(
-    `mongodb+srv://${mongoUser}:${mongoPassword}@testprojectone.yhtttpf.mongodb.net/?retryWrites=true&w=majority`
+    `mongodb+srv://${mongoUser}:${mongoPassword}@testprojectone.yhtttpf.mongodb.net/${mongoDB}?retryWrites=true&w=majority`
   )
   .then(() => {
     console.log("Connected to MongoDB!");
