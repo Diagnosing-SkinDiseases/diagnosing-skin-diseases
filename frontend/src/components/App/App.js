@@ -11,6 +11,7 @@ import testData from "../AdminDashboard/testData.json";
 import ResearchArticles from "../ResearchArticles/ResearchArticles";
 import UserTree from "../UserTree/UserTree";
 import Login from "../Login/Login";
+import TestAdminDashboard from "../SeanPrototypes/CreateArticle/AdminDashboard/AdminDashboard";
 
 function App() {
   // test data for demo only
@@ -56,6 +57,16 @@ function App() {
         <Route path="/glossary" element={<Glossary></Glossary>}></Route>
         {/*Login*/}
         <Route path="/login" element={<Login></Login>}></Route>
+
+        {/* Testing */}
+        <Route path="/test">
+          <Route path="admin">
+            <Route
+              path="articles"
+              element={<TestAdminDashboard></TestAdminDashboard>}
+            ></Route>
+          </Route>
+        </Route>
       </Routes>
 
       <footer className="footer">Footer</footer>

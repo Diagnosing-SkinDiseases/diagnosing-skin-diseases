@@ -2,6 +2,7 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 // Routers
 const userRouter = require("./routers/userRouter.js");
@@ -18,6 +19,7 @@ const mongoDB = process.env.DATABASE;
 
 // App configurations
 app.use(express.json());
+app.use(cors());
 
 // App endpoints start here
 app.get("/", (req, res) => {
