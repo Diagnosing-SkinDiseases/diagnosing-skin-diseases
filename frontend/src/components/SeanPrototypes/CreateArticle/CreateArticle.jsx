@@ -64,7 +64,7 @@ const CreateArticle = () => {
     const payload = {
       title,
       content,
-      published: "published",
+      status: "published",
     };
 
     console.log(payload);
