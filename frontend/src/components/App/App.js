@@ -13,6 +13,7 @@ import UserTree from "../UserTree/UserTree";
 import Login from "../Login/Login";
 import TestAdminDashboard from "../SeanPrototypes/LoadArticles/AdminDashboard/AdminDashboard";
 import TestResearchArticles from "../SeanPrototypes/LoadArticles/UserFacingArticles/ResearchArticles/ResearchArticles";
+import CreateArticle from "../SeanPrototypes/CreateArticle/CreateArticle";
 
 function App() {
   // test data for demo only
@@ -59,13 +60,23 @@ function App() {
         {/*Login*/}
         <Route path="/login" element={<Login></Login>}></Route>
 
-        {/* Testing */}
+        {/* Testing - Sean*/}
         <Route path="/test">
-          {/* Test admin - articles */}
           <Route path="admin">
+            {/* Test admin - articles */}
             <Route
               path="articles"
               element={<TestAdminDashboard></TestAdminDashboard>}
+            ></Route>
+            {/* Test admin - articles - add */}
+            <Route
+              path="articles/add"
+              element={<CreateArticle></CreateArticle>}
+            ></Route>
+            {/* Test reference */}
+            <Route
+              path="add/sample"
+              element={<ContentEditor contentType={ContentTypeEnum.ARTICLE} />}
             ></Route>
           </Route>
           {/* Test user - articles */}
