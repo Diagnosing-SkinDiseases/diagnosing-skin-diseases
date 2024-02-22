@@ -13,7 +13,7 @@ const apiGetAllArticles = () => {
 /**
  * Creates a promise for creating an article for the database.
  *
- * @param {*} payload - the payload for the post request
+ * @param {*} payload - the payload for the post request as an object
  * @returns - the promise for the api response
  */
 const apiCreateArticle = (payload) => {
@@ -31,6 +31,11 @@ const apiCreateArticle = (payload) => {
   return axios.post(`${apiUrl}/article/create`, payload);
 };
 
+/**
+ *
+ * @param {*} targetId - the _id of the target article as a string
+ * @returns - the promise for the api response
+ */
 const apiDeleteArticle = (targetId) => {
   return axios.delete(`${apiUrl}/article/delete`, { data: { id: targetId } });
 };
