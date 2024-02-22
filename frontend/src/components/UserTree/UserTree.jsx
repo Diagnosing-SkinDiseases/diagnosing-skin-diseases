@@ -3,6 +3,7 @@ import NodeComponent from './NodeComponent';
 import NodeDetails from './NodeDetails';
 import './UserTree.css';
 import CurrentNodeDetails from './CurrentNodeDetails';
+import SymbolIndication from './SymbolIndication';
 
 const drawArrow = (start, end, color) => {
     requestAnimationFrame(() => {
@@ -30,7 +31,10 @@ const drawArrow = (start, end, color) => {
 
 const UserTree = () => {
     const greenArrow = "#3fc005";
-    const redArrow = "#f44336"
+    const redArrow = "#f44336";
+    const blueNode = "#1E90FF";
+    const yellowNode = "#FFD700";
+    const greenNode = "#6ad669";
 
     useEffect(() => {
         let line;
@@ -56,17 +60,18 @@ const UserTree = () => {
         <>
             <br />
             <div>
+                <SymbolIndication />
                 <div className="user-tree">
-                    <div id="first-row"><NodeComponent color="#1E90FF" id="node1" /></div>
+                    <div id="first-row"><NodeComponent color={blueNode} id="node1" /></div>
                     <div id="second-row">
-                        <NodeComponent color="#1E90FF" id="node2" class="second-row-nodes" />
-                        <NodeComponent color="#1E90FF" id="node3" class="second-row-nodes" />
+                        <NodeComponent color={blueNode} id="node2" class="second-row-nodes" />
+                        <NodeComponent color={blueNode} id="node3" class="second-row-nodes" />
                     </div>
                     <div id="third-row">
-                        <NodeComponent color="#FFD700" id="node4" class="second-row-nodes" />
-                        <NodeComponent color="#FFD700" id="node5" class="second-row-nodes" />
-                        <NodeComponent color="#FFD700" id="node6" class="second-row-nodes" />
-                        <NodeComponent color="#6ad669" id="node7" class="second-row-nodes" />
+                        <NodeComponent color={yellowNode} id="node4" class="second-row-nodes" />
+                        <NodeComponent color={yellowNode} id="node5" class="second-row-nodes" />
+                        <NodeComponent color={yellowNode} id="node6" class="second-row-nodes" />
+                        <NodeComponent color={greenNode} id="node7" class="second-row-nodes" />
                     </div>
 
                 </div>

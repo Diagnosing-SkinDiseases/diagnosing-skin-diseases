@@ -1,0 +1,23 @@
+.node-symbol {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 10px solid transparent;
+    box-sizing: border-box;
+}
+
+.node-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.node-symbol-text {
+    font-size: 1rem;
+    font-style: bold;
+    color: var(--theme_blue);
+    display: flex;
+    align-items: center;
+}
