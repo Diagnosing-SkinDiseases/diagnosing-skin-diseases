@@ -12,6 +12,7 @@ const apiGetAllArticles = () => {
     Response payload format: 
     [
     {
+    _id: String,
     title: String,
     content: [{
         type: Enum String (ArticleContentType)
@@ -57,6 +58,7 @@ const apiDeleteArticle = (targetId) => {
   /*
     Response payload format: 
     {
+    _id: String,
     title: String,
     content: [{
         type: Enum String (ArticleContentType)
