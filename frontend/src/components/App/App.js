@@ -1,16 +1,17 @@
-import "./App.css";
-import NavBarComponent from "../NavBar/NavBar";
-import { Routes, Route } from "react-router-dom";
-import Homepage from "../Homepage/Homepage";
-import Article from "../Article/Article";
-import Glossary from "../Glossary/Glossary";
+import { Route, Routes } from "react-router-dom";
 import AdminDashboard from "../AdminDashboard/AdminDashboard";
+import AdminTree from "../AdminDashboard/AdminTrees";
 import ContentEditor from "../AdminDashboard/ContentEditor";
 import ContentTypeEnum from "../AdminDashboard/ContentTypeEnum";
 import testData from "../AdminDashboard/testData.json";
-import ResearchArticles from "../ResearchArticles/ResearchArticles";
-import UserTree from "../UserTree/UserTree";
+import Article from "../Article/Article";
+import Glossary from "../Glossary/Glossary";
+import Homepage from "../Homepage/Homepage";
 import Login from "../Login/Login";
+import NavBarComponent from "../NavBar/NavBar";
+import TreatmentArticle from "../TreatmentArticles/TreatmentArticles";
+import UserTree from "../UserTree/UserTree";
+import "./App.css";
 
 function App() {
   // test data for demo only
@@ -28,10 +29,7 @@ function App() {
         <Route path="/article" element={<Article></Article>}></Route>
         {/* Admin */}
         {/* Admin - Trees */}
-        <Route
-          path="/admin/trees"
-          element={<AdminDashboard data={trees} />}
-        ></Route>
+        <Route path="/admin/trees" element={<AdminTree />}></Route>
         {/* Admin - Articles */}
         <Route
           path="/admin/articles"
@@ -50,7 +48,7 @@ function App() {
         {/* Article List */}
         <Route
           path="/article-list"
-          element={<ResearchArticles></ResearchArticles>}
+          element={<TreatmentArticle></TreatmentArticle>}
         ></Route>
         {/* Glossary */}
         <Route path="/glossary" element={<Glossary></Glossary>}></Route>
