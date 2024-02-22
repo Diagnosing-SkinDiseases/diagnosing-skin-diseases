@@ -18,7 +18,7 @@ import TestResearchArticles from "../SeanPrototypes/LoadArticles/UserFacingArtic
 import CreateArticle from "../SeanPrototypes/CreateArticle/CreateArticle";
 import TestGlossaryAdminDashboard from "../SeanPrototypes/LoadGlossary/AdminDashboard/AdminDashboard";
 import TestGlossaryContentEditor from "../SeanPrototypes/CreateGlossary/AdminDashboard/ContentEditor";
-import ContentType from "../Article/enums";
+import TestGlossary from "../SeanPrototypes/LoadGlossary/UserFacing/Glossary/Glossary";
 
 function App() {
   // test data for demo only
@@ -100,6 +100,11 @@ function App() {
           <Route
             path="article-list"
             element={<TestResearchArticles></TestResearchArticles>}
+          ></Route>
+          {/* Test user - glossary */}
+          <Route
+            path="glossary"
+            element={<TestGlossary></TestGlossary>}
           ></Route>
         </Route>
       </Routes>
