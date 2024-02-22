@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import AdminDashboard from "../AdminDashboard/AdminDashboard";
+import EditTree from "../AdminDashboard/AdminEditTrees";
 import AdminTree from "../AdminDashboard/AdminTrees";
 import ContentEditor from "../AdminDashboard/ContentEditor";
 import ContentTypeEnum from "../AdminDashboard/ContentTypeEnum";
@@ -30,6 +31,9 @@ function App() {
         {/* Admin */}
         {/* Admin - Trees */}
         <Route path="/admin/trees" element={<AdminTree />}></Route>
+        {/* Admin - Trees - Edit */}
+        <Route path="/admin/trees/add" element={<EditTree />}></Route>
+
         {/* Admin - Articles */}
         <Route
           path="/admin/articles"
