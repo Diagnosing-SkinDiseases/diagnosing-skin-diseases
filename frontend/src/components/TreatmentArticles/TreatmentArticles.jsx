@@ -1,11 +1,11 @@
 import { useState } from "react";
 import AlphabetButtons from "./AlphabetButtons";
-import ResearchArticle from "./ResearchArticleHeader";
-import "./ResearchArticles.css";
+import TreatmentArticle from "./TreatmentArticleHeader";
+import "./Treatment.css";
 import SampleWords from "./SampleArticles";
 import SelectedLetterDisplay from "./SelectedButton";
 
-const ResearchArticles = () => {
+const TreatmentArticles = () => {
   // State variable to store the selected letter
   const [selectedLetter, setSelectedLetter] = useState(null);
 
@@ -16,7 +16,7 @@ const ResearchArticles = () => {
 
   return (
     <div className="App">
-      <ResearchArticle /> {/* Render the ResearchArticles component */}
+      <TreatmentArticle /> {/* Render the TreatmentArticles component */}
       <AlphabetButtons onButtonClick={handleButtonClick} />{" "}
       {/* Render the AlphabetButtons component */}
       <SelectedLetterDisplay selectedLetter={selectedLetter} />{" "}
@@ -27,4 +27,4 @@ const ResearchArticles = () => {
   );
 };
 
-export default ResearchArticles;
+export default TreatmentArticles;
