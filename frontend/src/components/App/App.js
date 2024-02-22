@@ -52,7 +52,7 @@ function App() {
         ></Route>
         {/* Article List */}
         <Route
-          path="/article-list"
+          path="/treatment"
           element={<TreatmentArticle></TreatmentArticle>}
         ></Route>
         {/* Glossary */}
