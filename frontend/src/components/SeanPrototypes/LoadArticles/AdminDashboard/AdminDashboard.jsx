@@ -13,6 +13,7 @@ const TestAdminDashboard = () => {
   // State to manage filtered items
   const [filteredItems, setFilteredItems] = useState([]);
 
+  // Load the articles from the database.
   useEffect(() => {
     const getData = async () => {
       apiGetAllArticles()

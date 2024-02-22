@@ -31,4 +31,8 @@ const apiCreateArticle = (payload) => {
   return axios.post(`${apiUrl}/article/create`, payload);
 };
 
-export { apiGetAllArticles, apiCreateArticle };
+const apiDeleteArticle = (targetId) => {
+  return axios.delete(`${apiUrl}/article/delete`, { data: { id: targetId } });
+};
+
+export { apiGetAllArticles, apiCreateArticle, apiDeleteArticle };

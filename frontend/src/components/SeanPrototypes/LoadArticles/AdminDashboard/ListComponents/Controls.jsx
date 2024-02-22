@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import labels from "../labels.json";
 import Button from "../GeneralComponents/Button";
-import "../styles/Controls.css"; 
+import "../styles/Controls.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
@@ -52,7 +52,7 @@ const Controls = ({ onAdd, onFilterChange, onSearch }) => {
   );
 };
 
-// Filter component 
+// Filter component
 const FilterComponent = ({ labels, value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(value);
@@ -93,7 +93,7 @@ const FilterComponent = ({ labels, value, onChange }) => {
   );
 };
 
-// SearchField component 
+// SearchField component
 const SearchField = ({ value, onChange, onSubmit, placeholder }) => {
   return (
     <form onSubmit={onSubmit} className="search-form">
@@ -110,6 +110,5 @@ const SearchField = ({ value, onChange, onSubmit, placeholder }) => {
     </form>
   );
 };
-
 
 export default Controls;

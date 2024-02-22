@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import labels from "../labels.json";
 import Button from "../GeneralComponents/Button";
-import "../styles/List.css"; 
+import "../styles/List.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { apiDeleteArticle } from "../../../articleApiController";
 
 const Item = ({ title, published, onPublish, onEdit, onDelete }) => (
   <div className="item">
@@ -29,7 +30,7 @@ const Item = ({ title, published, onPublish, onEdit, onDelete }) => (
   </div>
 );
 
-const List = ({ initialItems = [], searchQuery  }) => {
+const List = ({ initialItems = [], searchQuery }) => {
   const [items, setItems] = useState(initialItems);
 
   // Effect hook to update state when initialItems prop changes
@@ -57,8 +58,16 @@ const List = ({ initialItems = [], searchQuery  }) => {
   // Handles the delete button click
   const handleDeleteBtn = (index) => {
     console.log("Delete clicked", index);
-    const newItems = items.filter((_, i) => i !== index);
-    setItems(newItems);
+    console.log(items[index]);
+    apiDeleteArticle(items[index]._id)
+      .then((response) => {
+        console.log("Deleted", response.data);
+        const newItems = items.filter((_, i) => i !== index);
+        setItems(newItems);
+      })
+      .catch((error) => {
+        console.log("Error:", error);
+      });
   };
 
   return (
@@ -75,9 +84,9 @@ const List = ({ initialItems = [], searchQuery  }) => {
           />
         ))
       ) : (
-          <div className="item">
-            <span className="title">No search results found.</span>
-          </div>
+        <div className="item">
+          <span className="title">No search results found.</span>
+        </div>
       )}
     </div>
   );
