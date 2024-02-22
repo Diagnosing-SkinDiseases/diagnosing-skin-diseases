@@ -9,7 +9,7 @@ import Glossary from "../Glossary/Glossary";
 import Homepage from "../Homepage/Homepage";
 import Login from "../Login/Login";
 import NavBarComponent from "../NavBar/NavBar";
-import TreatmentArticle from "../TreatmentArticles/TreatmentArticles";
+import TreatmentArticles from "../TreatmentArticles/TreatmentArticles";
 import UserTree from "../UserTree/UserTree";
 import "./App.css";
 
@@ -51,10 +51,7 @@ function App() {
           element={<ContentEditor contentType={ContentTypeEnum.DEFINITION} />}
         ></Route>
         {/* Article List */}
-        <Route
-          path="/treatment"
-          element={<TreatmentArticle></TreatmentArticle>}
-        ></Route>
+        <Route path="/treatment" element={<TreatmentArticles />}></Route>
         {/* Glossary */}
         <Route path="/glossary" element={<Glossary></Glossary>}></Route>
         {/*Login*/}
