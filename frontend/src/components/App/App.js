@@ -11,9 +11,12 @@ import testData from "../AdminDashboard/testData.json";
 import ResearchArticles from "../ResearchArticles/ResearchArticles";
 import UserTree from "../UserTree/UserTree";
 import Login from "../Login/Login";
+
+// Test components - Sean
 import TestAdminDashboard from "../SeanPrototypes/LoadArticles/AdminDashboard/AdminDashboard";
 import TestResearchArticles from "../SeanPrototypes/LoadArticles/UserFacingArticles/ResearchArticles/ResearchArticles";
 import CreateArticle from "../SeanPrototypes/CreateArticle/CreateArticle";
+import TestGlossaryAdminDashboard from "../SeanPrototypes/LoadGlossary/AdminDashboard/AdminDashboard";
 
 function App() {
   // test data for demo only
@@ -77,6 +80,13 @@ function App() {
             <Route
               path="add/sample"
               element={<ContentEditor contentType={ContentTypeEnum.ARTICLE} />}
+            ></Route>
+            {/* Test admin - definitions (glossary) */}
+            <Route
+              path="definitions"
+              element={
+                <TestGlossaryAdminDashboard></TestGlossaryAdminDashboard>
+              }
             ></Route>
           </Route>
           {/* Test user - articles */}
