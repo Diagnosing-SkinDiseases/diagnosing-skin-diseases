@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import NodeComponent from './NodeComponent';
 import NodeDetails from './NodeDetails';
 import './UserTree.css';
+import CurrentNodeDetails from './CurrentNodeDetails';
 
 const drawArrow = (start, end) => {
     requestAnimationFrame(() => {
@@ -13,7 +14,7 @@ const drawArrow = (start, end) => {
                 {
                     path: 'straight',
                     startSocket: 'bottom',
-                    endSocket: 'top', 
+                    endSocket: 'top',
                     size: 4, // Set the line size
                 }
             );
@@ -66,16 +67,22 @@ const UserTree = () => {
 
                 </div>
                 <br />
-
-                <NodeDetails
-                    question="Are the spots blanchable?"
-                    onBack={() => console.log('Back to current node')}
-                    onJump={() => console.log('Jump to this node')}
-                />
-                <br />
-
+                <div>
+                    <CurrentNodeDetails
+                        question="Are the spots blanchable?"
+                        onBack={() => console.log('Back to current node')}
+                        onNo={() => console.log('No')}
+                        onYes={() => console.log('Yes')}
+                    />
+                    <br />
+                    <NodeDetails
+                        question="Are the spots blanchable?"
+                        onBack={() => console.log('Back to current node')}
+                        onJump={() => console.log('Jump to this node')}
+                    />
+                    <br />
+                </div>
             </div>
-
         </>
     );
 };
