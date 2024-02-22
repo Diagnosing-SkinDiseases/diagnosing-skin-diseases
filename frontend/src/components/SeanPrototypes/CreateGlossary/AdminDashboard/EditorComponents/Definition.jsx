@@ -1,13 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import labels from "../labels.json";
 import "../styles/Editor.css";
 
 // The Definition component
-const Definition = () => {
-  // State hooks for title and paragraph
-  const [title, setTitle] = useState('');
-  const [paragraph, setParagraph] = useState('');
-
+const Definition = ({ title, setTitle, paragraph, setParagraph }) => {
   // Handles the change in the title input field
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -19,14 +15,16 @@ const Definition = () => {
   };
 
   const handleInput = (e) => {
-    e.target.style.height = 'inherit'; // Reset the height - allows shrink if text is deleted
+    e.target.style.height = "inherit"; // Reset the height - allows shrink if text is deleted
     e.target.style.height = `${e.target.scrollHeight}px`; // Set the new height
   };
 
   return (
     <div className="definition">
       <div className="input-group">
-        <label htmlFor="definition-title"  className="label">{labels.definitionLabels.title}</label>
+        <label htmlFor="definition-title" className="label">
+          {labels.definitionLabels.title}
+        </label>
         <input
           id="definition-title"
           type="text"
@@ -35,7 +33,9 @@ const Definition = () => {
         />
       </div>
       <div className="input-group content">
-        <label htmlFor="definition-paragraph" className="label">{labels.definitionLabels.definition}</label>
+        <label htmlFor="definition-paragraph" className="label">
+          {labels.definitionLabels.definition}
+        </label>
         <textarea
           id="definition-paragraph"
           value={paragraph}
@@ -48,4 +48,4 @@ const Definition = () => {
   );
 };
 
-export default Definition; 
+export default Definition;

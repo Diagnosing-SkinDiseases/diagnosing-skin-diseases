@@ -32,11 +32,8 @@ const apiCreateGlossaryItem = (payload) => {
   /*
     Request payload format: 
     {
-    title: String,
-    content: [{
-        type: Enum String (GlossaryItemContentType)
-        content: String
-    }],
+    term: String,
+    definition: String,
     status: Enum String (Status)
     }
   */

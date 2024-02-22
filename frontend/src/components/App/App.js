@@ -17,6 +17,8 @@ import TestAdminDashboard from "../SeanPrototypes/LoadArticles/AdminDashboard/Ad
 import TestResearchArticles from "../SeanPrototypes/LoadArticles/UserFacingArticles/ResearchArticles/ResearchArticles";
 import CreateArticle from "../SeanPrototypes/CreateArticle/CreateArticle";
 import TestGlossaryAdminDashboard from "../SeanPrototypes/LoadGlossary/AdminDashboard/AdminDashboard";
+import TestGlossaryContentEditor from "../SeanPrototypes/CreateGlossary/AdminDashboard/ContentEditor";
+import ContentType from "../Article/enums";
 
 function App() {
   // test data for demo only
@@ -87,6 +89,11 @@ function App() {
               element={
                 <TestGlossaryAdminDashboard></TestGlossaryAdminDashboard>
               }
+            ></Route>
+            {/* Test admin - definitions - add */}
+            <Route
+              path="definitions/add"
+              element={<TestGlossaryContentEditor></TestGlossaryContentEditor>}
             ></Route>
           </Route>
           {/* Test user - articles */}
