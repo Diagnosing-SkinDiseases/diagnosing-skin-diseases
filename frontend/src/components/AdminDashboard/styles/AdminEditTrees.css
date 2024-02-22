@@ -1,0 +1,65 @@
+body {
+  width: 100%;
+  background-color: rgba(0, 123, 255, 0.15);
+  margin: 0;
+}
+
+.title-section {
+  margin-top: 20px; /* Adjust margin as needed */
+}
+
+.white-bar {
+  background-color: white;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add box shadow */
+  margin-bottom: 20px;
+  border: 1px solid #ccc; /* Add border style */
+  padding: 10px; /* Add padding to give space for text */
+}
+
+.white-bar span,
+h3 {
+  color: #007bff; /* Set text color to blue */
+  font-size: smaller; /* Set font size to smaller */
+}
+
+.button-container {
+  display: flex;
+  gap: 10px; /* Add gap between buttons */
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.button-container button {
+  width: 110px;
+}
+@media (min-width: 576px) {
+  .content-section {
+    padding-left: 30px; /* Increase left padding on small devices and up */
+    padding-right: 30px; /* Increase right padding on small devices and up */
+  }
+}
+
+@media (min-width: 768px) {
+  .content-section {
+    padding-left: 60px; /* Increase left padding on medium devices and up */
+    padding-right: 60px; /* Increase right padding on medium devices and up */
+  }
+}
+
+@media (min-width: 992px) {
+  .content-section {
+    padding-left: 80px; /* Increase left padding on large devices and up */
+    padding-right: 80px; /* Increase right padding on large devices and up */
+  }
+}
+
+@media (min-width: 1200px) {
+  .content-section {
+    padding-left: 100px; /* Increase left padding on extra large devices */
+    padding-right: 100px; /* Increase right padding on extra large devices */
+  }
+}
