@@ -4,7 +4,7 @@ import NodeDetails from './NodeDetails';
 import './UserTree.css';
 import CurrentNodeDetails from './CurrentNodeDetails';
 
-const drawArrow = (start, end) => {
+const drawArrow = (start, end, color) => {
     requestAnimationFrame(() => {
         if (window.LeaderLine && document.getElementById(start) && document.getElementById(end)) {
             // Create a line using point anchors to connect the center of each element
@@ -12,6 +12,7 @@ const drawArrow = (start, end) => {
                 document.getElementById(start),
                 document.getElementById(end),
                 {
+                    color: color,
                     path: 'straight',
                     startSocket: 'bottom',
                     endSocket: 'top',
@@ -28,16 +29,19 @@ const drawArrow = (start, end) => {
 
 
 const UserTree = () => {
+    const greenArrow = "#3fc005";
+    const redArrow = "#f44336"
+
     useEffect(() => {
         let line;
 
         /* LeaderLine source: https://anseki.github.io/leader-line/ */
-        drawArrow("node1", "node2");
-        drawArrow("node1", "node3");
-        drawArrow("node2", "node4");
-        drawArrow("node2", "node5");
-        drawArrow("node3", "node6");
-        drawArrow("node3", "node7");
+        drawArrow("node1", "node2", redArrow);
+        drawArrow("node1", "node3", greenArrow);
+        drawArrow("node2", "node4", redArrow);
+        drawArrow("node2", "node5", greenArrow);
+        drawArrow("node3", "node6", redArrow);
+        drawArrow("node3", "node7", greenArrow);
 
         return () => {
             if (line) {
@@ -66,7 +70,6 @@ const UserTree = () => {
                     </div>
 
                 </div>
-                <br />
                 <div>
                     <CurrentNodeDetails
                         question="Are the spots blanchable?"
@@ -80,7 +83,6 @@ const UserTree = () => {
                         onBack={() => console.log('Back to current node')}
                         onJump={() => console.log('Jump to this node')}
                     />
-                    <br />
                 </div>
             </div>
         </>
