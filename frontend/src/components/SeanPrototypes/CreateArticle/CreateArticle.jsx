@@ -3,8 +3,8 @@ import "./CreateArticle.css";
 import ButtonGroup from "./ButtonGroup";
 import { useEffect, useState } from "react";
 import ArticleContentType from "./articleContentType";
-import axios from "axios";
-import apiUrl from "../../../api";
+import { apiCreateArticle } from "../articleApiController";
+import { useNavigate } from "react-router-dom";
 
 /**
 const ArticleContentType = {
@@ -40,6 +40,7 @@ const renderContent = (content, index, onContentChange) => {
 const CreateArticle = () => {
   const [content, setContent] = useState([]);
   const [title, setTitle] = useState("");
+  const navigate = useNavigate();
 
   const addContent = (newType) => {
     setContent((prevContent) => [
@@ -60,7 +61,7 @@ const CreateArticle = () => {
     setTitle(event.target.value);
   };
 
-  const publish = () => {
+  const publish = async () => {
     const payload = {
       title,
       content,
@@ -69,15 +70,8 @@ const CreateArticle = () => {
 
     console.log(payload);
 
-    axios
-      .post(`${apiUrl}/article/create`, payload)
-      .then((response) => {
-        console.log("Success:", response);
-      })
-      .catch((error) => {
-        // Handle any errors that occur during the request
-        console.error("Error:", error.response.data);
-      });
+    await apiCreateArticle(payload);
+    navigate("/test/admin/articles");
   };
 
   useEffect(() => {

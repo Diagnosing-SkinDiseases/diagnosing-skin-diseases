@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import apiUrl from "../../../../../api";
+import { apiGetAllArticles } from "../../../articleApiController";
 
 const testData = ["Sample", "Sample", "Sample", "Sample"];
 
@@ -17,26 +16,23 @@ const SampleWords = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    let newData;
-
-    // Make a GET request to the API endpoint
-    axios
-      .get(`${apiUrl}/article/read/all`)
-      .then((response) => {
-        // Handle the response data
-        newData = response.data;
-
-        newData = newData.map((article) => {
-          return article.title;
+    const getData = async () => {
+      apiGetAllArticles()
+        .then((response) => {
+          let newData = response.data;
+          console.log("Success:", newData);
+          setData(
+            newData.map((article) => {
+              return article.title;
+            })
+          );
+        })
+        .catch((error) => {
+          console.log("Error:", error);
         });
+    };
 
-        console.log("Response:", newData);
-        setData(newData);
-      })
-      .catch((error) => {
-        // Handle any errors that occur during the request
-        console.error("Error:", error);
-      });
+    getData();
   }, []);
 
   return <div className="sample-words">{data.map(renderData)}</div>;

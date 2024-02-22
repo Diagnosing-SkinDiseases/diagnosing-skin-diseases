@@ -3,12 +3,9 @@ import Controls from "./ListComponents/Controls";
 import List from "./ListComponents/List";
 import "./styles/AdminDashboard.css";
 import testData from "./testData.json";
-import axios from "axios";
-import apiUrl from "../../../../api";
+import { apiGetAllArticles } from "../../articleApiController";
 
 const { articles } = testData;
-
-console.log(articles);
 
 // AdminDashboard component for managing items and filters
 const TestAdminDashboard = () => {
@@ -17,32 +14,28 @@ const TestAdminDashboard = () => {
   const [filteredItems, setFilteredItems] = useState([]);
 
   useEffect(() => {
-    console.log("Component mounted");
-    let newData;
-
-    // Make a GET request to the API endpoint
-    axios
-      .get(`${apiUrl}/article/read/all`)
-      .then((response) => {
-        // Handle the response data
-        newData = response.data;
-
-        newData = newData.map((article) => {
-          return {
-            published: article.status === "PUBLISHED",
-            text: "",
-            title: article.title,
-          };
+    const getData = async () => {
+      apiGetAllArticles()
+        .then((response) => {
+          let newData = response.data;
+          console.log(newData);
+          newData = newData.map((article) => {
+            return {
+              title: article.title,
+              published: article.status === "PUBLISHED",
+              text: "test",
+              _id: article._id,
+            };
+          });
+          setData(newData);
+          setFilteredItems(newData);
+        })
+        .catch((error) => {
+          console.log("Error:", error);
         });
+    };
 
-        console.log("Response:", newData);
-        setFilteredItems(newData);
-        setData(newData);
-      })
-      .catch((error) => {
-        // Handle any errors that occur during the request
-        console.error("Error:", error);
-      });
+    getData();
   }, []);
 
   // Handles the add button click
