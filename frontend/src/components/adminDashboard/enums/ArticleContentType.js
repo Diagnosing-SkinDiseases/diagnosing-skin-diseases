@@ -6,3 +6,5 @@ const ArticleContentType = {
     VIDEO: "Video",
     TEXT: "Text"
 };
+
+export default ArticleContentType ;
