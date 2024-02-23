@@ -3,7 +3,7 @@
 }
 
 .editor {
-    max-width: 85%;
+    max-width: 80%;
     margin: 2em auto;
     border-radius: 4px;
 }
@@ -61,16 +61,136 @@
 }
 
 /* ---------- Article ---------- */
-.article {
+
+/* Hide the remove button for the default title block */
+.default-title .delete-button {
+    display: none;
+}
+.delete-button {
+    margin-left: 0.5em
+}
+
+.content-input {
+    flex-grow: 1;
+}
+
+.content-input .art-title input,
+.content-input .art-subtitle input,
+.content-input .art-paragraph textarea {
+    width: 100%;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0.5em;
+    box-sizing: border-box;
+}
+
+/* Ensures the wrapper takes the full width */
+.content-input-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 0.5em;
+}
+
+/* ---------- Article | Add Content Buttons ---------- */
+.add-content-btn-container {
+    width: 100%;
+    display: flex;
+    justify-content: align-start;
+    flex-wrap: wrap;
+}
+
+.add-media-content-btn {
+    border-radius: 50%;
+    width: 2.5em;
+    height: 2.5em;
+    border: none;
+    background: var(--primary-color);
+    cursor: pointer;
+    color: #fff;
+}
+
+.add-content-btn {
+    margin: 4px 0.5em;
+}
+
+/* ---------- Article | Video, Image ---------- */
+.video-input-container {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    margin-bottom: 0.5em;
+}
+
+.video-container
+ {
+    height: 20em;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.5em;
+}
+
+.video-preview {
+    height: 100%;
     width: 100%;
 }
 
-#article-title{
-    border-radius: .5em;
+.input-row,
+.image-preview-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
-.image-paragraph-group-wrapper {
-    text-align: end;
+.video-url-input {
+    flex-grow: 1;
+    padding: 0.3em;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.image-upload-input,
+.image-preview {
+    margin-bottom: 0.5em;
+}
+
+.image-preview {
+    height: 20em;
+    margin-bottom: 0.5em;
+}
+
+.image-input-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 2em;
+}
+
+.fa-upload-icon {
+    color: var(--primary-color);
+    font-size: 5em;
+}
+
+.image-upload-label{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: #afcae6 solid 1px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1em;
+}
+
+.upload-label-text {
+    align-items: center;
+    padding-top: 0.3em;
+    color: var(--primary-color);
 }
