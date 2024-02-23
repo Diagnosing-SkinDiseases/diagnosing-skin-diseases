@@ -1,14 +1,18 @@
 {
     "buttonLabels": {
         "add": {
-            "tree" : "Add a tree",
-            "article" : "Add an article",
-            "definition" : "Add a definition"
+            "tree" : "Add tree",
+            "article" : "Add article",
+            "definition" : "Add definition",
+            "title" : "Add title",
+            "subtitle" : "Add subtitle",
+            "paragraph" : "Add text"
         },
         "publish": {
             "publish" : "Publish",
             "unpublish" : "Unpublish"
-        }
+        },
+        "remove": "Remove"
     },
     "filterOption" : {
         "all" : "All",
