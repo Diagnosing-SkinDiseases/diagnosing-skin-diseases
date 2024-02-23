@@ -1,82 +1,89 @@
 import React, { useState } from 'react';
-import labels from "../labels.json";
-import ImageParagraphGroup from './ImageParagraphGroup';
-import Button from "../GeneralComponents/Button";
-import "../styles/Editor.css";
-
-let groupId = 0; // Counter for group IDs
-
-const createNewGroup = () => ({
-  id: ++groupId, // Increment and assign a unique ID
-  image: '',
-  paragraph: ''
-});
+import ArticleContentType from '../enums/ArticleContentType';
+import ContentInput from './ContentInput';
+import ImageInput from './ImageInput';
+import VideoInput from './VideoInput';
+import Button from '../GeneralComponents/Button';
+import labels from '../labels.json';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faImage, faVideo } from "@fortawesome/free-solid-svg-icons";
 
 const Article = () => {
-  // Initializes with one group
-  const [groups, setGroups] = useState([createNewGroup()]); 
-  // State hooks for title and paragraph
-  const [title, setTitle] = useState('');
-
-  const addGroup = () => {
-    setGroups([...groups, createNewGroup()]);
+  const [contentBlocks, setContentBlocks] = useState([{ type: ArticleContentType.TITLE, value: '' }]);
+    
+  const addContentBlock = (type) => {
+    setContentBlocks([...contentBlocks, { type, value: '' }]);
   };
 
-  const updateGroup = (index, data) => {
-    const newGroups = groups.map((group) => {
-      if (group.id === index) {
-        return { ...group, ...data };
+  const updateContentBlock = (index, value) => {
+    const updatedBlocks = contentBlocks.map((block, i) => {
+      if (i === index) {
+        return { ...block, value };
       }
-      return group;
+      return block;
     });
-    setGroups(newGroups);
+    setContentBlocks(updatedBlocks);
   };
 
-  const deleteGroup = (id) => {
-    const newGroups = groups.filter((group) => group.id !== id);
-    setGroups(newGroups);
+  const removeContentBlock = (index) => {
+    setContentBlocks(contentBlocks.filter((_, i) => i !== index));
   };
 
-  // Handles the change in the title input field
-  const handleTitleChange = (e) => {
-    setTitle(e.target.value);
+  const renderContentInput = (block, index) => {
+      const isDefaultTitle = index === 0 && block.type === ArticleContentType.TITLE;
+      const blockClassName = isDefaultTitle ? 'default-title' : '';
+    const contentInputProps = {
+      key: index,
+      block: block,
+      updateBlock: (value) => updateContentBlock(index, value),
+      remove: () => removeContentBlock(index),
+      className: blockClassName, 
+    };
+
+    switch (block.type) {
+      case ArticleContentType.TITLE:
+      case ArticleContentType.SUBTITLE:
+      case ArticleContentType.PARAGRAPH:
+        return <ContentInput {...contentInputProps} />;
+      case ArticleContentType.IMAGE:
+        return <ImageInput {...contentInputProps} />;
+      case ArticleContentType.VIDEO:
+        return <VideoInput {...contentInputProps} />;
+      default:
+        return null;
+    }
   };
 
   return (
-    <div className="article">
-      <div className="input-group">
-        <label htmlFor="article-title"  className="label">{labels.articlePlaceholders.title}</label>
-        <input
-          id="article-title"
-          type="text"
-          value={title}
-          onChange={handleTitleChange}
-        />
+    <div>
+      {contentBlocks.map((block, index) => renderContentInput(block, index))}
+          <div className ="add-content-btn-container">
+              <Button
+        label={labels.buttonLabels.add.title}
+        onClick={() => addContentBlock(ArticleContentType.TITLE)}
+        className="button add-content-btn">
+              </Button>
+              <Button
+        label={labels.buttonLabels.add.subtitle}
+        onClick={() => addContentBlock(ArticleContentType.SUBTITLE)}
+        className="button add-content-btn">
+              </Button>
+              <Button
+        label={labels.buttonLabels.add.paragraph}
+        onClick={() => addContentBlock(ArticleContentType.PARAGRAPH)}
+                  className="button add-content-btn">
+              </Button>
+              <Button
+        onClick={() => addContentBlock(ArticleContentType.IMAGE)}
+                  className="add-content-btn add-media-content-btn ">
+                  <FontAwesomeIcon icon={faImage} className="fa-add-content" />
+              </Button>
+              <Button
+        onClick={() => addContentBlock(ArticleContentType.VIDEO)}
+                  className="add-content-btn add-media-content-btn ">
+                  <FontAwesomeIcon icon={faVideo} className="fa-add-content" />
+              </Button>
       </div>
-
-      {groups.map((group) => (
-        <div key={group.id} className="image-paragraph-group-wrapper"> 
-          <ImageParagraphGroup
-            contentLabel = {labels.articlePlaceholders.contentLabel}
-            image={group.image}
-            paragraph={group.paragraph}
-            onImageUpload={(image) => updateGroup(group.id, { image })}
-            onParagraphChange={(e) => updateGroup(group.id, { paragraph: e.target.value })}
-          />
-          {groups.length > 1 && (
-            <Button
-              label={labels.contentEditorBtns.deleteGroup}
-              onClick={() => deleteGroup(group.id)}
-              className="button delete-group-btn"
-            />
-          )}
-        </div>
-      ))}
-      <Button
-        label={labels.contentEditorBtns.addGroup}
-        onClick={addGroup}
-        className="button add-group-btn">
-      </Button>
     </div>
   );
 };
