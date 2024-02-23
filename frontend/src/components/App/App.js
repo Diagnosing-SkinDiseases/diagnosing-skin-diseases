@@ -5,7 +5,7 @@ import Homepage from "../Homepage/Homepage";
 import Article from "../Article/Article";
 import AdminDashboard from "../AdminDashboard/AdminDashboard";
 import ContentEditor from "../AdminDashboard/ContentEditor";
-import ContentTypeEnum from "../AdminDashboard/ContentTypeEnum";
+import ContentTypeEnum from "../AdminDashboard/enums/ContentTypeEnum";
 import testData from '../AdminDashboard/testData.json';
 
 function App() {
@@ -29,6 +29,11 @@ function App() {
         <Route
           path="/admin/articles"
           element={<AdminDashboard data={articles} />}
+        ></Route>
+        {/* Admin - Glossary - Add */}
+        <Route
+          path="/admin/articles/add"
+          element={<ContentEditor contentType={ContentTypeEnum.ARTICLE} />}
         ></Route>
         {/* Admin - Glossary */}
         <Route
