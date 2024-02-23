@@ -1,0 +1,76 @@
+:root {
+    --primary-color: #007bff;
+}
+
+.editor {
+    max-width: 85%;
+    margin: 2em auto;
+    border-radius: 4px;
+}
+
+/* ---------- Definition ---------- */
+.definition,
+.article {
+    display: flex;
+    flex-direction: column;
+}
+
+.definition .input-group,
+.article .input-group {
+    margin-bottom: 2em;
+}
+
+.definition .input-group label,
+.article .input-group label {
+    display: block;
+    color: var(--primary-color);
+}
+
+.definition .input-group input,
+.definition .input-group textarea,
+.article .input-group input,
+.article .input-group textarea {
+    width: 100%;
+    padding: 0.6em;
+    box-sizing: border-box;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    border-radius: .5em;
+}
+
+#definition-title,
+#definition-paragraph {
+    border-radius: .5em;
+}
+
+.input-group input {
+    height: 3em;
+}
+
+.input-group textarea {
+    min-height: 10em;
+    resize: vertical;
+    overflow: auto;
+}
+
+.definition .input-group textarea.autosize {
+    height: auto;
+    /* Initial height should be auto to start at min-height */
+    overflow-y: hidden;
+    /* Hide the scrollbar initially */
+}
+
+/* ---------- Article ---------- */
+.article {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+#article-title{
+    border-radius: .5em;
+}
+
+.image-paragraph-group-wrapper {
+    text-align: end;
+}

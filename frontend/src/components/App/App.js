@@ -12,7 +12,14 @@ import Login from "../Login/Login";
 import NavBarComponent from "../NavBar/NavBar";
 import TreatmentArticles from "../TreatmentArticles/TreatmentArticles";
 import UserTree from "../UserTree/UserTree";
-import "./App.css";
+
+// Test components - Sean
+import TestAdminDashboard from "../SeanPrototypes/LoadArticles/AdminDashboard/AdminDashboard";
+import TestResearchArticles from "../SeanPrototypes/LoadArticles/UserFacingArticles/ResearchArticles/ResearchArticles";
+import CreateArticle from "../SeanPrototypes/CreateArticle/CreateArticle";
+import TestGlossaryAdminDashboard from "../SeanPrototypes/LoadGlossary/AdminDashboard/AdminDashboard";
+import TestGlossaryContentEditor from "../SeanPrototypes/CreateGlossary/AdminDashboard/ContentEditor";
+import TestGlossary from "../SeanPrototypes/LoadGlossary/UserFacing/Glossary/Glossary";
 
 function App() {
   // test data for demo only
@@ -70,6 +77,49 @@ function App() {
 
         {/* About DSD */}
         <Route path="/about" element={<About />}></Route>
+
+        {/* Testing - Sean*/}
+        <Route path="/test">
+          <Route path="admin">
+            {/* Test admin - articles */}
+            <Route
+              path="articles"
+              element={<TestAdminDashboard></TestAdminDashboard>}
+            ></Route>
+            {/* Test admin - articles - add */}
+            <Route
+              path="articles/add"
+              element={<CreateArticle></CreateArticle>}
+            ></Route>
+            {/* Test reference */}
+            <Route
+              path="add/sample"
+              element={<ContentEditor contentType={ContentTypeEnum.ARTICLE} />}
+            ></Route>
+            {/* Test admin - definitions (glossary) */}
+            <Route
+              path="definitions"
+              element={
+                <TestGlossaryAdminDashboard></TestGlossaryAdminDashboard>
+              }
+            ></Route>
+            {/* Test admin - definitions - add */}
+            <Route
+              path="definitions/add"
+              element={<TestGlossaryContentEditor></TestGlossaryContentEditor>}
+            ></Route>
+          </Route>
+          {/* Test user - articles */}
+          <Route
+            path="article-list"
+            element={<TestResearchArticles></TestResearchArticles>}
+          ></Route>
+          {/* Test user - glossary */}
+          <Route
+            path="glossary"
+            element={<TestGlossary></TestGlossary>}
+          ></Route>
+        </Route>
       </Routes>
 
       <footer className="footer">Footer</footer>
