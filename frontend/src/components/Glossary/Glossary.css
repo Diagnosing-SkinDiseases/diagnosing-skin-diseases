@@ -120,11 +120,15 @@ nav li {
 }
 
 .glossary-list-item.selected {
-  background-color: #0056b3;
+  background-color: #acc2da !important;
   color: white;
   border-radius: 5px;
   padding: 10px;
   margin: -5px;
+}
+
+.glossary-list-item.selected h3 {
+  color: #fff;
 }
 
 /* Mobile styles */
