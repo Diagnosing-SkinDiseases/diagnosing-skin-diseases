@@ -1,65 +1,56 @@
 import React, { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { Link } from 'react-router-dom'; 
 import './NavBarComponent.css';
 
-const NavSubtab = ({ show, title }) => {
-  console.log("show: ", show)
+// Subtab component
+const NavSubtab = ({ show, titles }) => {
   if (!show) {
     return null;
   }
 
+  // Map through titles to create multiple subtabs if necessary
   return (
-    <div className="nav-subtab">
-      <div className={`nav-subtab ${show ? 'show' : ''}`}>
-        <div className="subtab-item">{title} 1</div>
-        <div className="subtab-item">{title} 2</div>
-        <div className="subtab-item">{title} 3</div>
-        <div className="subtab-item">{title} 4</div>
-        <div className="subtab-item">{title} 5</div>
-      </div>
+    <div className="dropdown-content">
+      {titles.map((title, index) => (
+        <Link key={index} to={title.path} className="subtab-item">{title.name}</Link>
+      ))}
     </div>
   );
 };
 
-const NavBarComponent = () => {
-  // Corrected the initial state to match the capitalization
-  const [activeLink, setActiveLink] = useState('Diagnosis Tree');
-  const [subTabExpanded, setSubTabExpanded] = useState(false);
+// Main NavBar component
+const NavBarComponent = ({ isLoggedIn }) => {
+  const [activeLink, setActiveLink] = useState('');
 
-  const handleSetActiveLink = (link) => {
-    setActiveLink(link);
-    // If we're clicking the same link, toggle the subTabExpanded state
-    if (activeLink === link) {
-      setSubTabExpanded(!subTabExpanded);
-    } else {
-      // If it's a different link, we want to ensure the subTab is shown (if it has subTabs)
-      setSubTabExpanded(true);
-    }
-  };
+  // Define links for main tabs and their corresponding subtabs if any
+  const links = [
+    { name: 'Home', path: '/', subTabs: [] },
+    { name: 'Diagnosis Tree', path: '/user/trees', subTabs: [{ name: 'Sub Item 1', path: '/path1' }, { name: 'Sub Item 2', path: '/path2' }] },
+    { name: 'Treatment', path: '/treatment', subTabs: [] },
+    { name: 'Articles', path: '/articles', subTabs: [] },
+    { name: 'Glossary', path: '/glossary', subTabs: [] },
+    { name: 'About', path: '/about', subTabs: [] }
+  ];
+
+  if (isLoggedIn) {
+    links.push({ name: 'Sign Out', path: '/logout', subTabs: [] });
+  }
 
   return (
-    <div>
-      <nav className="navbar navbar-expand-lg navbar-custom">
-        <div className="container-fluid">
-          <div className="navbar-nav w-100">
-            {['Diagnosis Tree', 'Treatment', 'Research Articles', 'Glossary', 'Sign Out'].map((link, index) => (
-              <a
-                key={index}
-                className={`nav-item nav-link ${activeLink === link ? 'active' : ''}`}
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleSetActiveLink(link);
-                  console.log("NavMenu Clicked: " + link);
-                }}
-              >
-                {link}
-              </a>
-            ))}
-          </div>
+    <div className="navbar">
+      {links.map((link, index) => (
+        <div key={index} className={`nav-item ${link.subTabs.length > 0 ? 'has-dropdown' : ''}`} onMouseEnter={() => setActiveLink(link.name)} onMouseLeave={() => setActiveLink('')}>
+          <Link
+            to={link.subTabs.length === 0 ? link.path : '#'}
+            className={`nav-link ${activeLink === link.name ? 'active' : ''}`}
+          >
+            {link.name}
+          </Link>
+          {link.subTabs.length > 0 && (
+            <NavSubtab show={activeLink === link.name} titles={link.subTabs} />
+          )}
         </div>
-      </nav>
-      <NavSubtab show={subTabExpanded} title="Sub-tab Placeholder" />
+      ))}
     </div>
   );
 };
