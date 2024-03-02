@@ -18,7 +18,7 @@ function SearchBar({ onSearch }) {
         type="text"
         value={searchTerm}
         onChange={handleInputChange}
-        placeholder="Search..."
+        placeholder="  Search..."
         aria-label="Search"
       />
       <button type="submit">Search</button>
