@@ -10,7 +10,7 @@ import Glossary from "../Glossary/Glossary";
 import Homepage from "../Homepage/Homepage";
 import Login from "../Login/Login";
 import NavBarComponent from "../NavBar/NavBar";
-import TreatmentArticles from "../TreatmentArticles/TreatmentArticles";
+import ArticlePage from "../ArticleList/ArticleList";
 import UserTree from "../UserTree/UserTree";
 
 // Test components - Sean
@@ -67,7 +67,7 @@ function App() {
         ></Route>
 
         {/* Article List */}
-        <Route path="/treatment" element={<TreatmentArticles />}></Route>
+        <Route path="/treatment" element={<ArticlePage />}></Route>
 
         {/* Glossary */}
         <Route path="/glossary" element={<Glossary></Glossary>}></Route>

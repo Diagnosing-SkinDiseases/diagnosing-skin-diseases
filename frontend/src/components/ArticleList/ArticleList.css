@@ -26,14 +26,14 @@ nav li {
   padding: 40px 0;
 }
 
-.glossary-header {
+.article-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
 }
 
-.glossary-title {
+.article-title {
   font-size: 2rem;
 }
 
@@ -98,22 +98,17 @@ nav li {
   font-weight: bold;
 }
 
-.glossary-list {
+li {
+  padding: 5px 0;
+  list-style: none;
+  padding: 0;
+  margin-bottom: 10px;
   list-style-type: none;
   padding: 20px;
 }
 
-.glossary-list h2 {
-  margin-bottom: 10px;
-}
-
-.glossary-list ul {
-  list-style: none;
-  padding: 0;
-}
-
-.glossary-list li {
-  padding: 5px 0;
+a {
+  text-decoration: none;
 }
 
 .footer {
@@ -123,18 +118,6 @@ nav li {
   padding: 10px 0;
   margin-top: auto;
   width: 100%;
-}
-
-.glossary-list-item.selected {
-  background-color: #acc2da !important;
-  color: white;
-  border-radius: 5px;
-  padding: 10px;
-  margin: -5px;
-}
-
-.glossary-list-item.selected h3 {
-  color: #fff;
 }
 
 /* Mobile styles */
@@ -148,11 +131,11 @@ nav li {
     gap: 10px; /* Smaller gap for mobile */
   }
 
-  .glossary-header {
+  .article-header {
     flex-direction: column;
   }
 
-  .glossary-title,
+  .article-title,
   .search-bar-container {
     width: 100%;
     text-align: center; /* Center title text on small screens */
