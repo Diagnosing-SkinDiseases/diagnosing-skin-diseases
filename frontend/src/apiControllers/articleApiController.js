@@ -10,15 +10,15 @@ const apiGetAllArticles = () => {
   /*
     Response payload format: 
     [
-    {
-    _id: String,
-    title: String,
-    content: [{
-        type: Enum String (ArticleContentType)
-        content: String
-    }],
-    status: Enum String (Status)
-    }
+      {
+        _id: String,
+        title: String,
+        content: [{
+            type: Enum String (ArticleContentType)
+            content: String
+        }],
+        status: Enum String (Status)
+      }
     ]
   */
   return axios.get(`${apiUrl}/article/read/all`);
@@ -35,12 +35,12 @@ const apiCreateArticle = (payload) => {
   /*
     Request payload format: 
     {
-    title: String,
-    content: [{
-        type: Enum String (ArticleContentType)
-        content: String
-    }],
-    status: Enum String (Status)
+      title: String,
+      content: [{
+          type: Enum String (ArticleContentType)
+          content: String
+      }],
+      status: Enum String (Status)
     }
   */
   return axios.post(`${apiUrl}/article/create`, payload);
@@ -57,13 +57,13 @@ const apiDeleteArticle = (targetId) => {
   /*
     Response payload format: 
     {
-    _id: String,
-    title: String,
-    content: [{
-        type: Enum String (ArticleContentType)
-        content: String
-    }],
-    status: Enum String (Status)
+      _id: String,
+      title: String,
+      content: [{
+          type: Enum String (ArticleContentType)
+          content: String
+      }],
+      status: Enum String (Status)
     }
   */
   return axios.delete(`${apiUrl}/article/delete`, { data: { id: targetId } });

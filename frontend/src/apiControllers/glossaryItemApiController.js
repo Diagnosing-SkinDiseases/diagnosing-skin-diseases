@@ -11,11 +11,12 @@ const apiGetAllGlossaryItems = () => {
   /*
     Response payload format: 
     [
-    {
-    term: String,
-    definition: String
-    status: Enum String (Status)
-    }
+      {
+        _id: String
+        term: String,
+        definition: String
+        status: Enum String (Status)
+      }
     ]
   */
   return axios.get(`${apiUrl}/glossaryItem/read/all`);
@@ -32,9 +33,9 @@ const apiCreateGlossaryItem = (payload) => {
   /*
     Request payload format: 
     {
-    term: String,
-    definition: String,
-    status: Enum String (Status)
+      term: String,
+      definition: String,
+      status: Enum String (Status)
     }
   */
   return axios.post(`${apiUrl}/glossaryItem/create`, payload);
@@ -51,9 +52,10 @@ const apiDeleteGlossaryItem = (targetId) => {
   /*
     Response payload format: 
     {
-    term: String,
-    definition: String,
-    status: Enum String (Status)
+      _id: String
+      term: String,
+      definition: String,
+      status: Enum String (Status)
     }
   */
   return axios.delete(`${apiUrl}/glossaryItem/delete`, {
