@@ -22,6 +22,9 @@ import TestGlossaryAdminDashboard from "../SeanPrototypes/LoadGlossary/AdminDash
 import TestGlossaryContentEditor from "../SeanPrototypes/CreateGlossary/AdminDashboard/ContentEditor";
 import TestGlossary from "../SeanPrototypes/LoadGlossary/UserFacing/Glossary/Glossary";
 
+// Test APIs Sean
+import ArticleApiTests from "../SeanPrototypes/ApiTesting/ArticleApiTests";
+
 function App() {
   // test data for demo only
   const { trees, definitions, articles } = testData;
@@ -125,6 +128,14 @@ function App() {
             path="glossary"
             element={<TestGlossary></TestGlossary>}
           ></Route>
+          {/* Test APIs */}
+          <Route path="api">
+            {/* Test Articles API */}
+            <Route
+              path="articles"
+              element={<ArticleApiTests></ArticleApiTests>}
+            ></Route>
+          </Route>
         </Route>
       </Routes>
 

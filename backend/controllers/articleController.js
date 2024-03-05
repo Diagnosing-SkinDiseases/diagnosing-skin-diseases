@@ -86,7 +86,7 @@ const updateArticle = async (req, res) => {
 
 // Delete article
 const deleteArticle = async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.query;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ error: "Invalid id" });
