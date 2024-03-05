@@ -53,13 +53,13 @@ const apiCreateTree = (payload) => {
     Request payload format: 
       {
         name: String,
-        tree:
+        nodeTree:
           {
             currentId: String
             content: String
-            parentId: String
-            noChild: Node
-            yesChildId: Node
+            parentId: String?
+            noChild: Node?
+            yesChildId: Node?
           }
         ],
         about: String
@@ -81,8 +81,18 @@ const apiDeleteTree = (targetId) => {
     Response payload format: 
     {
       _id: String
-      term: String,
-      definition: String,
+      name: String,
+      nodes: [
+        {
+          currentId: String
+          content: String
+          parentId: String
+          noChildId: String
+          yesChildId: String
+          _id: String
+        }
+      ],
+      about: String
       status: Enum String (Status)
     }
   */
