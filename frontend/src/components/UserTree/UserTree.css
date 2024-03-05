@@ -6,18 +6,26 @@
     justify-content: center;
 }
 
-#first-row {
-    margin-bottom: 20px;
-}
-
-#second-row {
+.node-row {
     display: flex;
     justify-content: space-around;
     margin-bottom: 20px;
 }
 
-#third-row {
+.node {
+    width: 5em;
+}
+
+.invisible-node {
+    opacity: 0;
+    margin: 10px;
+    margin-inline: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
     display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
+    justify-content: center;
+    align-items: center;
+    border: 10px solid transparent;
+    box-sizing: border-box;
 }
