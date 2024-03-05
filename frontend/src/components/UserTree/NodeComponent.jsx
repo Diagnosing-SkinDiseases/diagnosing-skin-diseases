@@ -7,7 +7,6 @@ import './NodeComponent.css';
 const NodeComponent = ({ color, id }) => {
     return (
         <div className="node-component" id={id} style={{ backgroundColor: color }}>
-            {/* You can display the id or any other content here */}
         </div>
     );
 }

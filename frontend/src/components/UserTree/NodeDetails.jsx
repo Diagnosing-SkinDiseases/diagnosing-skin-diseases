@@ -1,7 +1,7 @@
 import React from 'react';
 import './NodeDetails.css';
 
-/* Node detailes when click/hover over a node */
+/* Node details when click/hover over a node */
 const NodeDetails = ({ question, onBack, onJump }) => {
     return (
         <div className="node-details">
