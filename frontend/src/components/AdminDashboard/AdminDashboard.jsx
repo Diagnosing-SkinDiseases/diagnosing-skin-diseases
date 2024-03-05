@@ -4,16 +4,10 @@ import List from "./ListComponents/List";
 import "./styles/AdminDashboard.css"; 
 
 // AdminDashboard component for managing items and filters
-const AdminDashboard = ({ data}) => {
+const AdminDashboard = ({ data, contentType}) => {
 
   // State to manage filtered items
   const [filteredItems, setFilteredItems] = useState(data);
-
-  // Handles the add button click
-  const handleAdd = (type) => {
-    console.log("Add", type);
-    // Implement logic to add a tree/article/definition
-  };
 
   // Handles the filter change
   const handleFilterChange = (newFilterValue) => {
@@ -42,7 +36,7 @@ const AdminDashboard = ({ data}) => {
   return (
     <div className="admin-dashboard">
       <Controls
-        onAdd={handleAdd}
+        contentType={contentType}
         onFilterChange={handleFilterChange}
         onSearch={handleSearch}
       />

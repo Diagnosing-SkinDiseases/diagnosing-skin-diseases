@@ -1,15 +1,53 @@
 import React, { useState } from "react";
 import labels from "../labels.json";
 import Button from "../GeneralComponents/Button";
+import ContentTypeEnum from "../enums/ContentTypeEnum";
 import "../styles/Controls.css"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 // Controls component containing add button, filter component, and search field
-const Controls = ({ onAdd, onFilterChange, onSearch }) => {
+const Controls = ({ onFilterChange, onSearch, contentType }) => {
   const [filter, setFilter] = useState("all");
   const [input, setInput] = useState("");
   // const [searchResults, setSearchResults] = useState([]);
+
+  // Determines the label for the Add button based on contentType
+  const addButtonLabel = () => {
+    switch (contentType) {
+      case ContentTypeEnum.TREE:
+        return labels.buttonLabels.add.tree;
+      case ContentTypeEnum.ARTICLE:
+        return labels.buttonLabels.add.article;
+      case ContentTypeEnum.DEFINITION:
+        return labels.buttonLabels.add.definition;
+      default:
+        return "Add"; // Default label
+    }
+  };
+
+  const navigate = useNavigate();
+
+  // Handles the add button click
+  const handleAdd = (contentType) => {
+    let path = "";
+    switch (contentType) {
+      case ContentTypeEnum.TREE:
+        path = "/admin/trees/add";
+        break;
+      case ContentTypeEnum.ARTICLE:
+        path = "/admin/articles/add";
+        break;
+      case ContentTypeEnum.DEFINITION:
+        path = "/admin/definitions/add";
+        break;
+      default:
+        console.log("Unknown content type");
+        return;
+    }
+    navigate(path);
+  };
 
   // Handles the change of the filter option
   const handleFilterChange = (event) => {
@@ -32,8 +70,8 @@ const Controls = ({ onAdd, onFilterChange, onSearch }) => {
     <div className="controls-wrapper">
       <div className="controls">
         <Button
-          label={labels.buttonLabels.add.tree}
-          onClick={() => onAdd("tree")}
+          label={addButtonLabel()}
+          onClick={() => handleAdd(contentType)}
           className="button"
         />
         <FilterComponent

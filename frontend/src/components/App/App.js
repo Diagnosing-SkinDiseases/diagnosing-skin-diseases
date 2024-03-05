@@ -43,7 +43,12 @@ function App() {
         {/* Admin - Trees */}
         <Route
           path="/admin/trees"
-          element={<AdminDashboard data={trees} />}
+          element={
+            <AdminDashboard
+              data={trees}
+              contentType={ContentTypeEnum.TREE}
+            />
+          }
         ></Route>
 
         {/* Admin - Trees - Edit */}
@@ -52,7 +57,12 @@ function App() {
         {/* Admin - Articles */}
         <Route
           path="/admin/articles"
-          element={<AdminDashboard data={articles} />}
+          element={
+            <AdminDashboard
+              data={articles}
+              contentType={ContentTypeEnum.ARTICLE}
+            />
+          }
         ></Route>
         {/* Admin - Glossary - Add */}
         <Route
@@ -63,7 +73,12 @@ function App() {
         {/* Admin - Glossary */}
         <Route
           path="/admin/definitions"
-          element={<AdminDashboard data={definitions} />}
+          element={
+            <AdminDashboard
+              data={definitions}
+              contentType={ContentTypeEnum.DEFINITION}
+            />
+          }
         ></Route>
 
         {/* Admin - Glossary - Add */}
