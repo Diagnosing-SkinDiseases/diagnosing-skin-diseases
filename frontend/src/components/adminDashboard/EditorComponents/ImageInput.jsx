@@ -16,7 +16,6 @@ const ImageInput = ({ block, updateBlock, remove }) => {
       reader.onloadend = () => {
         setPreview(reader.result);
           updateBlock({ ...block, value: reader.result });
-          console.log(reader.result)
       };
       reader.readAsDataURL(file);
     }
