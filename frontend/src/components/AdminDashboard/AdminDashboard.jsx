@@ -40,7 +40,8 @@ const AdminDashboard = ({ data, contentType}) => {
         onFilterChange={handleFilterChange}
         onSearch={handleSearch}
       />
-      <List initialItems={filteredItems} />
+      <List initialItems={filteredItems} 
+        contentType={contentType} />
     </div>
   );
 };

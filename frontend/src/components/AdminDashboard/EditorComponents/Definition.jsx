@@ -1,12 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import labels from "../labels.json";
 import "../styles/Editor.css";
 
 // The Definition component
 const Definition = () => {
+  const location = useLocation(); // Use useLocation to access the current location object
+  const definition = location.state?.item; // Access the item passed in the state, if any
+
   // State hooks for title and paragraph
   const [title, setTitle] = useState('');
   const [paragraph, setParagraph] = useState('');
+
+  // Initializes state if `definition` prop is provided
+  useEffect(() => {
+    if (definition) {
+      console.log(definition);
+      setTitle(definition.title);
+      setParagraph(definition.text);
+    }
+  }, [definition]);
 
   // Handles the change in the title input field
   const handleTitleChange = (e) => {

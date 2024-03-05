@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 const Controls = ({ onFilterChange, onSearch, contentType }) => {
   const [filter, setFilter] = useState("all");
   const [input, setInput] = useState("");
+  const navigate = useNavigate();
   // const [searchResults, setSearchResults] = useState([]);
 
   // Determines the label for the Add button based on contentType
@@ -27,7 +28,6 @@ const Controls = ({ onFilterChange, onSearch, contentType }) => {
     }
   };
 
-  const navigate = useNavigate();
 
   // Handles the add button click
   const handleAdd = (contentType) => {
