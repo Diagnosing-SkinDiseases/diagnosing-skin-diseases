@@ -44,10 +44,7 @@ function App() {
         <Route
           path="/admin/trees"
           element={
-            <AdminDashboard
-              data={trees}
-              contentType={ContentTypeEnum.TREE}
-            />
+            <AdminDashboard data={trees} contentType={ContentTypeEnum.TREE} />
           }
         ></Route>
 
@@ -84,6 +81,12 @@ function App() {
         {/* Admin - Glossary - Add */}
         <Route
           path="/admin/definitions/add"
+          element={<ContentEditor contentType={ContentTypeEnum.DEFINITION} />}
+        ></Route>
+
+        {/* Admin - Glossary - Edit */}
+        <Route
+          path="/admin/definitions/edit/:id"
           element={<ContentEditor contentType={ContentTypeEnum.DEFINITION} />}
         ></Route>
 

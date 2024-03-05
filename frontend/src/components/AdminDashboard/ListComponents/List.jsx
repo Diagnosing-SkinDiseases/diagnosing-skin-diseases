@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import labels from "../labels.json";
 import Button from "../GeneralComponents/Button";
+import ContentTypeEnum from "../enums/ContentTypeEnum";
 import "../styles/List.css"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 const Item = ({ title, published, onPublish, onEdit, onDelete }) => (
   <div className="item">
@@ -29,8 +31,9 @@ const Item = ({ title, published, onPublish, onEdit, onDelete }) => (
   </div>
 );
 
-const List = ({ initialItems = [], searchQuery  }) => {
+const List = ({ initialItems = [], contentType, searchQuery  }) => {
   const [items, setItems] = useState(initialItems);
+  const navigate = useNavigate();
 
   // Effect hook to update state when initialItems prop changes
   useEffect(() => {
@@ -48,10 +51,30 @@ const List = ({ initialItems = [], searchQuery  }) => {
     setItems(newItems);
   };
 
+  const setRoute = (contentType, item) => {
+    let path = "";
+    switch (contentType) {
+      case ContentTypeEnum.TREE:
+        path = "/admin/trees/edit/";
+        break;
+      case ContentTypeEnum.ARTICLE:
+        path = "/admin/articles/edit/";
+        break;
+      case ContentTypeEnum.DEFINITION:
+        path = "/admin/definitions/edit/";
+        break;
+      default:
+        console.log("Unknown content type");
+        return;
+    }
+    navigate(`${path}${item.title}`, { state: { item } });;
+  }
+
   // Handles the edit button click
-  const handleEditBtn = (index) => {
-    console.log("Edit clicked", index);
+  const handleEditBtn = (item, contentType) => {
+    console.log("Edit clicked", item.title);
     // Implement logic to open edit screen
+    setRoute(contentType, item);
   };
 
   // Handles the delete button click
@@ -70,7 +93,7 @@ const List = ({ initialItems = [], searchQuery  }) => {
             title={item.title}
             published={item.published}
             onPublish={() => handlePublishToggle(index)}
-            onEdit={() => handleEditBtn(index)}
+            onEdit={() => handleEditBtn(item, contentType)}
             onDelete={() => handleDeleteBtn(index)}
           />
         ))
