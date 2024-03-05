@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import labels from "../labels.json";
 import Button from "../GeneralComponents/Button";
 import ContentTypeEnum from "../enums/ContentTypeEnum";
@@ -51,31 +51,10 @@ const List = ({ initialItems = [], contentType, searchQuery  }) => {
     setItems(newItems);
   };
 
-  const setRoute = (contentType, item) => {
-    let path = "";
-    switch (contentType) {
-      case ContentTypeEnum.TREE:
-        path = "/admin/trees/edit/";
-        break;
-      case ContentTypeEnum.ARTICLE:
-        path = "/admin/articles/edit/";
-        break;
-      case ContentTypeEnum.DEFINITION:
-        path = "/admin/definitions/edit/";
-        break;
-      default:
-        console.log("Unknown content type");
-        return;
-    }
-    navigate(`${path}${item.title}`, { state: { item } });;
-  }
-
-  // Handles the edit button click
-  const handleEditBtn = (item, contentType) => {
-    console.log("Edit clicked", item.title);
-    // Implement logic to open edit screen
-    setRoute(contentType, item);
-  };
+  const handleEditBtn = useCallback((item) => {
+    const path = `/admin/${contentType.toLowerCase()}s/edit/${item.title}`; 
+    navigate(path, { state: { item } });
+  }, [navigate, contentType]);
 
   // Handles the delete button click
   const handleDeleteBtn = (index) => {
