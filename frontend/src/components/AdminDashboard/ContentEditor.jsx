@@ -1,6 +1,6 @@
 import React from 'react';
 import EditorButtons from './EditorComponents/EditorButtons';
-import ContentTypeEnum from './ContentTypeEnum';
+import ContentTypeEnum from './enums/ContentTypeEnum';
 import Definition from './EditorComponents/Definition';
 import Article from './EditorComponents/Article';
 // import Tree from './EditorComponents/Tree';

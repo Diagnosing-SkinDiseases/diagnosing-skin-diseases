@@ -37,12 +37,14 @@
 }
 
 .edit-button,
-.delete-button {
+.delete-button,
+.add-content-btn {
     font-size: 1rem;
 }
 
 .fa-edit,
-.fa-trash-alt {
+.fa-trash-alt,
+.fa-add-content {
     font-size: 0.9rem;
 }
 

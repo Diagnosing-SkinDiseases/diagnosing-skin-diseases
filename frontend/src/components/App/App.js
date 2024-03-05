@@ -3,7 +3,7 @@ import About from "../AboutDSD/About";
 import AdminDashboard from "../AdminDashboard/AdminDashboard";
 import AdminEditTrees from "../AdminDashboard/AdminEditTrees";
 import ContentEditor from "../AdminDashboard/ContentEditor";
-import ContentTypeEnum from "../AdminDashboard/ContentTypeEnum";
+import ContentTypeEnum from "../AdminDashboard/enums/ContentTypeEnum";
 import testData from "../AdminDashboard/testData.json";
 import Article from "../Article/Article";
 import Glossary from "../Glossary/Glossary";
@@ -12,6 +12,7 @@ import Login from "../Login/Login";
 import NavBarComponent from "../NavBar/NavBar";
 import ArticlePage from "../ArticleList/ArticleList";
 import UserTree from "../UserTree/UserTree";
+import "./App.css";
 
 // Test components - Sean
 import TestAdminDashboard from "../SeanPrototypes/LoadArticles/AdminDashboard/AdminDashboard";
@@ -52,6 +53,11 @@ function App() {
         <Route
           path="/admin/articles"
           element={<AdminDashboard data={articles} />}
+        ></Route>
+        {/* Admin - Glossary - Add */}
+        <Route
+          path="/admin/articles/add"
+          element={<ContentEditor contentType={ContentTypeEnum.ARTICLE} />}
         ></Route>
 
         {/* Admin - Glossary */}
