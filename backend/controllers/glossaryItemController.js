@@ -80,7 +80,7 @@ const updateGlossaryItem = async (req, res) => {
 
 // Delete glossaryItem
 const deleteGlossaryItem = async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.query;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ error: "Invalid id" });

@@ -58,9 +58,53 @@ const apiDeleteGlossaryItem = (targetId) => {
       status: Enum String (Status)
     }
   */
-  return axios.delete(`${apiUrl}/glossaryItem/delete`, {
-    data: { id: targetId },
-  });
+  return axios.delete(`${apiUrl}/glossaryItem/delete?id=${targetId}`);
 };
 
-export { apiGetAllGlossaryItems, apiCreateGlossaryItem, apiDeleteGlossaryItem };
+/**
+ * Creates a promise for getting a glossaryItem for the database. \
+ * See comments inside function for the format of payloads.
+ *
+ * @param {*} targetId - the _id of the target article as a string
+ * @returns - the promise for the api response
+ */
+const apiGetGlossaryItem = (targetId) => {
+  /*
+    Request payload format: 
+    {
+      _id: String
+      term: String,
+      definition: String,
+      status: Enum String (Status)
+    }
+  */
+  return axios.get(`${apiUrl}/glossaryItem/read/?id=${targetId}`);
+};
+
+/**
+ * Creates a promise for updating a glossary item for the database. \
+ * See comments inside function for the format of payloads.
+ *
+ * @param {*} payload - the payload for the post request as an object
+ * @returns the promise for the api response
+ */
+const apiUpdateGlossaryItem = (payload) => {
+  /*
+    Request payload format: 
+    {
+      id: String,
+      term: String,
+      definition: String,
+      status: Enum String (Status)
+    }
+  */
+  return axios.patch(`${apiUrl}/glossaryItem/update/`, payload);
+};
+
+export {
+  apiGetAllGlossaryItems,
+  apiCreateGlossaryItem,
+  apiDeleteGlossaryItem,
+  apiGetGlossaryItem,
+  apiUpdateGlossaryItem,
+};

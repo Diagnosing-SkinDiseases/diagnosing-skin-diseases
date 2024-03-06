@@ -24,6 +24,7 @@ import TestGlossary from "../SeanPrototypes/LoadGlossary/UserFacing/Glossary/Glo
 
 // Test APIs Sean
 import ArticleApiTests from "../SeanPrototypes/ApiTesting/ArticleApiTests";
+import GlossaryItemApiTests from "../SeanPrototypes/ApiTesting/GlossaryItemApiTests";
 
 function App() {
   // test data for demo only
@@ -134,6 +135,11 @@ function App() {
             <Route
               path="articles"
               element={<ArticleApiTests></ArticleApiTests>}
+            ></Route>
+            {/* Test Glossary API */}
+            <Route
+              path="glossary"
+              element={<GlossaryItemApiTests></GlossaryItemApiTests>}
             ></Route>
           </Route>
         </Route>

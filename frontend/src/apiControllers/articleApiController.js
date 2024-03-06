@@ -103,6 +103,7 @@ const apiUpdateArticle = (payload) => {
   /*
     Request payload format: 
     {
+      id: String
       title: String,
       content: [{
           type: Enum String (ArticleContentType)
