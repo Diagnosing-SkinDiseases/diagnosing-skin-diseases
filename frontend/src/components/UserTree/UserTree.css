@@ -8,24 +8,10 @@
 
 .node-row {
     display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
+    justify-content: space-evenly;
+    margin-bottom: 30px;
 }
 
 .node {
     width: 5em;
-}
-
-.invisible-node {
-    opacity: 0;
-    margin: 10px;
-    margin-inline: 20px;
-    width: 50px;
-    height: 50px;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 10px solid transparent;
-    box-sizing: border-box;
 }
