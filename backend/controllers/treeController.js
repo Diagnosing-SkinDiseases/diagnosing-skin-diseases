@@ -48,12 +48,15 @@ const getTree = async (req, res) => {
 
 // Update tree
 const updateTree = async (req, res) => {
-  let { status } = req.body;
+  let { nodeTree, status } = req.body;
 
   if (status) {
     status = status.toUpperCase();
     req.body.status = status;
   }
+
+  nodeTree = inorderToList(nodeTree, []);
+  req.body.nodeTree = nodeTree;
 
   const { id, ...data } = req.body;
 
@@ -78,7 +81,7 @@ const updateTree = async (req, res) => {
 
 // Delete tree
 const deleteTree = async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.query;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ error: "Invalid id" });
