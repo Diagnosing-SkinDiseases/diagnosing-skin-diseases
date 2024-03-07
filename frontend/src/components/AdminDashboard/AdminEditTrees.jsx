@@ -13,32 +13,14 @@ const AdminEditTrees = () => {
         <div className="title-section">
           <div>
             {" "}
-            <h3>Title</h3>
+            <h3>Tree Name</h3>
             <input
               className="white-bar-input"
               type="text"
-              placeholder="Lorem Epsum"
+              placeholder="Enter Tree Name"
             />
           </div>
           <RootNodeSection />
-          <div style={{ marginTop: "20px" }}>
-            {" "}
-            <h3>Yes Node</h3>
-            <input
-              className="white-bar-input"
-              type="text"
-              placeholder="Enter Yes Node question"
-            />
-          </div>
-          <div>
-            {" "}
-            <h3>No Node</h3>
-            <input
-              className="white-bar-input"
-              type="text"
-              placeholder="Enter No Node question"
-            />
-          </div>
         </div>
         <div className="button-container">
           <button className="btn btn-primary btn-sm rounded-pill">
