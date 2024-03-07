@@ -13,6 +13,11 @@ h3 {
   font-size: smaller;
 }
 
+.error-message {
+  color: red;
+  font-size: smaller;
+}
+
 .button-container {
   display: flex;
   gap: 10px;
