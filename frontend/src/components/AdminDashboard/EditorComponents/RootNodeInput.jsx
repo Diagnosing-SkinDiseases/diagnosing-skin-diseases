@@ -1,43 +1,56 @@
-import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAngleDown,
+  faAngleUp,
+  faTimes,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import "../styles/AdminEditTrees.css";
 
 const RootNodeSection = () => {
   const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
-  const [yesNodeQuestion, setYesNodeQuestion] = useState(""); // State for Yes Node question
-  const [noNodeQuestion, setNoNodeQuestion] = useState(""); // State for No Node question
-  const [rootNodeAdded, setRootNodeAdded] = useState(false); // State for tracking if root node is added
+  const [yesNodeQuestion, setYesNodeQuestion] = useState("");
+  const [noNodeQuestion, setNoNodeQuestion] = useState("");
+  const [rootNodeAdded, setRootNodeAdded] = useState(false);
+  const [yesNodeAdded, setYesNodeAdded] = useState(false);
+  const [noNodeAdded, setNoNodeAdded] = useState(false);
 
   const handleDropdownClick = () => {
     setShowAdditionalInputs(!showAdditionalInputs);
   };
 
   const handleAddRootNode = () => {
-    // You can add validation here if needed
     setRootNodeAdded(true);
   };
 
   const handleAddYesNode = () => {
-    // Check if root node is added before allowing to add Yes Node
     if (!rootNodeAdded) {
       alert("Please add a root node first.");
       return;
     }
-    // Set the Yes Node question to the input value
     const inputVal = document.getElementById("yes-node-input").value;
     setYesNodeQuestion(inputVal);
+    setYesNodeAdded(true);
+  };
+
+  const handleRemoveYesNode = () => {
+    setYesNodeQuestion("");
+    setYesNodeAdded(false);
   };
 
   const handleAddNoNode = () => {
-    // Check if root node is added before allowing to add No Node
     if (!rootNodeAdded) {
       alert("Please add a root node first.");
       return;
     }
-    // Set the No Node question to the input value
     const inputVal = document.getElementById("no-node-input").value;
     setNoNodeQuestion(inputVal);
+    setNoNodeAdded(true);
+  };
+
+  const handleRemoveNoNode = () => {
+    setNoNodeQuestion("");
+    setNoNodeAdded(false);
   };
 
   return (
@@ -66,9 +79,18 @@ const RootNodeSection = () => {
               placeholder="Enter Yes Node Question"
               id="yes-node-input"
             />
-            <button className="yes-node-button" onClick={handleAddYesNode}>
-              Add Yes Node
-            </button>
+            {yesNodeAdded ? (
+              <button
+                className="remove-node-button"
+                onClick={handleRemoveYesNode}
+              >
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+            ) : (
+              <button className="yes-node-button" onClick={handleAddYesNode}>
+                Add Yes Node
+              </button>
+            )}
           </div>
 
           <div className="additional-input-with-button">
@@ -79,9 +101,18 @@ const RootNodeSection = () => {
               placeholder="Enter No Node Question"
               id="no-node-input"
             />
-            <button className="no-node-button" onClick={handleAddNoNode}>
-              Add No Node
-            </button>
+            {noNodeAdded ? (
+              <button
+                className="remove-node-button"
+                onClick={handleRemoveNoNode}
+              >
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+            ) : (
+              <button className="no-node-button" onClick={handleAddNoNode}>
+                Add No Node
+              </button>
+            )}
           </div>
         </div>
       )}
