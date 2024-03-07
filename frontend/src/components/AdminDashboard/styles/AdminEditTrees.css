@@ -8,19 +8,6 @@ body {
   margin-top: 20px; /* Adjust margin as needed */
 }
 
-.white-bar {
-  background-color: white;
-  margin-top: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add box shadow */
-  margin-bottom: 20px;
-  border: 1px solid #ccc; /* Add border style */
-  padding: 10px; /* Add padding to give space for text */
-}
-
-.white-bar span,
 h3 {
   color: #007bff; /* Set text color to blue */
   font-size: smaller; /* Set font size to smaller */
@@ -36,6 +23,114 @@ h3 {
 .button-container button {
   width: 110px;
 }
+
+.white-bar-input {
+  width: 100%;
+  background-color: white;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.white-bar-input:focus {
+  outline: none;
+}
+
+.white-bar-input::placeholder {
+  color: #007bff;
+  font-size: smaller;
+}
+
+.white-bar-input-dropdown-container {
+  display: flex;
+  align-items: center;
+}
+
+.white-bar-input-dropdown {
+  width: calc(100% - 40px); /* Adjust width to accommodate button */
+  background-color: white;
+  margin-top: 0px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0px;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.white-bar-input-dropdown-additional {
+  width: calc(100% - 150px); /* Adjust width to accommodate button */
+  background-color: white;
+  margin-top: 0px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0px;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.white-bar-input-dropdown-additional:focus {
+  outline: none;
+}
+
+.white-bar-input-dropdown-additional::placeholder {
+  color: #007bff;
+  font-size: smaller;
+}
+
+.white-bar-input-dropdown:focus {
+  outline: none;
+}
+
+.white-bar-input-dropdown::placeholder {
+  color: #007bff;
+  font-size: smaller;
+}
+
+.dropdown-button {
+  width: 40px; /* Adjust width of button */
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.dropdown-button:focus {
+  outline: none;
+}
+
+.additional-input {
+  width: calc(100% - 110px); /* Adjust width to accommodate button */
+}
+
+.additional-input-with-button {
+  position: space-between;
+}
+
+.yes-node-button {
+  background-color: rgb(61, 158, 61);
+  width: 150px;
+  padding: 10px;
+  height: 48px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+}
+
+.no-node-button {
+  background-color: rgba(255, 0, 0, 0.671);
+  width: 150px;
+  padding: 10px;
+  height: 48px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+}
+
+.additional-inputs-container {
+  margin-left: 20px;
+}
+
 @media (min-width: 576px) {
   .content-section {
     padding-left: 30px; /* Increase left padding on small devices and up */
