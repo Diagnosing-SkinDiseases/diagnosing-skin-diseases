@@ -118,22 +118,111 @@ const RootNodeSection = () => {
       )}
 
       <div className="yes-node-section">
-        <h3>Yes Node</h3>
-        <input
-          className="white-bar-input"
-          type="text"
-          placeholder={
-            yesNodeQuestion ? yesNodeQuestion : "Empty Yes Node List"
-          }
-        />
+        {yesNodeAdded && (
+          <div>
+            <h3>Yes Node</h3>
+            <div className="white-bar-input-dropdown-container">
+              <input
+                className="white-bar-input-dropdown"
+                type="text"
+                placeholder="Enter Yes Node question"
+                value={yesNodeQuestion}
+                readOnly
+              />
+              <button className="dropdown-button" onClick={handleDropdownClick}>
+                <FontAwesomeIcon
+                  icon={showAdditionalInputs ? faAngleUp : faAngleDown}
+                />
+              </button>
+            </div>
+            {showAdditionalInputs && (
+              <div className="additional-inputs-container">
+                <div className="additional-input-with-button">
+                  {" "}
+                  <input
+                    className="white-bar-input-dropdown-additional"
+                    type="text"
+                    placeholder="Enter Yes Node Question"
+                    id="yes-node-input"
+                  />
+                  <button
+                    className="yes-node-button"
+                    onClick={handleAddYesNode}
+                  >
+                    Add Yes Node
+                  </button>
+                </div>
+
+                <div className="additional-input-with-button">
+                  {" "}
+                  <input
+                    className="white-bar-input-dropdown-additional"
+                    type="text"
+                    placeholder="Enter No Node Question"
+                    id="no-node-input"
+                  />
+                  <button className="no-node-button" onClick={handleAddNoNode}>
+                    Add No Node
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
+
       <div className="no-node-section">
-        <h3>No Node</h3>
-        <input
-          className="white-bar-input"
-          type="text"
-          placeholder={noNodeQuestion ? noNodeQuestion : "Empty No Node List"}
-        />
+        {noNodeAdded && (
+          <div>
+            <h3>No Node</h3>
+            <div className="white-bar-input-dropdown-container">
+              <input
+                className="white-bar-input-dropdown"
+                type="text"
+                placeholder="Enter No Node question"
+                value={noNodeQuestion}
+                readOnly
+              />
+              <button className="dropdown-button" onClick={handleDropdownClick}>
+                <FontAwesomeIcon
+                  icon={showAdditionalInputs ? faAngleUp : faAngleDown}
+                />
+              </button>
+            </div>
+            {showAdditionalInputs && (
+              <div className="additional-inputs-container">
+                <div className="additional-input-with-button">
+                  {" "}
+                  <input
+                    className="white-bar-input-dropdown-additional"
+                    type="text"
+                    placeholder="Enter Yes Node Question"
+                    id="yes-node-input"
+                  />
+                  <button
+                    className="yes-node-button"
+                    onClick={handleAddYesNode}
+                  >
+                    Add Yes Node
+                  </button>
+                </div>
+
+                <div className="additional-input-with-button">
+                  {" "}
+                  <input
+                    className="white-bar-input-dropdown-additional"
+                    type="text"
+                    placeholder="Enter No Node Question"
+                    id="no-node-input"
+                  />
+                  <button className="no-node-button" onClick={handleAddNoNode}>
+                    Add No Node
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
