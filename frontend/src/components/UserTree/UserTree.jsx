@@ -6,6 +6,8 @@ import CurrentNodeDetails from './CurrentNodeDetails';
 import SymbolIndication from './SymbolIndication';
 import DUMMY_DATA from './DummyTree';
 
+// Draw an arrow between two nodes
+// Source from: https://github.com/anseki/leader-line
 const drawArrow = (start, end, color) => {
     requestAnimationFrame(() => {
         if (window.LeaderLine && document.getElementById(start) && document.getElementById(end)) {
@@ -21,7 +23,7 @@ const drawArrow = (start, end, color) => {
                     size: 4, // Set the line size
                 }
             );
-            console.log(color + "line drawn between " + start + " and " + end);
+            // console.log(color + "line drawn between " + start + " and " + end);
             return line;
         }
     });
@@ -38,10 +40,11 @@ const UserTree = () => {
     const [nodeRows, setNodeRows] = useState([]);
 
     useEffect(() => {
-        const nodesByLevel = buildNodesByLevel(DUMMY_DATA.nodes);
-        const nodeElements = createNodeElements(nodesByLevel);
-        setNodeRows(nodeElements);
+        const maxLevel = findMaxLevel(DUMMY_DATA.nodes);
+        const nodesByLevel = placeNodesByLevel(DUMMY_DATA.nodes, maxLevel);
+        setNodeRows(nodesByLevel);
 
+        // Draw arrows between each parent/child pair
         DUMMY_DATA.nodes.forEach(node => {
             if (node.noChildId) {
                 drawArrow(node.currentId, node.noChildId, redArrow);
@@ -52,65 +55,89 @@ const UserTree = () => {
         });
     }, []);
 
-    const buildNodesByLevel = (nodes) => {
-        let levels = {};
-        nodes.forEach(node => {
-            let level = node.parentId ? levels[node.parentId].level + 1 : 0;
-            if (!levels[level]) levels[level] = [];
-            levels[level].push({ ...node, level });
-            levels[node.currentId] = levels[level][levels[level].length - 1];
-        });
-        return levels;
+    // Find the maximum level of the tree
+    const findMaxLevel = (nodes) => {
+        let maxLevel = 0;
+        const findLevel = (nodeId, level) => {
+            const node = nodes.find(n => n.currentId === nodeId);
+            if (node) {
+                maxLevel = Math.max(maxLevel, level);
+                findLevel(node.yesChildId, level + 1);
+                findLevel(node.noChildId, level + 1);
+            }
+        };
+        findLevel(nodes[0].currentId, 0);
+        return maxLevel;
     };
 
-    const createNodeElements = (nodesByLevel) => {
-        return Object.values(nodesByLevel).map((nodes, levelIndex) => {
-            if (!Array.isArray(nodes)) {
-                return null;
-            }
+    // Recursively place nodes at the correct position in the tree
+    const placeNodesByLevel = (nodes, maxLevel) => {
+        // Initialize the rows for each level
+        let rows = Array.from({ length: maxLevel + 1 }, () => []);
 
-            let rowElements = [];
-            nodes.forEach(node => {
-                rowElements.push(
-                    <div key={node.currentId} className="node">
-                        <NodeComponent color={blueNode} id={node.currentId} />
-                    </div>
-                );
-                if (!node.noChildId) {
-                    rowElements.push(
-                        <div key={`invis-no-${node.currentId}`} className="node">
-                            <InvisibleNodeComponent />
-                        </div>
-                    );
-                }
-                if (!node.yesChildId) {
-                    rowElements.push(
-                        <div key={`invis-yes-${node.currentId}`} className="node">
-                            <InvisibleNodeComponent />
-                        </div>
-                    );
-                }
-            });
-
-            return (
-                <div key={`node-row-${levelIndex}`} className={`node-row level-${levelIndex}`}>
-                    {rowElements}
+        // Place an invisible node at given level and position
+        const placeInvisibleNode = (level, position) => {
+            if (!rows[level]) rows[level] = [];
+            rows[level][position] = (
+                <div key={`invisible-${level}-${position}`} className="node invisible">
+                    <InvisibleNodeComponent />
                 </div>
             );
-        });
+        };
+
+        // Recursive function to place nodes at the correct position
+        const placeNode = (nodeId, level, position) => {
+            if (level > maxLevel) return; // Exit if beyond the max level
+            const node = nodes.find(n => n.currentId === nodeId);
+            if (!node) return; // Exit if the node doesn't exist
+
+            if (!rows[level]) rows[level] = [];
+            // Place the node at the correct position in the row
+            rows[level][position] = (
+                <div key={node.currentId} className="node">
+                    <NodeComponent id={node.currentId} color={blueNode} />
+                </div>
+            );
+
+            // Position of children nodes
+            const leftPosition = position * 2;
+            const rightPosition = leftPosition + 1;
+
+            // Recursively place child nodes
+            if (node.yesChildId) {
+                placeNode(node.yesChildId, level + 1, rightPosition);
+            }
+            if (node.noChildId) {
+                placeNode(node.noChildId, level + 1, leftPosition);
+            }
+
+            // Add invisible nodes if no children
+            if (node.yesChildId == null && node.noChildId == null) {
+                placeInvisibleNode(level + 1, position);
+            }
+        };
+
+        // Start with the root node
+        if (nodes.length > 0) {
+            placeNode(nodes[0].currentId, 0, 0);
+        }
+
+        return rows.map((row, level) => (
+            <div key={`node-row-${level}`} className={`node-row level-${level}`}>
+                {row}
+            </div>
+        ));
     };
+
 
     return (
         <>
             <br />
-            <div>
-                <SymbolIndication />
-                <div className="user-tree">
-                    {nodeRows}
-                </div>
+            <div className="user-tree">
+                {nodeRows}
             </div>
         </>
     );
 };
 
-export default UserTree
+export default UserTree;
