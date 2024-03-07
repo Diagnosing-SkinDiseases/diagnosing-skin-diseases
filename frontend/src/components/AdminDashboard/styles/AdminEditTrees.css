@@ -131,6 +131,14 @@ h3 {
   margin-left: 20px;
 }
 
+.yes-node-section {
+  margin-top: 20px;
+}
+
+.no-node-section {
+  margin-top: 20px;
+}
+
 @media (min-width: 576px) {
   .content-section {
     padding-left: 30px; /* Increase left padding on small devices and up */
