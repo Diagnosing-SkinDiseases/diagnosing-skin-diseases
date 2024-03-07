@@ -62,8 +62,8 @@ const DUMMY_DATA = {
             "currentId": "node8",
             "content": "Question for node 8?",
             "parentId": "node4",
-            "noChildId": null,
-            "yesChildId": null,
+            "noChildId": "node28",
+            "yesChildId": "node29",
             "_id": "unique_id_node8"
         },
         {
@@ -150,7 +150,7 @@ const DUMMY_DATA = {
             "currentId": "node19",
             "content": "Question for node 19?",
             "parentId": "node13",
-            "noChildId": null,
+            "noChildId": "node24",
             "yesChildId": "node20",
             "_id": "unique_id_node19"
         },
@@ -158,7 +158,7 @@ const DUMMY_DATA = {
             "currentId": "node20",
             "content": "Question for node 20?",
             "parentId": "node19",
-            "noChildId": null,
+            "noChildId": "node25",
             "yesChildId": "node21",
             "_id": "unique_id_node20"
         },
@@ -166,7 +166,7 @@ const DUMMY_DATA = {
             "currentId": "node21",
             "content": "Question for node 21?",
             "parentId": "node20",
-            "noChildId": null,
+            "noChildId": "node26",
             "yesChildId": "node22",
             "_id": "unique_id_node21"
         },
@@ -174,7 +174,7 @@ const DUMMY_DATA = {
             "currentId": "node22",
             "content": "Question for node 22?",
             "parentId": "node21",
-            "noChildId": null,
+            "noChildId": "node27",
             "yesChildId": "node23",
             "_id": "unique_id_node22"
         },
@@ -183,8 +183,72 @@ const DUMMY_DATA = {
             "content": "Question for node 23?",
             "parentId": "node22",
             "noChildId": null,
-            "yesChildId": "node24",
+            "yesChildId": null,
             "_id": "unique_id_node23"
+        },
+        {
+            "currentId": "node24",
+            "content": "Question for node 24?",
+            "parentId": "node19",
+            "noChildId": null,
+            "yesChildId": null,
+            "_id": "unique_id_node24"
+        },
+        {
+            "currentId": "node25",
+            "content": "Question for node 25?",
+            "parentId": "node20",
+            "noChildId": null,
+            "yesChildId": null,
+            "_id": "unique_id_node25"
+        },
+        {
+            "currentId": "node26",
+            "content": "Question for node 26?",
+            "parentId": "node21",
+            "noChildId": null,
+            "yesChildId": null,
+            "_id": "unique_id_node26"
+        },
+        {
+            "currentId": "node27",
+            "content": "Question for node 27?",
+            "parentId": "node22",
+            "noChildId": null,
+            "yesChildId": null,
+            "_id": "unique_id_node27"
+        },
+        {
+            "currentId": "node28",
+            "content": "Question for node 28?",
+            "parentId": "node8",
+            "noChildId": "node30",
+            "yesChildId": "node31",
+            "_id": "unique_id_node28"
+        },
+        {
+            "currentId": "node29",
+            "content": "Question for node 29?",
+            "parentId": "node8",
+            "noChildId": null,
+            "yesChildId": null,
+            "_id": "unique_id_node29"
+        },
+        {
+            "currentId": "node30",
+            "content": "Question for node 30?",
+            "parentId": "node28",
+            "noChildId": null,
+            "yesChildId": null,
+            "_id": "unique_id_node30"
+        },
+        {
+            "currentId": "node31",
+            "content": "Question for node 31?",
+            "parentId": "node28",
+            "noChildId": null,
+            "yesChildId": null,
+            "_id": "unique_id_node31"
         },
     ],
     "about": "Sample diagnostic tree",
