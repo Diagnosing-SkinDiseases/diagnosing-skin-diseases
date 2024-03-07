@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import ArticleContentType from '../enums/ArticleContentType';
 import ContentInput from './ContentInput';
 import ImageInput from './ImageInput';

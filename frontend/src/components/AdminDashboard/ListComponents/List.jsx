@@ -6,6 +6,8 @@ import "../styles/List.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { apiDeleteGlossaryItem, apiUpdateGlossaryItem } from "../../../apiControllers/glossaryItemApiController";
+import { apiDeleteArticle, apiUpdateArticle } from "../../../apiControllers/articleApiController";
 
 const Item = ({ title, published, onPublish, onEdit, onDelete }) => (
   <div className="item">
@@ -41,14 +43,38 @@ const List = ({ initialItems = [], contentType, searchQuery  }) => {
   }, [initialItems]);
 
   // Toggles the publish state of an item
-  const handlePublishToggle = (index) => {
-    const newItems = items.map((item, i) => {
+  const handlePublishToggle = (index, item, contentType) => {
+    let updatePromise;
+    let newStatus = item.published ? "UNPUBLISHED" : "PUBLISHED";
+    let updatedItem = { id: item.id, status: newStatus };
+
+    switch (contentType) {
+      case "Definition":
+        updatePromise = apiUpdateGlossaryItem(updatedItem);
+        break;
+      case "Article":
+        updatePromise = apiUpdateArticle(updatedItem);
+        break;
+      case "Tree":
+        // updatePromise = updateTree(updatedItem);
+        break;
+      default:
+        console.log("Unknown content type for processing");
+        return;
+    }
+    updatePromise.then(() => {
+      console.log("items", items);
+      const newItems = items.map((item, i) => {
       if (i === index) {
         return { ...item, published: !item.published };
       }
       return item;
     });
-    setItems(newItems);
+      setItems(newItems);
+    })
+      .catch(error => {
+        console.error("Error updating item status", error);
+      });
   };
 
   const handleEditBtn = useCallback((id) => {
@@ -57,10 +83,31 @@ const List = ({ initialItems = [], contentType, searchQuery  }) => {
   }, [navigate, contentType]);
 
   // Handles the delete button click
-  const handleDeleteBtn = (index) => {
-    console.log("Delete clicked", index);
+  const handleDeleteBtn = (index, id) => {
+    console.log("Delete clicked", id);
+    let deletePromise;
     const newItems = items.filter((_, i) => i !== index);
-    setItems(newItems);
+
+    switch (contentType) {
+      case "Definition":
+        deletePromise = apiDeleteGlossaryItem(id);
+        break;
+      case "Article":
+        deletePromise = apiDeleteArticle(id);
+        break;
+      case "Tree":
+        // deletePromise = deleteTree(id);
+        break;
+      default:
+        console.log("Unknown content type for processing");
+        return;
+    }
+    deletePromise.then((response) => {
+      console.log("Deleted", response.data);
+      setItems(newItems);
+    }).catch((error) => {
+        console.log("Error:", error);
+      });
   };
 
   return (
@@ -71,9 +118,9 @@ const List = ({ initialItems = [], contentType, searchQuery  }) => {
             key={index}
             title={item.title}
             published={item.published}
-            onPublish={() => handlePublishToggle(item._id)}
-            onEdit={() => handleEditBtn(item._id, contentType)}
-            onDelete={() => handleDeleteBtn(item._id)}
+            onPublish={() => handlePublishToggle(index, item, contentType)}
+            onEdit={() => handleEditBtn(item.id, contentType)}
+            onDelete={() => handleDeleteBtn(index, item.id)}
           />
         ))
       ) : (

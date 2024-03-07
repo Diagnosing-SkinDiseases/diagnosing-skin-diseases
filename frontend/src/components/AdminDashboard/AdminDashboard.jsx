@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import Controls from "./ListComponents/Controls";
 import List from "./ListComponents/List";
 import "./styles/AdminDashboard.css"; 
-import { getDefinitions, deleteDefinition } from "./Controllers/glossaryController";
+import { apiGetAllGlossaryItems} from "../../apiControllers/glossaryItemApiController";
+import { apiGetAllArticles } from "../../apiControllers/articleApiController";
 
 // AdminDashboard component for managing items and filters
 const AdminDashboard = ({contentType}) => {
@@ -16,10 +17,10 @@ const AdminDashboard = ({contentType}) => {
       let apiResponse;
       switch (contentType) {
         case "Definition":
-          apiResponse = await getDefinitions();
+          apiResponse = await apiGetAllGlossaryItems();
           break;
         case "Article":
-          // apiResponse = await getArticles();
+          apiResponse = await apiGetAllArticles();
           break;
         case "Tree":
           // apiResponse = await getTrees();
@@ -48,21 +49,21 @@ const AdminDashboard = ({contentType}) => {
         processedItems = data.map((definition) => ({
           title: definition.term,
           published: definition.status === "PUBLISHED",
-          _id: definition._id,
+          id: definition._id,
         }));
         break;
       case "Article":
         processedItems = data.map((article) => ({
           title: article.title,
           published: article.status === "PUBLISHED",
-          _id: article._id,
+          id: article._id,
         }));
         break;
       case "Tree":
         processedItems = data.map((tree) => ({
           title: tree.name,
           published: tree.status === "PUBLISHED",
-          _id: tree._id,
+          id: tree._id,
         }));
         break;
       default:
