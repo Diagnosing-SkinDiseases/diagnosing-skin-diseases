@@ -7,18 +7,34 @@ const RootNodeSection = () => {
   const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
   const [yesNodeQuestion, setYesNodeQuestion] = useState(""); // State for Yes Node question
   const [noNodeQuestion, setNoNodeQuestion] = useState(""); // State for No Node question
+  const [rootNodeAdded, setRootNodeAdded] = useState(false); // State for tracking if root node is added
 
   const handleDropdownClick = () => {
     setShowAdditionalInputs(!showAdditionalInputs);
   };
 
+  const handleAddRootNode = () => {
+    // You can add validation here if needed
+    setRootNodeAdded(true);
+  };
+
   const handleAddYesNode = () => {
+    // Check if root node is added before allowing to add Yes Node
+    if (!rootNodeAdded) {
+      alert("Please add a root node first.");
+      return;
+    }
     // Set the Yes Node question to the input value
     const inputVal = document.getElementById("yes-node-input").value;
     setYesNodeQuestion(inputVal);
   };
 
   const handleAddNoNode = () => {
+    // Check if root node is added before allowing to add No Node
+    if (!rootNodeAdded) {
+      alert("Please add a root node first.");
+      return;
+    }
     // Set the No Node question to the input value
     const inputVal = document.getElementById("no-node-input").value;
     setNoNodeQuestion(inputVal);
@@ -32,6 +48,7 @@ const RootNodeSection = () => {
           className="white-bar-input-dropdown"
           type="text"
           placeholder="Enter Root Node question"
+          onChange={handleAddRootNode}
         />
         <button className="dropdown-button" onClick={handleDropdownClick}>
           <FontAwesomeIcon
@@ -47,7 +64,7 @@ const RootNodeSection = () => {
               className="white-bar-input-dropdown-additional"
               type="text"
               placeholder="Enter Yes Node Question"
-              id="yes-node-input" // Added id to reference the input
+              id="yes-node-input"
             />
             <button className="yes-node-button" onClick={handleAddYesNode}>
               Add Yes Node
@@ -60,7 +77,7 @@ const RootNodeSection = () => {
               className="white-bar-input-dropdown-additional"
               type="text"
               placeholder="Enter No Node Question"
-              id="no-node-input" // Added id to reference the input
+              id="no-node-input"
             />
             <button className="no-node-button" onClick={handleAddNoNode}>
               Add No Node
@@ -75,7 +92,7 @@ const RootNodeSection = () => {
           className="white-bar-input"
           type="text"
           placeholder={
-            yesNodeQuestion ? yesNodeQuestion : "Empty Yes Nodes List"
+            yesNodeQuestion ? yesNodeQuestion : "Empty Yes Node List"
           }
         />
       </div>
@@ -84,7 +101,7 @@ const RootNodeSection = () => {
         <input
           className="white-bar-input"
           type="text"
-          placeholder={noNodeQuestion ? noNodeQuestion : "Empty No Nodes List"}
+          placeholder={noNodeQuestion ? noNodeQuestion : "Empty No Node List"}
         />
       </div>
     </div>
