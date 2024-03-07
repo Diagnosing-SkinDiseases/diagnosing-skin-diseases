@@ -29,7 +29,6 @@ const drawArrow = (start, end, color) => {
     });
 };
 
-
 const UserTree = () => {
     const greenArrow = "#3fc005";
     const redArrow = "#f44336";
@@ -38,10 +37,16 @@ const UserTree = () => {
     const greenNode = "#6ad669";
 
     const [nodeRows, setNodeRows] = useState([]);
+    const [currentNodeId, setCurrentNodeId] = useState(null);
+
+    const handleNodeClick = (nodeId) => {
+        setCurrentNodeId(nodeId);
+    };
 
     useEffect(() => {
         const maxLevel = findMaxLevel(DUMMY_DATA.nodes);
         const nodesByLevel = placeNodesByLevel(DUMMY_DATA.nodes, maxLevel);
+
         setNodeRows(nodesByLevel);
 
         // Draw arrows between each parent/child pair
@@ -53,7 +58,37 @@ const UserTree = () => {
                 drawArrow(node.currentId, node.yesChildId, greenArrow);
             }
         });
+
+        setTimeout(() => {
+            colorNodes(DUMMY_DATA.nodes);
+        }, 0);
     }, []);
+
+    useEffect(() => {
+        // Find and clear the previous current node
+        const prevCurrentNode = document.querySelector('.currentNode');
+        if (prevCurrentNode) {
+            prevCurrentNode.classList.remove('currentNode');
+            // Reset the color based on whether it's a question node or a result node
+            const nodeId = prevCurrentNode.id;
+            const nodeData = DUMMY_DATA.nodes.find(node => node.currentId === nodeId);
+            if (nodeData) {
+                const color = nodeData.yesChildId && nodeData.noChildId ? blueNode
+                    : (nodeData.noChildId == null && nodeData.yesChildId == null) ? yellowNode
+                        : ''; // Default color or another logic
+                prevCurrentNode.style.backgroundColor = color;
+            }
+        }
+
+        // Set the new current node
+        if (currentNodeId) {
+            const newCurrentNode = document.getElementById(currentNodeId);
+            if (newCurrentNode) {
+                newCurrentNode.classList.add('currentNode');
+                newCurrentNode.style.backgroundColor = greenNode; // Set the new current node color to green
+            }
+        }
+    }, [currentNodeId]);
 
     // Find the maximum level of the tree
     const findMaxLevel = (nodes) => {
@@ -94,7 +129,9 @@ const UserTree = () => {
             if (!rows[level]) rows[level] = [];
             // Place the node at the correct position in the row
             rows[level][position] = (
-                <div key={node.currentId} className="node">
+                <div key={node.currentId}
+                    className={`node ${currentNodeId === node.currentId ? 'currentNode' : ''}`}
+                    onClick={() => handleNodeClick(node.currentId)}>
                     <NodeComponent id={node.currentId} color={blueNode} />
                 </div>
             );
@@ -127,6 +164,23 @@ const UserTree = () => {
                 {row}
             </div>
         ));
+    };
+
+    // Color the nodes based on if they are result node
+    const colorNodes = (nodes) => {
+        nodes.forEach(node => {
+            const element = document.getElementById(node.currentId);
+            if (element) {
+                if (node.yesChildId && node.noChildId) {
+                    element.style.backgroundColor = blueNode;
+                }
+                if (node.noChildId == null && node.yesChildId == null) {
+                    element.style.backgroundColor = yellowNode;
+                }
+            } else {
+                console.error('Element not found for currentId:', node.currentId);
+            }
+        });
     };
 
 

@@ -1,6 +1,10 @@
+:root {
+    --theme_blue: #007bff;
+}
+
 .symbol-indication {
-    position: fixed;
-    top: 10%;
+    position: absolute;
+    top: 0;
     left: 2px;
     z-index: 10;
 }
