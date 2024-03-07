@@ -1,10 +1,13 @@
-import React, { useEffect } from 'react';
-import NodeComponent from './NodeComponent';
+import React, { useEffect, useState } from 'react';
+import { NodeComponent, InvisibleNodeComponent } from './NodeComponent';
 import NodeDetails from './NodeDetails';
 import './UserTree.css';
 import CurrentNodeDetails from './CurrentNodeDetails';
 import SymbolIndication from './SymbolIndication';
+import DUMMY_DATA from './DummyTree';
 
+// Draw an arrow between two nodes
+// Source from: https://github.com/anseki/leader-line
 const drawArrow = (start, end, color) => {
     requestAnimationFrame(() => {
         if (window.LeaderLine && document.getElementById(start) && document.getElementById(end)) {
@@ -20,9 +23,7 @@ const drawArrow = (start, end, color) => {
                     size: 4, // Set the line size
                 }
             );
-            console.log("line drawn between " + start + " and " + end);
-
-            // Optionally, store the line reference for later removal
+            // console.log(color + "line drawn between " + start + " and " + end);
             return line;
         }
     });
@@ -36,59 +37,104 @@ const UserTree = () => {
     const yellowNode = "#FFD700";
     const greenNode = "#6ad669";
 
+    const [nodeRows, setNodeRows] = useState([]);
+
     useEffect(() => {
-        let line;
+        const maxLevel = findMaxLevel(DUMMY_DATA.nodes);
+        const nodesByLevel = placeNodesByLevel(DUMMY_DATA.nodes, maxLevel);
+        setNodeRows(nodesByLevel);
 
-        /* LeaderLine source: https://anseki.github.io/leader-line/ */
-        drawArrow("node1", "node2", redArrow);
-        drawArrow("node1", "node3", greenArrow);
-        drawArrow("node2", "node4", redArrow);
-        drawArrow("node2", "node5", greenArrow);
-        drawArrow("node3", "node6", redArrow);
-        drawArrow("node3", "node7", greenArrow);
+        // Draw arrows between each parent/child pair
+        DUMMY_DATA.nodes.forEach(node => {
+            if (node.noChildId) {
+                drawArrow(node.currentId, node.noChildId, redArrow);
+            }
+            if (node.yesChildId) {
+                drawArrow(node.currentId, node.yesChildId, greenArrow);
+            }
+        });
+    }, []);
 
-        return () => {
-            if (line) {
-                line.remove();
-                console.log("line removed");
+    // Find the maximum level of the tree
+    const findMaxLevel = (nodes) => {
+        let maxLevel = 0;
+        const findLevel = (nodeId, level) => {
+            const node = nodes.find(n => n.currentId === nodeId);
+            if (node) {
+                maxLevel = Math.max(maxLevel, level);
+                findLevel(node.yesChildId, level + 1);
+                findLevel(node.noChildId, level + 1);
             }
         };
-    }, []);
+        findLevel(nodes[0].currentId, 0);
+        return maxLevel;
+    };
+
+    // Recursively place nodes at the correct position in the tree
+    const placeNodesByLevel = (nodes, maxLevel) => {
+        // Initialize the rows for each level
+        let rows = Array.from({ length: maxLevel + 1 }, () => []);
+
+        // Place an invisible node at given level and position
+        const placeInvisibleNode = (level, position) => {
+            if (!rows[level]) rows[level] = [];
+            rows[level][position] = (
+                <div key={`invisible-${level}-${position}`} className="node invisible">
+                    <InvisibleNodeComponent />
+                </div>
+            );
+        };
+
+        // Recursive function to place nodes at the correct position
+        const placeNode = (nodeId, level, position) => {
+            if (level > maxLevel) return; // Exit if beyond the max level
+            const node = nodes.find(n => n.currentId === nodeId);
+            if (!node) return; // Exit if the node doesn't exist
+
+            if (!rows[level]) rows[level] = [];
+            // Place the node at the correct position in the row
+            rows[level][position] = (
+                <div key={node.currentId} className="node">
+                    <NodeComponent id={node.currentId} color={blueNode} />
+                </div>
+            );
+
+            // Position of children nodes
+            const leftPosition = position * 2;
+            const rightPosition = leftPosition + 1;
+
+            // Recursively place child nodes
+            if (node.yesChildId) {
+                placeNode(node.yesChildId, level + 1, rightPosition);
+            }
+            if (node.noChildId) {
+                placeNode(node.noChildId, level + 1, leftPosition);
+            }
+
+            // Add invisible nodes if no children
+            if (node.yesChildId == null && node.noChildId == null) {
+                placeInvisibleNode(level + 1, position);
+            }
+        };
+
+        // Start with the root node
+        if (nodes.length > 0) {
+            placeNode(nodes[0].currentId, 0, 0);
+        }
+
+        return rows.map((row, level) => (
+            <div key={`node-row-${level}`} className={`node-row level-${level}`}>
+                {row}
+            </div>
+        ));
+    };
 
 
     return (
         <>
             <br />
-            <div>
-                <SymbolIndication />
-                <div className="user-tree">
-                    <div id="first-row"><NodeComponent color={blueNode} id="node1" /></div>
-                    <div id="second-row">
-                        <NodeComponent color={blueNode} id="node2" class="second-row-nodes" />
-                        <NodeComponent color={blueNode} id="node3" class="second-row-nodes" />
-                    </div>
-                    <div id="third-row">
-                        <NodeComponent color={yellowNode} id="node4" class="second-row-nodes" />
-                        <NodeComponent color={yellowNode} id="node5" class="second-row-nodes" />
-                        <NodeComponent color={yellowNode} id="node6" class="second-row-nodes" />
-                        <NodeComponent color={greenNode} id="node7" class="second-row-nodes" />
-                    </div>
-
-                </div>
-                <div>
-                    <CurrentNodeDetails
-                        question="Are the spots blanchable?"
-                        onBack={() => console.log('Back to current node')}
-                        onNo={() => console.log('No')}
-                        onYes={() => console.log('Yes')}
-                    />
-                    <br />
-                    <NodeDetails
-                        question="Are the spots blanchable?"
-                        onBack={() => console.log('Back to current node')}
-                        onJump={() => console.log('Jump to this node')}
-                    />
-                </div>
+            <div className="user-tree">
+                {nodeRows}
             </div>
         </>
     );
