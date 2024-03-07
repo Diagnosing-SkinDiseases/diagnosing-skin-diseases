@@ -2,22 +2,31 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import labels from "../labels.json";
 import "../styles/Editor.css";
+import { getDefinition } from "../Controllers/glossaryController";
 
 // The Definition component
 const Definition = () => {
   const location = useLocation(); // Use useLocation to access the current location object
-  const definition = location.state?.item; // Access the item passed in the state, if any
+  const definition = location.state?.id; // Access the item passed in the state, if any
 
   // State hooks for title and paragraph
   const [title, setTitle] = useState('');
   const [paragraph, setParagraph] = useState('');
+  const [status, setStatus] = useState('');
 
   // Initializes state if `definition` prop is provided
   useEffect(() => {
     if (definition) {
-      console.log(definition);
-      setTitle(definition.title);
-      setParagraph(definition.text);
+      // fetch using getDefinition(id)
+      getDefinition(definition).then((response) => {
+        console.log(response);
+        setTitle(response.data.term);
+        setParagraph(response.data.definition);
+        setStatus(response.data.status);
+      })
+        .catch((error) => {
+          console.error('Error fetching definition:', error);
+        });
     }
   }, [definition]);
 

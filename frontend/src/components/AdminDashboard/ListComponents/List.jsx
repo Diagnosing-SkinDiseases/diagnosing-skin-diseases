@@ -16,8 +16,8 @@ const Item = ({ title, published, onPublish, onEdit, onDelete }) => (
     <Button
       label={
         published
-          ? labels.buttonLabels.publish.publish
-          : labels.buttonLabels.publish.unpublish
+          ? labels.buttonLabels.publish.unpublish
+          : labels.buttonLabels.publish.publish
       }
       onClick={onPublish}
       className="button"
@@ -51,9 +51,9 @@ const List = ({ initialItems = [], contentType, searchQuery  }) => {
     setItems(newItems);
   };
 
-  const handleEditBtn = useCallback((item) => {
-    const path = `/admin/${contentType.toLowerCase()}s/edit/${item.title}`; 
-    navigate(path, { state: { item } });
+  const handleEditBtn = useCallback((id) => {
+    const path = `/admin/${contentType.toLowerCase()}s/edit/${id}`; 
+    navigate(path, {state: { id }});
   }, [navigate, contentType]);
 
   // Handles the delete button click
@@ -71,9 +71,9 @@ const List = ({ initialItems = [], contentType, searchQuery  }) => {
             key={index}
             title={item.title}
             published={item.published}
-            onPublish={() => handlePublishToggle(index)}
-            onEdit={() => handleEditBtn(item, contentType)}
-            onDelete={() => handleDeleteBtn(index)}
+            onPublish={() => handlePublishToggle(item._id)}
+            onEdit={() => handleEditBtn(item._id, contentType)}
+            onDelete={() => handleDeleteBtn(item._id)}
           />
         ))
       ) : (

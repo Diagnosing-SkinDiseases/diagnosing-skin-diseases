@@ -161,7 +161,7 @@
 }
 
 .image-preview {
-    height: 20em;
+    max-height: 20em;
     margin-bottom: 0.5em;
 }
 
