@@ -14,6 +14,7 @@ const RootNodeSection = () => {
   const [rootNodeAdded, setRootNodeAdded] = useState(false);
   const [yesNodeAdded, setYesNodeAdded] = useState(false);
   const [noNodeAdded, setNoNodeAdded] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleDropdownClick = () => {
     setShowAdditionalInputs(!showAdditionalInputs);
@@ -21,20 +22,22 @@ const RootNodeSection = () => {
 
   const handleAddRootNode = () => {
     setRootNodeAdded(true);
+    setErrorMessage("");
   };
 
   const handleAddYesNode = () => {
     if (!rootNodeAdded) {
-      alert("Please add a root node first.");
+      setErrorMessage("Please add a root node first.");
       return;
     }
     const inputVal = document.getElementById("yes-node-input").value;
     if (inputVal.trim() === "") {
-      alert("Please enter a question for the Yes Node.");
+      setErrorMessage("Please enter a question for the Yes Node.");
       return;
     }
     setYesNodeQuestion(inputVal);
     setYesNodeAdded(true);
+    setErrorMessage("");
   };
 
   const handleRemoveYesNode = () => {
@@ -44,16 +47,17 @@ const RootNodeSection = () => {
 
   const handleAddNoNode = () => {
     if (!rootNodeAdded) {
-      alert("Please add a root node first.");
+      setErrorMessage("Please add a root node first.");
       return;
     }
     const inputVal = document.getElementById("no-node-input").value;
     if (inputVal.trim() === "") {
-      alert("Please enter a question for the No Node.");
+      setErrorMessage("Please enter a question for the No Node.");
       return;
     }
     setNoNodeQuestion(inputVal);
     setNoNodeAdded(true);
+    setErrorMessage("");
   };
 
   const handleRemoveNoNode = () => {
@@ -64,6 +68,7 @@ const RootNodeSection = () => {
   return (
     <div className="root-node-section-container">
       <h3>Root Node</h3>
+      <h3 className="error-message">{errorMessage}</h3>
       <div className="white-bar-input-dropdown-container">
         <input
           className="white-bar-input-dropdown"
@@ -124,7 +129,6 @@ const RootNodeSection = () => {
           </div>
         </div>
       )}
-
       <div className="yes-node-section">
         {yesNodeAdded && (
           <div>
@@ -178,7 +182,6 @@ const RootNodeSection = () => {
           </div>
         )}
       </div>
-
       <div className="no-node-section">
         {noNodeAdded && (
           <div>
