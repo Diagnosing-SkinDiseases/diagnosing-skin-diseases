@@ -132,9 +132,15 @@ const UserTree = () => {
 
     return (
         <>
-            <br />
             <div className="user-tree">
                 {nodeRows}
+                <SymbolIndication />
+                <CurrentNodeDetails
+                    question="Question place holder"
+                    onBack={() => console.log("Back clicked")}
+                    onNo={() => console.log("No clicked")}
+                    onYes={() => console.log("Yes clicked")}
+                />
             </div>
         </>
     );

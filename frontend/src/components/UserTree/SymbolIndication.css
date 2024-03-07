@@ -1,3 +1,10 @@
+.symbol-indication {
+    position: fixed;
+    top: 10%;
+    left: 2px;
+    z-index: 10;
+}
+
 .node-symbol {
     margin-left: 10px;
     margin-right: 10px;
