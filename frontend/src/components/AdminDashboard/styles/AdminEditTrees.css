@@ -5,17 +5,17 @@ body {
 }
 
 .title-section {
-  margin-top: 20px; /* Adjust margin as needed */
+  margin-top: 20px;
 }
 
 h3 {
-  color: #007bff; /* Set text color to blue */
-  font-size: smaller; /* Set font size to smaller */
+  color: #007bff;
+  font-size: smaller;
 }
 
 .button-container {
   display: flex;
-  gap: 10px; /* Add gap between buttons */
+  gap: 10px;
   justify-content: flex-end;
   margin-top: 10px;
 }
@@ -52,7 +52,7 @@ h3 {
 }
 
 .white-bar-input-dropdown {
-  width: calc(100% - 40px); /* Adjust width to accommodate button */
+  width: calc(100% - 40px);
   background-color: white;
   margin-top: 0px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -62,7 +62,7 @@ h3 {
 }
 
 .white-bar-input-dropdown-additional {
-  width: calc(100% - 150px); /* Adjust width to accommodate button */
+  width: calc(100% - 150px);
   background-color: white;
   margin-top: 0px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -90,7 +90,7 @@ h3 {
 }
 
 .dropdown-button {
-  width: 40px; /* Adjust width of button */
+  width: 40px;
   background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: 1px solid #ccc;
@@ -102,7 +102,7 @@ h3 {
 }
 
 .additional-input {
-  width: calc(100% - 110px); /* Adjust width to accommodate button */
+  width: calc(100% - 110px);
 }
 
 .additional-input-with-button {
@@ -139,6 +139,13 @@ h3 {
   margin-top: 20px;
 }
 
+.remove-node-button {
+  width: 150px;
+  padding: 10px;
+  height: 48px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+}
 @media (min-width: 576px) {
   .content-section {
     padding-left: 30px; /* Increase left padding on small devices and up */
