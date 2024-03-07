@@ -29,6 +29,10 @@ const RootNodeSection = () => {
       return;
     }
     const inputVal = document.getElementById("yes-node-input").value;
+    if (inputVal.trim() === "") {
+      alert("Please enter a question for the Yes Node.");
+      return;
+    }
     setYesNodeQuestion(inputVal);
     setYesNodeAdded(true);
   };
@@ -44,6 +48,10 @@ const RootNodeSection = () => {
       return;
     }
     const inputVal = document.getElementById("no-node-input").value;
+    if (inputVal.trim() === "") {
+      alert("Please enter a question for the No Node.");
+      return;
+    }
     setNoNodeQuestion(inputVal);
     setNoNodeAdded(true);
   };
