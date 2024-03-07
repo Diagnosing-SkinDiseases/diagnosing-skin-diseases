@@ -1,5 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
+import RootNodeSection from "./EditorComponents/RootNodeInput";
 import Controls from "./ListComponents/Controls";
 import "./styles/AdminDashboard.css";
 import "./styles/AdminEditTrees.css";
@@ -10,31 +11,36 @@ const AdminEditTrees = () => {
       <Controls />
       <div className="content-section">
         <div className="title-section">
-          <h3>Title</h3>
-          <div className="white-bar">
-            <span>Lorem Epsum</span>
+          <div>
+            {" "}
+            <h3>Title</h3>
+            <input
+              className="white-bar-input"
+              type="text"
+              placeholder="Lorem Epsum"
+            />
           </div>
-        </div>
-        <div className="yes-node">
-          <h3>Yes Node</h3>
-          <div className="white-bar">
-            <span>Lorem Epsum</span>
-            <button className="btn btn-primary btn-sm rounded-pill flex-right">
-              Add Node
-            </button>
+          <RootNodeSection />
+          <div style={{ marginTop: "20px" }}>
+            {" "}
+            <h3>Yes Node</h3>
+            <input
+              className="white-bar-input"
+              type="text"
+              placeholder="Enter Yes Node question"
+            />
           </div>
-        </div>
-        <div className="no-node">
-          <h3>No Node</h3>
-          <div className="white-bar">
-            <span>Lorem Epsum</span>
-            <button className="btn btn-danger btn-sm rounded-pill float-right">
-              Add Node
-            </button>
+          <div>
+            {" "}
+            <h3>No Node</h3>
+            <input
+              className="white-bar-input"
+              type="text"
+              placeholder="Enter No Node question"
+            />
           </div>
         </div>
         <div className="button-container">
-          {" "}
           <button className="btn btn-primary btn-sm rounded-pill">
             Preview
           </button>
