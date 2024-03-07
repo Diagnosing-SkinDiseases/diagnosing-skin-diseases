@@ -12,6 +12,7 @@ import Login from "../Login/Login";
 import NavBarComponent from "../NavBar/NavBar";
 import ArticlePage from "../ArticleList/ArticleList";
 import UserTree from "../UserTree/UserTree";
+import Signup from "../SignUp/SignUp";
 import "./App.css";
 
 // Test components - Sean
@@ -85,6 +86,9 @@ function App() {
 
         {/*Login*/}
         <Route path="/login" element={<Login></Login>}></Route>
+
+        {/*Signup*/}
+        <Route path="/signup" element={<Signup></Signup>}></Route>
 
         {/* About DSD */}
         <Route path="/about" element={<About />}></Route>
