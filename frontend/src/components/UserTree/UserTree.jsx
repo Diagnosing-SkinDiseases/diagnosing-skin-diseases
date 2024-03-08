@@ -64,6 +64,7 @@ const UserTree = () => {
         }, 0);
     }, []);
 
+    // Update color when current node changes
     useEffect(() => {
         // Find and clear the previous current node
         const prevCurrentNode = document.querySelector('.currentNode');
@@ -75,7 +76,7 @@ const UserTree = () => {
             if (nodeData) {
                 const color = nodeData.yesChildId && nodeData.noChildId ? blueNode
                     : (nodeData.noChildId == null && nodeData.yesChildId == null) ? yellowNode
-                        : ''; // Default color or another logic
+                        : ''; // Default color
                 prevCurrentNode.style.backgroundColor = color;
             }
         }
@@ -88,7 +89,7 @@ const UserTree = () => {
                 newCurrentNode.style.backgroundColor = greenNode; // Set the new current node color to green
             }
         }
-    }, [currentNodeId]);
+    }, [currentNodeId]); // Triggered when currentNodeId changes
 
     // Find the maximum level of the tree
     const findMaxLevel = (nodes) => {
