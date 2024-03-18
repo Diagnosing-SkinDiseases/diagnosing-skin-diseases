@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import bcrypt from 'bcryptjs'; // Import bcrypt for password hashing
 
 const SignUpForm = ({ addUser }) => {
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [signUpStatus, setSignUpStatus] = useState("");
@@ -11,19 +11,18 @@ const SignUpForm = ({ addUser }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // Validate user input
     if (password !== confirmPassword) {
       setErrorMessage("Passwords do not match");
       return;
     }
 
-    // Hash the password before sending it to addUser function
-    const hashedPassword = bcrypt.hashSync(password, 10);
-
-    // Add the new user with hashed password to the database
-    addUser({ email, password: hashedPassword });
+    addUser({ username, email, password });
 
     setSignUpStatus("Sign Up Successful!");
+    setEmail("");
+    setUsername("");
+    setPassword("");
+    setConfirmPassword("");
   };
 
   return (
@@ -37,6 +36,13 @@ const SignUpForm = ({ addUser }) => {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
+        <input
+        type="username"
+        placeholder="Username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        required
+      />
         <input
           type="password"
           placeholder="Password"
@@ -53,8 +59,8 @@ const SignUpForm = ({ addUser }) => {
         />
         <button type="submit">Sign Up</button>
       </form>
-      {errorMessage && <div>{errorMessage}</div>}
-      <div>{signUpStatus}</div>
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
+      <div className="signup-status">{signUpStatus}</div>
     </div>
   );
 };
