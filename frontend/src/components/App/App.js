@@ -1,4 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import React from "react";
+import { AuthProvider, useAuth } from "./AuthContext";
 import About from "../AboutDSD/About";
 import AdminDashboard from "../AdminDashboard/AdminDashboard";
 import AdminEditTrees from "../AdminDashboard/AdminEditTrees";
@@ -9,6 +11,7 @@ import Article from "../Article/Article";
 import Glossary from "../Glossary/Glossary";
 import Homepage from "../Homepage/Homepage";
 import Login from "../Login/Login";
+import Logout from "../Logout/Logout";
 import NavBarComponent from "../NavBar/NavBar";
 import ArticlePage from "../ArticleList/ArticleList";
 import UserTree from "../UserTree/UserTree";
@@ -28,143 +31,154 @@ import ArticleApiTests from "../SeanPrototypes/ApiTesting/ArticleApiTests";
 import GlossaryItemApiTests from "../SeanPrototypes/ApiTesting/GlossaryItemApiTests";
 import TreeApiTests from "../SeanPrototypes/ApiTesting/TreeApiTests";
 
+// This function wraps your Routes and uses useAuth to access the auth state
+function ProtectedRoute({ children }) {
+  const { isLoggedIn } = useAuth(); // Use the isLoggedIn state from AuthContext
+  return isLoggedIn ? children : <Navigate to="/login" replace />;
+}
+
 function App() {
   // test data for demo only
   const { trees, definitions, articles } = testData;
 
-  // Function to check if user is authenticated
-  const isAuthenticated = () => {
-    return !!localStorage.getItem("token");
-  };
-
   return (
-    <div className="app-container">
-      <NavBarComponent isLoggedIn={isAuthenticated()}></NavBarComponent>
-      <Routes>
-        {/* Homepage */}
-        <Route path="/" element={<Homepage></Homepage>}></Route>
+    <AuthProvider>
+      <div className="app-container">
+        <NavBarComponent></NavBarComponent>
+        <Routes>
+          {/* Homepage */}
+          <Route path="/" element={<Homepage></Homepage>}></Route>
 
-        {/* User - Trees */}
-        <Route path="/user/trees" element={<UserTree></UserTree>}></Route>
+          {/* User - Trees */}
+          <Route path="/user/trees" element={<UserTree></UserTree>}></Route>
 
-        {/* Article */}
-        <Route path="/article" element={<Article></Article>}></Route>
+          {/* Article */}
+          <Route path="/article" element={<Article></Article>}></Route>
 
-        {/* Admin */}
-        {/* Admin - Trees */}
-        <Route
-          path="/admin/trees"
-          element={<AdminDashboard data={trees} />}
-        ></Route>
-
-        {/* Admin - Trees - Edit */}
-        <Route path="/admin/trees/edit" element={<AdminEditTrees />}></Route>
-
-        {/* Admin - Articles */}
-        <Route
-          path="/admin/articles"
-          element={
-            isAuthenticated() ? (
-              <AdminDashboard data={articles} />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
-        ></Route>
-        {/* Admin - Glossary - Add */}
-        <Route
-          path="/admin/articles/add"
-          element={<ContentEditor contentType={ContentTypeEnum.ARTICLE} />}
-        ></Route>
-
-        {/* Admin - Glossary */}
-        <Route
-          path="/admin/definitions"
-          element={<AdminDashboard data={definitions} />}
-        ></Route>
-
-        {/* Admin - Glossary - Add */}
-        <Route
-          path="/admin/definitions/add"
-          element={<ContentEditor contentType={ContentTypeEnum.DEFINITION} />}
-        ></Route>
-
-        {/* Article List */}
-        <Route path="/treatment" element={<ArticlePage />}></Route>
-
-        {/* Glossary */}
-        <Route path="/glossary" element={<Glossary></Glossary>}></Route>
-
-        {/*Login*/}
-        <Route path="/login" element={<Login></Login>}></Route>
-
-        {/*Signup*/}
-        <Route path="/signup" element={<Signup></Signup>}></Route>
-
-        {/* About DSD */}
-        <Route path="/about" element={<About />}></Route>
-
-        {/* Testing - Sean*/}
-        <Route path="/test">
-          <Route path="admin">
-            {/* Test admin - articles */}
-            <Route
-              path="articles"
-              element={<TestAdminDashboard></TestAdminDashboard>}
-            ></Route>
-            {/* Test admin - articles - add */}
-            <Route
-              path="articles/add"
-              element={<CreateArticle></CreateArticle>}
-            ></Route>
-            {/* Test reference */}
-            <Route
-              path="add/sample"
-              element={<ContentEditor contentType={ContentTypeEnum.ARTICLE} />}
-            ></Route>
-            {/* Test admin - definitions (glossary) */}
-            <Route
-              path="definitions"
-              element={
-                <TestGlossaryAdminDashboard></TestGlossaryAdminDashboard>
-              }
-            ></Route>
-            {/* Test admin - definitions - add */}
-            <Route
-              path="definitions/add"
-              element={<TestGlossaryContentEditor></TestGlossaryContentEditor>}
-            ></Route>
-          </Route>
-          {/* Test user - articles */}
+          {/* Admin */}
+          {/* Admin - Trees */}
           <Route
-            path="article-list"
-            element={<TestResearchArticles></TestResearchArticles>}
+            path="/admin/trees"
+            element={<AdminDashboard data={trees} />}
           ></Route>
-          {/* Test user - glossary */}
+
+          {/* Admin - Trees - Edit */}
+          <Route path="/admin/trees/edit" element={<AdminEditTrees />}></Route>
+
+          {/* Admin - Articles */}
           <Route
-            path="glossary"
-            element={<TestGlossary></TestGlossary>}
+            path="/admin/articles"
+            element={
+              <ProtectedRoute>
+                <AdminDashboard data={articles} />
+              </ProtectedRoute>
+            }
+          />
+          {/* Admin - Glossary - Add */}
+          <Route
+            path="/admin/articles/add"
+            element={<ContentEditor contentType={ContentTypeEnum.ARTICLE} />}
           ></Route>
-          {/* Test APIs */}
-          <Route path="api">
-            {/* Test Articles API */}
+
+          {/* Admin - Glossary */}
+          <Route
+            path="/admin/definitions"
+            element={<AdminDashboard data={definitions} />}
+          ></Route>
+
+          {/* Admin - Glossary - Add */}
+          <Route
+            path="/admin/definitions/add"
+            element={<ContentEditor contentType={ContentTypeEnum.DEFINITION} />}
+          ></Route>
+
+          {/* Article List */}
+          <Route path="/treatment" element={<ArticlePage />}></Route>
+
+          {/* Glossary */}
+          <Route path="/glossary" element={<Glossary></Glossary>}></Route>
+
+          {/*Login*/}
+          <Route path="/login" element={<Login></Login>}></Route>
+
+          {/*Logout*/}
+          <Route path="/logout" element={<Logout />}></Route>
+
+          {/*Signup*/}
+          <Route path="/signup" element={<Signup></Signup>}></Route>
+
+          {/* About DSD */}
+          <Route path="/about" element={<About />}></Route>
+
+          {/* Testing - Sean*/}
+          <Route path="/test">
+            <Route path="admin">
+              {/* Test admin - articles */}
+              <Route
+                path="articles"
+                element={<TestAdminDashboard></TestAdminDashboard>}
+              ></Route>
+              {/* Test admin - articles - add */}
+              <Route
+                path="articles/add"
+                element={<CreateArticle></CreateArticle>}
+              ></Route>
+              {/* Test reference */}
+              <Route
+                path="add/sample"
+                element={
+                  <ContentEditor contentType={ContentTypeEnum.ARTICLE} />
+                }
+              ></Route>
+              {/* Test admin - definitions (glossary) */}
+              <Route
+                path="definitions"
+                element={
+                  <TestGlossaryAdminDashboard></TestGlossaryAdminDashboard>
+                }
+              ></Route>
+              {/* Test admin - definitions - add */}
+              <Route
+                path="definitions/add"
+                element={
+                  <TestGlossaryContentEditor></TestGlossaryContentEditor>
+                }
+              ></Route>
+            </Route>
+            {/* Test user - articles */}
             <Route
-              path="articles"
-              element={<ArticleApiTests></ArticleApiTests>}
+              path="article-list"
+              element={<TestResearchArticles></TestResearchArticles>}
             ></Route>
-            {/* Test Glossary API */}
+            {/* Test user - glossary */}
             <Route
               path="glossary"
-              element={<GlossaryItemApiTests></GlossaryItemApiTests>}
+              element={<TestGlossary></TestGlossary>}
             ></Route>
-            {/* Test Tree API */}
-            <Route path="trees" element={<TreeApiTests></TreeApiTests>}></Route>
+            {/* Test APIs */}
+            <Route path="api">
+              {/* Test Articles API */}
+              <Route
+                path="articles"
+                element={<ArticleApiTests></ArticleApiTests>}
+              ></Route>
+              {/* Test Glossary API */}
+              <Route
+                path="glossary"
+                element={<GlossaryItemApiTests></GlossaryItemApiTests>}
+              ></Route>
+              {/* Test Tree API */}
+              <Route
+                path="trees"
+                element={<TreeApiTests></TreeApiTests>}
+              ></Route>
+            </Route>
           </Route>
-        </Route>
-      </Routes>
+        </Routes>
 
-      <footer className="footer">Footer</footer>
-    </div>
+        <footer className="footer">Footer</footer>
+      </div>
+    </AuthProvider>
   );
 }
 
