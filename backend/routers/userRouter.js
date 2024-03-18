@@ -2,6 +2,7 @@ const express = require("express");
 const userRouter = express.Router();
 const {
   createUser,
+  loginUser,
   getAllUsers,
   getUser,
   updateUser,
@@ -10,6 +11,9 @@ const {
 
 // Create
 userRouter.post("/user/create", createUser);
+
+// Login
+userRouter.post("/user/login", loginUser);
 
 // Read all
 userRouter.get("/user/read/all", getAllUsers);

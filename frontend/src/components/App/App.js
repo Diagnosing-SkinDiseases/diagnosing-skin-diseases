@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import About from "../AboutDSD/About";
 import AdminDashboard from "../AdminDashboard/AdminDashboard";
 import AdminEditTrees from "../AdminDashboard/AdminEditTrees";
@@ -32,9 +32,14 @@ function App() {
   // test data for demo only
   const { trees, definitions, articles } = testData;
 
+  // Function to check if user is authenticated
+  const isAuthenticated = () => {
+    return !!localStorage.getItem("token");
+  };
+
   return (
     <div className="app-container">
-      <NavBarComponent></NavBarComponent>
+      <NavBarComponent isLoggedIn={isAuthenticated()}></NavBarComponent>
       <Routes>
         {/* Homepage */}
         <Route path="/" element={<Homepage></Homepage>}></Route>
@@ -58,7 +63,13 @@ function App() {
         {/* Admin - Articles */}
         <Route
           path="/admin/articles"
-          element={<AdminDashboard data={articles} />}
+          element={
+            isAuthenticated() ? (
+              <AdminDashboard data={articles} />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
         ></Route>
         {/* Admin - Glossary - Add */}
         <Route
