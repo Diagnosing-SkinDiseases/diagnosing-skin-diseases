@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 const SignUpForm = ({ addUser }) => {
   const [email, setEmail] = useState("");
@@ -8,15 +10,22 @@ const SignUpForm = ({ addUser }) => {
   const [signUpStatus, setSignUpStatus] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  const navigate = useNavigate();
+
   const validateEmail = (email) => {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@(([^<>()[\]\\.,;:\s@\"]+\.)+[^<>()[\]\\.,;:\s@\"]{2,})$/i;
     return re.test(String(email).toLowerCase());
   };
 
-  const hasUppercaseLetterAndSymbol = (password) => {
+  const isValidPassword = (password) => {
     const uppercaseRegExp = /[A-Z]/;
+    const lowercaseRegExp = /[a-z]/; // Check for lowercase letter
+    const numberRegExp = /\d/; // Check for numeric digit
     const symbolRegExp = /[\s~`!@#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?()\._]/; // Adjust based on symbols you want to include
-    return uppercaseRegExp.test(password) && symbolRegExp.test(password);
+    return uppercaseRegExp.test(password) && 
+           lowercaseRegExp.test(password) && 
+           numberRegExp.test(password) && 
+           symbolRegExp.test(password);
   };
 
   const handleSubmit = (event) => {
@@ -38,7 +47,7 @@ const SignUpForm = ({ addUser }) => {
       return;
     }
 
-    if (!hasUppercaseLetterAndSymbol(password)) {
+    if (!isValidPassword(password)) {
       setErrorMessage("Password must contain at least one uppercase letter and one symbol");
       return;
     }
@@ -49,13 +58,28 @@ const SignUpForm = ({ addUser }) => {
       return;
     }
 
-    addUser({ username, email, password });
+    try {
+      addUser({ username, email, password });
+      
+      // Set success message and clear form
+      setSignUpStatus("Sign Up Successful!");
+      setEmail("");
+      setUsername("");
+      setPassword("");
+      setConfirmPassword("");
+      
+      // Redirect to the login page after a short delay
+      setTimeout(() => navigate("/login"), 2000); // Adjust the delay as needed
 
-    setSignUpStatus("Sign Up Successful!");
-    setEmail("");
-    setUsername("");
-    setPassword("");
-    setConfirmPassword("");
+    } catch (error) {
+      // Assuming addUser handles the API call and throws an error on failure
+      const errorMessage = error.response && error.response.data && error.response.data.message
+        ? error.response.data.message
+        : "An error occurred during sign-up. Please try again later.";
+      setErrorMessage(errorMessage);
+      // Clear the success status in case of error after a retry
+      setSignUpStatus("");
+    }
   };
 
   return (
