@@ -8,8 +8,41 @@ const SignUpForm = ({ addUser }) => {
   const [signUpStatus, setSignUpStatus] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  const validateEmail = (email) => {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@(([^<>()[\]\\.,;:\s@\"]+\.)+[^<>()[\]\\.,;:\s@\"]{2,})$/i;
+    return re.test(String(email).toLowerCase());
+  };
+
+  const hasUppercaseLetterAndSymbol = (password) => {
+    const uppercaseRegExp = /[A-Z]/;
+    const symbolRegExp = /[\s~`!@#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?()\._]/; // Adjust based on symbols you want to include
+    return uppercaseRegExp.test(password) && symbolRegExp.test(password);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
+    setErrorMessage("");
+
+    if (!validateEmail(email)) {
+      setErrorMessage("Invalid email format");
+      return;
+    }
+
+    if (username === password) {
+      setErrorMessage("Username and password cannot be the same");
+      return;
+    }
+
+    if (password.length < 8) {
+      setErrorMessage("Password must be at least 8 characters long");
+      return;
+    }
+
+    if (!hasUppercaseLetterAndSymbol(password)) {
+      setErrorMessage("Password must contain at least one uppercase letter and one symbol");
+      return;
+    }
+
 
     if (password !== confirmPassword) {
       setErrorMessage("Passwords do not match");

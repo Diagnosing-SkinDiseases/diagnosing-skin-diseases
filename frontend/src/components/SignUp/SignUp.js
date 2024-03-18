@@ -1,10 +1,13 @@
-import React from "react";
-import axios from "axios"; // Import Axios
+import React, { useState } from "react";
+import axios from "axios";
 import SignUpForm from "./SignUpForm";
 import "./SignUp.css";
 
 function App() {
+  const [serverError, setServerError] = useState("");
+
   const addUser = async (user) => {
+    setServerError("");
     try {
       // Using Axios for the POST request
       const response = await axios.post(
@@ -14,17 +17,17 @@ function App() {
       console.log("User created:", response.data);
       // Handle success (e.g., display success message, clear form, etc.)
     } catch (error) {
-      // With Axios, the error response (if available) can be accessed via error.response
-      console.error(
-        "Error creating user:",
-        error.response ? error.response.data : error
-      );
-      // Handle error (e.g., display error message)
+      const errorMessage =
+        error.response && error.response.data && error.response.data.message
+          ? error.response.data.message
+          : "An error occurred during sign-up.";
+      setServerError(errorMessage);
     }
   };
 
   return (
     <div className="SignUp">
+      {serverError && <div className="error-message">{serverError}</div>}
       <SignUpForm addUser={addUser} />
     </div>
   );
