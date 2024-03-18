@@ -1,21 +1,29 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
-const LoginForm = ({ usersDB }) => {
-  const [email, setEmail] = useState("");
+const LoginForm = () => {
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [loginStatus, setLoginStatus] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Find user in the mock database
-    const user = usersDB.find(
-      (user) => user.email === email && user.password === password
-    );
-    if (user) {
-      setLoginStatus("Login successful!");
-      console.log("User ID:", user.id);
-    } else {
-      setLoginStatus("Login failed");
+    try {
+      const response = await fetch("http://localhost:4000/api/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+      if (!response.ok) throw new Error("Login failed");
+
+      const { token } = await response.json();
+      localStorage.setItem('token', token); // Store token in localStorage
+      navigate("/admin/articles"); // Redirect to admin articles page
+    } catch (error) {
+      console.error("Error logging in:", error);
+      
     }
   };
 
@@ -24,24 +32,24 @@ const LoginForm = ({ usersDB }) => {
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <input
-          type="email"
-          placeholder="email address"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          type="username"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           required
         />
         <input
           type="password"
-          placeholder="password"
+          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
         <button type="submit">Login</button>
       </form>
-      <div>{loginStatus}</div>
     </div>
   );
 };
 
 export default LoginForm;
+
