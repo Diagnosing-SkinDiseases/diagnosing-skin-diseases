@@ -13,7 +13,11 @@ function ArticleListPage() {
   useEffect(() => {
     apiGetAllArticles()
       .then((response) => {
-        setArticles(response.data);
+        // Filter articles to only include those with status "PUBLISHED"
+        const publishedArticles = response.data.filter(
+          (article) => article.status === "PUBLISHED"
+        );
+        setArticles(publishedArticles);
       })
       .catch((error) => console.error("Error fetching articles: ", error));
   }, []);
