@@ -68,7 +68,7 @@ const RootNodeSection = () => {
   return (
     <div className="root-node-section-container">
       <h3>Root Node</h3>
-      <h3 className="error-message">{errorMessage}</h3>
+      <h3 style={{ color: "red" }}>{errorMessage}</h3>
       <div className="white-bar-input-dropdown-container">
         <input
           className="white-bar-input-dropdown"
