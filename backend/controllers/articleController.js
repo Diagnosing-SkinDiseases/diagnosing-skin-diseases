@@ -58,10 +58,12 @@ const updateArticle = async (req, res) => {
     req.body.status = status;
   }
 
-  content.forEach((content) => {
-    content.type = content.type.toUpperCase();
-  });
-  req.body.content = content;
+  if (content) {
+    content.forEach((content) => {
+      content.type = content.type.toUpperCase();
+    });
+    req.body.content = content;
+  }
 
   const { id, ...data } = req.body;
 
