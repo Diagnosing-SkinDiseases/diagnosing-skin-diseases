@@ -9,7 +9,7 @@ const createTree = async (req, res) => {
     status = status.toUpperCase();
   }
 
-  nodeTree = inorderToList(nodeTree, []);
+  nodeTree = inOrderToList(nodeTree, []);
 
   try {
     const tree = await Tree.create({ name, nodes: nodeTree, about, status });
@@ -55,8 +55,10 @@ const updateTree = async (req, res) => {
     req.body.status = status;
   }
 
-  nodeTree = inorderToList(nodeTree, []);
-  req.body.nodeTree = nodeTree;
+  if (nodeTree) {
+    nodeTree = inOrderToList(nodeTree, []);
+    req.body.nodeTree = nodeTree;
+  }
 
   const { id, ...data } = req.body;
 
@@ -99,15 +101,15 @@ const deleteTree = async (req, res) => {
 };
 
 // Helper functions
-const inorderToList = (node, acc) => {
+const inOrderToList = (node, acc) => {
   if (node) {
     let { parentId, content, currentId, yesChild, noChild } = node;
     let parsedNode = { currentId, content, parentId };
     parsedNode.noChildId = noChild ? noChild.currentId : null;
     parsedNode.yesChildId = yesChild ? yesChild.currentId : null;
     acc.push(parsedNode);
-    inorderToList(node.noChild, acc);
-    inorderToList(node.yesChild, acc);
+    inOrderToList(node.noChild, acc);
+    inOrderToList(node.yesChild, acc);
   }
   return acc;
 };
