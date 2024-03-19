@@ -8,7 +8,10 @@ import React, { useState } from "react";
 import "../styles/AdminEditTrees.css";
 
 const RootNodeSection = () => {
-  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
+  const [showAdditionalInputsRoot, setShowAdditionalInputsRoot] =
+    useState(false);
+  const [showAdditionalInputsYes, setShowAdditionalInputsYes] = useState(false);
+  const [showAdditionalInputsNo, setShowAdditionalInputsNo] = useState(false);
   const [yesNodeQuestion, setYesNodeQuestion] = useState("");
   const [noNodeQuestion, setNoNodeQuestion] = useState("");
   const [rootNodeAdded, setRootNodeAdded] = useState(false);
@@ -16,8 +19,16 @@ const RootNodeSection = () => {
   const [noNodeAdded, setNoNodeAdded] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleDropdownClick = () => {
-    setShowAdditionalInputs(!showAdditionalInputs);
+  const handleDropdownClickRoot = () => {
+    setShowAdditionalInputsRoot(!showAdditionalInputsRoot);
+  };
+
+  const handleDropdownClickYes = () => {
+    setShowAdditionalInputsYes(!showAdditionalInputsYes);
+  };
+
+  const handleDropdownClickNo = () => {
+    setShowAdditionalInputsNo(!showAdditionalInputsNo);
   };
 
   const handleAddRootNode = () => {
@@ -76,7 +87,7 @@ const RootNodeSection = () => {
           placeholder="Enter Root Node question"
           onChange={handleAddRootNode}
         />
-        <button className="dropdown-button" onClick={handleDropdownClick}>
+        <button className="dropdown-button" onClick={handleDropdownClickRoot}>
           <FontAwesomeIcon
             icon={showAdditionalInputs ? faAngleUp : faAngleDown}
           />
@@ -141,7 +152,10 @@ const RootNodeSection = () => {
                 value={yesNodeQuestion}
                 readOnly
               />
-              <button className="dropdown-button" onClick={handleDropdownClick}>
+              <button
+                className="dropdown-button"
+                onClick={handleDropdownClickYes}
+              >
                 <FontAwesomeIcon
                   icon={showAdditionalInputs ? faAngleUp : faAngleDown}
                 />
@@ -194,7 +208,10 @@ const RootNodeSection = () => {
                 value={noNodeQuestion}
                 readOnly
               />
-              <button className="dropdown-button" onClick={handleDropdownClick}>
+              <button
+                className="dropdown-button"
+                onClick={handleDropdownClickNo}
+              >
                 <FontAwesomeIcon
                   icon={showAdditionalInputs ? faAngleUp : faAngleDown}
                 />
