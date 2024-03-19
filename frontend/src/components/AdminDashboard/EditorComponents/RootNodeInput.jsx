@@ -89,11 +89,11 @@ const RootNodeSection = () => {
         />
         <button className="dropdown-button" onClick={handleDropdownClickRoot}>
           <FontAwesomeIcon
-            icon={showAdditionalInputs ? faAngleUp : faAngleDown}
+            icon={showAdditionalInputsRoot ? faAngleUp : faAngleDown}
           />
         </button>
       </div>
-      {showAdditionalInputs && (
+      {showAdditionalInputsRoot && (
         <div className="additional-inputs-container">
           <div className="additional-input-with-button">
             {" "}
@@ -157,11 +157,11 @@ const RootNodeSection = () => {
                 onClick={handleDropdownClickYes}
               >
                 <FontAwesomeIcon
-                  icon={showAdditionalInputs ? faAngleUp : faAngleDown}
+                  icon={showAdditionalInputsYes ? faAngleUp : faAngleDown}
                 />
               </button>
             </div>
-            {showAdditionalInputs && (
+            {showAdditionalInputsYes && (
               <div className="additional-inputs-container">
                 <div className="additional-input-with-button">
                   {" "}
@@ -213,11 +213,11 @@ const RootNodeSection = () => {
                 onClick={handleDropdownClickNo}
               >
                 <FontAwesomeIcon
-                  icon={showAdditionalInputs ? faAngleUp : faAngleDown}
+                  icon={showAdditionalInputsNo ? faAngleUp : faAngleDown}
                 />
               </button>
             </div>
-            {showAdditionalInputs && (
+            {showAdditionalInputsNo && (
               <div className="additional-inputs-container">
                 <div className="additional-input-with-button">
                   {" "}
