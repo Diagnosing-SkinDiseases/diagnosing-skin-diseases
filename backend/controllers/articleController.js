@@ -25,7 +25,8 @@ const createArticle = async (req, res) => {
 // Read all articles
 const getAllArticles = async (req, res) => {
   try {
-    const articles = await Article.find({}).sort({ createdAt: -1 });
+    let articles = await Article.find({}).sort({ title: 1 });
+
     res.status(200).json(articles);
   } catch (error) {
     res.status(400).json({ error: error.message });

@@ -24,7 +24,7 @@ const createGlossaryItem = async (req, res) => {
 // Read all glossaryItems
 const getAllGlossaryItems = async (req, res) => {
   try {
-    const glossaryItems = await GlossaryItem.find({}).sort({ createdAt: -1 });
+    const glossaryItems = await GlossaryItem.find({}).sort({ term: 1 });
     res.status(200).json(glossaryItems);
   } catch (error) {
     res.status(400).json({ error: error.message });
