@@ -14,7 +14,11 @@ function App() {
   useEffect(() => {
     apiGetAllGlossaryItems()
       .then((response) => {
-        setGlossaryItems(response.data);
+        // Filter items to only include those with status "PUBLISHED"
+        const publishedItems = response.data.filter(
+          (item) => item.status === "PUBLISHED"
+        );
+        setGlossaryItems(publishedItems);
       })
       .catch((error) =>
         console.error("Error fetching glossary items: ", error)

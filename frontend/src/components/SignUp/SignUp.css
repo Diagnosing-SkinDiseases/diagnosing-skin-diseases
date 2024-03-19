@@ -1,5 +1,5 @@
-/* Style the card for the login form */
-.login-card {
+/* Style the card for the SignUp form */
+.SignUp-card {
   background: white;
   padding: 2em;
   border-radius: 10px;
@@ -10,13 +10,13 @@
 }
 
 /* Style the heading */
-.login-card h2 {
+.SignUp-card h2 {
   text-align: center;
   margin-bottom: 1em;
 }
 
 /* Style the form inputs */
-.login-card input {
+.SignUp-card input {
   width: 100%;
   padding: 10px;
   margin-bottom: 1em;
@@ -26,12 +26,12 @@
 }
 
 /* Style the placeholder text */
-.login-card input::placeholder {
+.SignUp-card input::placeholder {
   color: #aaa;
 }
 
 /* Style the login button */
-.login-card button {
+.SignUp-card button {
   width: 100%;
   padding: 10px;
   border: none;
@@ -44,18 +44,24 @@
 }
 
 /* Hover state for the login button */
-.login-card button:hover {
+.SignUp-card button:hover {
   background-color: #0056b3;
 }
 
 /* Ensure the form items align properly */
-.login-card form {
+.SignUp-card form {
   display: flex;
   flex-direction: column;
 }
 
 .error-message {
   color: red;
+  margin: 1em;
+  text-align: center;
+}
+
+.signup-status {
+  color: blue;
   margin: 1em;
   text-align: center;
 }

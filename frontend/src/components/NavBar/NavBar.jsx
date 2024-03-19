@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom'; 
+import { useAuth } from '../App/AuthContext';
 import './NavBarComponent.css';
 
 // Subtab component
@@ -19,7 +20,8 @@ const NavSubtab = ({ show, titles }) => {
 };
 
 // Main NavBar component
-const NavBarComponent = ({ isLoggedIn }) => {
+const NavBarComponent = () => {
+  const { isLoggedIn } = useAuth();
   const [activeLink, setActiveLink] = useState('');
 
   // Define links for main tabs and their corresponding subtabs if any

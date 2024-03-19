@@ -11,4 +11,11 @@ const NodeComponent = ({ color, id }) => {
     );
 }
 
-export default NodeComponent;
+const InvisibleNodeComponent = () => {
+    return (
+        <div className="invisible-node-component" style={{ backgroundColor: "blue" }} >
+        </div >
+    );
+};
+
+export { NodeComponent, InvisibleNodeComponent };
