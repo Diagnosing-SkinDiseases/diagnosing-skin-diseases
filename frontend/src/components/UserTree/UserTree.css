@@ -1,5 +1,9 @@
 .user-tree-container {
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 .user-tree {
@@ -41,6 +45,6 @@
     margin-top: 20px;
 }
 
-.node-component{
+.node-component {
     margin: 0.5em;
 }
