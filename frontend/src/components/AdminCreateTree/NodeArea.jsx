@@ -7,8 +7,22 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import "./AdminCreateTrees.css";
 import { useState } from "react";
+import YesNodeArea from "./YesNodeArea";
+import NoNodeArea from "./NoNodeArea";
+
+const styles = {
+  nodeContainer: {},
+};
 
 const NodeArea = ({ rootNode, setRootNode }) => {
+  // Dropdown State
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+
+  // Dropdown Interaction handlers
+  const toggleDropdown = () => {
+    setDropdownVisible((prevState) => !prevState);
+  };
+
   // Node ID state
   const [idCounter, setIdCounter] = useState(0);
 
@@ -40,7 +54,7 @@ const NodeArea = ({ rootNode, setRootNode }) => {
 
   const onChangeNodeContent = (event) => {
     const newContent = event.target.value;
-    const nodeIdToUpdate = event.target.getAttribute("data-nodeId");
+    const nodeIdToUpdate = event.target.getAttribute("data-nodeid");
     updateNodeContent(nodeIdToUpdate, newContent);
   };
 
@@ -58,7 +72,7 @@ const NodeArea = ({ rootNode, setRootNode }) => {
 
   return (
     <>
-      <div className="root-node-section-container">
+      <div className="root-node-section-container ">
         <h3>Root Node</h3>
         <h3 style={{ color: "red" }}>{}</h3>
         <div className="white-bar-input-dropdown-container">
@@ -67,14 +81,40 @@ const NodeArea = ({ rootNode, setRootNode }) => {
             type="text"
             placeholder="Enter Root Node question"
             value={rootNode.content}
-            data-nodeId={rootNode.currentId}
+            data-nodeid={rootNode.currentId}
             onChange={onChangeNodeContent}
           />
-          <button className="dropdown-button">
-            <FontAwesomeIcon icon={faAngleDown} />
+          <button className="dropdown-button" onClick={toggleDropdown}>
+            <FontAwesomeIcon icon={dropdownVisible ? faAngleUp : faAngleDown} />
           </button>
         </div>
+
+        {/* Yes and No add node dropdown */}
+        {dropdownVisible && (
+          <div className="additional-inputs-container">
+            <div className="additional-input-with-button">
+              <input
+                className="white-bar-input-dropdown-additional"
+                type="text"
+                placeholder="Enter Yes Node Question"
+                id="yes-node-input"
+              />
+              <button className="yes-node-button">Add Yes Node</button>
+            </div>
+            <div className="additional-input-with-button">
+              <input
+                className="white-bar-input-dropdown-additional"
+                type="text"
+                placeholder="Enter No Node Question"
+                id="no-node-input"
+              />
+              <button className="no-node-button">Add No Node</button>
+            </div>
+          </div>
+        )}
       </div>
+      <YesNodeArea></YesNodeArea>
+      <NoNodeArea></NoNodeArea>
     </>
   );
 };
