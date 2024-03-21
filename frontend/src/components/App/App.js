@@ -19,6 +19,9 @@ import WhiteMacules from "../UserTree/WhiteMacules";
 import Signup from "../SignUp/SignUp";
 import "./App.css";
 
+// Admin Components
+import AdminCreateTree from "../AdminCreateTree/AdminCreateTree";
+
 // Test components - Sean
 import TestAdminDashboard from "../SeanPrototypes/LoadArticles/AdminDashboard/AdminDashboard";
 import TestResearchArticles from "../SeanPrototypes/LoadArticles/UserFacingArticles/ResearchArticles/ResearchArticles";
@@ -64,6 +67,12 @@ function App() {
           <Route
             path="/admin/trees"
             element={<AdminDashboard data={trees} />}
+          ></Route>
+
+          {/* Admin - Trees - Add */}
+          <Route
+            path="/admin/trees/add"
+            element={<AdminCreateTree></AdminCreateTree>}
           ></Route>
 
           {/* Admin - Trees - Edit */}
