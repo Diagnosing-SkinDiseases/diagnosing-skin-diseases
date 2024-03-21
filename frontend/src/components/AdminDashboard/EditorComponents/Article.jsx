@@ -46,6 +46,7 @@ const Article = ({ onUpdate}) => {
           i++;
         });
         setContentBlocks(parsedContent);
+        onUpdate(parsedContent);
       })
         .catch((error) => {
           console.error('Error fetching article:', error);
@@ -57,15 +58,15 @@ const Article = ({ onUpdate}) => {
     setContentBlocks([...contentBlocks, { type, value: '' }]);
   };
 
-  const updateContentBlock = (index, value) => {
-    const updatedBlocks = contentBlocks.map((block, i) => {
-      if (i === index) {
-        return { ...block, value };
-      }
-      return block;
-    });
+  const updateContentBlock = (index, type, value) => {
+    // Generate the updated blocks array with the change applied to the specific block
+    const updatedBlocks = contentBlocks.map((block, i) => i === index ? { ...block, type, value } : block);
+
+    console.log("updatedBlock", updatedBlocks);
     setContentBlocks(updatedBlocks);
-  };
+
+    onUpdate(updatedBlocks);
+};
 
   const removeContentBlock = (index) => {
     setContentBlocks(contentBlocks.filter((_, i) => i !== index));
@@ -77,13 +78,16 @@ const Article = ({ onUpdate}) => {
     const contentInputProps = {
       key: index,
       block: block,
-      updateBlock: (value) => updateContentBlock(index, value),
+      // updateBlock: (value) => updateContentBlock(index, value),
+      updateBlock: (value) => updateContentBlock(index, block.type, value),
       remove: () => removeContentBlock(index),
       className: blockClassName, 
     };
     switch (block.type) {
       case ArticleContentType.TITLE:
       case ArticleContentType.SUBTITLE:
+      case ArticleContentType.HEADER1:
+      case ArticleContentType.HEADER2:
       case ArticleContentType.PARAGRAPH:
         return <ContentInput {...contentInputProps} />;
       case ArticleContentType.IMAGE:
@@ -94,19 +98,18 @@ const Article = ({ onUpdate}) => {
         return null;
     }
   };
-
   return (
     <div>
       {contentBlocks.map((block, index) => renderContentInput(block, index))}
           <div className ="add-content-btn-container">
               <Button
         label={labels.buttonLabels.add.title}
-        onClick={() => addContentBlock(ArticleContentType.TITLE)}
+        onClick={() => addContentBlock(ArticleContentType.HEADER1)}
         className="button add-content-btn">
               </Button>
               <Button
         label={labels.buttonLabels.add.subtitle}
-        onClick={() => addContentBlock(ArticleContentType.SUBTITLE)}
+        onClick={() => addContentBlock(ArticleContentType.HEADER2)}
         className="button add-content-btn">
               </Button>
               <Button
