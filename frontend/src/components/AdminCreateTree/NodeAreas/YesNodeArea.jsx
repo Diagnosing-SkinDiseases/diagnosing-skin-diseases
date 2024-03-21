@@ -1,10 +1,18 @@
 import React from "react";
+import styles from "../styles/styles";
+import NodeEditor from "./NodeEditor";
 
-const YesNodeArea = () => {
+const YesNodeArea = ({ rootNode, setRootNode }) => {
   return (
-    <div className="root-node-section-container">
-      <h3>Yes Nodes</h3>
-    </div>
+    <>
+      <div
+        style={styles.nodeContainer}
+        className="root-node-section-container "
+      >
+        <h3>No Nodes</h3>
+        <NodeEditor rootNode={rootNode} setRootNode={setRootNode}></NodeEditor>
+      </div>
+    </>
   );
 };
 

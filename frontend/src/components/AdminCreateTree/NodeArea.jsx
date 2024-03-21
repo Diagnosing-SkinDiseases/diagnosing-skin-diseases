@@ -19,8 +19,8 @@ const NodeArea = ({ rootNode, setRootNode }) => {
         rootNode={rootNode}
         setRootNode={setRootNode}
       ></RootNodeArea>
-      <YesNodeArea></YesNodeArea>
-      <NoNodeArea></NoNodeArea>
+      <YesNodeArea rootNode={rootNode} setRootNode={setRootNode}></YesNodeArea>
+      <NoNodeArea rootNode={rootNode} setRootNode={setRootNode}></NoNodeArea>
     </>
   );
 };
