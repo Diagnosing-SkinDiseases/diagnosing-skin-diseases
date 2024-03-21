@@ -67,6 +67,12 @@ function App() {
           element={<ContentEditor contentType={ContentTypeEnum.ARTICLE} />}
         ></Route>
 
+        {/* Admin - Glossary - Edit */}
+        <Route
+          path="/admin/articles/edit/:id"
+          element={<ContentEditor contentType={ContentTypeEnum.ARTICLE} />}
+        ></Route>
+
         {/* Admin - Glossary */}
         <Route
           path="/admin/definitions"
