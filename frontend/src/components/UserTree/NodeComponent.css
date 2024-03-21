@@ -19,3 +19,21 @@
     cursor: pointer;
     border-color: #014d62;
 }
+
+.currentNode {
+    background-color: #04ff00;
+    position: relative;
+    border: 8px solid black;
+}
+
+.currentNode::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
