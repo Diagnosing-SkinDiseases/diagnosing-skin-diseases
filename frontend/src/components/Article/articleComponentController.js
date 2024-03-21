@@ -18,9 +18,13 @@ const parseData = ({ type, content }) => {
         </>
       );
     case ArticleContentType.PARAGRAPH:
+      const parsedContent = content.replace(
+        /<a href="(.*?)">(.*?)<\/a>/g,
+        '<a href="$1" target="_blank" rel="noopener noreferrer">$2</a>'
+      );
       return (
         <>
-          <p>{content}</p>
+          <p dangerouslySetInnerHTML={{ __html: parsedContent }} />
         </>
       );
     case ArticleContentType.IMAGE:
