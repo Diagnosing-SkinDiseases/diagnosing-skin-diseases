@@ -4,6 +4,7 @@ import RootNodeSection from "./RootNodeInput";
 import "./AdminCreateTrees.css";
 import { useState, useEffect } from "react";
 import EditTreeTitle from "./EditTreeTitle";
+import NodeArea from "./NodeArea";
 
 const rootNodeDefault = {
   currentId: "node1",
@@ -142,41 +143,32 @@ test1 = addYesChild(test1, "node6", node7);
 test1 = deleteChild(test1, "node6");
 test1 = updateNodeContent(test1, "node3", "Test");
 
-console.log("test1", test1);
+// console.log("test1", test1);
 
 const AdminCreateTree = () => {
-  // Generate Node IDs
-  const [idCounter, setIdCounter] = useState(0);
-  const generateNodeId = () => {
-    setIdCounter((prevVal) => prevVal + 1);
-    return `node${idCounter + 1}`;
-  };
-
-  //   Manage title state
+  // Title state
   const [title, setTitle] = useState("");
 
-  //   Manage Node State
+  // Node State
   const [rootNode, setRootNode] = useState({
-    currentId: "node1",
+    currentId: "node0",
     content: "",
     parentId: null,
     noChild: [],
     yesChild: [],
   });
 
-  //   Node interaction handlers
-
   useEffect(() => {
     console.log(title);
     console.log(rootNode);
-  }, [title]);
+  }, [title, rootNode]);
 
   return (
     <>
       <div className="content-section">
         <div className="title-section">
           <EditTreeTitle title={title} setTitle={setTitle}></EditTreeTitle>
-          <RootNodeSection />
+          <NodeArea rootNode={rootNode} setRootNode={setRootNode}></NodeArea>
         </div>
         <div className="button-container">
           <button className="btn btn-primary btn-sm rounded-pill">
