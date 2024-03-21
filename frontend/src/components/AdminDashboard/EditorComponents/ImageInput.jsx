@@ -24,11 +24,13 @@ const ImageInput = ({ block, updateBlock, remove }) => {
       reader.onloadend = () => {
         setPreview(reader.result);
         // Log the base64 string to console
-        updateBlock({ ...block, value: reader.result });
+        // console.log("image", reader.result);
+        // updateBlock({ ...block, value: reader.result });
+        updateBlock(reader.result );
       };
       reader.readAsDataURL(file);
     }
-      };
+  };
 
 
   const handlePreviewClick = () => {
