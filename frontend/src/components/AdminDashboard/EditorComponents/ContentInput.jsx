@@ -8,17 +8,21 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 const ContentInput = ({ block, updateBlock, remove, className }) => {
   const handleChange = (e) => {
+    console.log("handleChange ", block);
     updateBlock(e.target.value);
   };
 
   const renderContentByType = () => {
     switch (block.type) {
       case ArticleContentType.TITLE:
-        return <div className="art-title"><input type="text" value={block.value} onChange={handleChange} placeholder="Title" /></div>;
+        return <div className="art-title"><input id = "art-title" type="text" value={block.value} onChange={handleChange} placeholder="Title" /></div>;
+      case ArticleContentType.HEADER1:
+        return <div className="art-title"><label className="label">Title</label><input id = "title" type="text" value={block.value} onChange={handleChange} placeholder="Title" /></div>;
+      case ArticleContentType.HEADER2:
       case ArticleContentType.SUBTITLE:
-        return <div className="art-subtitle"><input type="text" value={block.value} onChange={handleChange} placeholder="Subtitle" /></div>;
+        return <div className="art-subtitle"><label className="label">Subtitle</label><input id = "subtitle" type="text" value={block.value} onChange={handleChange} placeholder="Subtitle" /></div>;
       case ArticleContentType.PARAGRAPH:
-        return <div className="art-paragraph"><textarea value={block.value} onChange={handleChange} placeholder="Paragraph" rows={4} /></div>;
+        return <div className="art-paragraph"><label className="label">Paragraph</label><textarea value={block.value} onChange={handleChange} placeholder="Paragraph" rows={4} /></div>;
       default:
         return null;
     }
@@ -29,10 +33,12 @@ const ContentInput = ({ block, updateBlock, remove, className }) => {
         <div className={`content-input ${className}`}>
               {renderContentByType()}
               
-        </div>
+      </div>
+      <div className="delete-button-container">
         <Button onClick={remove} className="delete-button">
             <FontAwesomeIcon icon={faTrashAlt} className="fa-trash-alt" />
-              </Button>
+        </Button>
+      </div>
     </div>
   );
 };
