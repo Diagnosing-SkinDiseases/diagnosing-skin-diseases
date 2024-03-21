@@ -1,7 +1,13 @@
-const ContentType = {
-  IMAGE: "image",
-  HEADER: "header",
-  TEXT: "text",
+const ArticleContentType = {
+  HEADER1: "HEADER1",
+  HEADER2: "HEADER2",
+  PARAGRAPH: "PARAGRAPH",
+  PNG: "PNG",
+  JPEG: "JPEG",
+  GIF: "GIF",
+  VIDEO: "VIDEO",
+  IMAGE: "IMAGE",
+  SUBTITLE: "SUBTITLE",
 };
 
-export default ContentType;
+export default ArticleContentType;
