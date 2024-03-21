@@ -117,12 +117,6 @@ const updateNodeContent = (rootNode, nodeIdToUpdate, newContent) => {
   return updatedRootNode;
 };
 
-// console.log("post", addNoChild(rootNodeDefault));
-// console.log("delete", deleteNoChild(addNoChild(), "node2"));
-// console.log("post", addYesChild(rootNodeDefault));
-// console.log("delete", deleteYesChild(addYesChild(), "node3"));
-// console.log("pre", rootNodeDefault);
-
 let test1 = rootNodeDefault;
 let node2 = generateNode();
 let node3 = generateNode();
@@ -142,8 +136,6 @@ test1 = addYesChild(test1, "node6", node7);
 
 test1 = deleteChild(test1, "node6");
 test1 = updateNodeContent(test1, "node3", "Test");
-
-// console.log("test1", test1);
 
 const AdminCreateTree = () => {
   // Title state

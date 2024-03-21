@@ -5,9 +5,6 @@ import { useEffect } from "react";
 
 // style={styles.nodeContainer}
 const RootNodeArea = ({ rootNode, setRootNode }) => {
-  useEffect(() => {
-    console.log("Check Root Area", setRootNode);
-  }, []);
   return (
     <>
       <div

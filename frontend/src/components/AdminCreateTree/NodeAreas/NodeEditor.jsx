@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "../styles/styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons";
@@ -77,18 +77,10 @@ const NodeEditor = ({ rootNode, setRootNode, nodeId }) => {
 
     // Create a new root node with updated structure
     let newRootNode = addYesChildToTarget(rootNode);
-    console.log("Set state to:", newRootNode);
-    console.log("Check", setRootNode);
-    setRootNode((oldRoot) => {
-      console.log("Attempting to change...");
-      console.log("from", oldRoot);
-      console.log("to", newRootNode);
-
-      return {};
-    }); // This should trigger a re-render
+    setRootNode(newRootNode); // This should trigger a re-render
   };
 
-  const addNoChild = (rootNode, targetNodeId, nodeToInsert) => {
+  const addNoChild = (targetNodeId, nodeToInsert) => {
     const addNoChildToTarget = (node) => {
       if (node.currentId === targetNodeId) {
         nodeToInsert.parentId = targetNodeId;
@@ -109,7 +101,6 @@ const NodeEditor = ({ rootNode, setRootNode, nodeId }) => {
     };
     const updatedRootNode = addNoChildToTarget(rootNode);
     setRootNode(updatedRootNode);
-    console.log("No child added");
   };
 
   // Button Handlers
@@ -121,7 +112,6 @@ const NodeEditor = ({ rootNode, setRootNode, nodeId }) => {
 
   const onAddNode = (event) => {
     console.log("Adding node..");
-    let newRoot = rootNode;
     let newNode = generateNode();
     let targetNodeId = event.target.getAttribute("data-node-id");
     let addType = event.target.getAttribute("data-node-type");
@@ -134,9 +124,8 @@ const NodeEditor = ({ rootNode, setRootNode, nodeId }) => {
     } else {
       newNode.content = document.getElementById(`noInput${nodeId}`).value;
       console.log(newNode);
-      addNoChild(newRoot, targetNodeId, newNode);
+      addNoChild(targetNodeId, newNode);
     }
-    setRootNode(newRoot);
   };
 
   return (

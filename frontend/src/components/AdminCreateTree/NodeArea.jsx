@@ -13,9 +13,6 @@ import styles from "./styles/styles";
 import RootNodeArea from "./NodeAreas/RootNodeArea";
 
 const NodeArea = ({ rootNode, setRootNode }) => {
-  useEffect(() => {
-    console.log("Check area", setRootNode);
-  }, []);
   return (
     <>
       <RootNodeArea

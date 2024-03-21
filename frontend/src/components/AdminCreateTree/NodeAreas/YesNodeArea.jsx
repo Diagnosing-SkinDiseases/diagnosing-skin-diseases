@@ -13,7 +13,7 @@ const YesNodeArea = ({ rootNode, setRootNode }) => {
         {rootNode.yesChild.map((node, index) => (
           <NodeEditor
             key={index} // Ensure each NodeEditor has a unique key
-            rootNode={node}
+            rootNode={rootNode}
             setRootNode={setRootNode}
             nodeId={node.currentId}
           />
