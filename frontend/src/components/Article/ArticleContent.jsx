@@ -1,39 +1,10 @@
 import React from "react";
-import ContentType from "./enums";
+import ArticleContentType from "./enums";
+import VideoComponent from "./VideoComponent";
+import styles from "./styles";
+import { parseData } from "./articleComponentController";
 
-const parseData = ({ type, content }) => {
-  switch (type) {
-    case ContentType.HEADER:
-      return (
-        <>
-          <h3 className="article-h3">{content}</h3>
-        </>
-      );
-    case ContentType.TEXT:
-      return (
-        <>
-          <p>{content}</p>
-        </>
-      );
-    case ContentType.IMAGE:
-      return (
-        <>
-          <div className="container">
-            <img
-              src={content}
-              alt="Converted"
-              className="d-block w-50 mx-auto"
-            />
-          </div>
-        </>
-      );
-    default:
-      console.log("No match");
-      break;
-  }
-};
-
-const ArticleContent = ({ data: { title, totalContent } }) => {
+const ArticleContent = ({ data: { title, content } }) => {
   return (
     <>
       {/* Content */}
@@ -47,7 +18,7 @@ const ArticleContent = ({ data: { title, totalContent } }) => {
         {/* Article */}
         <div className="container p-4 pt-2">
           {/* Dynamic Content*/}
-          {totalContent.map(parseData)}
+          {content.map(parseData)}
         </div>
       </div>
     </>

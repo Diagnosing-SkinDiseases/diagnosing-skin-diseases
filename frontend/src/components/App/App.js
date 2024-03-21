@@ -52,9 +52,6 @@ function App() {
           {/* User - Trees */}
           <Route path="/user/trees" element={<UserTree></UserTree>}></Route>
 
-          {/* Article */}
-          <Route path="/article" element={<Article></Article>}></Route>
-
           {/* Admin */}
           {/* Admin - Trees */}
           <Route
@@ -94,6 +91,9 @@ function App() {
 
           {/* Article List */}
           <Route path="/treatment" element={<ArticlePage />}></Route>
+
+          {/* Article */}
+          <Route path="/treatment/:id" element={<Article />}></Route>
 
           {/* Glossary */}
           <Route path="/glossary" element={<Glossary></Glossary>}></Route>
