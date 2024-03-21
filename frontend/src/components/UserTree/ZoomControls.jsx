@@ -1,18 +1,11 @@
 import React from 'react';
+import './ZoomControls.css';
 
 const ZoomControls = ({ onZoomIn, onZoomOut }) => {
     return (
-        <div className="zoom-controls" style={{
-            position: 'fixed',
-            top: '10px',
-            right: '10px',
-            zIndex: 1000,
-            background: 'white',
-            borderRadius: '5px',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
-        }}>
-            <button onClick={onZoomIn} style={{ margin: '5px' }}>+</button>
-            <button onClick={onZoomOut} style={{ margin: '5px' }}>−</button>
+        <div className="zoom-controls">
+            <button className="zoom-button" onClick={onZoomIn}>+</button>
+            <button className="zoom-button" onClick={onZoomOut}>−</button>
         </div>
     );
 };
