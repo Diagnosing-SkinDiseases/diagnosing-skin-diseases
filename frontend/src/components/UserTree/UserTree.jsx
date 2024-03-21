@@ -40,6 +40,16 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
     const [currentNodeId, setCurrentNodeId] = useState(null);
 
     useEffect(() => {
+        if (currentNodeId) {
+            const newCurrentNode = document.getElementById(currentNodeId);
+            if (newCurrentNode) {
+                newCurrentNode.classList.add('currentNode');
+                newCurrentNode.style.backgroundColor = greenNode;
+            }
+        }
+    }, [currentNodeId]); // Add currentNodeId to useEffect dependency array
+
+    useEffect(() => {
         if (!treeData || !treeData.nodes || treeData.nodes.length === 0) {
             console.error('Invalid tree data:', treeData);
             return;
@@ -50,7 +60,18 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
 
         setNodeRows(nodesByLevel);
 
-        treeData.nodes.forEach(node => {
+        setTimeout(() => colorNodes(treeData.nodes), 0);
+
+        setTimeout(() => drawAllArrows(treeData.nodes), 0);
+
+    }, [treeData]); // Add treeData to useEffect dependency array
+
+    const handleNodeClick = nodeId => {
+        setCurrentNodeId(nodeId);
+    };
+
+    const drawAllArrows = (nodes) => {
+        nodes.forEach(node => {
             if (node.noChildId) {
                 drawArrow(node.currentId, node.noChildId, redArrow);
             }
@@ -58,23 +79,6 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
                 drawArrow(node.currentId, node.yesChildId, greenArrow);
             }
         });
-
-        colorNodes(treeData.nodes);
-
-    }, [treeData]); // Add treeData to useEffect dependency array
-
-    useEffect(() => {
-        if (currentNodeId) {
-            const newCurrentNode = document.getElementById(currentNodeId);
-            if (newCurrentNode) {
-                newCurrentNode.classList.add('currentNode');
-                newCurrentNode.style.backgroundColor = greenNode;
-            }
-        }
-    }, [currentNodeId]); // Add currentNodeId to useEffect dependency array
-
-    const handleNodeClick = nodeId => {
-        setCurrentNodeId(nodeId);
     };
 
     const findMaxLevel = nodes => {
@@ -96,22 +100,27 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
     const placeNodesByLevel = (nodes, maxLevel) => {
         if (!nodes || nodes.length === 0) return [];
 
+        const placedNodeIds = new Set(); // To keep track of nodes that have already been placed
+
         const placeNode = (nodeId, level, maxLevel, nodes) => {
-            if (level > maxLevel) return null;
+            if (level > maxLevel || placedNodeIds.has(nodeId)) return null; // Check if node is already placed
 
             const node = nodes.find(n => n.currentId === nodeId);
             if (!node) {
                 return level < maxLevel ? [<InvisibleNodeComponent key={`invisible-${level}`} />] : null;
             }
 
+            // Mark the node as placed
+            placedNodeIds.add(nodeId);
+
             let nodeElement = <NodeComponent id={node.currentId} color={blueNode} key={node.currentId} />;
             let children = [];
 
-            if (node.yesChildId || level < maxLevel) {
+            if (node.yesChildId && !placedNodeIds.has(node.yesChildId)) {
                 children.push(placeNode(node.yesChildId, level + 1, maxLevel, nodes));
             }
 
-            if (node.noChildId || level < maxLevel) {
+            if (node.noChildId && !placedNodeIds.has(node.noChildId)) {
                 children.push(placeNode(node.noChildId, level + 1, maxLevel, nodes));
             }
 

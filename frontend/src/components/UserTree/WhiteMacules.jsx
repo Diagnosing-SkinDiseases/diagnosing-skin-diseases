@@ -4,7 +4,7 @@ import UserTree from "./UserTree";
 
 function WhiteMacules() {
     const [treeData, setTreeData] = useState(null);
-    const treeId = "65f4b0aa08572dd23283e53a"; 
+    const treeId = "65f4b0aa08572dd23283e53a";
 
     useEffect(() => {
         fetchTreeData();
