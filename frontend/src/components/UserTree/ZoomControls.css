@@ -1,7 +1,7 @@
 .zoom-controls {
     border: #007bff solid 3px;
     position: absolute;
-    bottom: 60%;
+    bottom: 30%;
     right: 3px;
     z-index: 1000;
     background: white;

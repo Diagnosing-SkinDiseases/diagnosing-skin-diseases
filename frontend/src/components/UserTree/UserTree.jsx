@@ -45,6 +45,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
     const [nodeColors, setNodeColors] = useState({});
     const [currentNodeId, setCurrentNodeId] = useState(null);
     const [previousNodeId, setPreviousNodeId] = useState(null);
+    const [currentNodeContent, setCurrentNodeContent] = useState('Question placeholder');
 
     const zoomIn = () => setZoomLevel(zoomLevel * 1.1);
     const zoomOut = () => setZoomLevel(zoomLevel / 1.1);
@@ -153,8 +154,20 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
             newCurrentNode.classList.add('currentNode');
             newCurrentNode.style.backgroundColor = greenNode; // Highlight the current node
         }
+
+        // Find the node object and update the currentNodeContent
+        const node = treeData.nodes.find(n => n.currentId === nodeId);
+        if (node) {
+            setCurrentNodeContent(node.content); // Step 2
+        }
     };
 
+    const handleNodeHover = nodeId => {
+        const node = treeData.nodes.find(n => n.currentId === nodeId);
+        if (node) {
+            setCurrentNodeContent(node.content); // Update content on hover
+        }
+    };
 
     const drawAllArrows = (nodes) => {
         arrows.forEach(arrow => arrow.remove());
@@ -196,7 +209,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
 
             let nodeElement, children;
             if (node) {
-                nodeElement = <NodeComponent id={node.currentId} color={blueNode} key={node.currentId} onClick={() => handleNodeClick(node.currentId)} />;
+                nodeElement = <NodeComponent id={node.currentId} color={blueNode} key={node.currentId} onClick={() => handleNodeClick(node.currentId)} onMouseEnter={() => handleNodeHover(node.currentId)} />;
                 children = [];
 
                 const yesChildId = node.yesChildId;
@@ -258,7 +271,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
                     ))}
                 </div>
                 <CurrentNodeDetails
-                    question="Question placeholder"
+                    question={currentNodeContent}
                     onBack={() => console.log("Back clicked")}
                     onNo={() => console.log("No clicked")}
                     onYes={() => console.log("Yes clicked")}
