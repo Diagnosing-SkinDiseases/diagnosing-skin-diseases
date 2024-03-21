@@ -1,9 +1,21 @@
+#user-tree-page {
+    height: 80vh;
+}
+
+#tree-name {
+    padding: 5%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    color: var(--theme_blue);
+}
+
 .user-tree-container {
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 80vh;
+    height: 70vh;
     overflow: auto;
     min-width: 100%;
 }

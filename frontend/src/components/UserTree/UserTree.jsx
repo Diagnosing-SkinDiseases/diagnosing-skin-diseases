@@ -22,7 +22,7 @@ const drawArrow = (start, end, color) => {
                 path: 'straight',
                 startSocket: 'bottom',
                 endSocket: 'top',
-                size: 4, // Set the line size
+                size: 2.5, // Set the line size
             }
         );
 
@@ -34,6 +34,7 @@ const drawArrow = (start, end, color) => {
 
 const UserTree = ({ treeData }) => { // Destructure treeData from props
     const [zoomLevel, setZoomLevel] = useState(1);
+    const treeName = treeData.name;
 
     const greenArrow = "#3fc005";
     const redArrow = "#f44336";
@@ -260,22 +261,25 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
 
     return (
         <>
-            <ZoomControls onZoomIn={zoomIn} onZoomOut={zoomOut} />
-            <div className="user-tree-container">
-                <SymbolIndication />
-                <div className="user-tree" style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'center' }}>
-                    {nodeRows.map((nodeRow, index) => (
-                        <div key={`node-row-${index}`} className={`node-row level-${index}`}>
-                            {nodeRow}
-                        </div>
-                    ))}
+            <div id="user-tree-page">
+                <h1 id="tree-name">{treeName}</h1>
+                <ZoomControls onZoomIn={zoomIn} onZoomOut={zoomOut} />
+                <div className="user-tree-container">
+                    <SymbolIndication />
+                    <div className="user-tree" style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'center' }}>
+                        {nodeRows.map((nodeRow, index) => (
+                            <div key={`node-row-${index}`} className={`node-row level-${index}`}>
+                                {nodeRow}
+                            </div>
+                        ))}
+                    </div>
+                    <CurrentNodeDetails
+                        question={currentNodeContent}
+                        onBack={() => console.log("Back clicked")}
+                        onNo={() => console.log("No clicked")}
+                        onYes={() => console.log("Yes clicked")}
+                    />
                 </div>
-                <CurrentNodeDetails
-                    question={currentNodeContent}
-                    onBack={() => console.log("Back clicked")}
-                    onNo={() => console.log("No clicked")}
-                    onYes={() => console.log("Yes clicked")}
-                />
             </div>
         </>
     );
