@@ -1,3 +1,7 @@
+.user-tree-container {
+    position: relative;
+}
+
 .user-tree {
     margin-top: 10px;
     position: relative;

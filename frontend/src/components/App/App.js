@@ -15,6 +15,7 @@ import Logout from "../Logout/Logout";
 import NavBarComponent from "../NavBar/NavBar";
 import ArticlePage from "../ArticleList/ArticleList";
 import UserTree from "../UserTree/UserTree";
+import WhiteMacules from "../UserTree/WhiteMacules";
 import Signup from "../SignUp/SignUp";
 import "./App.css";
 
@@ -51,6 +52,9 @@ function App() {
 
           {/* User - Trees */}
           <Route path="/user/trees" element={<UserTree></UserTree>}></Route>
+
+          {/* User - Tree - WhiteMacules}*/}
+          <Route path="/user/trees/white_macules" element={<WhiteMacules></WhiteMacules>}></Route>
 
           {/* Article */}
           <Route path="/article" element={<Article></Article>}></Route>
