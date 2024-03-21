@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import RootNodeSection from "./RootNodeInput";
-import "./AdminCreateTrees.css";
+import "./styles/AdminCreateTrees.css";
 import { useState, useEffect } from "react";
 import EditTreeTitle from "./EditTreeTitle";
 import NodeArea from "./NodeArea";

@@ -5,7 +5,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import "./AdminCreateTrees.css";
+import "./styles/AdminCreateTrees.css";
 
 const tree = {};
 
