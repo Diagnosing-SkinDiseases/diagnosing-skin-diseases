@@ -3,8 +3,8 @@
 }
 
 .current-node-details {
-    position: absolute;
-    top: 0;
+    position: fixed;
+    top: 80px;
     right: 2px;
     z-index: 10;
     border: 5px solid var(--theme_blue);

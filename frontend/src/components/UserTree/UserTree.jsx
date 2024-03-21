@@ -88,6 +88,25 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         }
     }, [zoomLevel, nodeRows, treeData.nodes]);
 
+    // Inside your UserTree component
+
+    useEffect(() => {
+        // Function to redraw arrows
+        const redrawArrows = () => {
+            // Your logic to remove and redraw arrows goes here
+            arrows.forEach(arrow => arrow.remove());
+            arrows = [];
+            drawAllArrows(treeData.nodes);
+        };
+
+        const userTreeContainer = document.querySelector('.user-tree-container');
+
+        userTreeContainer.addEventListener('scroll', redrawArrows);
+
+        return () => userTreeContainer.removeEventListener('scroll', redrawArrows);
+    }, [treeData.nodes]);
+
+
     const drawAllArrows = (nodes) => {
         arrows.forEach(arrow => arrow.remove());
         arrows = [];
@@ -184,6 +203,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         <>
             <ZoomControls onZoomIn={zoomIn} onZoomOut={zoomOut} />
             <div className="user-tree-container">
+                <SymbolIndication />
                 <div className="user-tree" style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'center' }}>
                     {nodeRows.map((nodeRow, index) => (
                         <div key={`node-row-${index}`} className={`node-row level-${index}`}>
@@ -191,7 +211,6 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
                         </div>
                     ))}
                 </div>
-                <SymbolIndication />
                 {currentNodeId && (
                     <NodeDetails
                         nodeId={currentNodeId}
