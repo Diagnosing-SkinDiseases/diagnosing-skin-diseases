@@ -28,7 +28,7 @@ const parseData = ({ type, content }) => {
         <>
           <div className="container">
             <img
-              src={`data:image/jpeg;base64,${content}`}
+              src={`${content}`}
               alt="Converted"
               className="d-block w-50 mx-auto"
             />
