@@ -18,24 +18,32 @@ const ContentEditor = ({ contentType }) => {
   const [title, setTitle] = useState('');
   const [paragraph, setParagraph] = useState('');
   const [status, setStatus] = useState('');
+  const [articleContent, setArticleContent] = useState([]);
   const path = `/admin/${contentType.toLowerCase()}s`; 
 
   // Determine if we are in edit mode
   const isEditMode = id  !== undefined;
 
   // Update parent state based on child component updates
-  const handleStateUpdate = (title, paragraph, status) => {
+  const handleDefinitionUpdate = (title, paragraph, status) => {
     setTitle(title);
     setParagraph(paragraph);
     setStatus(status);
   };
+
+  const handleArticleUpdate = (updatedBlocks) => {
+    console.log("updatedBlocks", updatedBlocks);
+    // Handle the update accordingly
+    setArticleContent(updatedBlocks);
+  };
+
   // Helper function to render the content based on the contentType
   const renderContent = () => {
     switch (contentType) {
       case ContentTypeEnum.DEFINITION:
-        return <Definition onUpdate={handleStateUpdate} />;
+        return <Definition status = {status} onUpdate={handleDefinitionUpdate} />;
       case ContentTypeEnum.ARTICLE:
-        return <Article />;
+        return <Article onUpdate={handleArticleUpdate}/>;
       case ContentTypeEnum.TREE:
         // return <Tree />;
         return;
@@ -49,18 +57,34 @@ const ContentEditor = ({ contentType }) => {
   const updateItem = (newStatus) => {
     let updatedItem = {
       id: id,
-      term: title,
-      definition: paragraph,
       status: newStatus
+    };
+
+    if (title !== "") {
+      updatedItem.term = title;
     }
-    console.log("Update");
+
+    if (paragraph !== "") {
+      updatedItem.definition = paragraph;
+    }
+
     let updatePromise;
     switch (contentType) {
       case "Definition":
         updatePromise = apiUpdateGlossaryItem(updatedItem);
         break;
       case "Article":
-        updatePromise = apiUpdateArticle(updatedItem);
+        const parsedArticle = {
+          id: id,
+          title: articleContent[0].value, 
+          content: articleContent.slice(1).map(item => ({ 
+            type: item.type.toUpperCase(),
+            content: item.value
+          })),
+          status: newStatus
+        };
+        console.log("payload", parsedArticle);
+        updatePromise = apiUpdateArticle(parsedArticle);
         break;
       case "Tree":
         // updatePromise = updateTree(updatedItem);
@@ -84,14 +108,22 @@ const ContentEditor = ({ contentType }) => {
       definition: paragraph,
       status: status
     }
-    console.log(item);
     let createPromise;
     switch (contentType) {
     case ContentTypeEnum.DEFINITION:
       createPromise = apiCreateGlossaryItem(item);
       break;
-    case ContentTypeEnum.ARTICLE:
-      createPromise = apiCreateArticle(item);
+      case ContentTypeEnum.ARTICLE:
+        console.log("adding article");
+        const parsedArticle = {
+          title: articleContent[0].value, 
+          content: articleContent.slice(1).map(item => ({ 
+            type: item.type.toUpperCase(),
+            content: item.value
+          })),
+          status: status
+        };
+      createPromise = apiCreateArticle(parsedArticle);
       break;
     case ContentTypeEnum.TREE:
       // createPromise = createTree(item);
@@ -119,6 +151,7 @@ const ContentEditor = ({ contentType }) => {
   }
 
   const handlePublishBtn = () => {
+    console.log("status", status);
     const publishStatus = "PUBLISHED";
     if (isEditMode) {
       updateItem(publishStatus);
