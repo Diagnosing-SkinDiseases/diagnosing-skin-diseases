@@ -13,16 +13,14 @@ const Definition = ({ onUpdate}) => {
   // State hooks for title and paragraph
   const [title, setTitle] = useState('');
   const [paragraph, setParagraph] = useState('');
-  // const [status, setStatus] = useState('');
 
-  // Initializes state if `definition` prop is provided
+  // Initializes state 
   useEffect(() => {
     if (definition) {
       // fetch using getDefinition(id)
       apiGetGlossaryItem(definition).then((response) => {
         setTitle(response.data.term);
         setParagraph(response.data.definition);
-        // setStatus(response.data.status);
       })
         .catch((error) => {
           console.error('Error fetching definition:', error);

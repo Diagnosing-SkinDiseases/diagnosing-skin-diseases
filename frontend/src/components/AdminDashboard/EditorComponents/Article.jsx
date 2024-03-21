@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import ArticleContentType from '../enums/ArticleContentType';
 import ContentInput from './ContentInput';
@@ -8,10 +8,51 @@ import Button from '../GeneralComponents/Button';
 import labels from '../labels.json';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faVideo } from "@fortawesome/free-solid-svg-icons";
-
-const Article = () => {
+import { apiGetArticle } from '../../../apiControllers/articleApiController';
+const Article = ({ onUpdate}) => {
   const [contentBlocks, setContentBlocks] = useState([{ type: ArticleContentType.TITLE, value: '' }]);
-    
+  const location = useLocation();
+  const article = location.state?.id;
+  console.log("id ", article);
+
+  const toTitleCase = (str) => {
+    return str.toLowerCase().split(' ').map(function(word) {
+    return (word.charAt(0).toUpperCase() + word.slice(1));
+  }).join(' ');
+  }
+  const parseArticleData = (data) => {
+    const titleBlock = [{
+      type: ArticleContentType.TITLE,
+      value: data.title
+    }];
+
+    const contentBlocks = data.content.map(block => ({
+      type: toTitleCase(block.type),
+      value: block.content,
+    }));
+
+    return [...titleBlock, ...contentBlocks];
+  };
+
+  useEffect(() => {
+    if (article) {
+      apiGetArticle(article).then((response) => {
+        console.log(response.data);
+        const parsedContent = parseArticleData(response.data);
+        console.log("parsedContent ", parsedContent);
+        let i = 0;
+        parsedContent.forEach(block => {
+          renderContentInput(block, i);
+          i++;
+        });
+        setContentBlocks(parsedContent);
+      })
+        .catch((error) => {
+          console.error('Error fetching article:', error);
+        });
+    }
+  }, [article]);
+
   const addContentBlock = (type) => {
     setContentBlocks([...contentBlocks, { type, value: '' }]);
   };
@@ -40,7 +81,6 @@ const Article = () => {
       remove: () => removeContentBlock(index),
       className: blockClassName, 
     };
-
     switch (block.type) {
       case ArticleContentType.TITLE:
       case ArticleContentType.SUBTITLE:

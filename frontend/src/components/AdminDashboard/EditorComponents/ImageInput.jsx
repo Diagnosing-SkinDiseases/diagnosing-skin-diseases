@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Button from '../GeneralComponents/Button';
 import "../styles/List.css"; 
 import labels from "../labels.json";
@@ -9,13 +9,22 @@ const ImageInput = ({ block, updateBlock, remove }) => {
   const [preview, setPreview] = useState('');
   const fileInputRef = useRef();
 
+  useEffect(() => {
+    // If block.value is a base64 string and starts with 'data:image/', set it as the preview
+    if (block.value && typeof block.value === 'string' && block.value.startsWith('data:image')) {
+      setPreview(block.value);
+
+    }
+  }, [block.value]);
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreview(reader.result);
-          updateBlock({ ...block, value: reader.result });
+        // Log the base64 string to console
+        updateBlock({ ...block, value: reader.result });
       };
       reader.readAsDataURL(file);
     }
