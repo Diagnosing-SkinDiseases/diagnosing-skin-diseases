@@ -5,7 +5,7 @@ import { faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
 import { useState } from "react";
 
-const NodeEditor = ({ rootNode, setRootNode }) => {
+const NodeEditor = ({ rootNode, setRootNode, nodeId }) => {
   // Dropdown State
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
@@ -69,7 +69,7 @@ const NodeEditor = ({ rootNode, setRootNode }) => {
           type="text"
           placeholder="Enter Root Node question"
           value={rootNode.content}
-          data-nodeid={rootNode.currentId}
+          data-nodeid={nodeId}
           onChange={onChangeNodeContent}
         />
         <button className="dropdown-button" onClick={toggleDropdown}>

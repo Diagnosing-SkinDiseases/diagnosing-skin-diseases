@@ -10,7 +10,14 @@ const NoNodeArea = ({ rootNode, setRootNode }) => {
         className="root-node-section-container "
       >
         <h3>No Nodes</h3>
-        <NodeEditor rootNode={rootNode} setRootNode={setRootNode}></NodeEditor>
+        {rootNode.noChild.map((node, index) => (
+          <NodeEditor
+            key={index} // Ensure each NodeEditor has a unique key
+            rootNode={node}
+            setRootNode={setRootNode}
+            nodeId={node.currentId}
+          />
+        ))}
       </div>
     </>
   );

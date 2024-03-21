@@ -10,7 +10,11 @@ const RootNodeArea = ({ rootNode, setRootNode }) => {
         className="root-node-section-container "
       >
         <h3>Root Node</h3>
-        <NodeEditor rootNode={rootNode} setRootNode={setRootNode}></NodeEditor>
+        <NodeEditor
+          rootNode={rootNode}
+          setRootNode={setRootNode}
+          nodeId={rootNode.currentId}
+        ></NodeEditor>
       </div>
     </>
   );
