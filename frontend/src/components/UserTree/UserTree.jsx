@@ -1,35 +1,40 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { NodeComponent, InvisibleNodeComponent } from './NodeComponent';
 import NodeDetails from './NodeDetails';
 import './UserTree.css';
 import CurrentNodeDetails from './CurrentNodeDetails';
 import SymbolIndication from './SymbolIndication';
+import ZoomControls from './ZoomControls';
+
+// Global variable to store the leader lines
+let arrows = [];
 
 
 // Draw an arrow between two nodes
 // Source from: https://github.com/anseki/leader-line
 const drawArrow = (start, end, color) => {
-    requestAnimationFrame(() => {
-        if (window.LeaderLine && document.getElementById(start) && document.getElementById(end)) {
-            // Create a line using point anchors to connect the center of each element
-            const line = new window.LeaderLine(
-                document.getElementById(start),
-                document.getElementById(end),
-                {
-                    color: color,
-                    path: 'straight',
-                    startSocket: 'bottom',
-                    endSocket: 'top',
-                    size: 4, // Set the line size
-                }
-            );
-            // console.log(color + "line drawn between " + start + " and " + end);
-            return line;
-        }
-    });
+    if (window.LeaderLine && document.getElementById(start) && document.getElementById(end)) {
+        const line = new window.LeaderLine(
+            document.getElementById(start),
+            document.getElementById(end),
+            {
+                color: color,
+                path: 'straight',
+                startSocket: 'bottom',
+                endSocket: 'top',
+                size: 4, // Set the line size
+            }
+        );
+
+        arrows.push(line);
+        // Store the line for later removal
+        return line;
+    }
 };
 
 const UserTree = ({ treeData }) => { // Destructure treeData from props
+    const [zoomLevel, setZoomLevel] = useState(1);
+
     const greenArrow = "#3fc005";
     const redArrow = "#f44336";
     const blueNode = "#1E90FF";
@@ -38,6 +43,9 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
 
     const [nodeRows, setNodeRows] = useState([]);
     const [currentNodeId, setCurrentNodeId] = useState(null);
+
+    const zoomIn = () => setZoomLevel(zoomLevel * 1.1);
+    const zoomOut = () => setZoomLevel(zoomLevel / 1.1);
 
     useEffect(() => {
         if (currentNodeId) {
@@ -70,13 +78,26 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         setCurrentNodeId(nodeId);
     };
 
+    useEffect(() => {
+        // Remove existing arrows before redrawing them
+        arrows.forEach(arrow => arrow.remove());
+        arrows = [];
+
+        if (nodeRows.length > 0) {
+            setTimeout(() => drawAllArrows(treeData.nodes), 0);
+        }
+    }, [zoomLevel, nodeRows, treeData.nodes]);
+
     const drawAllArrows = (nodes) => {
+        arrows.forEach(arrow => arrow.remove());
+        arrows = [];
+
         nodes.forEach(node => {
             if (node.noChildId) {
-                drawArrow(node.currentId, node.noChildId, redArrow);
+                drawArrow(node.currentId, node.noChildId, redArrow, arrows);
             }
             if (node.yesChildId) {
-                drawArrow(node.currentId, node.yesChildId, greenArrow);
+                drawArrow(node.currentId, node.yesChildId, greenArrow, arrows);
             }
         });
     };
@@ -144,7 +165,6 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         return [placeNode(nodes[0]?.currentId, 0, maxLevel)];
     };
 
-
     const colorNodes = nodes => {
         nodes.forEach(node => {
             const element = document.getElementById(node.currentId);
@@ -162,8 +182,9 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
 
     return (
         <>
+            <ZoomControls onZoomIn={zoomIn} onZoomOut={zoomOut} />
             <div className="user-tree-container">
-                <div className="user-tree">
+                <div className="user-tree" style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'center' }}>
                     {nodeRows.map((nodeRow, index) => (
                         <div key={`node-row-${index}`} className={`node-row level-${index}`}>
                             {nodeRow}
