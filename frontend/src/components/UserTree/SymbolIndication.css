@@ -3,10 +3,15 @@
 }
 
 .symbol-indication {
-    position: absolute;
-    top: 0;
-    left: 2px;
+    border: 5px solid var(--theme_blue);
+    border-radius: 10px;
+    padding: 10px;
+    background-color: white;
+    width: auto;
+    margin-left: 3px;
+    left: 3px;
     z-index: 10;
+    position: fixed;
 }
 
 .node-symbol {
@@ -22,7 +27,7 @@
 .node-container {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 }
 
 .node-symbol-text {

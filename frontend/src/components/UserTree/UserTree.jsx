@@ -1,35 +1,40 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { NodeComponent, InvisibleNodeComponent } from './NodeComponent';
 import NodeDetails from './NodeDetails';
 import './UserTree.css';
 import CurrentNodeDetails from './CurrentNodeDetails';
 import SymbolIndication from './SymbolIndication';
-import DUMMY_DATA from './DummyTree';
+import ZoomControls from './ZoomControls';
+
+// Global variable to store the leader lines
+let arrows = [];
+
 
 // Draw an arrow between two nodes
 // Source from: https://github.com/anseki/leader-line
 const drawArrow = (start, end, color) => {
-    requestAnimationFrame(() => {
-        if (window.LeaderLine && document.getElementById(start) && document.getElementById(end)) {
-            // Create a line using point anchors to connect the center of each element
-            const line = new window.LeaderLine(
-                document.getElementById(start),
-                document.getElementById(end),
-                {
-                    color: color,
-                    path: 'straight',
-                    startSocket: 'bottom',
-                    endSocket: 'top',
-                    size: 4, // Set the line size
-                }
-            );
-            // console.log(color + "line drawn between " + start + " and " + end);
-            return line;
-        }
-    });
+    if (window.LeaderLine && document.getElementById(start) && document.getElementById(end)) {
+        const line = new window.LeaderLine(
+            document.getElementById(start),
+            document.getElementById(end),
+            {
+                color: color,
+                path: 'straight',
+                startSocket: 'bottom',
+                endSocket: 'top',
+                size: 4, // Set the line size
+            }
+        );
+
+        arrows.push(line);
+        // Store the line for later removal
+        return line;
+    }
 };
 
-const UserTree = () => {
+const UserTree = ({ treeData }) => { // Destructure treeData from props
+    const [zoomLevel, setZoomLevel] = useState(1);
+
     const greenArrow = "#3fc005";
     const redArrow = "#f44336";
     const blueNode = "#1E90FF";
@@ -39,60 +44,84 @@ const UserTree = () => {
     const [nodeRows, setNodeRows] = useState([]);
     const [currentNodeId, setCurrentNodeId] = useState(null);
 
-    const handleNodeClick = (nodeId) => {
-        setCurrentNodeId(nodeId);
-    };
+    const zoomIn = () => setZoomLevel(zoomLevel * 1.1);
+    const zoomOut = () => setZoomLevel(zoomLevel / 1.1);
 
     useEffect(() => {
-        const maxLevel = findMaxLevel(DUMMY_DATA.nodes);
-        const nodesByLevel = placeNodesByLevel(DUMMY_DATA.nodes, maxLevel);
-
-        setNodeRows(nodesByLevel);
-
-        // Draw arrows between each parent/child pair
-        DUMMY_DATA.nodes.forEach(node => {
-            if (node.noChildId) {
-                drawArrow(node.currentId, node.noChildId, redArrow);
-            }
-            if (node.yesChildId) {
-                drawArrow(node.currentId, node.yesChildId, greenArrow);
-            }
-        });
-
-        setTimeout(() => {
-            colorNodes(DUMMY_DATA.nodes);
-        }, 0);
-    }, []);
-
-    // Update color when current node changes
-    useEffect(() => {
-        // Find and clear the previous current node
-        const prevCurrentNode = document.querySelector('.currentNode');
-        if (prevCurrentNode) {
-            prevCurrentNode.classList.remove('currentNode');
-            // Reset the color based on whether it's a question node or a result node
-            const nodeId = prevCurrentNode.id;
-            const nodeData = DUMMY_DATA.nodes.find(node => node.currentId === nodeId);
-            if (nodeData) {
-                const color = nodeData.yesChildId && nodeData.noChildId ? blueNode
-                    : (nodeData.noChildId == null && nodeData.yesChildId == null) ? yellowNode
-                        : ''; // Default color
-                prevCurrentNode.style.backgroundColor = color;
-            }
-        }
-
-        // Set the new current node
         if (currentNodeId) {
             const newCurrentNode = document.getElementById(currentNodeId);
             if (newCurrentNode) {
                 newCurrentNode.classList.add('currentNode');
-                newCurrentNode.style.backgroundColor = greenNode; // Set the new current node color to green
+                newCurrentNode.style.backgroundColor = greenNode;
             }
         }
-    }, [currentNodeId]); // Triggered when currentNodeId changes
+    }, [currentNodeId]); // Add currentNodeId to useEffect dependency array
 
-    // Find the maximum level of the tree
-    const findMaxLevel = (nodes) => {
+    useEffect(() => {
+        if (!treeData || !treeData.nodes || treeData.nodes.length === 0) {
+            console.error('Invalid tree data:', treeData);
+            return;
+        }
+
+        const maxLevel = findMaxLevel(treeData.nodes);
+        const nodesByLevel = placeNodesByLevel(treeData.nodes, maxLevel);
+
+        setNodeRows(nodesByLevel);
+
+        setTimeout(() => colorNodes(treeData.nodes), 0);
+
+        setTimeout(() => drawAllArrows(treeData.nodes), 0);
+
+    }, [treeData]); // Add treeData to useEffect dependency array
+
+    const handleNodeClick = nodeId => {
+        setCurrentNodeId(nodeId);
+    };
+
+    useEffect(() => {
+        // Remove existing arrows before redrawing them
+        arrows.forEach(arrow => arrow.remove());
+        arrows = [];
+
+        if (nodeRows.length > 0) {
+            setTimeout(() => drawAllArrows(treeData.nodes), 0);
+        }
+    }, [zoomLevel, nodeRows, treeData.nodes]);
+
+    // Inside your UserTree component
+
+    useEffect(() => {
+        // Function to redraw arrows
+        const redrawArrows = () => {
+            // Your logic to remove and redraw arrows goes here
+            arrows.forEach(arrow => arrow.remove());
+            arrows = [];
+            drawAllArrows(treeData.nodes);
+        };
+
+        const userTreeContainer = document.querySelector('.user-tree-container');
+
+        userTreeContainer.addEventListener('scroll', redrawArrows);
+
+        return () => userTreeContainer.removeEventListener('scroll', redrawArrows);
+    }, [treeData.nodes]);
+
+
+    const drawAllArrows = (nodes) => {
+        arrows.forEach(arrow => arrow.remove());
+        arrows = [];
+
+        nodes.forEach(node => {
+            if (node.noChildId) {
+                drawArrow(node.currentId, node.noChildId, redArrow, arrows);
+            }
+            if (node.yesChildId) {
+                drawArrow(node.currentId, node.yesChildId, greenArrow, arrows);
+            }
+        });
+    };
+
+    const findMaxLevel = nodes => {
         let maxLevel = 0;
         const findLevel = (nodeId, level) => {
             const node = nodes.find(n => n.currentId === nodeId);
@@ -103,80 +132,66 @@ const UserTree = () => {
             }
         };
         findLevel(nodes[0].currentId, 0);
+        console.log("Max level:", maxLevel);
         return maxLevel;
     };
 
-    // Recursively place nodes at the correct position in the tree
+    // Place nodes by level
     const placeNodesByLevel = (nodes, maxLevel) => {
-        // Initialize the rows for each level
-        let rows = Array.from({ length: maxLevel + 1 }, () => []);
+        if (!nodes || nodes.length === 0) return [];
 
-        // Place an invisible node at given level and position
-        const placeInvisibleNode = (level, position) => {
-            if (!rows[level]) rows[level] = [];
-            rows[level][position] = (
-                <div key={`invisible-${level}-${position}`} className="node invisible">
-                    <InvisibleNodeComponent />
+        const placeNode = (nodeId, level, maxLevel) => {
+            if (level > maxLevel) return null;
+
+            const node = nodeId ? nodes.find(n => n.currentId === nodeId) : null;
+
+            let nodeElement, children;
+            if (node) {
+                nodeElement = <NodeComponent id={node.currentId} color={blueNode} key={node.currentId} />;
+                children = [];
+
+                const yesChildId = node.yesChildId;
+                const noChildId = node.noChildId;
+
+                if (yesChildId) {
+                    children.push(placeNode(yesChildId, level + 1, maxLevel));
+                }
+
+                if (noChildId) {
+                    children.push(placeNode(noChildId, level + 1, maxLevel));
+                }
+            }
+
+            // If the node has no children and is not at maxLevel, create invisible nodes
+            if ((!node || (!node.yesChildId && !node.noChildId)) && level < maxLevel) {
+                nodeElement = nodeElement || <InvisibleNodeComponent key={`invisible-${nodeId || level}`} />;
+                children = [
+                    placeNode(null, level + 1, maxLevel),
+                    placeNode(null, level + 1, maxLevel)
+                ];
+            }
+
+            return (
+                <div className="node-container" key={nodeId || `level-${level}`}>
+                    {nodeElement}
+                    <div className="node-children">
+                        {children}
+                    </div>
                 </div>
             );
         };
 
-        // Recursive function to place nodes at the correct position
-        const placeNode = (nodeId, level, position) => {
-            if (level > maxLevel) return; // Exit if beyond the max level
-            const node = nodes.find(n => n.currentId === nodeId);
-            if (!node) return; // Exit if the node doesn't exist
-
-            if (!rows[level]) rows[level] = [];
-            // Place the node at the correct position in the row
-            rows[level][position] = (
-                <div key={node.currentId}
-                    className={`node ${currentNodeId === node.currentId ? 'currentNode' : ''}`}
-                    onClick={() => handleNodeClick(node.currentId)}>
-                    <NodeComponent id={node.currentId} color={blueNode} />
-                </div>
-            );
-
-            // Position of children nodes
-            const leftPosition = position * 2;
-            const rightPosition = leftPosition + 1;
-
-            // Recursively place child nodes
-            if (node.yesChildId) {
-                placeNode(node.yesChildId, level + 1, rightPosition);
-            }
-            if (node.noChildId) {
-                placeNode(node.noChildId, level + 1, leftPosition);
-            }
-
-            // Add invisible nodes if no children
-            if (node.yesChildId == null && node.noChildId == null) {
-                placeInvisibleNode(level + 1, position);
-            }
-        };
-
-        // Start with the root node
-        if (nodes.length > 0) {
-            placeNode(nodes[0].currentId, 0, 0);
-        }
-
-        return rows.map((row, level) => (
-            <div key={`node-row-${level}`} className={`node-row level-${level}`}>
-                {row}
-            </div>
-        ));
+        return [placeNode(nodes[0]?.currentId, 0, maxLevel)];
     };
 
-    // Color the nodes based on if they are result node
-    const colorNodes = (nodes) => {
+    const colorNodes = nodes => {
         nodes.forEach(node => {
             const element = document.getElementById(node.currentId);
             if (element) {
                 if (node.yesChildId && node.noChildId) {
-                    element.style.backgroundColor = blueNode;
-                }
-                if (node.noChildId == null && node.yesChildId == null) {
-                    element.style.backgroundColor = yellowNode;
+                    element.style.backgroundColor = blueNode; // for nodes with both yes and no children
+                } else if (!node.yesChildId && !node.noChildId) {
+                    element.style.backgroundColor = yellowNode; // for leaf nodes
                 }
             } else {
                 console.error('Element not found for currentId:', node.currentId);
@@ -184,14 +199,26 @@ const UserTree = () => {
         });
     };
 
-
     return (
         <>
-            <div className="user-tree">
-                {nodeRows}
+            <ZoomControls onZoomIn={zoomIn} onZoomOut={zoomOut} />
+            <div className="user-tree-container">
                 <SymbolIndication />
+                <div className="user-tree" style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'center' }}>
+                    {nodeRows.map((nodeRow, index) => (
+                        <div key={`node-row-${index}`} className={`node-row level-${index}`}>
+                            {nodeRow}
+                        </div>
+                    ))}
+                </div>
+                {currentNodeId && (
+                    <NodeDetails
+                        nodeId={currentNodeId}
+                        data={treeData.nodes.find(node => node.currentId === currentNodeId)}
+                    />
+                )}
                 <CurrentNodeDetails
-                    question="Question place holder"
+                    question="Question placeholder"
                     onBack={() => console.log("Back clicked")}
                     onNo={() => console.log("No clicked")}
                     onYes={() => console.log("Yes clicked")}
