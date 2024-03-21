@@ -17,11 +17,6 @@ const mongoUser = process.env.DB_USER;
 const mongoPassword = process.env.PASSWORD;
 const mongoDB = process.env.DATABASE;
 
-console.log(port);
-console.log(mongoUser);
-console.log(mongoPassword);
-console.log(mongoDB);
-
 // App configurations
 app.use(express.json());
 app.use(cors());
