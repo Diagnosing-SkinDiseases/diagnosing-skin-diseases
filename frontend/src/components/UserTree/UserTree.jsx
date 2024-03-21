@@ -88,30 +88,44 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
             }
         };
         findLevel(nodes[0].currentId, 0);
+        console.log("Max level:", maxLevel);
         return maxLevel;
     };
 
+    // Place nodes by level
     const placeNodesByLevel = (nodes, maxLevel) => {
-        let rows = Array.from({ length: maxLevel + 1 }, () => []);
-        const placeNode = (nodeId, level, position) => {
+        if (!nodes || nodes.length === 0) return [];
+
+        const placeNode = (nodeId, level, maxLevel, nodes) => {
+            if (level > maxLevel) return null;
+
             const node = nodes.find(n => n.currentId === nodeId);
-            if (node) {
-                rows[level][position] = (
-                    <div key={node.currentId} className={`node ${currentNodeId === node.currentId ? 'currentNode' : ''}`}
-                        onClick={() => handleNodeClick(node.currentId)}>
-                        <NodeComponent id={node.currentId} color={blueNode} />
-                    </div>
-                );
-                placeNode(node.yesChildId, level + 1, position * 2 + 1);
-                placeNode(node.noChildId, level + 1, position * 2);
+            if (!node) {
+                return level < maxLevel ? [<InvisibleNodeComponent key={`invisible-${level}`} />] : null;
             }
+
+            let nodeElement = <NodeComponent id={node.currentId} color={blueNode} key={node.currentId} />;
+            let children = [];
+
+            if (node.yesChildId || level < maxLevel) {
+                children.push(placeNode(node.yesChildId, level + 1, maxLevel, nodes));
+            }
+
+            if (node.noChildId || level < maxLevel) {
+                children.push(placeNode(node.noChildId, level + 1, maxLevel, nodes));
+            }
+
+            return (
+                <div className="node-container" key={node.currentId}>
+                    {nodeElement}
+                    <div className="node-children">
+                        {children}
+                    </div>
+                </div>
+            );
         };
-        placeNode(nodes[0].currentId, 0, 0);
-        return rows.map((row, level) => (
-            <div key={`node-row-${level}`} className={`node-row level-${level}`}>
-                {row}
-            </div>
-        ));
+
+        return [placeNode(nodes[0]?.currentId, 0, maxLevel, nodes)];
     };
 
     const colorNodes = nodes => {
@@ -133,7 +147,11 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         <>
             <div className="user-tree-container">
                 <div className="user-tree">
-                    {nodeRows}
+                    {nodeRows.map((nodeRow, index) => (
+                        <div key={`node-row-${index}`} className={`node-row level-${index}`}>
+                            {nodeRow}
+                        </div>
+                    ))}
                 </div>
                 <SymbolIndication />
                 {currentNodeId && (
@@ -143,7 +161,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
                     />
                 )}
                 <CurrentNodeDetails
-                    question="Question place holder"
+                    question="Question placeholder"
                     onBack={() => console.log("Back clicked")}
                     onNo={() => console.log("No clicked")}
                     onYes={() => console.log("Yes clicked")}
