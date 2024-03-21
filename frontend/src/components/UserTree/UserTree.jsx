@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { NodeComponent, InvisibleNodeComponent } from './NodeComponent';
-import NodeDetails from './NodeDetails';
+// import NodeDetails from './NodeDetails';
 import './UserTree.css';
 import CurrentNodeDetails from './CurrentNodeDetails';
 import SymbolIndication from './SymbolIndication';
@@ -42,7 +42,9 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
     const greenNode = "#6ad669";
 
     const [nodeRows, setNodeRows] = useState([]);
+    const [nodeColors, setNodeColors] = useState({});
     const [currentNodeId, setCurrentNodeId] = useState(null);
+    const [previousNodeId, setPreviousNodeId] = useState(null);
 
     const zoomIn = () => setZoomLevel(zoomLevel * 1.1);
     const zoomOut = () => setZoomLevel(zoomLevel / 1.1);
@@ -68,15 +70,44 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
 
         setNodeRows(nodesByLevel);
 
-        setTimeout(() => colorNodes(treeData.nodes), 0);
+        setTimeout(() => colorNodes(treeData.nodes), 1);
 
         setTimeout(() => drawAllArrows(treeData.nodes), 0);
 
     }, [treeData]); // Add treeData to useEffect dependency array
 
-    const handleNodeClick = nodeId => {
-        setCurrentNodeId(nodeId);
-    };
+    useEffect(() => {
+        // Initialize or update node colors based on tree data
+        const initialColors = {};
+        treeData.nodes.forEach(node => {
+            initialColors[node.currentId] = node.hasChildren ? blueNode : yellowNode; // Example logic for color assignment
+        });
+        setNodeColors(initialColors);
+    }, [treeData]);
+
+    useEffect(() => {
+        const changeNodeColor = (nodeId, color) => {
+            const nodeElement = document.getElementById(nodeId);
+            if (nodeElement) {
+                nodeElement.style.backgroundColor = color;
+            }
+        };
+
+        if (previousNodeId) {
+            changeNodeColor(previousNodeId, blueNode); // Change back to original color
+        }
+        if (currentNodeId) {
+            changeNodeColor(currentNodeId, greenNode); // Highlight the current node
+        }
+    }, [currentNodeId, previousNodeId]);
+
+    useEffect(() => {
+        // Skip on initial render when currentNodeId is null
+        if (currentNodeId !== null) {
+            // Update previousNodeId to the last currentNodeId
+            setPreviousNodeId(currentNodeId);
+        }
+    }, [currentNodeId]);
 
     useEffect(() => {
         // Remove existing arrows before redrawing them
@@ -88,7 +119,6 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         }
     }, [zoomLevel, nodeRows, treeData.nodes]);
 
-    // Inside your UserTree component
 
     useEffect(() => {
         // Function to redraw arrows
@@ -105,6 +135,25 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
 
         return () => userTreeContainer.removeEventListener('scroll', redrawArrows);
     }, [treeData.nodes]);
+
+    const handleNodeClick = nodeId => {
+        // Find and clear the previous current node
+        const prevCurrentNode = document.querySelector('.currentNode');
+        if (prevCurrentNode && prevCurrentNode.id !== nodeId) {
+            prevCurrentNode.classList.remove('currentNode');
+            // Reset the color based on node's original state
+            const originalColor = nodeColors[prevCurrentNode.id]; // Assuming nodeColors is defined and populated
+            prevCurrentNode.style.backgroundColor = originalColor;
+        }
+
+        // Set the new current node
+        setCurrentNodeId(nodeId);
+        const newCurrentNode = document.getElementById(nodeId);
+        if (newCurrentNode) {
+            newCurrentNode.classList.add('currentNode');
+            newCurrentNode.style.backgroundColor = greenNode; // Highlight the current node
+        }
+    };
 
 
     const drawAllArrows = (nodes) => {
@@ -147,7 +196,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
 
             let nodeElement, children;
             if (node) {
-                nodeElement = <NodeComponent id={node.currentId} color={blueNode} key={node.currentId} />;
+                nodeElement = <NodeComponent id={node.currentId} color={blueNode} key={node.currentId} onClick={() => handleNodeClick(node.currentId)} />;
                 children = [];
 
                 const yesChildId = node.yesChildId;
@@ -188,11 +237,8 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         nodes.forEach(node => {
             const element = document.getElementById(node.currentId);
             if (element) {
-                if (node.yesChildId && node.noChildId) {
-                    element.style.backgroundColor = blueNode; // for nodes with both yes and no children
-                } else if (!node.yesChildId && !node.noChildId) {
-                    element.style.backgroundColor = yellowNode; // for leaf nodes
-                }
+                const nodeColor = nodeColors[node.currentId] || (node.yesChildId && node.noChildId ? blueNode : yellowNode);
+                element.style.backgroundColor = nodeColor;
             } else {
                 console.error('Element not found for currentId:', node.currentId);
             }
@@ -211,12 +257,6 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
                         </div>
                     ))}
                 </div>
-                {currentNodeId && (
-                    <NodeDetails
-                        nodeId={currentNodeId}
-                        data={treeData.nodes.find(node => node.currentId === currentNodeId)}
-                    />
-                )}
                 <CurrentNodeDetails
                     question="Question placeholder"
                     onBack={() => console.log("Back clicked")}
