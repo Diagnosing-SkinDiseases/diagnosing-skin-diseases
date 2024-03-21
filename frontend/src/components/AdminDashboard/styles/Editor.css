@@ -62,12 +62,42 @@
 
 /* ---------- Article ---------- */
 
+.label {
+    margin-bottom: 0.5em;
+    margin-top: 1em;
+    color: var(--primary-color)
+}
+
+#art-title {
+    font-size: 1.7em;
+    font-weight: 600;
+}
+
+#title {
+    font-size: 1.5em;
+    font-weight: 450;
+}
+
+#subtitle {
+    font-size: 1.2em;
+    font-weight: 350;
+}
+
 /* Hide the remove button for the default title block */
 .default-title .delete-button {
     display: none;
 }
+.delete-button-container {
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.5em;
+    align-self: flex-end;
+}
+
 .delete-button {
-    margin-left: 0.5em
+    margin-left: 0.5em;
+    /* margin-bottom: 0.5em; */
 }
 
 .content-input {
@@ -88,7 +118,7 @@
 /* Ensures the wrapper takes the full width */
 .content-input-wrapper {
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     justify-content: space-between;
     width: 100%;
     margin-bottom: 0.5em;
