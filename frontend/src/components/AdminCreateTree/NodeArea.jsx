@@ -40,7 +40,7 @@ const NodeArea = ({ rootNode, setRootNode }) => {
 
   const onChangeNodeContent = (event) => {
     const newContent = event.target.value;
-    const nodeIdToUpdate = event.target.nodeid;
+    const nodeIdToUpdate = event.target.getAttribute("data-nodeId");
     updateNodeContent(nodeIdToUpdate, newContent);
   };
 
@@ -67,7 +67,7 @@ const NodeArea = ({ rootNode, setRootNode }) => {
             type="text"
             placeholder="Enter Root Node question"
             value={rootNode.content}
-            nodeid={rootNode.currentId}
+            data-nodeId={rootNode.currentId}
             onChange={onChangeNodeContent}
           />
           <button className="dropdown-button">
