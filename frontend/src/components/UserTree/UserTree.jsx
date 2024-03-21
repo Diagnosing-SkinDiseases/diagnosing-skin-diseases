@@ -100,32 +100,39 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
     const placeNodesByLevel = (nodes, maxLevel) => {
         if (!nodes || nodes.length === 0) return [];
 
-        const placedNodeIds = new Set(); // To keep track of nodes that have already been placed
+        const placeNode = (nodeId, level, maxLevel) => {
+            if (level > maxLevel) return null;
 
-        const placeNode = (nodeId, level, maxLevel, nodes) => {
-            if (level > maxLevel || placedNodeIds.has(nodeId)) return null; // Check if node is already placed
+            const node = nodeId ? nodes.find(n => n.currentId === nodeId) : null;
 
-            const node = nodes.find(n => n.currentId === nodeId);
-            if (!node) {
-                return level < maxLevel ? [<InvisibleNodeComponent key={`invisible-${level}`} />] : null;
+            let nodeElement, children;
+            if (node) {
+                nodeElement = <NodeComponent id={node.currentId} color={blueNode} key={node.currentId} />;
+                children = [];
+
+                const yesChildId = node.yesChildId;
+                const noChildId = node.noChildId;
+
+                if (yesChildId) {
+                    children.push(placeNode(yesChildId, level + 1, maxLevel));
+                }
+
+                if (noChildId) {
+                    children.push(placeNode(noChildId, level + 1, maxLevel));
+                }
             }
 
-            // Mark the node as placed
-            placedNodeIds.add(nodeId);
-
-            let nodeElement = <NodeComponent id={node.currentId} color={blueNode} key={node.currentId} />;
-            let children = [];
-
-            if (node.yesChildId && !placedNodeIds.has(node.yesChildId)) {
-                children.push(placeNode(node.yesChildId, level + 1, maxLevel, nodes));
-            }
-
-            if (node.noChildId && !placedNodeIds.has(node.noChildId)) {
-                children.push(placeNode(node.noChildId, level + 1, maxLevel, nodes));
+            // If the node has no children and is not at maxLevel, create invisible nodes
+            if ((!node || (!node.yesChildId && !node.noChildId)) && level < maxLevel) {
+                nodeElement = nodeElement || <InvisibleNodeComponent key={`invisible-${nodeId || level}`} />;
+                children = [
+                    placeNode(null, level + 1, maxLevel),
+                    placeNode(null, level + 1, maxLevel)
+                ];
             }
 
             return (
-                <div className="node-container" key={node.currentId}>
+                <div className="node-container" key={nodeId || `level-${level}`}>
                     {nodeElement}
                     <div className="node-children">
                         {children}
@@ -134,8 +141,9 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
             );
         };
 
-        return [placeNode(nodes[0]?.currentId, 0, maxLevel, nodes)];
+        return [placeNode(nodes[0]?.currentId, 0, maxLevel)];
     };
+
 
     const colorNodes = nodes => {
         nodes.forEach(node => {
