@@ -2,11 +2,6 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import React from "react";
 import { AuthProvider, useAuth } from "./AuthContext";
 import About from "../AboutDSD/About";
-import AdminDashboard from "../AdminDashboard/AdminDashboard";
-import AdminEditTrees from "../AdminDashboard/AdminEditTrees";
-import ContentEditor from "../AdminDashboard/ContentEditor";
-import ContentTypeEnum from "../AdminDashboard/enums/ContentTypeEnum";
-import testData from "../AdminDashboard/testData.json";
 import Article from "../Article/Article";
 import Glossary from "../Glossary/Glossary";
 import Homepage from "../Homepage/Homepage";
@@ -19,8 +14,12 @@ import WhiteMacules from "../UserTree/WhiteMacules";
 import Signup from "../SignUp/SignUp";
 import "./App.css";
 
-// Admin Components
-import AdminCreateTree from "../AdminCreateTree/AdminCreateTree";
+// Admin Imports
+import AdminDashboard from "../AdminDashboard/AdminDashboard";
+import AdminEditTrees from "../AdminDashboard/AdminEditTrees";
+import ContentEditor from "../AdminDashboard/ContentEditor";
+import ContentTypeEnum from "../AdminDashboard/enums/ContentTypeEnum";
+import testData from "../AdminDashboard/testData.json";
 
 // Test components - Sean
 import TestAdminDashboard from "../SeanPrototypes/LoadArticles/AdminDashboard/AdminDashboard";
@@ -60,7 +59,7 @@ function App() {
           {/* Admin - Trees - Add */}
           <Route
             path="/admin/trees/add"
-            element={<AdminCreateTree></AdminCreateTree>}
+            element={<ContentEditor contentType={ContentTypeEnum.TREE} />}
           ></Route>
 
           {/* Admin - Trees - Edit */}
