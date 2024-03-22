@@ -137,18 +137,22 @@ const NodeEditor = ({
     let targetNodeId = event.target.getAttribute("data-node-id");
     let addType = event.target.getAttribute("data-node-type");
     newNode.parentId = targetNodeId;
+
+    let targetElement;
+    let targetContent;
+
     if (addType === "yes") {
-      newNode.content = document.getElementById(
-        `yesInput${currentNode.currentId}`
-      ).value;
-      document.getElementById(`yesInput${currentNode.currentId}`).value = "";
+      targetElement = document.getElementById(`yesInput${targetNodeId}`);
+      targetContent = targetElement.value;
+      newNode.content = targetContent;
       addYesChild(targetNodeId, newNode);
+      document.getElementById(`yesInput${targetNodeId}`).value = "";
     } else {
-      newNode.content = document.getElementById(
-        `noInput${currentNode.currentId}`
-      ).value;
-      document.getElementById(`noInput${currentNode.currentId}`).value = "";
+      targetElement = document.getElementById(`noInput${targetNodeId}`);
+      targetContent = targetElement.value;
+      newNode.content = targetContent;
       addNoChild(targetNodeId, newNode);
+      document.getElementById(`noInput${targetNodeId}`).value = "";
     }
   };
 
@@ -197,8 +201,6 @@ const NodeEditor = ({
                   style={styles.dropdownNodeYesChild}
                   className="white-bar-input-dropdown-additional"
                   type="text"
-                  placeholder="Enter Yes Node Question"
-                  id={`yesInput${node.currentId}`}
                   value={node.content}
                   disabled={true}
                 />
@@ -213,7 +215,6 @@ const NodeEditor = ({
             );
           })}
           {/* No Children of current node*/}
-          {/* Yes Children of current node*/}
           {currentNode.noChild.map((node, index) => {
             return (
               <div className="additional-input-with-button" key={index}>
@@ -221,8 +222,6 @@ const NodeEditor = ({
                   style={styles.dropdownNodeNoChild}
                   className="white-bar-input-dropdown-additional"
                   type="text"
-                  placeholder="Enter Yes Node Question"
-                  id={`yesInput${node.currentId}`}
                   value={node.content}
                   disabled={true}
                 />
