@@ -87,7 +87,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          {/* Admin - Glossary - Add */}
+          {/* Admin - Articles - Add */}
           <Route
             path="/admin/articles/add"
             element={<ContentEditor contentType={ContentTypeEnum.ARTICLE} />}
