@@ -9,6 +9,14 @@ const styles = {
     border: "1px solid #ccc",
     padding: "10px",
   },
+  dropdownNodeYesChild: {
+    width: "calc(100% - 40px)",
+    backgroundColor: "rgb(230, 255, 230)",
+  },
+  dropdownNodeNoChild: {
+    width: "calc(100% - 40px)",
+    backgroundColor: "rgb(255, 230, 230)",
+  },
 };
 
 export default styles;

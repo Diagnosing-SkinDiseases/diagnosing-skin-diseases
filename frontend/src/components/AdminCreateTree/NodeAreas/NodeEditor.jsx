@@ -141,17 +141,20 @@ const NodeEditor = ({
       newNode.content = document.getElementById(
         `yesInput${currentNode.currentId}`
       ).value;
+      document.getElementById(`yesInput${currentNode.currentId}`).value = "";
       addYesChild(targetNodeId, newNode);
     } else {
       newNode.content = document.getElementById(
         `noInput${currentNode.currentId}`
       ).value;
+      document.getElementById(`noInput${currentNode.currentId}`).value = "";
       addNoChild(targetNodeId, newNode);
     }
   };
 
   const onDeleteNode = (event) => {
-    let targetNodeId = event.target.getAttribute("data-node-id");
+    let targetNodeId = event.currentTarget.getAttribute("data-node-id");
+    console.log("Deleting:", targetNodeId);
     deleteChild(targetNodeId);
   };
 
@@ -162,7 +165,7 @@ const NodeEditor = ({
         <input
           className="white-bar-input-dropdown"
           type="text"
-          placeholder="Enter Root Node question"
+          placeholder="Enter Node question"
           value={currentNode.content}
           data-node-id={currentNode.currentId}
           onChange={onChangeNodeContent}
@@ -186,6 +189,54 @@ const NodeEditor = ({
       {/* Yes and No add node dropdown */}
       {dropdownVisible && (
         <div className="additional-inputs-container">
+          {/* Yes Children of current node*/}
+          {currentNode.yesChild.map((node, index) => {
+            return (
+              <div className="additional-input-with-button" key={index}>
+                <input
+                  style={styles.dropdownNodeYesChild}
+                  className="white-bar-input-dropdown-additional"
+                  type="text"
+                  placeholder="Enter Yes Node Question"
+                  id={`yesInput${node.currentId}`}
+                  value={node.content}
+                  disabled={true}
+                />
+                <button
+                  style={styles.deleteButton}
+                  data-node-id={node.currentId}
+                  onClick={onDeleteNode}
+                >
+                  <FontAwesomeIcon icon={faTrashAlt} />
+                </button>
+              </div>
+            );
+          })}
+          {/* No Children of current node*/}
+          {/* Yes Children of current node*/}
+          {currentNode.noChild.map((node, index) => {
+            return (
+              <div className="additional-input-with-button" key={index}>
+                <input
+                  style={styles.dropdownNodeNoChild}
+                  className="white-bar-input-dropdown-additional"
+                  type="text"
+                  placeholder="Enter Yes Node Question"
+                  id={`yesInput${node.currentId}`}
+                  value={node.content}
+                  disabled={true}
+                />
+                <button
+                  style={styles.deleteButton}
+                  data-node-id={node.currentId}
+                  onClick={onDeleteNode}
+                >
+                  <FontAwesomeIcon icon={faTrashAlt} />
+                </button>
+              </div>
+            );
+          })}
+          {/* Yes node input */}
           <div className="additional-input-with-button">
             <input
               className="white-bar-input-dropdown-additional"
@@ -202,6 +253,7 @@ const NodeEditor = ({
               Add Yes Node
             </button>
           </div>
+          {/* No node input */}
           <div className="additional-input-with-button">
             <input
               className="white-bar-input-dropdown-additional"
