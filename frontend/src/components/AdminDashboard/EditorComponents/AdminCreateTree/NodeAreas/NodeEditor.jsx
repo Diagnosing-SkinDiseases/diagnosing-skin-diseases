@@ -196,6 +196,12 @@ const NodeEditor = ({
           value={currentNode.content}
           data-node-id={currentNode.currentId}
           onChange={onChangeNodeContent}
+          style={
+            currentNode.yesChild.length === 0 &&
+            currentNode.noChild.length === 0
+              ? styles.leafNode
+              : null
+          }
         />
         {/* Dropdown Button */}
         <button className="dropdown-button" onClick={toggleDropdown}>

@@ -29,6 +29,9 @@ const styles = {
     width: "100%",
     cursor: "pointer",
   },
+  leafNode: {
+    backgroundColor: "rgb(255, 255, 235)",
+  },
 };
 
 export default styles;
