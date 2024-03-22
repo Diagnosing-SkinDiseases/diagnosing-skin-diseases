@@ -1,11 +1,11 @@
-import React from 'react';
-import EditorButtons from './EditorComponents/EditorButtons';
-import ContentTypeEnum from './enums/ContentTypeEnum';
-import Definition from './EditorComponents/Definition';
-import Article from './EditorComponents/Article';
-// import Tree from './EditorComponents/Tree';
-import "./styles/List.css"; 
-import "./styles/AdminDashboard.css"; 
+import React from "react";
+import EditorButtons from "./EditorComponents/EditorButtons";
+import ContentTypeEnum from "./enums/ContentTypeEnum";
+import Definition from "./EditorComponents/Definition";
+import Article from "./EditorComponents/Article";
+import Tree from "./EditorComponents/Tree";
+import "./styles/List.css";
+import "./styles/AdminDashboard.css";
 
 // ContentEditor Component
 const ContentEditor = ({ contentType }) => {
@@ -17,7 +17,7 @@ const ContentEditor = ({ contentType }) => {
       case ContentTypeEnum.ARTICLE:
         return <Article />;
       case ContentTypeEnum.TREE:
-        // return <Tree />;
+        return <Tree />;
       default:
         return <div>Please select a content type.</div>;
     }
@@ -27,10 +27,10 @@ const ContentEditor = ({ contentType }) => {
     <div className="admin-dashboard">
       <div className="editor">
         {renderContent()}
-        <EditorButtons 
-          onPreview={console.log("Preview")} 
-          onSave={console.log("Save")} 
-          onPublish={console.log("Publish")} 
+        <EditorButtons
+          onPreview={console.log("Preview")}
+          onSave={console.log("Save")}
+          onPublish={console.log("Publish")}
         />
       </div>
     </div>

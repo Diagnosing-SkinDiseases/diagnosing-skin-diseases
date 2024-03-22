@@ -2,11 +2,6 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import React from "react";
 import { AuthProvider, useAuth } from "./AuthContext";
 import About from "../AboutDSD/About";
-import AdminDashboard from "../AdminDashboard/AdminDashboard";
-import AdminEditTrees from "../AdminDashboard/AdminEditTrees";
-import ContentEditor from "../AdminDashboard/ContentEditor";
-import ContentTypeEnum from "../AdminDashboard/enums/ContentTypeEnum";
-import testData from "../AdminDashboard/testData.json";
 import Article from "../Article/Article";
 import Glossary from "../Glossary/Glossary";
 import Homepage from "../Homepage/Homepage";
@@ -18,6 +13,13 @@ import UserTree from "../UserTree/UserTree";
 import WhiteMacules from "../UserTree/WhiteMacules";
 import Signup from "../SignUp/SignUp";
 import "./App.css";
+
+// Admin Imports
+import AdminDashboard from "../AdminDashboard/AdminDashboard";
+import AdminEditTrees from "../AdminDashboard/AdminEditTrees";
+import ContentEditor from "../AdminDashboard/ContentEditor";
+import ContentTypeEnum from "../AdminDashboard/enums/ContentTypeEnum";
+import testData from "../AdminDashboard/testData.json";
 
 // Test components - Sean
 import TestAdminDashboard from "../SeanPrototypes/LoadArticles/AdminDashboard/AdminDashboard";
@@ -47,23 +49,17 @@ function App() {
       <div className="app-container">
         <NavBarComponent></NavBarComponent>
         <Routes>
-          {/* Homepage */}
-          <Route path="/" element={<Homepage></Homepage>}></Route>
-
-          {/* User - Trees */}
-          <Route path="/user/trees" element={<UserTree></UserTree>}></Route>
-
-          {/* User - Trees - White Macules */}
-          <Route
-            path="/user/trees/white_macules"
-            element={<WhiteMacules></WhiteMacules>}
-          ></Route>
-
           {/* Admin */}
           {/* Admin - Trees */}
           <Route
             path="/admin/trees"
             element={<AdminDashboard data={trees} />}
+          ></Route>
+
+          {/* Admin - Trees - Add */}
+          <Route
+            path="/admin/trees/add"
+            element={<ContentEditor contentType={ContentTypeEnum.TREE} />}
           ></Route>
 
           {/* Admin - Trees - Edit */}
@@ -78,7 +74,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          {/* Admin - Glossary - Add */}
+          {/* Admin - Articles - Add */}
           <Route
             path="/admin/articles/add"
             element={<ContentEditor contentType={ContentTypeEnum.ARTICLE} />}
@@ -94,6 +90,19 @@ function App() {
           <Route
             path="/admin/definitions/add"
             element={<ContentEditor contentType={ContentTypeEnum.DEFINITION} />}
+          ></Route>
+
+          {/* User Routes */}
+          {/* Homepage */}
+          <Route path="/" element={<Homepage></Homepage>}></Route>
+
+          {/* User - Trees */}
+          <Route path="/user/trees" element={<UserTree></UserTree>}></Route>
+
+          {/* User - Trees - White Macules */}
+          <Route
+            path="/user/trees/white_macules"
+            element={<WhiteMacules></WhiteMacules>}
           ></Route>
 
           {/* Article List */}
