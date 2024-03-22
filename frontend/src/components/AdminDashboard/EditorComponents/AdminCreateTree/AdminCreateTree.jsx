@@ -209,15 +209,6 @@ const AdminCreateTree = () => {
           <EditTreeTitle title={title} setTitle={setTitle}></EditTreeTitle>
           <NodeArea rootNode={rootNode} setRootNode={setRootNode}></NodeArea>
         </div>
-        <div className="button-container">
-          <button className="btn btn-primary btn-sm rounded-pill">
-            Preview
-          </button>
-          <button className="btn btn-primary btn-sm rounded-pill">Add</button>
-          <button className="btn btn-primary btn-sm rounded-pill">
-            Add & Publish
-          </button>
-        </div>
       </div>
     </>
   );

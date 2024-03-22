@@ -49,10 +49,12 @@ const YesNodeArea = ({ rootNode, setRootNode, idCounter, setIdCounter }) => {
     });
   };
   return (
-    <div style={styles.nodeContainer} className="root-node-section-container">
-      <h3>Yes Nodes</h3>
-      {renderYesNodes(rootNode)}
-    </div>
+    rootNode.yesChild.length !== 0 && (
+      <div style={styles.nodeContainer} className="root-node-section-container">
+        <h3>Yes Nodes</h3>
+        {renderYesNodes(rootNode)}
+      </div>
+    )
   );
 };
 
