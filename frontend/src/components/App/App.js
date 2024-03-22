@@ -50,18 +50,6 @@ function App() {
       <div className="app-container">
         <NavBarComponent></NavBarComponent>
         <Routes>
-          {/* Homepage */}
-          <Route path="/" element={<Homepage></Homepage>}></Route>
-
-          {/* User - Trees */}
-          <Route path="/user/trees" element={<UserTree></UserTree>}></Route>
-
-          {/* User - Trees - White Macules */}
-          <Route
-            path="/user/trees/white_macules"
-            element={<WhiteMacules></WhiteMacules>}
-          ></Route>
-
           {/* Admin */}
           {/* Admin - Trees */}
           <Route
@@ -106,6 +94,17 @@ function App() {
           ></Route>
 
           {/* User Routes */}
+          {/* Homepage */}
+          <Route path="/" element={<Homepage></Homepage>}></Route>
+
+          {/* User - Trees */}
+          <Route path="/user/trees" element={<UserTree></UserTree>}></Route>
+
+          {/* User - Trees - White Macules */}
+          <Route
+            path="/user/trees/white_macules"
+            element={<WhiteMacules></WhiteMacules>}
+          ></Route>
 
           {/* Article List */}
           <Route path="/treatment" element={<ArticlePage />}></Route>
