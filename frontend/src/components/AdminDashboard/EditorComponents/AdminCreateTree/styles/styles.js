@@ -17,6 +17,18 @@ const styles = {
     width: "calc(100% - 40px)",
     backgroundColor: "rgb(255, 230, 230)",
   },
+  existingNodesDropdownContainer: {
+    marginLeft: "20px",
+    width: "calc(100% - 20px)",
+    maxHeight: "200px" /* Set the maximum height */,
+    height:
+      "min-content" /* Allow the container to grow up to the maximum height */,
+    overflowY: "auto" /* Enable vertical scrolling */,
+  },
+  existingNodesDropdownItem: {
+    width: "100%",
+    cursor: "pointer",
+  },
 };
 
 export default styles;

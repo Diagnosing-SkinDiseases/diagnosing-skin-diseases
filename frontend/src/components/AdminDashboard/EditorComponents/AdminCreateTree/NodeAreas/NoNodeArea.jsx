@@ -2,7 +2,13 @@ import React from "react";
 import styles from "../styles/styles";
 import NodeEditor from "./NodeEditor";
 
-const NoNodeArea = ({ rootNode, setRootNode, idCounter, setIdCounter }) => {
+const NoNodeArea = ({
+  rootNode,
+  setRootNode,
+  idCounter,
+  setIdCounter,
+  allNodes,
+}) => {
   // Function to get all no nodes
   function collectNoNodes(node) {
     let noNodes = [];
@@ -10,7 +16,9 @@ const NoNodeArea = ({ rootNode, setRootNode, idCounter, setIdCounter }) => {
     // If the current node has "no" children, add them to the array and explore further
     if (node.noChild && node.noChild.length > 0) {
       node.noChild.forEach((child) => {
-        noNodes.push(child);
+        if (child.parentId === node.currentId) {
+          noNodes.push(child);
+        }
         // Recursively collect "no" nodes from this child
         noNodes = noNodes.concat(collectNoNodes(child));
       });
@@ -49,6 +57,7 @@ const NoNodeArea = ({ rootNode, setRootNode, idCounter, setIdCounter }) => {
           currentNode={node}
           idCounter={idCounter}
           setIdCounter={setIdCounter}
+          allNodes={allNodes}
         ></NodeEditor>
       );
     });

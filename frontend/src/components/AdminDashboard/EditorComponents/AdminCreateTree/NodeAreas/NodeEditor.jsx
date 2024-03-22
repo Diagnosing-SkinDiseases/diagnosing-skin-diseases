@@ -12,13 +12,26 @@ const NodeEditor = ({
   currentNode,
   idCounter,
   setIdCounter,
+  allNodes,
 }) => {
   // Dropdown State
   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [existingDropdownVisibleYes, setExistingDropdownVisibleYes] =
+    useState(false);
+  const [existingDropdownVisibleNo, setExistingDropdownVisibleNo] =
+    useState(false);
 
   // Dropdown Interaction handlers
   const toggleDropdown = () => {
     setDropdownVisible((prevState) => !prevState);
+  };
+
+  const toggleExistingDropdownYes = () => {
+    setExistingDropdownVisibleYes((prevState) => !prevState);
+  };
+
+  const toggleExistingDropdownNo = () => {
+    setExistingDropdownVisibleNo((prevState) => !prevState);
   };
 
   const generateNodeId = () => {
@@ -87,7 +100,6 @@ const NodeEditor = ({
   const addNoChild = (targetNodeId, nodeToInsert) => {
     const addNoChildToTarget = (node) => {
       if (node.currentId === targetNodeId) {
-        nodeToInsert.parentId = targetNodeId;
         return {
           ...node,
           noChild: [...node.noChild, nodeToInsert],
@@ -153,6 +165,17 @@ const NodeEditor = ({
       newNode.content = targetContent;
       addNoChild(targetNodeId, newNode);
       document.getElementById(`noInput${targetNodeId}`).value = "";
+    }
+  };
+
+  const onAddExistingNode = (event, newNode) => {
+    let targetNodeId = event.target.getAttribute("data-node-id");
+    let addType = event.target.getAttribute("data-node-type");
+
+    if (addType === "yes") {
+      addYesChild(targetNodeId, newNode);
+    } else {
+      addNoChild(targetNodeId, newNode);
     }
   };
 
@@ -236,39 +259,110 @@ const NodeEditor = ({
             );
           })}
           {/* Yes node input */}
-          <div className="additional-input-with-button">
-            <input
-              className="white-bar-input-dropdown-additional"
-              type="text"
-              placeholder="Enter Yes Node Question"
-              id={`yesInput${currentNode.currentId}`}
-            />
-            <button
-              className="yes-node-button"
-              data-node-type="yes"
-              onClick={onAddNode}
-              data-node-id={currentNode.currentId}
-            >
-              Add Yes Node
-            </button>
-          </div>
+          {currentNode.yesChild.length === 0 && (
+            <>
+              <div className="additional-input-with-button">
+                <input
+                  className="white-bar-input-dropdown-additional"
+                  type="text"
+                  placeholder="Enter Yes Node Question"
+                  id={`yesInput${currentNode.currentId}`}
+                />
+                <button
+                  className="yes-node-button"
+                  data-node-type="yes"
+                  onClick={onAddNode}
+                  data-node-id={currentNode.currentId}
+                >
+                  Add Yes Node
+                </button>
+                {/* Existing Node toggle select */}
+                <button
+                  className="dropdown-button"
+                  onClick={toggleExistingDropdownYes}
+                >
+                  <FontAwesomeIcon
+                    icon={existingDropdownVisibleYes ? faAngleUp : faAngleDown}
+                  />
+                </button>
+              </div>
+              {/* Dropdown of existing nodes */}
+              {existingDropdownVisibleYes && (
+                <div style={styles.existingNodesDropdownContainer}>
+                  {allNodes.map((node, index) => {
+                    if (node.currentId === currentNode.currentId) {
+                      return null;
+                    }
+                    return (
+                      <div
+                        style={styles.existingNodesDropdownItem}
+                        className="white-bar-input-dropdown-additional existing-nodes-dropdown-item"
+                        key={`dropdownItem${index}`}
+                        data-node-id={currentNode.currentId}
+                        data-node-type="yes"
+                        onClick={(event) => onAddExistingNode(event, node)}
+                      >
+                        {node.content}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </>
+          )}
+
           {/* No node input */}
-          <div className="additional-input-with-button">
-            <input
-              className="white-bar-input-dropdown-additional"
-              type="text"
-              placeholder="Enter No Node Question"
-              id={`noInput${currentNode.currentId}`}
-            />
-            <button
-              className="no-node-button"
-              data-node-type="no"
-              onClick={onAddNode}
-              data-node-id={currentNode.currentId}
-            >
-              Add No Node
-            </button>
-          </div>
+          {currentNode.noChild.length === 0 && (
+            <>
+              <div className="additional-input-with-button">
+                <input
+                  className="white-bar-input-dropdown-additional"
+                  type="text"
+                  placeholder="Enter No Node Question"
+                  id={`noInput${currentNode.currentId}`}
+                />
+                <button
+                  className="no-node-button"
+                  data-node-type="no"
+                  onClick={onAddNode}
+                  data-node-id={currentNode.currentId}
+                >
+                  Add No Node
+                </button>
+                {/* Existing Node toggle select */}
+                <button
+                  className="dropdown-button"
+                  onClick={toggleExistingDropdownNo}
+                >
+                  <FontAwesomeIcon
+                    icon={existingDropdownVisibleNo ? faAngleUp : faAngleDown}
+                  />
+                </button>
+              </div>
+              {/* Dropdown of existing nodes */}
+              {existingDropdownVisibleNo && (
+                <div style={styles.existingNodesDropdownContainer}>
+                  {allNodes.map((node, index) => {
+                    if (node.currentId === currentNode.currentId) {
+                      return null;
+                    }
+                    return (
+                      <div
+                        style={styles.existingNodesDropdownItem}
+                        className="white-bar-input-dropdown-additional existing-nodes-dropdown-item"
+                        key={`dropdownItem${index}`}
+                        data-node-id={currentNode.currentId}
+                        data-node-type="no"
+                        onClick={(event) => onAddExistingNode(event, node)}
+                      >
+                        {node.content}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </>
+          )}
         </div>
       )}
     </>

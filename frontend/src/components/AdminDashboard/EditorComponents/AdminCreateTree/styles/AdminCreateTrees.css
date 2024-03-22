@@ -66,7 +66,7 @@ h3 {
 }
 
 .white-bar-input-dropdown-additional {
-  width: calc(100% - 150px);
+  width: calc(100% - 190px);
   background-color: white;
   margin-top: 0px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -176,4 +176,14 @@ h3 {
     padding-left: 100px; /* Increase left padding on extra large devices */
     padding-right: 100px; /* Increase right padding on extra large devices */
   }
+}
+
+/* Sean */
+.existing-nodes-dropdown-item {
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.existing-nodes-dropdown-item:hover {
+  background-color: #f4f4f4;
 }

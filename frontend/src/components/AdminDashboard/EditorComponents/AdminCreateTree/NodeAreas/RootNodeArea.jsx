@@ -4,7 +4,13 @@ import styles from "../styles/styles";
 import { useEffect } from "react";
 
 // style={styles.nodeContainer}
-const RootNodeArea = ({ rootNode, setRootNode, idCounter, setIdCounter }) => {
+const RootNodeArea = ({
+  rootNode,
+  setRootNode,
+  idCounter,
+  setIdCounter,
+  allNodes,
+}) => {
   return (
     <>
       <div
@@ -18,6 +24,7 @@ const RootNodeArea = ({ rootNode, setRootNode, idCounter, setIdCounter }) => {
           currentNode={rootNode}
           idCounter={idCounter}
           setIdCounter={setIdCounter}
+          allNodes={allNodes}
         ></NodeEditor>
       </div>
     </>
