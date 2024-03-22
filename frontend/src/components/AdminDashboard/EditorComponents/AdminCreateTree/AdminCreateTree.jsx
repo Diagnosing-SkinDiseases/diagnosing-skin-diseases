@@ -21,9 +21,31 @@ const AdminCreateTree = () => {
 
   // Publish handler
   const publishHandler = () => {
+    function flattenAllNodes(node) {
+      if (!node) {
+        return null;
+      }
+
+      const flattenedNode = {
+        ...node,
+        yesChild:
+          node.yesChild && node.yesChild.length > 0
+            ? flattenAllNodes(node.yesChild[0])
+            : null,
+        noChild:
+          node.noChild && node.noChild.length > 0
+            ? flattenAllNodes(node.noChild[0])
+            : null,
+      };
+
+      return flattenedNode;
+    }
+
+    let treePayload = flattenAllNodes(rootNode);
+
     let payload = {
       name: title,
-      nodeTree: rootNode,
+      nodeTree: treePayload,
       about: "Sample",
       status: "published",
     };
