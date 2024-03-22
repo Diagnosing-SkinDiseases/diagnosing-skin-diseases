@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import styles from "../styles/styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 import { useState } from "react";
 
@@ -106,6 +107,24 @@ const NodeEditor = ({
     setRootNode(updatedRootNode);
   };
 
+  const deleteChild = (nodeIdToDelete) => {
+    const deleteNodeRecursively = (node) => {
+      if (node.currentId === nodeIdToDelete) {
+        return null;
+      }
+      const updatedNoChild = node.noChild.map(deleteNodeRecursively);
+      const updatedYesChild = node.yesChild.map(deleteNodeRecursively);
+      return {
+        ...node,
+        noChild: updatedNoChild.filter(Boolean),
+        yesChild: updatedYesChild.filter(Boolean),
+      };
+    };
+
+    const updatedRootNode = deleteNodeRecursively(rootNode);
+    setRootNode(updatedRootNode);
+  };
+
   // Button Handlers
   const onChangeNodeContent = (event) => {
     const newContent = event.target.value;
@@ -114,13 +133,10 @@ const NodeEditor = ({
   };
 
   const onAddNode = (event) => {
-    console.log("Adding node..");
     let newNode = generateNode();
     let targetNodeId = event.target.getAttribute("data-node-id");
     let addType = event.target.getAttribute("data-node-type");
     newNode.parentId = targetNodeId;
-
-    console.log(addType);
     if (addType === "yes") {
       newNode.content = document.getElementById(
         `yesInput${currentNode.currentId}`
@@ -134,8 +150,14 @@ const NodeEditor = ({
     }
   };
 
+  const onDeleteNode = (event) => {
+    let targetNodeId = event.target.getAttribute("data-node-id");
+    deleteChild(targetNodeId);
+  };
+
   return (
     <>
+      {/* Input box */}
       <div className="white-bar-input-dropdown-container">
         <input
           className="white-bar-input-dropdown"
@@ -145,9 +167,20 @@ const NodeEditor = ({
           data-node-id={currentNode.currentId}
           onChange={onChangeNodeContent}
         />
+        {/* Dropdown Button */}
         <button className="dropdown-button" onClick={toggleDropdown}>
           <FontAwesomeIcon icon={dropdownVisible ? faAngleUp : faAngleDown} />
         </button>
+        {/* Delete button (disabled for root node) */}
+        {currentNode.parentId != null && (
+          <button
+            style={styles.deleteButton}
+            data-node-id={currentNode.currentId}
+            onClick={onDeleteNode}
+          >
+            <FontAwesomeIcon icon={faTrashAlt} />
+          </button>
+        )}
       </div>
 
       {/* Yes and No add node dropdown */}
