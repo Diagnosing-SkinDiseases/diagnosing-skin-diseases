@@ -105,6 +105,8 @@ function App() {
             element={<ContentEditor contentType={ContentTypeEnum.DEFINITION} />}
           ></Route>
 
+          {/* User Routes */}
+
           {/* Article List */}
           <Route path="/treatment" element={<ArticlePage />}></Route>
 
