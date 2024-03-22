@@ -13,14 +13,28 @@ import styles from "./styles/styles";
 import RootNodeArea from "./NodeAreas/RootNodeArea";
 
 const NodeArea = ({ rootNode, setRootNode }) => {
+  // Node ID state
+  const [idCounter, setIdCounter] = useState(0);
   return (
     <>
       <RootNodeArea
         rootNode={rootNode}
         setRootNode={setRootNode}
+        idCounter={idCounter}
+        setIdCounter={setIdCounter}
       ></RootNodeArea>
-      <YesNodeArea rootNode={rootNode} setRootNode={setRootNode}></YesNodeArea>
-      <NoNodeArea rootNode={rootNode} setRootNode={setRootNode}></NoNodeArea>
+      <YesNodeArea
+        rootNode={rootNode}
+        setRootNode={setRootNode}
+        idCounter={idCounter}
+        setIdCounter={setIdCounter}
+      ></YesNodeArea>
+      <NoNodeArea
+        rootNode={rootNode}
+        setRootNode={setRootNode}
+        idCounter={idCounter}
+        setIdCounter={setIdCounter}
+      ></NoNodeArea>
     </>
   );
 };

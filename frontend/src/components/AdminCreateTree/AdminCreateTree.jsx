@@ -117,6 +117,48 @@ const updateNodeContent = (rootNode, nodeIdToUpdate, newContent) => {
   return updatedRootNode;
 };
 
+function printYesNodes(node) {
+  // Check if the current node has "yes" children and print them
+  if (node.yesChild && node.yesChild.length > 0) {
+    node.yesChild.forEach((child) => {
+      console.log(`Yes Node ID: ${child.currentId}, Content: ${child.content}`);
+      // Recursively explore both "yes" and "no" children of this "yes" child
+      printYesNodes(child);
+    });
+  }
+
+  // Also explore the "no" children of the current node for any "yes" children they might have
+  if (node.noChild && node.noChild.length > 0) {
+    node.noChild.forEach((child) => {
+      // Only explore further; don't print the "no" nodes themselves
+      printYesNodes(child);
+    });
+  }
+}
+
+function collectYesNodes(node) {
+  let yesNodes = [];
+
+  // If the current node has "yes" children, add them to the array and explore further
+  if (node.yesChild && node.yesChild.length > 0) {
+    node.yesChild.forEach((child) => {
+      yesNodes.push({ currentId: child.currentId, content: child.content });
+      // Recursively collect "yes" nodes from this child
+      yesNodes = yesNodes.concat(collectYesNodes(child));
+    });
+  }
+
+  // Also explore the "no" children of the current node for any "yes" children they might have
+  if (node.noChild && node.noChild.length > 0) {
+    node.noChild.forEach((child) => {
+      // Only explore further; don't add the "no" nodes themselves
+      yesNodes = yesNodes.concat(collectYesNodes(child));
+    });
+  }
+
+  return yesNodes;
+}
+
 let test1 = rootNodeDefault;
 let node2 = generateNode();
 let node3 = generateNode();
@@ -134,8 +176,13 @@ test1 = addYesChild(test1, "node2", node6);
 test1 = addNoChild(test1, "node3", node4);
 test1 = addYesChild(test1, "node6", node7);
 
-test1 = deleteChild(test1, "node6");
+// test1 = deleteChild(test1, "node6");
 test1 = updateNodeContent(test1, "node3", "Test");
+
+// console.log("test", test1);
+// printYesNodes(test1);
+// let myYesNodes = collectYesNodes(test1);
+// console.log("Yes nodes:", myYesNodes);
 
 const AdminCreateTree = () => {
   // Title state

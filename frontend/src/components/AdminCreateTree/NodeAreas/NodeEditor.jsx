@@ -5,7 +5,13 @@ import { faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
 import { useState } from "react";
 
-const NodeEditor = ({ rootNode, setRootNode, nodeId }) => {
+const NodeEditor = ({
+  rootNode,
+  setRootNode,
+  currentNode,
+  idCounter,
+  setIdCounter,
+}) => {
   // Dropdown State
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
@@ -13,9 +19,6 @@ const NodeEditor = ({ rootNode, setRootNode, nodeId }) => {
   const toggleDropdown = () => {
     setDropdownVisible((prevState) => !prevState);
   };
-
-  // Node ID state
-  const [idCounter, setIdCounter] = useState(0);
 
   const generateNodeId = () => {
     setIdCounter((prevVal) => prevVal + 1);
@@ -115,15 +118,18 @@ const NodeEditor = ({ rootNode, setRootNode, nodeId }) => {
     let newNode = generateNode();
     let targetNodeId = event.target.getAttribute("data-node-id");
     let addType = event.target.getAttribute("data-node-type");
+    newNode.parentId = targetNodeId;
 
     console.log(addType);
     if (addType === "yes") {
-      newNode.content = document.getElementById(`yesInput${nodeId}`).value;
-      console.log("pre-function-", newNode);
+      newNode.content = document.getElementById(
+        `yesInput${currentNode.currentId}`
+      ).value;
       addYesChild(targetNodeId, newNode);
     } else {
-      newNode.content = document.getElementById(`noInput${nodeId}`).value;
-      console.log(newNode);
+      newNode.content = document.getElementById(
+        `noInput${currentNode.currentId}`
+      ).value;
       addNoChild(targetNodeId, newNode);
     }
   };
@@ -135,8 +141,8 @@ const NodeEditor = ({ rootNode, setRootNode, nodeId }) => {
           className="white-bar-input-dropdown"
           type="text"
           placeholder="Enter Root Node question"
-          value={rootNode.content}
-          data-node-id={nodeId}
+          value={currentNode.content}
+          data-node-id={currentNode.currentId}
           onChange={onChangeNodeContent}
         />
         <button className="dropdown-button" onClick={toggleDropdown}>
@@ -152,13 +158,13 @@ const NodeEditor = ({ rootNode, setRootNode, nodeId }) => {
               className="white-bar-input-dropdown-additional"
               type="text"
               placeholder="Enter Yes Node Question"
-              id={`yesInput${nodeId}`}
+              id={`yesInput${currentNode.currentId}`}
             />
             <button
               className="yes-node-button"
               data-node-type="yes"
               onClick={onAddNode}
-              data-node-id={nodeId}
+              data-node-id={currentNode.currentId}
             >
               Add Yes Node
             </button>
@@ -168,13 +174,13 @@ const NodeEditor = ({ rootNode, setRootNode, nodeId }) => {
               className="white-bar-input-dropdown-additional"
               type="text"
               placeholder="Enter No Node Question"
-              id={`noInput${nodeId}`}
+              id={`noInput${currentNode.currentId}`}
             />
             <button
               className="no-node-button"
               data-node-type="no"
               onClick={onAddNode}
-              data-node-id={nodeId}
+              data-node-id={currentNode.currentId}
             >
               Add No Node
             </button>
