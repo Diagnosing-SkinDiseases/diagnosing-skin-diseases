@@ -33,9 +33,11 @@ const drawArrow = (start, end, color, size) => {
 };
 
 const UserTree = ({ treeData }) => { // Destructure treeData from props
-    const [zoomLevel, setZoomLevel] = useState(1);
-    const treeName = treeData.name;
-    const rootQuestion = treeData.nodes[0].content;
+    const [zoomLevel, setZoomLevel] = useState(1); // Set the initial zoom level
+    const treeName = treeData.name; // Set the tree name
+    const rootQuestion = treeData.nodes[0].content; // Set the root question
+    const zoomRef = useRef(zoomLevel); // Ref to track the zoom level for event listeners
+    const treeContainerRef = useRef(null); // Ref to track the tree container for event listeners
 
     const greenArrow = "#3fc005";
     const redArrow = "#f44336";
@@ -50,8 +52,51 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
     const [previousNodeId, setPreviousNodeId] = useState(null);
     const [currentNodeContent, setCurrentNodeContent] = useState(rootQuestion);
 
-    const zoomIn = () => setZoomLevel(zoomLevel * 1.1);
-    const zoomOut = () => setZoomLevel(zoomLevel / 1.1);
+    const zoomIn = (factor = 1.1) => setZoomLevel(zoomLevel => zoomLevel * factor);
+    const zoomOut = (factor = 1.1) => setZoomLevel(zoomLevel => zoomLevel / factor);
+
+
+    const handleWheel = (event) => {
+        event.preventDefault(); // Prevent the default scroll behavior
+        const { deltaY } = event;
+
+        const rect = treeContainerRef.current.getBoundingClientRect();
+        const x = (event.clientX - rect.left) / zoomLevel; // Calculate x position relative to zoomed element
+        const y = (event.clientY - rect.top) / zoomLevel; // Calculate y position relative to zoomed element
+
+        // Update transform origin for zooming in/out at mouse position
+        event.currentTarget.style.transformOrigin = `${x}px ${y}px`;
+
+        if (deltaY < 0) {
+            zoomIn();
+            console.log("zoom in");
+        } else if (deltaY > 0) {
+            zoomOut();
+            console.log("zoom out");
+        }
+
+        // Apply the transform origin for scaling at the mouse position to the zoomed element
+        const userTreeElement = treeContainerRef.current.querySelector('.user-tree');
+        if (userTreeElement) {
+            userTreeElement.style.transformOrigin = `${x}px ${y}px`;
+        }
+        console.log("transform origin:", treeContainerRef.current.style.transformOrigin);
+    };
+
+    useEffect(() => {
+        zoomRef.current = zoomLevel; // Update the current zoom level in the ref
+    }, [zoomLevel]);
+
+    useEffect(() => {
+        const treeContainer = treeContainerRef.current;
+        if (treeContainer) {
+            treeContainer.addEventListener('wheel', handleWheel, { passive: false });
+
+            return () => {
+                treeContainer.removeEventListener('wheel', handleWheel);
+            };
+        }
+    }, []); // Attach wheel event listener to tree container
 
     // Highlight the current node when currentNodeId changes
     useEffect(() => {
@@ -350,10 +395,10 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         <>
             <div id="user-tree-page">
                 <h1 id="tree-name" className={zoomLevel > 1 ? 'hide-title' : ''}>{treeName}</h1>
-                <ZoomControls onZoomIn={zoomIn} onZoomOut={zoomOut} />
-                <div className="user-tree-container">
+                <ZoomControls onZoomIn={() => zoomIn()} onZoomOut={() => zoomOut()} />
+                <div className="user-tree-container" ref={treeContainerRef}>
                     <SymbolIndication />
-                    <div className="user-tree" style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'center' }}>
+                    <div className="user-tree" style={{ transform: `scale(${zoomLevel})` }}>
                         {nodeRows.map((nodeRow, index) => (
                             <div key={`node-row-${index}`} className={`node-row level-${index}`}>
                                 {nodeRow}
