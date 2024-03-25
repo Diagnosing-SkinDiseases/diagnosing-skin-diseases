@@ -12,7 +12,7 @@ let arrows = [];
 
 // Draw an arrow between two nodes
 // Source from: https://github.com/anseki/leader-line
-const drawArrow = (start, end, color) => {
+const drawArrow = (start, end, color, size) => {
     if (window.LeaderLine && document.getElementById(start) && document.getElementById(end)) {
         const line = new window.LeaderLine(
             document.getElementById(start),
@@ -22,7 +22,7 @@ const drawArrow = (start, end, color) => {
                 path: 'straight',
                 startSocket: 'bottom',
                 endSocket: 'top',
-                size: 2.5, // Set the line size
+                size: size, // Set the line size
             }
         );
 
@@ -174,12 +174,15 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         arrows.forEach(arrow => arrow.remove());
         arrows = [];
 
+        const baseSize = 2.5; // Base size of the arrow
+        const scaledSize = baseSize * zoomLevel; // Scale size based on zoom level
+
         nodes.forEach(node => {
             if (node.noChildId) {
-                drawArrow(node.currentId, node.noChildId, redArrow, arrows);
+                drawArrow(node.currentId, node.noChildId, redArrow, scaledSize);
             }
             if (node.yesChildId) {
-                drawArrow(node.currentId, node.yesChildId, greenArrow, arrows);
+                drawArrow(node.currentId, node.yesChildId, greenArrow, scaledSize);
             }
         });
     };
