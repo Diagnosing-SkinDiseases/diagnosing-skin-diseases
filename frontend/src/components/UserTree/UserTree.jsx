@@ -132,7 +132,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         arrows = [];
 
         if (nodeRows.length > 0) {
-            setTimeout(() => drawAllArrows(treeData.nodes), 0);
+            setTimeout(() => drawAllArrows(treeData.nodes, zoomLevel), 0);
         }
     }, [zoomLevel, nodeRows, treeData.nodes]);
 
@@ -143,7 +143,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
             // Your logic to remove and redraw arrows goes here
             arrows.forEach(arrow => arrow.remove());
             arrows = [];
-            drawAllArrows(treeData.nodes);
+            drawAllArrows(treeData.nodes, zoomLevel);
         };
 
         const userTreeContainer = document.querySelector('.user-tree-container');
@@ -151,7 +151,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         userTreeContainer.addEventListener('scroll', redrawArrows);
 
         return () => userTreeContainer.removeEventListener('scroll', redrawArrows);
-    }, [treeData.nodes]);
+    }, [treeData.nodes, zoomLevel]);
 
     // Update the ref value when currentNodeId changes
     useEffect(() => {
@@ -192,14 +192,14 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         if (nodeElement) {
             nodeElement.onmouseleave = () => {
                 const currentId = currentNodeIdRef.current;
-                console.log("mouse leave, current NodeId:", currentId);
+                // console.log("mouse leave, current NodeId:", currentId);
                 const currentNode = currentId ? treeData.nodes.find(n => n.currentId === currentId) : null;
                 setCurrentNodeContent(currentNode ? currentNode.content : rootQuestion);
             };
         }
     };
 
-    const drawAllArrows = (nodes) => {
+    const drawAllArrows = (nodes, zoomLevel = 1) => {
         arrows.forEach(arrow => arrow.remove());
         arrows = [];
 
@@ -227,7 +227,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
             }
         };
         findLevel(nodes[0].currentId, 0);
-        console.log("Max level:", maxLevel);
+        // console.log("Max level:", maxLevel);
         return maxLevel;
     };
 
