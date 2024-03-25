@@ -1,5 +1,6 @@
 #user-tree-page {
     height: 80vh;
+    position: relative;
 }
 
 #tree-name {
@@ -8,6 +9,11 @@
     justify-content: center;
     display: flex;
     color: var(--theme_blue);
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
 }
 
 .user-tree-container {
@@ -18,12 +24,12 @@
     height: 70vh;
     overflow: auto;
     min-width: 100%;
-    z-index: 1;
+    z-index: 10;
 }
 
 .user-tree {
     margin-top: 10px;
-    position: absolute;
+    position: relative;
     top: 0;
     left: 0;
     right: 0;
@@ -31,6 +37,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+    width: 100%;
 }
 
 .node-row {
@@ -64,4 +71,10 @@
 
 .node-component {
     margin: 0.5em;
+}
+
+.hide-title {
+    opacity: 0;
+    position: absolute;
+    pointer-events: none;
 }

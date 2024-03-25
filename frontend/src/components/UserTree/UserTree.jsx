@@ -349,7 +349,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
     return (
         <>
             <div id="user-tree-page">
-                <h1 id="tree-name" style={{ opacity: zoomLevel > 1 ? 0 : 1 }}>{treeName}</h1>
+                <h1 id="tree-name" className={zoomLevel > 1 ? 'hide-title' : ''}>{treeName}</h1>
                 <ZoomControls onZoomIn={zoomIn} onZoomOut={zoomOut} />
                 <div className="user-tree-container">
                     <SymbolIndication />
