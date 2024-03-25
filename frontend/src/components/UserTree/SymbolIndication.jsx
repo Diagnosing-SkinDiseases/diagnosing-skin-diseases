@@ -8,7 +8,7 @@ const SymbolIndication = () => {
     return (
         <div className="symbol-indication">
             <div className="node-container">
-                <div className="node-symbol" style={{ backgroundColor: greenNode }}></div>
+                <div className="node-symbol currentNode-style" style={{ backgroundColor: greenNode }}></div>
                 <h4 className="node-symbol-text">You Are Here</h4>
             </div>
             <div className="node-container">
