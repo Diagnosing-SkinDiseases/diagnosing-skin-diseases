@@ -248,12 +248,12 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
                 const yesChildId = node.yesChildId;
                 const noChildId = node.noChildId;
 
-                if (yesChildId) {
-                    children.push(placeNode(yesChildId, level + 1, maxLevel));
-                }
-
                 if (noChildId) {
                     children.push(placeNode(noChildId, level + 1, maxLevel));
+                }
+
+                if (yesChildId) {
+                    children.push(placeNode(yesChildId, level + 1, maxLevel));
                 }
             } else {
                 // Generate a unique key for invisible nodes
@@ -290,6 +290,44 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         });
     };
 
+    const handleYes = () => {
+        console.log("handleYes, currentNodeId:", currentNodeId);
+        const currentNode = treeData.nodes.find(n => n.currentId === currentNodeId);
+        if (currentNode && currentNode.yesChildId) {
+            setCurrentNodeId(currentNode.yesChildId);
+            const childNode = treeData.nodes.find(n => n.currentId === currentNode.yesChildId);
+            setCurrentNodeContent(childNode ? childNode.content : '');
+        } else if (!currentNodeId && treeData.nodes.length > 0) {
+            setCurrentNodeId(treeData.nodes[0].yesChildId);
+        }
+    };
+
+    const handleNo = () => {
+        console.log("handleNo, currentNodeId:", currentNodeId);
+        const currentNode = treeData.nodes.find(n => n.currentId === currentNodeId);
+        if (currentNode && currentNode.noChildId) {
+            setCurrentNodeId(currentNode.noChildId);
+            const childNode = treeData.nodes.find(n => n.currentId === currentNode.noChildId);
+            setCurrentNodeContent(childNode ? childNode.content : '');
+        } else if (!currentNodeId && treeData.nodes.length > 0) {
+            setCurrentNodeId(treeData.nodes[0].noChildId);
+        }
+    };
+
+    const handleBack = () => {
+        console.log("handleBack, currentNodeId:", currentNodeId);
+        const currentNode = treeData.nodes.find(n => n.currentId === currentNodeId);
+        if (currentNode && currentNode.parentId) {
+            setCurrentNodeId(currentNode.parentId);
+            const parentNode = treeData.nodes.find(n => n.currentId === currentNode.parentId);
+            setCurrentNodeContent(parentNode ? parentNode.content : rootQuestion);
+        } else {
+            setCurrentNodeId(null);
+            setCurrentNodeContent(rootQuestion);
+        }
+    };
+
+
     return (
         <>
             <div id="user-tree-page">
@@ -306,9 +344,9 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
                     </div>
                     <CurrentNodeDetails
                         question={currentNodeContent}
-                        onBack={() => console.log("Back clicked")}
-                        onNo={() => console.log("No clicked")}
-                        onYes={() => console.log("Yes clicked")}
+                        onBack={handleBack}
+                        onNo={handleNo}
+                        onYes={handleYes}
                     />
                 </div>
             </div>
