@@ -223,11 +223,9 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
                 if (noChildId) {
                     children.push(placeNode(noChildId, level + 1, maxLevel));
                 }
-            }
-
-            // If the node has no children and is not at maxLevel, create invisible nodes
-            if ((!node || (!node.yesChildId && !node.noChildId)) && level < maxLevel) {
-                nodeElement = nodeElement || <InvisibleNodeComponent key={`invisible-${nodeId || level}`} />;
+            } else {
+                // Generate a unique key for invisible nodes
+                nodeElement = <InvisibleNodeComponent key={`invisible-${level}-${Math.random()}`} />;
                 children = [
                     placeNode(null, level + 1, maxLevel),
                     placeNode(null, level + 1, maxLevel)
@@ -235,7 +233,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
             }
 
             return (
-                <div className="node-container" key={nodeId || `level-${level}`}>
+                <div className="node-container" key={nodeId || `level-${level}-${Math.random()}`}>
                     {nodeElement}
                     <div className="node-children">
                         {children}
@@ -243,6 +241,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
                 </div>
             );
         };
+
 
         return [placeNode(nodes[0]?.currentId, 0, maxLevel)];
     };
