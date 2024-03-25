@@ -29,12 +29,12 @@
 .buttons {
     display: flex;
     justify-content: stretch;
-    width: 100%;
 }
 
 .btn-no,
 .btn-yes,
 .btn-back {
+    max-width: 30%;
     padding: 0.2rem;
     border: none;
     cursor: pointer;

@@ -46,7 +46,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
     const currentNodeIdRef = useRef(null);
     const [nodeRows, setNodeRows] = useState([]);
     const [nodeColors, setNodeColors] = useState({});
-    const [currentNodeId, setCurrentNodeId] = useState(null);
+    const [currentNodeId, setCurrentNodeId] = useState(treeData.nodes[0].currentId);
     const [previousNodeId, setPreviousNodeId] = useState(null);
     const [currentNodeContent, setCurrentNodeContent] = useState(rootQuestion);
 
@@ -365,11 +365,15 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
                         onBack={handleBack}
                         onNo={handleNo}
                         onYes={handleYes}
+                        showBack={currentNodeId && currentNodeId !== treeData.nodes[0].currentId} // Show back button if not at root
+                        showYes={!!(treeData.nodes.find(n => n.currentId === currentNodeId)?.yesChildId)} // Show "Yes" if there is a yesChildId
+                        showNo={!!(treeData.nodes.find(n => n.currentId === currentNodeId)?.noChildId)} // Show "No" if there is a noChildId
                     />
                 </div>
             </div>
         </>
     );
+
 };
 
 export default UserTree;
