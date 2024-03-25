@@ -35,6 +35,7 @@ const drawArrow = (start, end, color, size) => {
 const UserTree = ({ treeData }) => { // Destructure treeData from props
     const [zoomLevel, setZoomLevel] = useState(1);
     const treeName = treeData.name;
+    const rootQuestion = treeData.nodes[0].content;
 
     const greenArrow = "#3fc005";
     const redArrow = "#f44336";
@@ -42,15 +43,17 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
     const yellowNode = "#FFD700";
     const greenNode = "#6ad669";
 
+    const currentNodeIdRef = useRef(null);
     const [nodeRows, setNodeRows] = useState([]);
     const [nodeColors, setNodeColors] = useState({});
     const [currentNodeId, setCurrentNodeId] = useState(null);
     const [previousNodeId, setPreviousNodeId] = useState(null);
-    const [currentNodeContent, setCurrentNodeContent] = useState('Question placeholder');
+    const [currentNodeContent, setCurrentNodeContent] = useState(rootQuestion);
 
     const zoomIn = () => setZoomLevel(zoomLevel * 1.1);
     const zoomOut = () => setZoomLevel(zoomLevel / 1.1);
 
+    // Highlight the current node when currentNodeId changes
     useEffect(() => {
         if (currentNodeId) {
             const newCurrentNode = document.getElementById(currentNodeId);
@@ -61,6 +64,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         }
     }, [currentNodeId]); // Add currentNodeId to useEffect dependency array
 
+    // Update the state when the ref value changes
     useEffect(() => {
         if (!treeData || !treeData.nodes || treeData.nodes.length === 0) {
             console.error('Invalid tree data:', treeData);
@@ -78,6 +82,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
 
     }, [treeData]); // Add treeData to useEffect dependency array
 
+    // Initialize or update node colors based on tree data
     useEffect(() => {
         // Initialize or update node colors based on tree data
         const initialColors = {};
@@ -87,6 +92,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         setNodeColors(initialColors);
     }, [treeData]);
 
+    // Highlight the current node and change the previous node back to its original color
     useEffect(() => {
         const changeNodeColor = (nodeId, color) => {
             const nodeElement = document.getElementById(nodeId);
@@ -103,6 +109,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         }
     }, [currentNodeId, previousNodeId]);
 
+    // Update previousNodeId when currentNodeId changes
     useEffect(() => {
         // Skip on initial render when currentNodeId is null
         if (currentNodeId !== null) {
@@ -111,6 +118,14 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         }
     }, [currentNodeId]);
 
+    // Update currentNodeContent when currentNodeId changes
+    useEffect(() => {
+        if (!currentNodeId) {
+            setCurrentNodeContent(rootQuestion);
+        }
+    }, [currentNodeId, rootQuestion]);
+
+    // Redraw arrows when zoomLevel, nodeRows, or treeData.nodes change
     useEffect(() => {
         // Remove existing arrows before redrawing them
         arrows.forEach(arrow => arrow.remove());
@@ -121,7 +136,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         }
     }, [zoomLevel, nodeRows, treeData.nodes]);
 
-
+    // Redraw arrows when the user scrolls
     useEffect(() => {
         // Function to redraw arrows
         const redrawArrows = () => {
@@ -138,6 +153,11 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         return () => userTreeContainer.removeEventListener('scroll', redrawArrows);
     }, [treeData.nodes]);
 
+    // Update the ref value when currentNodeId changes
+    useEffect(() => {
+        currentNodeIdRef.current = currentNodeId;
+    }, [currentNodeId]);
+
     const handleNodeClick = nodeId => {
         // Find and clear the previous current node
         const prevCurrentNode = document.querySelector('.currentNode');
@@ -148,18 +168,16 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
             prevCurrentNode.style.backgroundColor = originalColor;
         }
 
-        // Set the new current node
+        const node = treeData.nodes.find(n => n.currentId === nodeId);
         setCurrentNodeId(nodeId);
+        console.log("Node clicked:", nodeId);
+        setCurrentNodeContent(node ? node.content : rootQuestion);
+
         const newCurrentNode = document.getElementById(nodeId);
+
         if (newCurrentNode) {
             newCurrentNode.classList.add('currentNode');
             newCurrentNode.style.backgroundColor = greenNode; // Highlight the current node
-        }
-
-        // Find the node object and update the currentNodeContent
-        const node = treeData.nodes.find(n => n.currentId === nodeId);
-        if (node) {
-            setCurrentNodeContent(node.content); // Step 2
         }
     };
 
@@ -167,6 +185,17 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         const node = treeData.nodes.find(n => n.currentId === nodeId);
         if (node) {
             setCurrentNodeContent(node.content); // Update content on hover
+        }
+
+        // Mouse leave event to reset content to current node or root node
+        const nodeElement = document.getElementById(nodeId);
+        if (nodeElement) {
+            nodeElement.onmouseleave = () => {
+                const currentId = currentNodeIdRef.current;
+                console.log("mouse leave, current NodeId:", currentId);
+                const currentNode = currentId ? treeData.nodes.find(n => n.currentId === currentId) : null;
+                setCurrentNodeContent(currentNode ? currentNode.content : rootQuestion);
+            };
         }
     };
 

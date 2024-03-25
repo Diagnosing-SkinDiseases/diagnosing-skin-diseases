@@ -14,7 +14,7 @@ function WhiteMacules() {
         try {
             const response = await apiGetTree(treeId);
             setTreeData(response.data);
-            console.log('Tree data:', response.data);
+            // console.log('Tree data:', response.data);
         } catch (error) {
             console.error('Error fetching tree:', error);
         }
