@@ -76,7 +76,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
 
         setNodeRows(nodesByLevel);
 
-        setTimeout(() => colorNodes(treeData.nodes), 1);
+        setTimeout(() => colorNodes(treeData.nodes), 5);
 
         setTimeout(() => drawAllArrows(treeData.nodes), 0);
 
@@ -156,6 +156,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
     // Update the ref value when currentNodeId changes
     useEffect(() => {
         currentNodeIdRef.current = currentNodeId;
+        colorNodes();
     }, [currentNodeId]);
 
     const handleNodeClick = nodeId => {
@@ -278,17 +279,31 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         return [placeNode(nodes[0]?.currentId, 0, maxLevel)];
     };
 
-    const colorNodes = nodes => {
-        nodes.forEach(node => {
+    const colorNodes = () => {
+        // Remove 'currentNode' class from all nodes
+        document.querySelectorAll('.node-component').forEach(element => {
+            element.classList.remove('currentNode');
+            element.style.backgroundColor = element.id === currentNodeId ? greenNode : blueNode;
+        });
+
+        // Find the current node and add 'currentNode' class
+        const currentNodeElement = document.getElementById(currentNodeId);
+        if (currentNodeElement) {
+            currentNodeElement.classList.add('currentNode');
+            currentNodeElement.style.backgroundColor = greenNode; // Apply the green color for the current node
+        }
+
+        // Set colors for all nodes based on their state
+        treeData.nodes.forEach(node => {
             const element = document.getElementById(node.currentId);
             if (element) {
-                const nodeColor = nodeColors[node.currentId] || (node.yesChildId && node.noChildId ? blueNode : yellowNode);
+                const nodeColor = node.currentId === currentNodeId ? greenNode : (node.yesChildId || node.noChildId ? blueNode : yellowNode);
                 element.style.backgroundColor = nodeColor;
-            } else {
-                console.error('Element not found for currentId:', node.currentId);
             }
         });
     };
+
+
 
     const handleYes = () => {
         console.log("handleYes, currentNodeId:", currentNodeId);
@@ -300,6 +315,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         } else if (!currentNodeId && treeData.nodes.length > 0) {
             setCurrentNodeId(treeData.nodes[0].yesChildId);
         }
+        colorNodes();
     };
 
     const handleNo = () => {
@@ -312,6 +328,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         } else if (!currentNodeId && treeData.nodes.length > 0) {
             setCurrentNodeId(treeData.nodes[0].noChildId);
         }
+        colorNodes();
     };
 
     const handleBack = () => {
@@ -325,6 +342,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
             setCurrentNodeId(null);
             setCurrentNodeContent(rootQuestion);
         }
+        colorNodes();
     };
 
 
