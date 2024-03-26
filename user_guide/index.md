@@ -23,10 +23,10 @@ Throughout this guide, the following conventions are utilized:
 
 ## Notes and Warning Messages
 
-> [!NOTE]
+> [!INFO]
 > Additional information to enhance your understanding.
 
-> [!SUCCESS]
+> [!IMPORTANT]
 > Indicates when a task has been completed successfully.
 
 > [!WARNING]
