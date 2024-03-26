@@ -33,6 +33,7 @@ import TestGlossary from "../SeanPrototypes/LoadGlossary/UserFacing/Glossary/Glo
 import ArticleApiTests from "../SeanPrototypes/ApiTesting/ArticleApiTests";
 import GlossaryItemApiTests from "../SeanPrototypes/ApiTesting/GlossaryItemApiTests";
 import TreeApiTests from "../SeanPrototypes/ApiTesting/TreeApiTests";
+import BuildUserTree from "../UserTree/UserTrees/BuildUserTree";
 
 // This function wraps your Routes and uses useAuth to access the auth state
 function ProtectedRoute({ children }) {
@@ -132,7 +133,9 @@ function App() {
           {/* User - Trees - White Macules */}
           <Route
             path="/user/trees/white_macules"
-            element={<WhiteMacules></WhiteMacules>}
+            element={
+              <BuildUserTree>{"65f4b0aa08572dd23283e53a"}</BuildUserTree>
+            }
           ></Route>
 
           {/* Article List */}

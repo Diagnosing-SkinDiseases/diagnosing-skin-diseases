@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "./Homepage.css";
 import { apiGetAllTrees } from "../../apiControllers/treeApiController";
+import BuildUserTree from "../UserTree/UserTrees/BuildUserTree";
 
-const Card = ({ title, image, aboutLink, onPlay }) => {
+const Card = ({ title, image, aboutLink, onPlay, treeId }) => {
   return (
     <div className="card h-100 card-custom">
       <img
@@ -20,7 +21,10 @@ const Card = ({ title, image, aboutLink, onPlay }) => {
           <a href={aboutLink} className="btn card-action-btn">
             About
           </a>
-          <button className="btn card-action-btn" onClick={onPlay}>
+          <button
+            className="btn card-action-btn"
+            onClick={() => onPlay(treeId)}
+          >
             Start Diagnosis
           </button>
         </div>
@@ -31,6 +35,7 @@ const Card = ({ title, image, aboutLink, onPlay }) => {
 
 function Homepage() {
   const [trees, setTrees] = useState([]);
+  const [selectedTreeId, setSelectedTreeId] = useState(null);
 
   useEffect(() => {
     const fetchTrees = async () => {
@@ -48,6 +53,15 @@ function Homepage() {
 
     fetchTrees();
   }, []);
+
+  const startDiagnosis = (treeId) => {
+    console.log("Start diagnosis for tree with ID:", treeId);
+    setSelectedTreeId(treeId);
+  };
+
+  if (selectedTreeId) {
+    return <BuildUserTree treeId={selectedTreeId} />;
+  }
 
   const settings = {
     dots: true,
@@ -89,6 +103,8 @@ function Homepage() {
               title={tree.name}
               image={tree.image}
               aboutLink={tree.aboutLink}
+              onPlay={startDiagnosis}
+              treeId={tree._id}
             />
           ))}
         </Slider>

@@ -33,8 +33,9 @@
 
 .card-img-top {
   width: 100%;
-  height: auto; /* Adjust based on your needs */
+  height: 200px; /* Adjust based on your needs */
   object-fit: cover; /* Ensure images cover the card area properly */
+  object-position: center;
 }
 
 .card-body {
