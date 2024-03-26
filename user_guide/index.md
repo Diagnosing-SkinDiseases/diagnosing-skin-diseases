@@ -25,12 +25,9 @@ Throughout this guide, the following conventions are utilized:
 
 > [!NOTE]
 > Additional information to enhance your understanding.
-
 > [!IMPORTANT]
 > Indicates when a task has been completed successfully.
-
 > [!WARNING]
 > Pay close attention to ensure tasks are performed correctly.
-
 > [!TIP]
 > Helpful tips for better usability.
