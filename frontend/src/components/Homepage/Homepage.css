@@ -3,14 +3,14 @@
 }
 
 .Homepage {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   min-height: 100%;
   display: flex;
   flex-direction: column;
 }
 
 .banner {
-  background-image: url('/public/banner.jpg');
+  background-image: url("/public/banner.jpg");
   background-size: cover;
   background-position: center;
   height: 15em;
@@ -30,6 +30,7 @@
   padding-left: 3rem;
   margin-right: auto;
   margin-left: auto;
+  max-width: 100%; /* Ensure it doesn't overflow the screen width */
 }
 
 .card {
@@ -39,10 +40,11 @@
   border: none;
   border-radius: 2rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 3rem;
+  margin: 10px; /* Adjusted for spacing */
   font-weight: bold;
   background-color: var(--theme_blue);
   color: white;
+  flex: 1 0 calc(25% - 20px); /* Adjust card width */
 }
 
 .card-body {
@@ -105,3 +107,47 @@
   margin-top: auto;
   z-index: 1000;
 }
+
+/* Slick Carousel Customizations */
+.slick-slide {
+  margin: 15px;
+}
+
+.slick-list {
+  margin: 0 -15px;
+}
+
+.slick-track {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.slick-prev,
+.slick-next {
+  z-index: 1;
+}
+
+.slick-prev {
+  left: -25px;
+}
+
+.slick-next {
+  right: -25px;
+}
+
+@media (max-width: 1024px) {
+  .card {
+    flex: 1 0 calc(50% - 20px); /* Adjust so two cards fit within the space */
+  }
+}
+
+@media (max-width: 600px) {
+  .card {
+    flex: 1 0 calc(100% - 20px); /* Adjust so one card fits within the space */
+  }
+}
+
+/* Import Slick Carousel styles */
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
