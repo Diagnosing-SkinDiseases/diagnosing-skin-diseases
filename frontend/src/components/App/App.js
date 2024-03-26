@@ -10,7 +10,7 @@ import Logout from "../Logout/Logout";
 import NavBarComponent from "../NavBar/NavBar";
 import ArticlePage from "../ArticleList/ArticleList";
 import UserTree from "../UserTree/TreeComponents/UserTree";
-import WhiteMacules from "../UserTree/UserTrees/WhiteMacules";
+import WhiteMacules from "../UserTree/UserTrees/BuildUserTree";
 import Signup from "../SignUp/SignUp";
 import "./App.css";
 
