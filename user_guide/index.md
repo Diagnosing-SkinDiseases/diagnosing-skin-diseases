@@ -4,7 +4,7 @@ Hello! 👋 Welcome to the User Documentation for Diagnosing Skin Diseases. This
 
 ## Is This Guide For You?
 
-This guide is tailored for individuals seeking to diagnose skin diseases using our application. Whether you're a medical professional, student, or individual concerned about your skin health, this guide will assist you in navigating the diagnostic process effectively. This guide will also help you learn how to use the application's features to [diagnose skin diseases](task1.md).
+This guide is tailored for individuals seeking to diagnose skin diseases using our application. Whether you're a medical professional, student, or individual concerned about your skin health, this guide will assist you in navigating the diagnostic process effectively. This guide will also help you learn how to use the application's features to [diagnose skin diseases](task1.md) and find supplement information in the [articles and glossary](task2.md) sections.
 
 ## Prerequisites
 
