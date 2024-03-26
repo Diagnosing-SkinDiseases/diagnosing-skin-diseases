@@ -17,11 +17,11 @@ The application is deployed and accessible at [https://diagnosing-skin-diseases.
 
 ## Contributors
 
-- **Shuyi Liu** - [GitHub](maz-slo)
-- **Jason Shi** - [GitHub](jaason-shi)
-- **Sean Sollestre** - [GitHub](SSollestre)
-- **Emily Tran** - [GitHub](Emildore)
-- **Olga Zimina** - [GitHub](olgazim)
+- **Shuyi Liu** - [GitHub](https://github.com/maz-slo)
+- **Jason Shi** - [GitHub](https://github.com/jaason-shi)
+- **Sean Sollestre** - [GitHub](https://github.com/SSollestre)
+- **Emily Tran** - [GitHub](https://github.com/Emildore)
+- **Olga Zimina** - [GitHub](https://github.com/olgazim)
 
 ## Contact Information
 
