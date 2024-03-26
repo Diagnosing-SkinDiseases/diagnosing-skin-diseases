@@ -1,9 +1,5 @@
 # Troubleshoot
 
-| **Symptoms**                                                     | **Probable Cause**                                | **Action**                                                                                                                            |
-| ---------------------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| Unable to get diagnosis                                          | Did not join a group                              | Follow the instructions in the [Join a group](task3.md) section to see available groups to join in order to see the group assignment. |
-| Unable to upload file                                            | File size too large                               | Reduce the file size to less than 2 GB.                                                                                               |
-| Not enough time to finish creating discussion thread             | Not enough time to finish                         | Click the "Save Draft" button to save the draft of the discussion thread. You can continue to edit the draft later.                   |
-| Did not get the submission message for uploading submission file | Did not click the "Submit" button after uploading | Upload the file and then click the Submit button to submit the file.                                                                  |
-| Unable to receive notifications for my discussion thread         | Did not subscribe to the thread                   | Click "Subscribe" to subscribe to the thread and customize your notifications.                                                        |
+| **Issue**               | **Probable Cause**      | **Action**                                  |
+| ----------------------- | ----------------------- | ------------------------------------------- |
+| Unable to get diagnosis | Skipped a node question | Follow the instructions in the task session |
