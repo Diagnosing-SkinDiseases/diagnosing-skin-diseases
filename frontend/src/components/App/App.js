@@ -36,7 +36,10 @@ import TreeApiTests from "../SeanPrototypes/ApiTesting/TreeApiTests";
 
 // This function wraps your Routes and uses useAuth to access the auth state
 function ProtectedRoute({ children }) {
-  const { isLoggedIn } = useAuth(); // Use the isLoggedIn state from AuthContext
+  const { isLoggedIn, isLoading } = useAuth(); // Use the isLoggedIn state from AuthContext
+  if (isLoading) {
+    return <div>Loading...</div>; // Or some loading spinner
+  }
   return isLoggedIn ? children : <Navigate to="/login" replace />;
 }
 
@@ -53,17 +56,32 @@ function App() {
           {/* Admin - Trees */}
           <Route
             path="/admin/trees"
-            element={<AdminDashboard data={trees} />}
+            element={
+              <ProtectedRoute>
+                <AdminDashboard data={trees} />
+              </ProtectedRoute>
+            }
           ></Route>
 
           {/* Admin - Trees - Add */}
           <Route
             path="/admin/trees/add"
-            element={<ContentEditor contentType={ContentTypeEnum.TREE} />}
+            element={
+              <ProtectedRoute>
+                <ContentEditor contentType={ContentTypeEnum.TREE} />
+              </ProtectedRoute>
+            }
           ></Route>
 
           {/* Admin - Trees - Edit */}
-          <Route path="/admin/trees/edit" element={<AdminEditTrees />}></Route>
+          <Route
+            path="/admin/trees/edit"
+            element={
+              <ProtectedRoute>
+                <AdminEditTrees />
+              </ProtectedRoute>
+            }
+          ></Route>
 
           {/* Admin - Articles */}
           <Route
@@ -77,19 +95,31 @@ function App() {
           {/* Admin - Articles - Add */}
           <Route
             path="/admin/articles/add"
-            element={<ContentEditor contentType={ContentTypeEnum.ARTICLE} />}
+            element={
+              <ProtectedRoute>
+                <ContentEditor contentType={ContentTypeEnum.ARTICLE} />
+              </ProtectedRoute>
+            }
           ></Route>
 
           {/* Admin - Glossary */}
           <Route
             path="/admin/definitions"
-            element={<AdminDashboard data={definitions} />}
+            element={
+              <ProtectedRoute>
+                <AdminDashboard data={definitions} />
+              </ProtectedRoute>
+            }
           ></Route>
 
           {/* Admin - Glossary - Add */}
           <Route
             path="/admin/definitions/add"
-            element={<ContentEditor contentType={ContentTypeEnum.DEFINITION} />}
+            element={
+              <ProtectedRoute>
+                <ContentEditor contentType={ContentTypeEnum.DEFINITION} />{" "}
+              </ProtectedRoute>
+            }
           ></Route>
 
           {/* User Routes */}
@@ -121,7 +151,14 @@ function App() {
           <Route path="/logout" element={<Logout />}></Route>
 
           {/*Signup*/}
-          <Route path="/signup" element={<Signup></Signup>}></Route>
+          <Route
+            path="/signup"
+            element={
+              <ProtectedRoute>
+                <Signup></Signup>
+              </ProtectedRoute>
+            }
+          ></Route>
 
           {/* About DSD */}
           <Route path="/about" element={<About />}></Route>

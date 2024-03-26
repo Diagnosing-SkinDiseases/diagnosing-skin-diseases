@@ -27,7 +27,7 @@ const NavBarComponent = () => {
   // Define links for main tabs and their corresponding subtabs if any
   const links = [
     { name: 'Home', path: '/', subTabs: [] },
-    { name: 'Diagnosis Tree', subTabs: [{ name: 'Sub Item 1', path: '/path1' }, { name: 'Sub Item 2', path: '/path2' }] },
+    { name: 'Diagnosis Tree', subTabs: [{ name: 'admin articles', path: '/admin/articles' }, { name: 'admin definitions', path: '/admin/definitions' }] },
     { name: 'Treatment', subTabs: [{ name: 'Articles', path: '/treatment' }] },
     { name: 'Glossary', path: '/glossary', subTabs: [] },
     { name: 'About', path: '/about', subTabs: [] }
