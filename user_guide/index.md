@@ -23,12 +23,11 @@ Throughout this guide, the following conventions are utilized:
 
 ## Notes and Warning Messages
 
-!!! warning
-Pay close attention to ensure tasks are performed correctly.
-
 > [!NOTE]
-> This alert uses [!NOTE]
-> !!! tip
-> Helpful tips for smoother usability.
-> !!! success
+> Additional information to enhance your understanding.
+
+> [!IMPORTANT]
 > Confirmation of successful task completion.
+
+> [!WARNING]
+> Pay close attention to ensure tasks are performed correctly.
