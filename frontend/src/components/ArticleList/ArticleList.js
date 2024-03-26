@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { apiGetAllArticles } from "../../apiControllers/articleApiController"; // Assuming you have this file set up similar to glossaryItemApiController
-import "./ArticleList.css"; // Assume similar styling to Glossary.css
-import SearchBar from "./SearchBar"; // Reuse the same component
-import LetterFilter from "./LetterFilter"; // Reuse the same component
-import ArticleListContent from "./ArticleListContent"; // New component, similar to GlossaryContent
+import { apiGetAllArticles } from "../../apiControllers/articleApiController";
+import SearchBar from "./SearchBar";
+import LetterFilter from "./LetterFilter";
+import ArticleListContent from "./ArticleListContent";
 
 function ArticleListPage() {
   const [selectedLetter, setSelectedLetter] = useState("");
