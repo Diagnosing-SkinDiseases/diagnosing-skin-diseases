@@ -23,7 +23,7 @@ Throughout this guide, the following conventions are utilized:
 
 ## Notes and Warning Messages
 
-> [!INFO]
+> [!NOTE]
 > Additional information to enhance your understanding.
 
 > [!IMPORTANT]
