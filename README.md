@@ -68,7 +68,7 @@ This application is optimized for and best viewed on the following browsers:
 5. **Usage**:
    - Access the application through your browser (by default, it should be available at <http://localhost:3000>).
    - Answer the prompted questions with yes or no responses.
-   - Based on your inputs, the application will provide a diagnosis or recommend seeking professional medical advice.
+   - Based on your inputs, the application will provide a diagnosis and recommended treatment.
    - Explore supplementary articles for detailed information on specific diseases and treatments.
 
 ## Contribution
