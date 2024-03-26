@@ -198,6 +198,23 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         return () => userTreeContainer.removeEventListener('scroll', redrawArrows);
     }, [treeData.nodes, zoomLevel]);
 
+    // Clean up arrows when component unmounts
+    useEffect(() => {
+        const treeContainer = treeContainerRef.current;
+        if (treeContainer) {
+            treeContainer.addEventListener('wheel', handleWheel, { passive: false });
+
+            // Cleanup function to remove arrows and event listener
+            return () => {
+                treeContainer.removeEventListener('wheel', handleWheel);
+                // Remove all arrows
+                arrows.forEach(arrow => arrow.remove());
+                arrows = [];
+            };
+        }
+    }, []); // Attach wheel event listener to tree container
+
+
     // Update the ref value when currentNodeId changes
     useEffect(() => {
         currentNodeIdRef.current = currentNodeId;
