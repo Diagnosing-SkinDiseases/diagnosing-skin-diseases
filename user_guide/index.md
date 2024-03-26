@@ -25,9 +25,10 @@ Throughout this guide, the following conventions are utilized:
 
 !!! warning
 Pay close attention to ensure tasks are performed correctly.
-!!! info
-Additional information to enhance your understanding.
-!!! tip
-Helpful tips for smoother usability.
-!!! success
-Confirmation of successful task completion.
+
+> [!NOTE]
+> This alert uses [!NOTE]
+> !!! tip
+> Helpful tips for smoother usability.
+> !!! success
+> Confirmation of successful task completion.
