@@ -3,6 +3,7 @@ import { apiGetAllArticles } from "../../apiControllers/articleApiController";
 import SearchBar from "./SearchBar";
 import LetterFilter from "./LetterFilter";
 import ArticleListContent from "./ArticleListContent";
+import "./ArticleList.css";
 
 function ArticleListPage() {
   const [selectedLetter, setSelectedLetter] = useState("");
