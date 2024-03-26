@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from 'react-router-dom';
 import { apiGetTree } from "../../../apiControllers/treeApiController";
 import UserTree from "../TreeComponents/UserTree";
 
-function BuildUserTree(treeId) {
+function BuildUserTree() {
+    const { id } = useParams();
     const [treeData, setTreeData] = useState(null);
-    // const treeId = "65f4b0aa08572dd23283e53a";
-    // const treeId = "660204acfd6c38f254a27e07"; //skewed tree example
-    // const treeId = "65fbabe95328f22cf766a1c1"; //two parents example
-
 
     useEffect(() => {
         fetchTreeData();
-    }, []);
+    }, [id]);
 
     const fetchTreeData = async () => {
         try {
-            const response = await apiGetTree(treeId);
+            const response = await apiGetTree(id);
             setTreeData(response.data);
             // console.log('Tree data:', response.data);
         } catch (error) {

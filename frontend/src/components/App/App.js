@@ -10,7 +10,7 @@ import Logout from "../Logout/Logout";
 import NavBarComponent from "../NavBar/NavBar";
 import ArticlePage from "../ArticleList/ArticleList";
 import UserTree from "../UserTree/TreeComponents/UserTree";
-import WhiteMacules from "../UserTree/UserTrees/BuildUserTree";
+import BuildUserTree from "../UserTree/UserTrees/BuildUserTree";
 import Signup from "../SignUp/SignUp";
 import "./App.css";
 
@@ -33,7 +33,6 @@ import TestGlossary from "../SeanPrototypes/LoadGlossary/UserFacing/Glossary/Glo
 import ArticleApiTests from "../SeanPrototypes/ApiTesting/ArticleApiTests";
 import GlossaryItemApiTests from "../SeanPrototypes/ApiTesting/GlossaryItemApiTests";
 import TreeApiTests from "../SeanPrototypes/ApiTesting/TreeApiTests";
-import BuildUserTree from "../UserTree/UserTrees/BuildUserTree";
 
 // This function wraps your Routes and uses useAuth to access the auth state
 function ProtectedRoute({ children }) {
@@ -128,15 +127,10 @@ function App() {
           <Route path="/" element={<Homepage></Homepage>}></Route>
 
           {/* User - Trees */}
-          <Route path="/user/trees" element={<UserTree></UserTree>}></Route>
+          <Route path="/trees" element={<UserTree></UserTree>}></Route>
 
           {/* User - Trees - White Macules */}
-          <Route
-            path="/user/trees/white_macules"
-            element={
-              <BuildUserTree>{"65f4b0aa08572dd23283e53a"}</BuildUserTree>
-            }
-          ></Route>
+          <Route path="/trees/:id" element={<BuildUserTree />}></Route>
 
           {/* Article List */}
           <Route path="/treatment" element={<ArticlePage />}></Route>

@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import "./Homepage.css";
 import { apiGetAllTrees } from "../../apiControllers/treeApiController";
 import BuildUserTree from "../UserTree/UserTrees/BuildUserTree";
 
-const Card = ({ title, image, aboutLink, onPlay, treeId }) => {
+const Card = ({ title, image, aboutLink, treeId }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="card h-100 card-custom">
       <img
@@ -23,7 +26,7 @@ const Card = ({ title, image, aboutLink, onPlay, treeId }) => {
           </a>
           <button
             className="btn card-action-btn"
-            onClick={() => onPlay(treeId)}
+            onClick={() => navigate(`/trees/${treeId}`)}
           >
             Start Diagnosis
           </button>
@@ -35,7 +38,6 @@ const Card = ({ title, image, aboutLink, onPlay, treeId }) => {
 
 function Homepage() {
   const [trees, setTrees] = useState([]);
-  const [selectedTreeId, setSelectedTreeId] = useState(null);
 
   useEffect(() => {
     const fetchTrees = async () => {
@@ -53,15 +55,6 @@ function Homepage() {
 
     fetchTrees();
   }, []);
-
-  const startDiagnosis = (treeId) => {
-    console.log("Start diagnosis for tree with ID:", treeId);
-    setSelectedTreeId(treeId);
-  };
-
-  if (selectedTreeId) {
-    return <BuildUserTree treeId={selectedTreeId} />;
-  }
 
   const settings = {
     dots: true,
@@ -103,7 +96,6 @@ function Homepage() {
               title={tree.name}
               image={tree.image}
               aboutLink={tree.aboutLink}
-              onPlay={startDiagnosis}
               treeId={tree._id}
             />
           ))}
