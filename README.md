@@ -27,8 +27,8 @@ The application is deployed and accessible at [https://diagnosing-skin-diseases.
 
 ### Project Owners
 
-- **Dr. Eileen Murray** - Email: <eileen@example.com>
-- **David Stambler** - Email: <david@example.com>
+- **Dr. Eileen Murray** - Email: <heileenmurray@gmail.com>
+- **David Stambler** - Email: <stambler@telus.net>
 
 ## User Roles
 
