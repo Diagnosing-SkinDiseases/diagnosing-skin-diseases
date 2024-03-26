@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { apiLoginUser } from '../../apiControllers/userApiController';
 import { useAuth } from "../App/AuthContext"; 
 
 const LoginForm = () => {
@@ -16,7 +16,7 @@ const LoginForm = () => {
 
     try {
       // Replace the URL with your actual login endpoint
-      const response = await axios.post("http://localhost:4000/api/user/login", {
+      const response = await apiLoginUser( {
         username,
         password,
       });

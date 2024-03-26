@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { apiCreateUser } from "../../apiControllers/userApiController";
 import SignUpForm from "./SignUpForm";
 import "./SignUp.css";
 
@@ -10,10 +10,7 @@ function App() {
     setServerError("");
     try {
       // Using Axios for the POST request
-      const response = await axios.post(
-        "http://localhost:4000/api/user/create",
-        user
-      );
+      const response = await apiCreateUser(user);
       console.log("User created:", response.data);
       // Handle success (e.g., display success message, clear form, etc.)
     } catch (error) {
