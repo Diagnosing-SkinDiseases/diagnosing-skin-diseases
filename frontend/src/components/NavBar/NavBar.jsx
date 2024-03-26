@@ -24,18 +24,24 @@ const NavBarComponent = () => {
   const { isLoggedIn } = useAuth();
   const [activeLink, setActiveLink] = useState('');
 
-  // Define links for main tabs and their corresponding subtabs if any
-  const links = [
-    { name: 'Home', path: '/', subTabs: [] },
-    { name: 'Diagnosis Tree', subTabs: [{ name: 'admin articles', path: '/admin/articles' }, { name: 'admin definitions', path: '/admin/definitions' }] },
-    { name: 'Treatment', subTabs: [{ name: 'Articles', path: '/treatment' }] },
+  // Define links for main tabs for authenticated users
+  const authLinks = [
+    { name: 'Diagnosis Tree', path: '/admin/trees', subTabs: [] },
+    { name: 'Articles', path: '/admin/articles', subTabs: []},
+    { name: 'Glossary', path: '/admin/definitions', subTabs: [] },
+    { name: 'Logout', path: '/logout', subTabs: [] }
+  ];
+
+  // Define links for main tabs for guests
+  const guestLinks = [
+    { name: 'Diagnosis Tree', path: '/', subTabs: [] },
+    { name: 'Articles', path: '/treatment', subTabs: []},
     { name: 'Glossary', path: '/glossary', subTabs: [] },
     { name: 'About', path: '/about', subTabs: [] }
   ];
 
-  if (isLoggedIn) {
-    links.push({ name: 'Sign Out', path: '/logout', subTabs: [] });
-  }
+  // Use appropriate links based on authentication status
+  const links = isLoggedIn ? authLinks : guestLinks;
 
   return (
     <div className="navbar">
@@ -57,3 +63,4 @@ const NavBarComponent = () => {
 };
 
 export default NavBarComponent;
+
