@@ -9,8 +9,8 @@ import Login from "../Login/Login";
 import Logout from "../Logout/Logout";
 import NavBarComponent from "../NavBar/NavBar";
 import ArticlePage from "../ArticleList/ArticleList";
-import UserTree from "../UserTree/UserTree";
-import WhiteMacules from "../UserTree/WhiteMacules";
+import UserTree from "../UserTree/TreeComponents/UserTree";
+import WhiteMacules from "../UserTree/UserTrees/WhiteMacules";
 import Signup from "../SignUp/SignUp";
 import "./App.css";
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { apiGetTree } from "../../apiControllers/treeApiController";
-import UserTree from "./UserTree";
+import { apiGetTree } from "../../../apiControllers/treeApiController";
+import UserTree from "../TreeComponents/UserTree";
 
 function WhiteMacules() {
     const [treeData, setTreeData] = useState(null);
