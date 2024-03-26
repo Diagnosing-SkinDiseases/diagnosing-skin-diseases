@@ -36,7 +36,6 @@ function ArticleListPage() {
 
   return (
     <div className="ArticleList">
-      <div className="banner"></div>
       <div className="content">
         <div className="article-header">
           <h1 className="article-title">Articles</h1>

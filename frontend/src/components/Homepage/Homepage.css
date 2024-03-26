@@ -1,5 +1,5 @@
 :root {
-  --theme_blue: #007bff;
+  --theme_blue: rgb(0, 123, 255);
 }
 
 .Homepage {
@@ -7,16 +7,6 @@
   min-height: 100%;
   display: flex;
   flex-direction: column;
-}
-
-.banner {
-  background-image: url("/public/banner.jpg");
-  background-size: cover;
-  background-position: center;
-  height: 15em;
-  color: white;
-  text-align: center;
-  margin-bottom: 1rem;
 }
 
 .homepage-text {
@@ -30,82 +20,75 @@
   padding-left: 3rem;
   margin-right: auto;
   margin-left: auto;
-  max-width: 100%; /* Ensure it doesn't overflow the screen width */
 }
 
-.card {
-  width: auto;
-  display: flex;
-  text-align: center;
-  border: none;
-  border-radius: 2rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin: 10px; /* Adjusted for spacing */
-  font-weight: bold;
-  background-color: var(--theme_blue);
-  color: white;
-  flex: 1 0 calc(25% - 20px); /* Adjust card width */
+.card-custom {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin: 10px; /* Adjust as necessary for your layout */
+  min-height: 300px;
+}
+
+.card-img-top {
+  width: 100%;
+  height: auto; /* Adjust based on your needs */
+  object-fit: cover; /* Ensure images cover the card area properly */
 }
 
 .card-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  border-radius: 1rem;
-  background-color: var(--theme_blue);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(
+    19,
+    115,
+    240,
+    0.718
+  ); /* Semi-transparent overlay for readability */
   color: white;
-  padding: 2rem;
-  min-height: 150px;
-  position: relative;
+  padding: 20px;
 }
 
 .card-title {
-  margin: 0;
-  margin-bottom: auto;
+  font-size: 20px; /* Increase font size */
+  font-weight: bold; /* Make the font weight bold */
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Optional: Add a subtle text shadow for depth */
+  margin-bottom: 20px; /* Add some space between the title and the content/buttons */
+}
+
+.card-actions {
+  top: 20px; /* Adjust as necessary */
+  right: 20px; /* This positions the container to the top-right corner of the card */
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
+.card-action-btn {
+  width: 100% !important; /* Ensure the button takes up the full width */
+  background-color: white; /* Primary button color */
+  border: none;
+  color: var(--theme_blue); /* Text color */
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Arial", sans-serif; /* Match the font family */
+  font-size: 16px; /* Adjust the font size as needed */
+  font-weight: bold;
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.card-action-btn:hover {
+  background-color: #0056b3; /* Darker shade for hover effect */
 }
 
 .btn-container {
-  display: flex;
-  justify-content: flex-end;
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-}
-
-.about-btn,
-.enter-tree-btn {
-  background-color: white;
-  color: var(--theme_blue);
-  width: auto;
-  border-radius: 20px;
-  border: 1px solid var(--theme_blue);
-  font-size: 1rem;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 4px 2px;
-  cursor: pointer;
-  box-shadow: none;
-  font-weight: bold;
-  white-space: nowrap;
-}
-
-.about-btn:hover,
-.enter-tree-btn:hover {
-  background-color: #053f7d;
-  color: white !important;
-}
-
-.footer {
-  background-color: var(--theme_blue);
-  color: white;
-  padding: 1rem 0;
-  width: 100%;
-  position: relative;
-  text-align: center;
-  margin-top: auto;
-  z-index: 1000;
+  display: none; /* Hide the original btn-container if not needed */
 }
 
 /* Slick Carousel Customizations */
@@ -137,13 +120,13 @@
 }
 
 @media (max-width: 1024px) {
-  .card {
+  .card-custom {
     flex: 1 0 calc(50% - 20px); /* Adjust so two cards fit within the space */
   }
 }
 
 @media (max-width: 600px) {
-  .card {
+  .card-custom {
     flex: 1 0 calc(100% - 20px); /* Adjust so one card fits within the space */
   }
 }

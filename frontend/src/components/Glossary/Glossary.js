@@ -54,7 +54,6 @@ function App() {
 
   return (
     <div className="Glossary">
-      <div className="banner"></div>
       <div className="content">
         <div className="glossary-header">
           <h1 className="glossary-title">Glossary</h1>

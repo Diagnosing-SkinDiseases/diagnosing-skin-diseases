@@ -28,7 +28,7 @@ const LoginForm = () => {
       login(token);
 
       // Redirect to a protected route or homepage after successful login
-      navigate("/");
+      navigate("/admin/trees");
     } catch (error) {
       // Handle login error
       // If the error is from the server response
