@@ -17,11 +17,11 @@ The application is deployed and accessible at [https://diagnosing-skin-diseases.
 
 ## Contributors
 
-- **Shuyi Liu**
-- **Jason Shi**
-- **Sean Sollestre**
-- **Emily Tran**
-- **Olga Zimina**
+- **Shuyi Liu** - [GitHub](maz-slo)
+- **Jason Shi** - [GitHub](jaason-shi)
+- **Sean Sollestre** - [GitHub](SSollestre)
+- **Emily Tran** - [GitHub](Emildore)
+- **Olga Zimina** - [GitHub](olgazim)
 
 ## Contact Information
 
@@ -59,6 +59,17 @@ This application is optimized for and best viewed on the following browsers:
 3. **Setup**:
 
    - Navigate to the project directory and run `npm install` to install dependencies.
+
+4. **Running the Application**:
+
+   - Start the React frontend by running `npm start` in the project directory.
+   - Ensure MongoDB is running locally or configure the application to connect to a remote MongoDB instance.
+
+5. **Usage**:
+   - Access the application through your browser (by default, it should be available at <http://localhost:3000>).
+   - Answer the prompted questions with yes or no responses.
+   - Based on your inputs, the application will provide a diagnosis or recommend seeking professional medical advice.
+   - Explore supplementary articles for detailed information on specific diseases and treatments.
 
 ## Contribution
 
