@@ -1,4 +1,4 @@
-# Diagnose Skin Diseases
+# Diagnosing Skin Diseases
 
 ## Overview
 
