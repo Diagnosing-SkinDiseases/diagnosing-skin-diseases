@@ -5,6 +5,7 @@ import "./styles/AdminDashboard.css";
 import ContentTypeEnum from './enums/ContentTypeEnum';
 import { apiGetAllGlossaryItems} from "../../apiControllers/glossaryItemApiController";
 import { apiGetAllArticles } from "../../apiControllers/articleApiController";
+import { apiGetAllTrees } from "../../apiControllers/treeApiController";
 
 // AdminDashboard component for managing items and filters
 const AdminDashboard = ({contentType}) => {
@@ -24,7 +25,7 @@ const AdminDashboard = ({contentType}) => {
           apiResponse = await apiGetAllArticles();
           break;
         case "Tree":
-          // apiResponse = await getTrees();
+          apiResponse = await apiGetAllTrees();
           break;
         default:
           return;

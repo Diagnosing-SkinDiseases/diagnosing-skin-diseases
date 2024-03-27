@@ -45,7 +45,8 @@ const ContentEditor = ({ contentType }) => {
       case ContentTypeEnum.ARTICLE:
         return <Article onUpdate={handleArticleUpdate}/>;
       case ContentTypeEnum.TREE:
-        // return <Tree />;
+        return <Tree />;
+        return;
       default:
         return <div>Please select a content type.</div>;
     }
@@ -169,9 +170,9 @@ const ContentEditor = ({ contentType }) => {
       <div className="editor">
         {renderContent()}
         <EditorButtons 
-          onPreview={console.log("Preview")} 
-          onSave={console.log("Save")} 
-          onPublish={console.log("Publish")} 
+          onPreview={handlePreviewBtn} 
+          onSave={handleSaveOrUpdateBtn} 
+          onPublish={handlePublishBtn} 
         />
       </div>
     </div>
