@@ -18,7 +18,7 @@ const mongoPassword = process.env.PASSWORD;
 const mongoDB = process.env.DATABASE;
 
 // App configurations
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
 app.use(cors());
 
 // App endpoints start here
