@@ -8,6 +8,7 @@ import { faPen, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { apiDeleteGlossaryItem, apiUpdateGlossaryItem } from "../../../apiControllers/glossaryItemApiController";
 import { apiDeleteArticle, apiUpdateArticle } from "../../../apiControllers/articleApiController";
+import { apiDeleteTree, apiUpdateTree } from "../../../apiControllers/treeApiController";
 
 const Item = ({ title, published, onPublish, onEdit, onDelete }) => (
   <div className="item">
@@ -57,7 +58,7 @@ const List = ({ initialItems = [], contentType, searchQuery  }) => {
         updatePromise = apiUpdateArticle(updatedItem);
         break;
       case ContentTypeEnum.TREE:
-        // updatePromise = updateTree(updatedItem);
+        updatePromise = apiUpdateTree(updatedItem);
         break;
       default:
         console.log("Unknown content type for processing");
@@ -97,7 +98,7 @@ const List = ({ initialItems = [], contentType, searchQuery  }) => {
         deletePromise = apiDeleteArticle(id);
         break;
       case ContentTypeEnum.TREE:
-        // deletePromise = deleteTree(id);
+        deletePromise = apiDeleteTree(id);
         break;
       default:
         console.log("Unknown content type for processing");
