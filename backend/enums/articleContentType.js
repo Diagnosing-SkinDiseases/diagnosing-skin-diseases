@@ -6,6 +6,9 @@ const ArticleContentType = {
   JPEG: "JPEG",
   GIF: "GIF",
   VIDEO: "VIDEO",
+  SUBTITLE: "SUBTITLE",
+  IMAGE: "IMAGE",
+  TITLE: "TITLE"
 };
 
 module.exports = ArticleContentType;
