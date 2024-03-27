@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Controls from "./ListComponents/Controls";
 import List from "./ListComponents/List";
 import "./styles/AdminDashboard.css"; 
+import ContentTypeEnum from './enums/ContentTypeEnum';
 import { apiGetAllGlossaryItems} from "../../apiControllers/glossaryItemApiController";
 import { apiGetAllArticles } from "../../apiControllers/articleApiController";
 
@@ -45,21 +46,21 @@ const AdminDashboard = ({contentType}) => {
     let processedItems = [];
 
     switch (contentType) {
-      case "Definition":
+      case ContentTypeEnum.DEFINITION:
         processedItems = data.map((definition) => ({
           title: definition.term,
           published: definition.status === "PUBLISHED",
           id: definition._id,
         }));
         break;
-      case "Article":
+      case ContentTypeEnum.ARTICLE:
         processedItems = data.map((article) => ({
           title: article.title,
           published: article.status === "PUBLISHED",
           id: article._id,
         }));
         break;
-      case "Tree":
+      case ContentTypeEnum.TREE:
         processedItems = data.map((tree) => ({
           title: tree.name,
           published: tree.status === "PUBLISHED",
@@ -100,6 +101,19 @@ const AdminDashboard = ({contentType}) => {
      setFilteredItems(newFilteredItems);
   };
 
+  const renderContentHeader = () => {
+    switch (contentType) {
+      case ContentTypeEnum.DEFINITION:
+        return "Definitions";
+      case ContentTypeEnum.ARTICLE:
+        return "Articles";
+      case ContentTypeEnum.TREE:
+        return "Trees";
+      default:
+        return "Content Editor";
+    }
+  }
+
   return (
     <div className="admin-dashboard">
       <Controls
@@ -107,6 +121,9 @@ const AdminDashboard = ({contentType}) => {
         onFilterChange={handleFilterChange}
         onSearch={handleSearch}
       />
+      <div className = "list-title">
+        <h2>{renderContentHeader()}</h2>
+      </div>
       <List initialItems={filteredItems} 
         contentType={contentType} />
     </div>
