@@ -1,15 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import labels from "../labels.json";
 import Button from "../GeneralComponents/Button";
+import ContentTypeEnum from "../enums/ContentTypeEnum";
 import "../styles/Controls.css"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 // Controls component containing add button, filter component, and search field
-const Controls = ({ onAdd, onFilterChange, onSearch }) => {
+const Controls = ({ onFilterChange, onSearch, contentType }) => {
   const [filter, setFilter] = useState("all");
   const [input, setInput] = useState("");
+  const navigate = useNavigate();
   // const [searchResults, setSearchResults] = useState([]);
+
+  const handleAdd = useCallback(() => {
+    const pathMap = {
+      [ContentTypeEnum.TREE]: "/admin/trees/add",
+      [ContentTypeEnum.ARTICLE]: "/admin/articles/add",
+      [ContentTypeEnum.DEFINITION]: "/admin/definitions/add"
+    };
+    const path = pathMap[contentType] || console.log("Unknown content type");
+    if (path) navigate(path);
+  }, [contentType, navigate]);
 
   // Handles the change of the filter option
   const handleFilterChange = (event) => {
@@ -31,11 +44,7 @@ const Controls = ({ onAdd, onFilterChange, onSearch }) => {
   return (
     <div className="controls-wrapper">
       <div className="controls">
-        <Button
-          label={labels.buttonLabels.add.tree}
-          onClick={() => onAdd("tree")}
-          className="button"
-        />
+        <Button label={labels.buttonLabels.add[contentType.toLowerCase()]} onClick={handleAdd} className="button" />
         <FilterComponent
           labels={labels}
           value={filter}

@@ -58,7 +58,10 @@ function App() {
             path="/admin/trees"
             element={
               <ProtectedRoute>
-                <AdminDashboard data={trees} />
+                <AdminDashboard
+                  data={trees}
+                  contentType={ContentTypeEnum.TREE}
+                />
               </ProtectedRoute>
             }
           ></Route>
@@ -87,50 +90,47 @@ function App() {
           <Route
             path="/admin/articles"
             element={
-              <ProtectedRoute>
-                <AdminDashboard data={articles} />
-              </ProtectedRoute>
+              <AdminDashboard
+                data={articles}
+                contentType={ContentTypeEnum.ARTICLE}
+              />
             }
-          />
+          ></Route>
           {/* Admin - Articles - Add */}
           <Route
             path="/admin/articles/add"
-            element={
-              <ProtectedRoute>
-                <ContentEditor contentType={ContentTypeEnum.ARTICLE} />
-              </ProtectedRoute>
-            }
+            element={<ContentEditor contentType={ContentTypeEnum.ARTICLE} />}
+          ></Route>
+
+          {/* Admin - Articles - Edit */}
+          <Route
+            path="/admin/articles/edit/:id"
+            element={<ContentEditor contentType={ContentTypeEnum.ARTICLE} />}
           ></Route>
 
           {/* Admin - Glossary */}
+
           <Route
             path="/admin/definitions"
             element={
-              <ProtectedRoute>
-                <AdminDashboard data={definitions} />
-              </ProtectedRoute>
+              <AdminDashboard
+                data={definitions}
+                contentType={ContentTypeEnum.DEFINITION}
+              />
             }
           ></Route>
 
           {/* Admin - Glossary - Add */}
           <Route
             path="/admin/definitions/add"
-            element={
-              <ProtectedRoute>
-                <ContentEditor contentType={ContentTypeEnum.DEFINITION} />{" "}
-              </ProtectedRoute>
-            }
+            element={<ContentEditor contentType={ContentTypeEnum.DEFINITION} />}
           ></Route>
 
-          {/* User Routes */}
-          {/* Homepage */}
-          <Route path="/" element={<Homepage></Homepage>}></Route>
-
-          {/* User - Trees */}
-          <Route path="/trees" element={<UserTree></UserTree>}></Route>
-
-          {/* User - Trees - White Macules */}
-          <Route path="/trees/:id" element={<BuildUserTree />}></Route>
+          {/* Admin - Glossary - Edit */}
+          <Route
+            path="/admin/definitions/edit/:id"
+            element={<ContentEditor contentType={ContentTypeEnum.DEFINITION} />}
+          ></Route>
 
           {/* Article List */}
           <Route path="/treatment" element={<ArticlePage />}></Route>

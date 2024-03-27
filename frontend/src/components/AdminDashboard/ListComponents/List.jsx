@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import labels from "../labels.json";
 import Button from "../GeneralComponents/Button";
+import ContentTypeEnum from "../enums/ContentTypeEnum";
 import "../styles/List.css"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
+import { apiDeleteGlossaryItem, apiUpdateGlossaryItem } from "../../../apiControllers/glossaryItemApiController";
+import { apiDeleteArticle, apiUpdateArticle } from "../../../apiControllers/articleApiController";
 
 const Item = ({ title, published, onPublish, onEdit, onDelete }) => (
   <div className="item">
@@ -14,8 +18,8 @@ const Item = ({ title, published, onPublish, onEdit, onDelete }) => (
     <Button
       label={
         published
-          ? labels.buttonLabels.publish.publish
-          : labels.buttonLabels.publish.unpublish
+          ? labels.buttonLabels.publish.unpublish
+          : labels.buttonLabels.publish.publish
       }
       onClick={onPublish}
       className="button"
@@ -29,36 +33,82 @@ const Item = ({ title, published, onPublish, onEdit, onDelete }) => (
   </div>
 );
 
-const List = ({ initialItems = [], searchQuery  }) => {
+const List = ({ initialItems = [], contentType, searchQuery  }) => {
   const [items, setItems] = useState(initialItems);
+  const navigate = useNavigate();
 
   // Effect hook to update state when initialItems prop changes
   useEffect(() => {
     setItems(initialItems);
   }, [initialItems]);
 
+
   // Toggles the publish state of an item
-  const handlePublishToggle = (index) => {
-    const newItems = items.map((item, i) => {
+  const handlePublishToggle = (index, item, contentType) => {
+    let updatePromise;
+    let newStatus = item.published ? "UNPUBLISHED" : "PUBLISHED";
+    let updatedItem = { id: item.id, status: newStatus };
+
+    switch (contentType) {
+      case ContentTypeEnum.DEFINITION:
+        updatePromise = apiUpdateGlossaryItem(updatedItem);
+        break;
+      case ContentTypeEnum.ARTICLE:
+        updatePromise = apiUpdateArticle(updatedItem);
+        break;
+      case ContentTypeEnum.TREE:
+        // updatePromise = updateTree(updatedItem);
+        break;
+      default:
+        console.log("Unknown content type for processing");
+        return;
+    }
+    updatePromise.then(() => {
+      console.log("items", items);
+      const newItems = items.map((item, i) => {
       if (i === index) {
         return { ...item, published: !item.published };
       }
       return item;
     });
-    setItems(newItems);
+      setItems(newItems);
+    })
+      .catch(error => {
+        console.error("Error updating item status", error);
+      });
   };
 
-  // Handles the edit button click
-  const handleEditBtn = (index) => {
-    console.log("Edit clicked", index);
-    // Implement logic to open edit screen
-  };
+  const handleEditBtn = useCallback((id) => {
+    const path = `/admin/${contentType.toLowerCase()}s/edit/${id}`; 
+    navigate(path, {state: { id }});
+  }, [navigate, contentType]);
 
   // Handles the delete button click
-  const handleDeleteBtn = (index) => {
-    console.log("Delete clicked", index);
+  const handleDeleteBtn = (index, id) => {
+    console.log("Delete clicked", id);
+    let deletePromise;
     const newItems = items.filter((_, i) => i !== index);
-    setItems(newItems);
+
+    switch (contentType) {
+      case ContentTypeEnum.DEFINITION:
+        deletePromise = apiDeleteGlossaryItem(id);
+        break;
+      case ContentTypeEnum.ARTICLE:
+        deletePromise = apiDeleteArticle(id);
+        break;
+      case ContentTypeEnum.TREE:
+        // deletePromise = deleteTree(id);
+        break;
+      default:
+        console.log("Unknown content type for processing");
+        return;
+    }
+    deletePromise.then((response) => {
+      console.log("Deleted", response.data);
+      setItems(newItems);
+    }).catch((error) => {
+        console.log("Error:", error);
+      });
   };
 
   return (
@@ -69,9 +119,9 @@ const List = ({ initialItems = [], searchQuery  }) => {
             key={index}
             title={item.title}
             published={item.published}
-            onPublish={() => handlePublishToggle(index)}
-            onEdit={() => handleEditBtn(index)}
-            onDelete={() => handleDeleteBtn(index)}
+            onPublish={() => handlePublishToggle(index, item, contentType)}
+            onEdit={() => handleEditBtn(item.id, contentType)}
+            onDelete={() => handleDeleteBtn(index, item.id)}
           />
         ))
       ) : (

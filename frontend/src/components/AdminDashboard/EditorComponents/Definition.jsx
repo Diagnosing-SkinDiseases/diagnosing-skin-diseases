@@ -1,21 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import labels from "../labels.json";
 import "../styles/Editor.css";
+import { apiGetGlossaryItem } from "../../../apiControllers/glossaryItemApiController";
 
 // The Definition component
-const Definition = () => {
+const Definition = ({ onUpdate}) => {
+  const location = useLocation(); // Use useLocation to access the current location object
+  const definition = location.state?.id; // Access the item passed in the state, if any
+
+  console.log("id ", definition);
   // State hooks for title and paragraph
   const [title, setTitle] = useState('');
   const [paragraph, setParagraph] = useState('');
 
+  // Initializes state 
+  useEffect(() => {
+    if (definition) {
+      // fetch using getDefinition(id)
+      apiGetGlossaryItem(definition).then((response) => {
+        setTitle(response.data.term);
+        setParagraph(response.data.definition);
+      })
+        .catch((error) => {
+          console.error('Error fetching definition:', error);
+        });
+    }
+  }, [definition]);
+
   // Handles the change in the title input field
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
+    const newTitle = e.target.value;
+    onUpdate(newTitle, paragraph);
+    console.log(title);
   };
 
   // Handles the change in the paragraph textarea
   const handleParagraphChange = (e) => {
-    setParagraph(e.target.value);
+    setParagraph(e.target.value); // Update the paragraph state
+    const newParagraph = e.target.value;
+    onUpdate(title, newParagraph);
   };
 
   const handleInput = (e) => {
