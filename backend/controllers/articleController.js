@@ -59,7 +59,7 @@ const updateArticle = async (req, res) => {
     req.body.status = status;
   }
 
-  if (content) {
+  if (content && content.length > 0) {
     content.forEach((content) => {
       content.type = content.type.toUpperCase();
     });
