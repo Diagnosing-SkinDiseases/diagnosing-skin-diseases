@@ -42,6 +42,7 @@ const List = ({ initialItems = [], contentType, searchQuery  }) => {
     setItems(initialItems);
   }, [initialItems]);
 
+
   // Toggles the publish state of an item
   const handlePublishToggle = (index, item, contentType) => {
     let updatePromise;
@@ -49,13 +50,13 @@ const List = ({ initialItems = [], contentType, searchQuery  }) => {
     let updatedItem = { id: item.id, status: newStatus };
 
     switch (contentType) {
-      case "Definition":
+      case ContentTypeEnum.DEFINITION:
         updatePromise = apiUpdateGlossaryItem(updatedItem);
         break;
-      case "Article":
+      case ContentTypeEnum.ARTICLE:
         updatePromise = apiUpdateArticle(updatedItem);
         break;
-      case "Tree":
+      case ContentTypeEnum.TREE:
         // updatePromise = updateTree(updatedItem);
         break;
       default:
@@ -89,13 +90,13 @@ const List = ({ initialItems = [], contentType, searchQuery  }) => {
     const newItems = items.filter((_, i) => i !== index);
 
     switch (contentType) {
-      case "Definition":
+      case ContentTypeEnum.DEFINITION:
         deletePromise = apiDeleteGlossaryItem(id);
         break;
-      case "Article":
+      case ContentTypeEnum.ARTICLE:
         deletePromise = apiDeleteArticle(id);
         break;
-      case "Tree":
+      case ContentTypeEnum.TREE:
         // deletePromise = deleteTree(id);
         break;
       default:

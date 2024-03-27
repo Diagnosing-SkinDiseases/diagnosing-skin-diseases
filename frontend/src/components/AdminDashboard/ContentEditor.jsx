@@ -70,10 +70,10 @@ const ContentEditor = ({ contentType }) => {
 
     let updatePromise;
     switch (contentType) {
-      case "Definition":
+      case ContentTypeEnum.DEFINITION:
         updatePromise = apiUpdateGlossaryItem(updatedItem);
         break;
-      case "Article":
+      case ContentTypeEnum.ARTICLE:
         const parsedArticle = {
           id: id,
           title: articleContent[0].value, 
@@ -86,7 +86,7 @@ const ContentEditor = ({ contentType }) => {
         console.log("payload", parsedArticle);
         updatePromise = apiUpdateArticle(parsedArticle);
         break;
-      case "Tree":
+      case ContentTypeEnum.TREE:
         // updatePromise = updateTree(updatedItem);
         break;
       default:
@@ -140,6 +140,7 @@ const ContentEditor = ({ contentType }) => {
     console.error("Failed to create item:", error);
   });
   };
+
 
   const handleSaveOrUpdateBtn = () => {
     const status = "UNPUBLISHED";
