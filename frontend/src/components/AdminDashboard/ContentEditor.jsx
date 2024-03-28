@@ -46,7 +46,9 @@ const ContentEditor = ({ contentType }) => {
     let message = '';
     switch (contentType) {
       case ContentTypeEnum.DEFINITION:
-        if (!title.trim() || !paragraph.trim()) {
+        const term = parsedDefinition().term;
+        const definition = parsedDefinition().definition;
+        if (!term || !definition) {
           message = 'Please, provide term and definition.';
         }
         break;
