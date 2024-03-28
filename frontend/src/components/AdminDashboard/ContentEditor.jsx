@@ -19,6 +19,7 @@ const ContentEditor = ({ contentType }) => {
   const [paragraph, setParagraph] = useState('');
   const [status, setStatus] = useState('');
   const [articleContent, setArticleContent] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
   const path = `/admin/${contentType.toLowerCase()}s`; 
 
   // Determine if we are in edit mode
@@ -39,6 +40,32 @@ const ContentEditor = ({ contentType }) => {
       term: title,
       definition: paragraph
     };
+  };
+
+  const isReadyToSave = () => {
+    let message = '';
+    switch (contentType) {
+      case ContentTypeEnum.DEFINITION:
+        if (!title.trim() || !paragraph.trim()) {
+          message = 'Please, provide term and definition.';
+        }
+        break;
+      case ContentTypeEnum.ARTICLE:
+        const title = parseArticleContent(articleContent).title;
+        const content = parseArticleContent(articleContent).content;
+        if (!title || content.length === 0) {
+          message = 'Please, provide article title and content.';
+        }
+        break;
+      case ContentTypeEnum.TREE:
+        // Add condition for TREE
+        break;
+      default:
+        message = 'Unsupported content type.';
+        break;
+    }
+    setErrorMessage(message);
+    return !message; // Returns true if the message is empty, meaning the form is ready to save
   };
 
 
@@ -120,15 +147,13 @@ const ContentEditor = ({ contentType }) => {
       case ContentTypeEnum.DEFINITION:
         let item = parsedDefinition();
         item.status = status;
-      createPromise = apiCreateGlossaryItem(item);
-      break;
+        createPromise = apiCreateGlossaryItem(item);
+        break;
       case ContentTypeEnum.ARTICLE:
-        console.log("adding article");
         let parsedArticle = parseArticleContent(articleContent);
         parsedArticle.status = status;
-        console.log(parsedArticle);
-      createPromise = apiCreateArticle(parsedArticle);
-      break;
+        createPromise = apiCreateArticle(parsedArticle);
+        break;
     case ContentTypeEnum.TREE:
       // createPromise = createTree(item);
       break;
@@ -138,7 +163,6 @@ const ContentEditor = ({ contentType }) => {
     }
     
     createPromise.then(response => {
-      console.log("Item created:", response);
       navigate(path); // Redirect to the list view after creation
     }).catch(error => {
       console.error("Failed to create item:", error);
@@ -195,10 +219,23 @@ const ContentEditor = ({ contentType }) => {
     <div className="admin-dashboard">
       <div className="editor">
         {renderContent()}
+        {errorMessage && <div className="error-message">{errorMessage}</div>} 
         <EditorButtons 
-          onPreview={handlePreviewBtn} 
-          onSave={handleSaveOrUpdateBtn} 
-          onPublish={handlePublishBtn} 
+          onPreview={() => {
+            if (isReadyToSave()) { 
+              handlePreviewBtn();
+            }
+          }}
+          onSave={() => {
+            if (isReadyToSave()) { 
+              handleSaveOrUpdateBtn();
+            }
+          }}
+          onPublish={() => {
+            if (isReadyToSave()) { 
+              handlePublishBtn();
+            }
+          }}
         />
       </div>
     </div>
