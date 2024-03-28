@@ -33,8 +33,7 @@ function App() {
             if (!previewDataExists) {
               publishedItems = [...publishedItems, previewData];
             }
-            // setSearchTerm(previewData.term);
-            handleSelectLetter(previewData.term.charAt(0).toUpperCase());
+            setSearchTerm(previewData.term);
             handleSelectItem(previewData);
           }
         }
