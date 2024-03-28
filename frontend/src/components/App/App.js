@@ -88,6 +88,16 @@ function App() {
             }
           ></Route>
 
+          {/* Admin - Trees - Preview */}
+          <Route
+            path="/admin/trees/preview"
+            element={
+              <ProtectedRoute>
+                <BuildUserTree></BuildUserTree>
+              </ProtectedRoute>
+            }
+          ></Route>
+
           {/* Admin - Articles */}
           <Route
             path="/admin/articles"

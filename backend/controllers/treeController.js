@@ -57,7 +57,7 @@ const updateTree = async (req, res) => {
 
   if (nodeTree) {
     nodeTree = inOrderToList(nodeTree, []);
-    req.body.nodeTree = nodeTree;
+    req.body.nodes = nodeTree;
   }
 
   const { id, ...data } = req.body;

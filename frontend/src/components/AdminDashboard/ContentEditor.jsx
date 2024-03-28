@@ -229,7 +229,24 @@ const ContentEditor = ({ contentType }) => {
         previewData = parseArticleContent(articleContent);
         break;
       case ContentTypeEnum.TREE:
-        // previewPath = `/admin/trees/preview`;
+        previewPath = `/admin/trees/preview`;
+        // Helper function
+        const inOrderToList = (node, acc) => {
+          console.log("Node", node);
+          if (node) {
+            let { parentId, content, currentId, yesChild, noChild } = node;
+            let parsedNode = { currentId, content, parentId };
+            parsedNode.noChildId = noChild ? noChild.currentId : null;
+            parsedNode.yesChildId = yesChild ? yesChild.currentId : null;
+            acc.push(parsedNode);
+            inOrderToList(node.noChild, acc);
+            inOrderToList(node.yesChild, acc);
+          }
+          return acc;
+        };
+        previewData = treePayload;
+        previewData.nodes = inOrderToList(previewData.nodeTree, []);
+        console.log("treeview", previewData);
         break;
       default:
         console.log("Unknown content type.");
