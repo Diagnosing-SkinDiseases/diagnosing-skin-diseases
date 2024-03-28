@@ -14,8 +14,10 @@ const Article = () => {
   useEffect(() => {
     console.log(id);
     // If data is passed through navigate's state, use it directly
-    const data = sessionStorage.getItem('previewData');
-    if (data) {
+    const url = new URL(window.location.href);
+    const isPreviewMode = url.pathname.includes("/admin/articles/preview");
+    if (isPreviewMode) {
+      const data = sessionStorage.getItem('previewData');
       setData(JSON.parse(data));
     }
     else if (id) {
