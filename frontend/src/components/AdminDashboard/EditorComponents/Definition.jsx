@@ -21,12 +21,13 @@ const Definition = ({ onUpdate}) => {
       apiGetGlossaryItem(definition).then((response) => {
         setTitle(response.data.term);
         setParagraph(response.data.definition);
+        onUpdate(title, definition);
       })
         .catch((error) => {
           console.error('Error fetching definition:', error);
         });
     }
-  }, [definition]);
+  }, [definition, onUpdate]);
 
   // Handles the change in the title input field
   const handleTitleChange = (e) => {

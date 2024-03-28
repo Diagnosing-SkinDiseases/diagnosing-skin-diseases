@@ -12,12 +12,32 @@ function App() {
   const [glossaryItems, setGlossaryItems] = useState([]);
 
   useEffect(() => {
+    const url = new URL(window.location.href);
+    const isPreviewMode = url.pathname.includes("/admin/definitions/preview");
+
     apiGetAllGlossaryItems()
       .then((response) => {
         // Filter items to only include those with status "PUBLISHED"
-        const publishedItems = response.data.filter(
+        let publishedItems = response.data.filter(
           (item) => item.status === "PUBLISHED"
         );
+
+        if (isPreviewMode) {
+          const previewDataString = sessionStorage.getItem("previewData");
+          if (previewDataString) {
+            const previewData = JSON.parse(previewDataString);
+            // Check if previewData already exists in publishedItems by id or another unique property
+            const previewDataExists = publishedItems.some(
+              (item) => item.term === previewData.term
+            ); 
+            if (!previewDataExists) {
+              publishedItems = [...publishedItems, previewData];
+            }
+            setSearchTerm(previewData.term);
+            handleSelectItem(previewData);
+          }
+        }
+
         setGlossaryItems(publishedItems);
       })
       .catch((error) =>
