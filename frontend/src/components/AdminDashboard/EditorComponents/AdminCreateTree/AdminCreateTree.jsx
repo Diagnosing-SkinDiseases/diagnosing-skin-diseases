@@ -23,6 +23,9 @@ const AdminCreateTree = ({ existingTree, existingTitle, setTreePayload }) => {
         }
   );
 
+  // Image State
+  // AboutLink state
+
   // Publish handler
   const publishHandler = () => {
     function flattenAllNodes(node) {
@@ -111,10 +114,15 @@ const AdminCreateTree = ({ existingTree, existingTitle, setTreePayload }) => {
       <div className="content-section">
         <div className="title-section">
           <EditTreeTitle title={title} setTitle={setTitle}></EditTreeTitle>
+          <div>
+            <h3>About Article Link</h3>
+          </div>
+          <div>
+            <h3>Tree Cover Image</h3>
+          </div>
           <NodeArea rootNode={rootNode} setRootNode={setRootNode}></NodeArea>
         </div>
       </div>
-      <button onClick={publishHandler}>Publish</button>
     </>
   );
 };
