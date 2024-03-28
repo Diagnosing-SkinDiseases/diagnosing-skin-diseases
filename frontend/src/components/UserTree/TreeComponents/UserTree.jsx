@@ -266,7 +266,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         arrows.forEach(arrow => arrow.remove());
         arrows = [];
 
-        const baseSize = 2.5; // Base size of the arrow
+        const baseSize = 3.8; // Base size of the arrow
         const scaledSize = baseSize * zoomLevel; // Scale size based on zoom level
 
         nodes.forEach(node => {
