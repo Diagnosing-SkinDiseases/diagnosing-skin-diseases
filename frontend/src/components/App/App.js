@@ -141,6 +141,16 @@ function App() {
             element={<Glossary />}
           ></Route>
 
+          {/* User Routes */}
+          {/* Homepage */}
+          <Route path="/" element={<Homepage></Homepage>}></Route>
+
+          {/* User - Trees */}
+          <Route path="/trees" element={<UserTree></UserTree>}></Route>
+
+          {/* User - Trees - White Macules */}
+          <Route path="/trees/:id" element={<BuildUserTree />}></Route>
+
           {/* Article List */}
           <Route path="/treatment" element={<ArticlePage />}></Route>
 
