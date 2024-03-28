@@ -7,7 +7,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 0.8em solid transparent;
+    border: 0.3em solid transparent;
     box-sizing: border-box;
 }
 
@@ -23,7 +23,7 @@
 .currentNode {
     background-color: #04ff00;
     position: relative;
-    border: 0.2em solid black;
+    border: 0.3em solid black;
 }
 
 .currentNode::after {

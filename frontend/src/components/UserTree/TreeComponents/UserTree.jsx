@@ -423,13 +423,13 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
                         ))}
                     </div>
                     <CurrentNodeDetails
-                        question={currentNodeContent}
                         onBack={handleBack}
                         onNo={handleNo}
                         onYes={handleYes}
                         showBack={currentNodeId && currentNodeId !== treeData.nodes[0].currentId} // Show back button if not at root
                         showYes={!!(treeData.nodes.find(n => n.currentId === currentNodeId)?.yesChildId)} // Show "Yes" if there is a yesChildId
                         showNo={!!(treeData.nodes.find(n => n.currentId === currentNodeId)?.noChildId)} // Show "No" if there is a noChildId
+                        question={currentNodeContent}
                     />
                 </div>
             </div>
