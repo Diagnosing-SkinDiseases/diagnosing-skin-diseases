@@ -135,6 +135,12 @@ function App() {
             element={<ContentEditor contentType={ContentTypeEnum.DEFINITION} />}
           ></Route>
 
+          {/* Admin - Glossary - Preview */}
+          <Route
+            path="admin/definitions/preview"
+            element={<Glossary />}
+          ></Route>
+
           {/* Article List */}
           <Route path="/treatment" element={<ArticlePage />}></Route>
 
