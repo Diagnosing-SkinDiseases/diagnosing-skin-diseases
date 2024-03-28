@@ -136,6 +136,8 @@ const ContentEditor = ({ contentType }) => {
         break;
       case ContentTypeEnum.TREE:
         if (treePayload) {
+          treePayload.id = id;
+          treePayload.status = newStatus;
           updatePromise = apiUpdateTree(treePayload);
         } else {
           console.log("Invalid update payload");

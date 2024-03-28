@@ -11,13 +11,17 @@ const AdminCreateTree = ({ existingTree, existingTitle, setTreePayload }) => {
   const [title, setTitle] = useState(existingTitle !== "" ? existingTitle : "");
 
   // Node State
-  const [rootNode, setRootNode] = useState({
-    currentId: "node0",
-    content: "",
-    parentId: null,
-    noChild: [],
-    yesChild: [],
-  });
+  const [rootNode, setRootNode] = useState(
+    existingTree !== null
+      ? existingTree
+      : {
+          currentId: "node0",
+          content: "",
+          parentId: null,
+          noChild: [],
+          yesChild: [],
+        }
+  );
 
   // Publish handler
   const publishHandler = () => {
@@ -62,8 +66,6 @@ const AdminCreateTree = ({ existingTree, existingTitle, setTreePayload }) => {
   useEffect(() => {
     if (existingTree) {
       console.log("Edit mode");
-      setTitle(existingTitle);
-      setRootNode(existingTree);
     } else {
       console.log("Add mode");
     }
