@@ -172,6 +172,7 @@ const ContentEditor = ({ contentType }) => {
         break;
       case ContentTypeEnum.TREE:
         if (treePayload) {
+          treePayload.status = status;
           createPromise = apiCreateTree(treePayload);
         } else {
           console.log("Invalid create payload");
