@@ -32,7 +32,14 @@ const ContentEditor = ({ contentType }) => {
       content: item.value
     }))
   };
-};
+  };
+  
+  const parsedDefinition = () => {
+    return {
+      term: title,
+      definition: paragraph
+    };
+  };
 
 
   // Update parent state based on child component updates
@@ -108,14 +115,11 @@ const ContentEditor = ({ contentType }) => {
   }
 
   const createItem = (status) => {
-    let item = {
-      term: title,
-      definition: paragraph,
-      status: status
-    }
     let createPromise;
     switch (contentType) {
-    case ContentTypeEnum.DEFINITION:
+      case ContentTypeEnum.DEFINITION:
+        let item = parsedDefinition();
+        item.status = status;
       createPromise = apiCreateGlossaryItem(item);
       break;
       case ContentTypeEnum.ARTICLE:
@@ -168,6 +172,8 @@ const ContentEditor = ({ contentType }) => {
     switch (contentType) {
       case ContentTypeEnum.DEFINITION:
         previewPath = `/admin/definitions/preview`;
+        previewData = parsedDefinition();
+        console.log("Parsed definition", previewData);
         break;
       case ContentTypeEnum.ARTICLE:
         previewPath = `/admin/articles/preview`;
