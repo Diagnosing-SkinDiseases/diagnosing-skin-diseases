@@ -22,7 +22,18 @@ const ContentEditor = ({ contentType }) => {
   const path = `/admin/${contentType.toLowerCase()}s`; 
 
   // Determine if we are in edit mode
-  const isEditMode = id  !== undefined;
+  const isEditMode = id !== undefined;
+  
+  const parseArticleContent = (articleContent) => {
+  return {
+    title: articleContent[0]?.value || '', // Ensure there is a default value
+    content: articleContent.slice(1).map(item => ({
+      type: item.type.toUpperCase(),
+      content: item.value
+    }))
+  };
+};
+
 
   // Update parent state based on child component updates
   const handleDefinitionUpdate = (title, paragraph, status) => {
@@ -74,15 +85,9 @@ const ContentEditor = ({ contentType }) => {
         updatePromise = apiUpdateGlossaryItem(updatedItem);
         break;
       case ContentTypeEnum.ARTICLE:
-        const parsedArticle = {
-          id: id,
-          title: articleContent[0].value, 
-          content: articleContent.slice(1).map(item => ({ 
-            type: item.type.toUpperCase(),
-            content: item.value
-          })),
-          status: newStatus
-        };
+        let parsedArticle = parseArticleContent(articleContent);
+        parsedArticle.id = id;
+        parsedArticle.status = newStatus;
         console.log("payload", parsedArticle);
         updatePromise = apiUpdateArticle(parsedArticle);
         break;
@@ -115,14 +120,9 @@ const ContentEditor = ({ contentType }) => {
       break;
       case ContentTypeEnum.ARTICLE:
         console.log("adding article");
-        const parsedArticle = {
-          title: articleContent[0].value, 
-          content: articleContent.slice(1).map(item => ({ 
-            type: item.type.toUpperCase(),
-            content: item.value
-          })),
-          status: status
-        };
+        let parsedArticle = parseArticleContent(articleContent);
+        parsedArticle.status = status;
+        console.log(parsedArticle);
       createPromise = apiCreateArticle(parsedArticle);
       break;
     case ContentTypeEnum.TREE:
@@ -133,12 +133,12 @@ const ContentEditor = ({ contentType }) => {
       return;
     }
     
-     createPromise.then(response => {
-    console.log("Item created:", response);
-    navigate(path); // Redirect to the list view after creation
-  }).catch(error => {
-    console.error("Failed to create item:", error);
-  });
+    createPromise.then(response => {
+      console.log("Item created:", response);
+      navigate(path); // Redirect to the list view after creation
+    }).catch(error => {
+      console.error("Failed to create item:", error);
+    });
   };
 
 
@@ -162,7 +162,27 @@ const ContentEditor = ({ contentType }) => {
   }
 
   const handlePreviewBtn = () => {
-    // console.log("Preview");
+    let previewPath = '';
+    let previewData = {};
+
+    switch (contentType) {
+      case ContentTypeEnum.DEFINITION:
+        previewPath = `/admin/definitions/preview`;
+        break;
+      case ContentTypeEnum.ARTICLE:
+        previewPath = `/admin/articles/preview`;
+        previewData = parseArticleContent(articleContent);
+        break;
+      case ContentTypeEnum.TREE:
+      // previewPath = `/admin/trees/preview`;
+        break;
+      default:
+        console.log("Unknown content type.");
+        return;
+    }
+  sessionStorage.setItem('previewData', JSON.stringify(previewData));
+  const url = `${window.location.origin}${previewPath}`;
+  window.open(url, '_blank');
   }
 
   return (
