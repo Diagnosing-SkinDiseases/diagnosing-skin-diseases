@@ -6,7 +6,7 @@ import EditTreeTitle from "./EditTreeTitle";
 import NodeArea from "./NodeArea";
 import { apiCreateTree } from "../../../../apiControllers/treeApiController";
 
-const AdminCreateTree = ({ existingTree, existingTitle }) => {
+const AdminCreateTree = ({ existingTree, existingTitle, setTreePayload }) => {
   // Title state
   const [title, setTitle] = useState(existingTitle !== "" ? existingTitle : "");
 
@@ -70,6 +70,38 @@ const AdminCreateTree = ({ existingTree, existingTitle }) => {
     console.log("existing", existingTree);
     console.log(title);
     console.log(rootNode);
+
+    function flattenAllNodes(node) {
+      if (!node) {
+        return null;
+      }
+
+      const flattenedNode = {
+        ...node,
+        yesChild:
+          node.yesChild && node.yesChild.length > 0
+            ? flattenAllNodes(node.yesChild[0])
+            : null,
+        noChild:
+          node.noChild && node.noChild.length > 0
+            ? flattenAllNodes(node.noChild[0])
+            : null,
+      };
+
+      return flattenedNode;
+    }
+
+    let treePayload = flattenAllNodes(rootNode);
+
+    let payload = {
+      name: title,
+      nodeTree: treePayload,
+      about: "Sample",
+      status: "published",
+    };
+    console.log("payload", payload);
+    setTreePayload(payload);
+    console.log("payload set");
   }, [title, rootNode]);
 
   return (

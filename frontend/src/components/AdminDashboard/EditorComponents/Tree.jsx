@@ -3,7 +3,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { apiGetTree } from "../../../apiControllers/treeApiController";
 
-const Tree = ({ existingId }) => {
+const Tree = ({ existingId, setTreePayload }) => {
   const [existingTree, setExistingTree] = useState(null);
   const [existingTitle, setExistingTitle] = useState("");
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -15,6 +15,7 @@ const Tree = ({ existingId }) => {
           <AdminCreateTree
             existingTitle={existingTitle}
             existingTree={existingTree}
+            setTreePayload={setTreePayload}
           />
         )
       );
@@ -23,6 +24,7 @@ const Tree = ({ existingId }) => {
         <AdminCreateTree
           existingTitle={""}
           existingTree={null}
+          setTreePayload={setTreePayload}
         ></AdminCreateTree>
       );
     }

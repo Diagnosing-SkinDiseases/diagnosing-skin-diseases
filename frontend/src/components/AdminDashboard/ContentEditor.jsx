@@ -16,6 +16,10 @@ import {
   apiCreateArticle,
   apiUpdateArticle,
 } from "../../apiControllers/articleApiController";
+import {
+  apiCreateTree,
+  apiUpdateTree,
+} from "../../apiControllers/treeApiController";
 
 // ContentEditor Component
 const ContentEditor = ({ contentType }) => {
@@ -27,6 +31,9 @@ const ContentEditor = ({ contentType }) => {
   const [articleContent, setArticleContent] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const path = `/admin/${contentType.toLowerCase()}s`;
+
+  // Tree State
+  const [treePayload, setTreePayload] = useState(null);
 
   // Determine if we are in edit mode
   const isEditMode = id !== undefined;
@@ -95,7 +102,7 @@ const ContentEditor = ({ contentType }) => {
       case ContentTypeEnum.ARTICLE:
         return <Article onUpdate={handleArticleUpdate} />;
       case ContentTypeEnum.TREE:
-        return <Tree existingId={id} />;
+        return <Tree existingId={id} setTreePayload={setTreePayload} />;
       default:
         return <div>Please select a content type.</div>;
     }
@@ -128,7 +135,12 @@ const ContentEditor = ({ contentType }) => {
         updatePromise = apiUpdateArticle(parsedArticle);
         break;
       case ContentTypeEnum.TREE:
-        // updatePromise = updateTree(updatedItem);
+        if (treePayload) {
+          updatePromise = apiUpdateTree(treePayload);
+        } else {
+          console.log("Invalid update payload");
+          return;
+        }
         break;
       default:
         console.log("Unknown content type for processing");
@@ -159,7 +171,12 @@ const ContentEditor = ({ contentType }) => {
         createPromise = apiCreateArticle(parsedArticle);
         break;
       case ContentTypeEnum.TREE:
-        // createPromise = createTree(item);
+        if (treePayload) {
+          createPromise = apiCreateTree(treePayload);
+        } else {
+          console.log("Invalid create payload");
+          return;
+        }
         break;
       default:
         console.log("Unknown content type for creation");
