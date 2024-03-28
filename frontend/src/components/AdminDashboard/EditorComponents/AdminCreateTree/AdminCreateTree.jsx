@@ -6,9 +6,9 @@ import EditTreeTitle from "./EditTreeTitle";
 import NodeArea from "./NodeArea";
 import { apiCreateTree } from "../../../../apiControllers/treeApiController";
 
-const AdminCreateTree = () => {
+const AdminCreateTree = ({ existingTree, existingTitle }) => {
   // Title state
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState(existingTitle !== "" ? existingTitle : "");
 
   // Node State
   const [rootNode, setRootNode] = useState({
@@ -60,6 +60,14 @@ const AdminCreateTree = () => {
   };
 
   useEffect(() => {
+    if (existingTree) {
+      console.log("Edit mode");
+      setTitle(existingTitle);
+      setRootNode(existingTree);
+    } else {
+      console.log("Add mode");
+    }
+    console.log("existing", existingTree);
     console.log(title);
     console.log(rootNode);
   }, [title, rootNode]);

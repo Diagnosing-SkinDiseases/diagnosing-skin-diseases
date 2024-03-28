@@ -78,10 +78,12 @@ function App() {
 
           {/* Admin - Trees - Edit */}
           <Route
-            path="/admin/trees/edit"
+            path="/admin/trees/edit/:id"
             element={
               <ProtectedRoute>
-                <AdminEditTrees />
+                <ContentEditor
+                  contentType={ContentTypeEnum.TREE}
+                ></ContentEditor>
               </ProtectedRoute>
             }
           ></Route>

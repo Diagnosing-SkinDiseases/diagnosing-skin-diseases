@@ -1,73 +1,78 @@
-import React, { useState, useEffect} from 'react';
-import EditorButtons from './EditorComponents/EditorButtons';
-import ContentTypeEnum from './enums/ContentTypeEnum';
-import Definition from './EditorComponents/Definition';
-import Article from './EditorComponents/Article';
-import { useNavigate, useParams } from 'react-router-dom';
-import Tree from './EditorComponents/Tree';
-import "./styles/List.css"; 
-import "./styles/AdminDashboard.css"; 
+import React, { useState, useEffect } from "react";
+import EditorButtons from "./EditorComponents/EditorButtons";
+import ContentTypeEnum from "./enums/ContentTypeEnum";
+import Definition from "./EditorComponents/Definition";
+import Article from "./EditorComponents/Article";
+import { useNavigate, useParams } from "react-router-dom";
+import Tree from "./EditorComponents/Tree";
+import "./styles/List.css";
+import "./styles/AdminDashboard.css";
 // API controllers for each content type
-import { apiCreateGlossaryItem, apiUpdateGlossaryItem } from "../../apiControllers/glossaryItemApiController";
-import { apiCreateArticle, apiUpdateArticle } from "../../apiControllers/articleApiController";
+import {
+  apiCreateGlossaryItem,
+  apiUpdateGlossaryItem,
+} from "../../apiControllers/glossaryItemApiController";
+import {
+  apiCreateArticle,
+  apiUpdateArticle,
+} from "../../apiControllers/articleApiController";
 
 // ContentEditor Component
 const ContentEditor = ({ contentType }) => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [title, setTitle] = useState('');
-  const [paragraph, setParagraph] = useState('');
-  const [status, setStatus] = useState('');
+  const [title, setTitle] = useState("");
+  const [paragraph, setParagraph] = useState("");
+  const [status, setStatus] = useState("");
   const [articleContent, setArticleContent] = useState([]);
-  const [errorMessage, setErrorMessage] = useState('');
-  const path = `/admin/${contentType.toLowerCase()}s`; 
+  const [errorMessage, setErrorMessage] = useState("");
+  const path = `/admin/${contentType.toLowerCase()}s`;
 
   // Determine if we are in edit mode
   const isEditMode = id !== undefined;
-  
+
   const parseArticleContent = (articleContent) => {
-  return {
-    title: articleContent[0]?.value || '', // Ensure there is a default value
-    content: articleContent.slice(1).map(item => ({
-      type: item.type.toUpperCase(),
-      content: item.value
-    }))
+    return {
+      title: articleContent[0]?.value || "", // Ensure there is a default value
+      content: articleContent.slice(1).map((item) => ({
+        type: item.type.toUpperCase(),
+        content: item.value,
+      })),
+    };
   };
-  };
-  
+
   const parsedDefinition = () => {
     return {
       term: title,
-      definition: paragraph
+      definition: paragraph,
     };
   };
 
   const isReadyToSave = () => {
-    let message = '';
+    let message = "";
     switch (contentType) {
       case ContentTypeEnum.DEFINITION:
         if (!title.trim() || !paragraph.trim()) {
-          message = 'Please, provide term and definition.';
+          message = "Please, provide term and definition.";
         }
         break;
       case ContentTypeEnum.ARTICLE:
         const title = parseArticleContent(articleContent).title;
         const content = parseArticleContent(articleContent).content;
         if (!title || content.length === 0) {
-          message = 'Please, provide article title and content.';
+          message = "Please, provide article title and content.";
         }
         break;
       case ContentTypeEnum.TREE:
         // Add condition for TREE
         break;
       default:
-        message = 'Unsupported content type.';
+        message = "Unsupported content type.";
         break;
     }
     setErrorMessage(message);
     return !message; // Returns true if the message is empty, meaning the form is ready to save
   };
-
 
   // Update parent state based on child component updates
   const handleDefinitionUpdate = (title, paragraph, status) => {
@@ -86,23 +91,20 @@ const ContentEditor = ({ contentType }) => {
   const renderContent = () => {
     switch (contentType) {
       case ContentTypeEnum.DEFINITION:
-        return <Definition status = {status} onUpdate={handleDefinitionUpdate} />;
+        return <Definition status={status} onUpdate={handleDefinitionUpdate} />;
       case ContentTypeEnum.ARTICLE:
-        return <Article onUpdate={handleArticleUpdate}/>;
+        return <Article onUpdate={handleArticleUpdate} />;
       case ContentTypeEnum.TREE:
-        return <Tree />;
-        return;
+        return <Tree existingId={id} />;
       default:
         return <div>Please select a content type.</div>;
     }
   };
 
- 
-
   const updateItem = (newStatus) => {
     let updatedItem = {
       id: id,
-      status: newStatus
+      status: newStatus,
     };
 
     if (title !== "") {
@@ -133,13 +135,15 @@ const ContentEditor = ({ contentType }) => {
         return;
     }
 
-    updatePromise.then(response => {
-    console.log("Item updated:", response);
-    navigate(path);
-  }).catch(error => {
-    console.error("Failed to update item:", error);
-  });
-  }
+    updatePromise
+      .then((response) => {
+        console.log("Item updated:", response);
+        navigate(path);
+      })
+      .catch((error) => {
+        console.error("Failed to update item:", error);
+      });
+  };
 
   const createItem = (status) => {
     let createPromise;
@@ -154,21 +158,22 @@ const ContentEditor = ({ contentType }) => {
         parsedArticle.status = status;
         createPromise = apiCreateArticle(parsedArticle);
         break;
-    case ContentTypeEnum.TREE:
-      // createPromise = createTree(item);
-      break;
-    default:
-      console.log("Unknown content type for creation");
-      return;
+      case ContentTypeEnum.TREE:
+        // createPromise = createTree(item);
+        break;
+      default:
+        console.log("Unknown content type for creation");
+        return;
     }
-    
-    createPromise.then(response => {
-      navigate(path); // Redirect to the list view after creation
-    }).catch(error => {
-      console.error("Failed to create item:", error);
-    });
-  };
 
+    createPromise
+      .then((response) => {
+        navigate(path); // Redirect to the list view after creation
+      })
+      .catch((error) => {
+        console.error("Failed to create item:", error);
+      });
+  };
 
   const handleSaveOrUpdateBtn = () => {
     const status = "UNPUBLISHED";
@@ -177,7 +182,7 @@ const ContentEditor = ({ contentType }) => {
     } else {
       createItem(status);
     }
-  }
+  };
 
   const handlePublishBtn = () => {
     console.log("status", status);
@@ -187,10 +192,10 @@ const ContentEditor = ({ contentType }) => {
     } else {
       createItem(publishStatus);
     }
-  }
+  };
 
   const handlePreviewBtn = () => {
-    let previewPath = '';
+    let previewPath = "";
     let previewData = {};
 
     switch (contentType) {
@@ -204,35 +209,35 @@ const ContentEditor = ({ contentType }) => {
         previewData = parseArticleContent(articleContent);
         break;
       case ContentTypeEnum.TREE:
-      // previewPath = `/admin/trees/preview`;
+        // previewPath = `/admin/trees/preview`;
         break;
       default:
         console.log("Unknown content type.");
         return;
     }
-  sessionStorage.setItem('previewData', JSON.stringify(previewData));
-  const url = `${window.location.origin}${previewPath}`;
-  window.open(url, '_blank');
-  }
+    sessionStorage.setItem("previewData", JSON.stringify(previewData));
+    const url = `${window.location.origin}${previewPath}`;
+    window.open(url, "_blank");
+  };
 
   return (
     <div className="admin-dashboard">
       <div className="editor">
         {renderContent()}
-        {errorMessage && <div className="error-message">{errorMessage}</div>} 
-        <EditorButtons 
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
+        <EditorButtons
           onPreview={() => {
-            if (isReadyToSave()) { 
+            if (isReadyToSave()) {
               handlePreviewBtn();
             }
           }}
           onSave={() => {
-            if (isReadyToSave()) { 
+            if (isReadyToSave()) {
               handleSaveOrUpdateBtn();
             }
           }}
           onPublish={() => {
-            if (isReadyToSave()) { 
+            if (isReadyToSave()) {
               handlePublishBtn();
             }
           }}
