@@ -104,9 +104,12 @@ a.nav-link.active {
   min-width: 200px;
 }
 
-.nav-item.active .nav-link /* This targets the link within an active nav-item */ {
-  /* This directly targets an active nav-link, if applicable */
-  color: white; /* Example: change text color for active state */
-  font-weight: bold; /* Example: make the font weight bold for active state */
-  background-color: #4097f3; /* Example: change background color for active state */
+.nav-item.active .nav-link {
+  color: white;
+  font-weight: bold;
+  background-color: #4097f3;
+}
+.nav-link:hover {
+  background-color: #4097f3;
+  color: white;
 }

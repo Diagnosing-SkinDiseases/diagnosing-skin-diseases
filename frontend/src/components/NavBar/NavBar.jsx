@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom'; 
+import { Link, useLocation,  useNavigate } from 'react-router-dom'; 
 import { useAuth } from '../App/AuthContext';
 import './NavBarComponent.css';
 
@@ -33,10 +33,19 @@ const NavSubtab = ({ show, titles }) => {
 const NavBarComponent = () => {
   const { isLoggedIn } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   const [activeLink, setActiveLink] = useState('');
 
   // Determine if a link is active based on the current path
   const isActiveLink = (linkPath) => location.pathname === linkPath;
+
+  // Adjusted handle click for page reload with useNavigate
+  const handleClick = (path, hasSubTabs) => {
+    if (!hasSubTabs) {
+      navigate(path); // Use navigate to change the path
+      window.location.reload(); // Force the window to reload
+    }
+  };
 
   // Define links for main tabs for authenticated users
   const authLinks = [
@@ -88,20 +97,21 @@ const NavBarComponent = () => {
 
   return (
     <div className="navbar">
-      <div className='nav-logo'>Logo</div>
+      {/* Logo and other elements... */}
       {links.map((link, index) => (
         <div 
           key={index} 
-          className={`nav-item ${link.subTabs.length > 0 ? 'has-dropdown' : ''} ${isActiveLink(link.path) ? 'active' : ''}`} 
+          className={`nav-item ${link.subTabs.length > 0 ? 'has-dropdown' : ''} ${isActiveLink(link.path) ? 'active' : ''}`}
           onMouseEnter={() => setActiveLink(link.name)} 
           onMouseLeave={() => setActiveLink('')}
         >
-          <Link
-            to={link.subTabs.length === 0 ? link.path : '#'}
+          {/* Adjust Link to div and handle clicks */}
+          <div
+            onClick={() => handleClick(link.path, link.subTabs.length > 0)}
             className={`nav-link ${activeLink === link.name ? 'active' : ''}`}
           >
             {link.name}
-          </Link>
+          </div>
           {link.subTabs.length > 0 && (
             <NavSubtab show={activeLink === link.name} titles={link.subTabs} />
           )}
