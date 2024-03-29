@@ -8,7 +8,13 @@ import { apiCreateTree } from "../../../../apiControllers/treeApiController";
 import ArticleCover from "./ArticleCover";
 import AboutLink from "./AboutLink";
 
-const AdminCreateTree = ({ existingTree, existingTitle, setTreePayload }) => {
+const AdminCreateTree = ({
+  existingTree,
+  existingTitle,
+  existingCoverImage,
+  existingAboutLink,
+  setTreePayload,
+}) => {
   // Title state
   const [title, setTitle] = useState(existingTitle !== "" ? existingTitle : "");
 
@@ -26,9 +32,13 @@ const AdminCreateTree = ({ existingTree, existingTitle, setTreePayload }) => {
   );
 
   // Image State
-  const [coverImage, setCoverImage] = useState("");
+  const [coverImage, setCoverImage] = useState(
+    existingCoverImage !== "" ? existingCoverImage : ""
+  );
   // AboutLink state
-  const [aboutLink, setAboutLink] = useState("");
+  const [aboutLink, setAboutLink] = useState(
+    existingAboutLink !== "" ? existingAboutLink : ""
+  );
 
   useEffect(() => {
     if (existingTree) {
@@ -79,8 +89,14 @@ const AdminCreateTree = ({ existingTree, existingTitle, setTreePayload }) => {
       <div className="content-section">
         <div className="title-section">
           <EditTreeTitle title={title} setTitle={setTitle}></EditTreeTitle>
-          <AboutLink setAboutLink={setAboutLink}></AboutLink>
-          <ArticleCover setCoverImage={setCoverImage}></ArticleCover>
+          <AboutLink
+            aboutLink={aboutLink}
+            setAboutLink={setAboutLink}
+          ></AboutLink>
+          <ArticleCover
+            coverImage={coverImage}
+            setCoverImage={setCoverImage}
+          ></ArticleCover>
           <NodeArea rootNode={rootNode} setRootNode={setRootNode}></NodeArea>
         </div>
       </div>

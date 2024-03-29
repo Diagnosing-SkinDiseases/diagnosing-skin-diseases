@@ -1,6 +1,6 @@
 import React from "react";
 
-const AboutLink = ({ setAboutLink }) => {
+const AboutLink = ({ aboutLink, setAboutLink }) => {
   const handleTextChange = (event) => {
     setAboutLink(event.target.value);
   };
@@ -14,6 +14,7 @@ const AboutLink = ({ setAboutLink }) => {
           className="white-bar-input"
           placeholder="Enter About Article Link"
           onChange={handleTextChange}
+          value={aboutLink}
         />
       </div>
     </>

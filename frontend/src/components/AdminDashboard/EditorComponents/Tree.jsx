@@ -6,6 +6,8 @@ import { apiGetTree } from "../../../apiControllers/treeApiController";
 const Tree = ({ existingId, setTreePayload }) => {
   const [existingTree, setExistingTree] = useState(null);
   const [existingTitle, setExistingTitle] = useState("");
+  const [existingAboutLink, setExistingAboutLink] = useState("");
+  const [existingCoverImage, setExistingCoverImage] = useState("");
   const [dataLoaded, setDataLoaded] = useState(false);
 
   const renderContent = () => {
@@ -15,6 +17,8 @@ const Tree = ({ existingId, setTreePayload }) => {
           <AdminCreateTree
             existingTitle={existingTitle}
             existingTree={existingTree}
+            existingAboutLink={existingAboutLink}
+            existingCoverImage={existingCoverImage}
             setTreePayload={setTreePayload}
           />
         )
@@ -24,6 +28,8 @@ const Tree = ({ existingId, setTreePayload }) => {
         <AdminCreateTree
           existingTitle={""}
           existingTree={null}
+          existingAboutLink={existingAboutLink}
+          existingCoverImage={existingCoverImage}
           setTreePayload={setTreePayload}
         ></AdminCreateTree>
       );
@@ -135,8 +141,6 @@ const Tree = ({ existingId, setTreePayload }) => {
 
     while (nodesCopy.length !== 0) {
       let toInsertNode = nodesCopy[0];
-      // console.log("root", root);
-      // console.log("new", toInsertNode);
 
       nodesCopy.splice(0, 1);
       insertNode(root, toInsertNode);
@@ -163,24 +167,16 @@ const Tree = ({ existingId, setTreePayload }) => {
     return wrappedNode;
   }
 
-  function prettifyJSON(jsonString) {
-    try {
-      const parsedObject = JSON.parse(jsonString);
-      return JSON.stringify(parsedObject, null, 2);
-    } catch (error) {
-      console.error("Invalid JSON string:", error);
-      return null;
-    }
-  }
-
   useEffect(() => {
     const getTree = async () => {
       if (existingId) {
         apiGetTree(existingId)
           .then((res) => {
-            console.log("Success");
+            console.log("Success", res.data);
             setExistingTree(toListAllChildren(fromList(res.data.nodes)));
             setExistingTitle(res.data.name);
+            setExistingAboutLink(res.data.aboutLink);
+            setExistingCoverImage(res.data.coverImage);
             setDataLoaded(true);
           })
           .catch((err) => {

@@ -71,7 +71,15 @@ const ContentEditor = ({ contentType }) => {
         }
         break;
       case ContentTypeEnum.TREE:
-        // Add condition for TREE
+        if (
+          treePayload.name === "" ||
+          treePayload.nodeTree.content === "" ||
+          treePayload.coverImage === "" ||
+          treePayload.aboutLink === ""
+        ) {
+          message =
+            "Please, provide tree title, about link, cover image and at least the root node filled.";
+        }
         break;
       default:
         message = "Unsupported content type.";

@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
-const ArticleCover = ({ setCoverImage }) => {
-  const [preview, setPreview] = useState("");
+const ArticleCover = ({ coverImage, setCoverImage }) => {
+  const [preview, setPreview] = useState(coverImage !== "" ? coverImage : "");
   const fileInputRef = useRef();
 
   const handleImageChange = (e) => {
