@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; 
+import { Link, useLocation } from 'react-router-dom'; 
 import { useAuth } from '../App/AuthContext';
 import './NavBarComponent.css';
 
@@ -32,7 +32,11 @@ const NavSubtab = ({ show, titles }) => {
 // Main NavBar component
 const NavBarComponent = () => {
   const { isLoggedIn } = useAuth();
+  const location = useLocation();
   const [activeLink, setActiveLink] = useState('');
+
+  // Determine if a link is active based on the current path
+  const isActiveLink = (linkPath) => location.pathname === linkPath;
 
   // Define links for main tabs for authenticated users
   const authLinks = [
@@ -86,7 +90,12 @@ const NavBarComponent = () => {
     <div className="navbar">
       <div className='nav-logo'>Logo</div>
       {links.map((link, index) => (
-        <div key={index} className={`nav-item ${link.subTabs.length > 0 ? 'has-dropdown' : ''}`} onMouseEnter={() => setActiveLink(link.name)} onMouseLeave={() => setActiveLink('')}>
+        <div 
+          key={index} 
+          className={`nav-item ${link.subTabs.length > 0 ? 'has-dropdown' : ''} ${isActiveLink(link.path) ? 'active' : ''}`} 
+          onMouseEnter={() => setActiveLink(link.name)} 
+          onMouseLeave={() => setActiveLink('')}
+        >
           <Link
             to={link.subTabs.length === 0 ? link.path : '#'}
             className={`nav-link ${activeLink === link.name ? 'active' : ''}`}
