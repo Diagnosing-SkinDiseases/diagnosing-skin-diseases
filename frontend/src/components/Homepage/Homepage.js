@@ -10,11 +10,7 @@ const Card = ({ title, image, aboutLink, treeId }) => {
 
   return (
     <div className="card h-100 card-custom">
-      <img
-        src={`data:image/jpeg;base64,${image}`}
-        alt={title}
-        className="card-img-top"
-      />
+      <img src={image} alt={title} className="card-img-top" />
 
       <div className="card-body">
         <div className="card-content">
@@ -94,7 +90,7 @@ function Homepage() {
             <Card
               key={index}
               title={tree.name}
-              image={tree.image}
+              image={tree.coverImage}
               aboutLink={tree.aboutLink}
               treeId={tree._id}
             />
