@@ -1,38 +1,24 @@
-import { Routes, Route, Navigate } from "react-router-dom";
 import React from "react";
-import { AuthProvider, useAuth } from "./AuthContext";
+import { Navigate, Route, Routes } from "react-router-dom";
 import About from "../AboutDSD/About";
 import Article from "../Article/Article";
+import ArticlePage from "../ArticleList/ArticleList";
 import Glossary from "../Glossary/Glossary";
 import Homepage from "../Homepage/Homepage";
 import Login from "../Login/Login";
 import Logout from "../Logout/Logout";
 import NavBarComponent from "../NavBar/NavBar";
-import ArticlePage from "../ArticleList/ArticleList";
+import Signup from "../SignUp/SignUp";
 import UserTree from "../UserTree/TreeComponents/UserTree";
 import BuildUserTree from "../UserTree/UserTrees/BuildUserTree";
-import Signup from "../SignUp/SignUp";
 import "./App.css";
+import { AuthProvider, useAuth } from "./AuthContext";
 
 // Admin Imports
 import AdminDashboard from "../AdminDashboard/AdminDashboard";
-import AdminEditTrees from "../AdminDashboard/AdminEditTrees";
 import ContentEditor from "../AdminDashboard/ContentEditor";
 import ContentTypeEnum from "../AdminDashboard/enums/ContentTypeEnum";
 import testData from "../AdminDashboard/testData.json";
-
-// Test components - Sean
-import TestAdminDashboard from "../SeanPrototypes/LoadArticles/AdminDashboard/AdminDashboard";
-import TestResearchArticles from "../SeanPrototypes/LoadArticles/UserFacingArticles/ResearchArticles/ResearchArticles";
-import CreateArticle from "../SeanPrototypes/CreateArticle/CreateArticle";
-import TestGlossaryAdminDashboard from "../SeanPrototypes/LoadGlossary/AdminDashboard/AdminDashboard";
-import TestGlossaryContentEditor from "../SeanPrototypes/CreateGlossary/AdminDashboard/ContentEditor";
-import TestGlossary from "../SeanPrototypes/LoadGlossary/UserFacing/Glossary/Glossary";
-
-// Test APIs Sean
-import ArticleApiTests from "../SeanPrototypes/ApiTesting/ArticleApiTests";
-import GlossaryItemApiTests from "../SeanPrototypes/ApiTesting/GlossaryItemApiTests";
-import TreeApiTests from "../SeanPrototypes/ApiTesting/TreeApiTests";
 
 // This function wraps your Routes and uses useAuth to access the auth state
 function ProtectedRoute({ children }) {
@@ -190,71 +176,6 @@ function App() {
 
           {/* About DSD */}
           <Route path="/about" element={<About />}></Route>
-
-          {/* Testing - Sean*/}
-          <Route path="/test">
-            <Route path="admin">
-              {/* Test admin - articles */}
-              <Route
-                path="articles"
-                element={<TestAdminDashboard></TestAdminDashboard>}
-              ></Route>
-              {/* Test admin - articles - add */}
-              <Route
-                path="articles/add"
-                element={<CreateArticle></CreateArticle>}
-              ></Route>
-              {/* Test reference */}
-              <Route
-                path="add/sample"
-                element={
-                  <ContentEditor contentType={ContentTypeEnum.ARTICLE} />
-                }
-              ></Route>
-              {/* Test admin - definitions (glossary) */}
-              <Route
-                path="definitions"
-                element={
-                  <TestGlossaryAdminDashboard></TestGlossaryAdminDashboard>
-                }
-              ></Route>
-              {/* Test admin - definitions - add */}
-              <Route
-                path="definitions/add"
-                element={
-                  <TestGlossaryContentEditor></TestGlossaryContentEditor>
-                }
-              ></Route>
-            </Route>
-            {/* Test user - articles */}
-            <Route
-              path="article-list"
-              element={<TestResearchArticles></TestResearchArticles>}
-            ></Route>
-            {/* Test user - glossary */}
-            <Route
-              path="glossary"
-              element={<TestGlossary></TestGlossary>}
-            ></Route>
-            {/* Test APIs */}
-            <Route path="api">
-              {/* Test Articles API */}
-              <Route
-                path="articles"
-                element={<ArticleApiTests></ArticleApiTests>}
-              ></Route>
-              {/* Test Glossary API */}
-              <Route
-                path="glossary"
-                element={<GlossaryItemApiTests></GlossaryItemApiTests>}
-              ></Route>
-              {/* Test Tree API */}
-              <Route
-                path="trees"
-                element={<TreeApiTests></TreeApiTests>}
-              ></Route>
-            </Route>
-          </Route>
         </Routes>
       </div>
       <footer className="footer">Footer</footer>
