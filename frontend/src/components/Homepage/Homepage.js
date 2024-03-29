@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import "./Homepage.css";
 import { apiGetAllTrees } from "../../apiControllers/treeApiController";
-import BuildUserTree from "../UserTree/UserTrees/BuildUserTree";
 
 const Card = ({ title, image, aboutLink, treeId }) => {
   const navigate = useNavigate();
