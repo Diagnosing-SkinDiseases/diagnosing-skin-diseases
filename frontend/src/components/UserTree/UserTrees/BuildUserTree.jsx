@@ -11,10 +11,10 @@ function BuildUserTree() {
   const { state } = location;
 
   useEffect(() => {
-    // If data is passed through navigate's state, use it directly
-    const data = sessionStorage.getItem("previewData");
-    if (data) {
-      console.log(data);
+    const url = new URL(window.location.href);
+    const isPreviewMode = url.pathname.includes("/admin/trees/preview");
+    if (isPreviewMode) {
+      const data = sessionStorage.getItem("previewData");
       setTreeData(JSON.parse(data));
     } else {
       fetchTreeData();
