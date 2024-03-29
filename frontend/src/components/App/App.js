@@ -244,9 +244,8 @@ function App() {
             </Route>
           </Route>
         </Routes>
-
-        <footer className="footer">Footer</footer>
       </div>
+      <footer className="footer">Footer</footer>
     </AuthProvider>
   );
 }

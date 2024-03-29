@@ -33,16 +33,12 @@
 
 .card-img-top {
   width: 100%;
-  height: 200px; /* Adjust based on your needs */
+  height: 220px; /* Adjust based on your needs */
   object-fit: cover; /* Ensure images cover the card area properly */
   object-position: center;
 }
 
 .card-body {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
   background: rgba(
     19,
     115,
@@ -50,7 +46,7 @@
     0.718
   ); /* Semi-transparent overlay for readability */
   color: white;
-  padding: 20px;
+  padding: 15px;
 }
 
 .card-title {
@@ -62,15 +58,14 @@
 }
 
 .card-actions {
-  top: 20px; /* Adjust as necessary */
-  right: 20px; /* This positions the container to the top-right corner of the card */
+  top: 10px; /* Adjust as necessary */
+  right: 10px; /* This positions the container to the top-right corner of the card */
   display: flex;
-  gap: 10px;
-  flex-direction: column;
+  gap: 15px;
 }
 
 .card-action-btn {
-  width: 100% !important; /* Ensure the button takes up the full width */
+  width: 50% !important; /* Ensure the button takes up the full width */
   background-color: white; /* Primary button color */
   border: none;
   color: var(--theme_blue); /* Text color */
@@ -79,9 +74,13 @@
   justify-content: center;
   align-items: center;
   font-family: "Arial", sans-serif; /* Match the font family */
-  font-size: 16px; /* Adjust the font size as needed */
+  font-size: 15px; /* Adjust the font size as needed */
   font-weight: bold;
   transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.btn {
+  height: 30px !important; /* Adjust the height of the button */
 }
 
 .card-action-btn:hover {

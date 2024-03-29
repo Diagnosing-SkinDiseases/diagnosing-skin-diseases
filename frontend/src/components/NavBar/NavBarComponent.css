@@ -36,6 +36,10 @@ a.nav-link.active {
   color: white;
 }
 
+.nav-link:active {
+  color: white;
+}
+
 .dropdown-content {
   display: none;
   position: absolute;
@@ -65,5 +69,47 @@ a.nav-link.active {
 }
 
 .subtab-item:hover {
+  color: white;
   background-color: #4097f3;
+}
+
+.subtab-item:visited {
+  color: white;
+}
+
+.subtab-item a {
+  color: white;
+  text-decoration: none;
+}
+
+.dropdown-content {
+  display: none; /* Initially hidden */
+  position: absolute;
+  /* Other styles as necessary */
+}
+
+.has-nested-dropdown:hover .dropdown-content {
+  display: block; /* Display on hover */
+}
+
+.dropdown-content .dropdown-content {
+  left: 100%; /* Position to the right of the parent item */
+  top: 0;
+}
+
+.nav-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 200px;
+}
+
+.nav-item.active .nav-link {
+  color: white;
+  font-weight: bold;
+  background-color: #4097f3;
+}
+.nav-link:hover {
+  background-color: #4097f3;
+  color: white;
 }
