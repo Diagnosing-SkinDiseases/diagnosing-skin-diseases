@@ -97,7 +97,7 @@ const NavBarComponent = () => {
 
   return (
     <div className="navbar">
-      {/* Logo and other elements... */}
+      <div className='nav-logo'> Logo </div>
       {links.map((link, index) => (
         <div 
           key={index} 
