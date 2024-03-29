@@ -4,7 +4,7 @@ const ObjectId = mongoose.Types.ObjectId;
 
 // Create Tree
 const createTree = async (req, res) => {
-  let { name, nodeTree, about, status } = req.body;
+  let { name, nodeTree, aboutLink, status, coverImage } = req.body;
   if (status) {
     status = status.toUpperCase();
   }
@@ -12,7 +12,13 @@ const createTree = async (req, res) => {
   nodeTree = inOrderToList(nodeTree, []);
 
   try {
-    const tree = await Tree.create({ name, nodes: nodeTree, about, status });
+    const tree = await Tree.create({
+      name,
+      nodes: nodeTree,
+      aboutLink,
+      status,
+      coverImage,
+    });
     res.status(200).json(tree);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -57,7 +63,7 @@ const updateTree = async (req, res) => {
 
   if (nodeTree) {
     nodeTree = inOrderToList(nodeTree, []);
-    req.body.nodeTree = nodeTree;
+    req.body.nodes = nodeTree;
   }
 
   const { id, ...data } = req.body;

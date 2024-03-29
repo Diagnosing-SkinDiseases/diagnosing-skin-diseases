@@ -3,19 +3,19 @@ import ArticleContentType from "./enums";
 import VideoComponent from "./VideoComponent";
 import styles from "./styles";
 
-const parseData = ({ type, content }) => {
+const parseData = ({ type, content }, index) => {
   switch (type) {
     case ArticleContentType.HEADER1:
       return (
-        <>
-          <h3 style={styles.header1}>{content}</h3>
-        </>
+        <h3 key={index} style={styles.header1}>
+          {content}
+        </h3>
       );
     case ArticleContentType.HEADER2:
       return (
-        <>
-          <h3 style={styles.header2}>{content}</h3>
-        </>
+        <h3 key={index} style={styles.header2}>
+          {content}
+        </h3>
       );
     case ArticleContentType.PARAGRAPH:
       const parsedContent = content.replace(
@@ -23,21 +23,17 @@ const parseData = ({ type, content }) => {
         '<a href="$1" target="_blank" rel="noopener noreferrer">$2</a>'
       );
       return (
-        <>
-          <p dangerouslySetInnerHTML={{ __html: parsedContent }} />
-        </>
+        <p key={index} dangerouslySetInnerHTML={{ __html: parsedContent }} />
       );
     case ArticleContentType.IMAGE:
       return (
-        <>
-          <div className="container">
-            <img
-              src={`${content}`}
-              alt="Converted"
-              className="d-block w-50 mx-auto"
-            />
-          </div>
-        </>
+        <div key={index} className="container">
+          <img
+            src={`${content}`}
+            alt="Converted"
+            className="d-block w-50 mx-auto"
+          />
+        </div>
       );
     case ArticleContentType.VIDEO:
       function extractYouTubeVideoID(url) {
@@ -54,16 +50,12 @@ const parseData = ({ type, content }) => {
       }
 
       let videoId = extractYouTubeVideoID(content);
-      return (
-        <>
-          <VideoComponent videoId={videoId}></VideoComponent>
-        </>
-      );
+      return <VideoComponent key={index} videoId={videoId}></VideoComponent>;
     case ArticleContentType.SUBTITLE:
       return (
-        <>
-          <p style={styles.subtitle}>{content}</p>
-        </>
+        <p key={index} style={styles.subtitle}>
+          {content}
+        </p>
       );
     default:
       console.log("No match");

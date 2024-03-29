@@ -37,7 +37,11 @@ const treeSchema = new Schema({
       required: true,
     },
   ],
-  about: {
+  aboutLink: {
+    type: String,
+    required: true,
+  },
+  coverImage: {
     type: String,
     required: true,
   },

@@ -1,5 +1,5 @@
-import React, {useEffect} from "react";
-import { useLocation } from 'react-router-dom';
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import ArticleContentType from "./enums";
 import VideoComponent from "./VideoComponent";
 import styles from "./styles";
@@ -12,14 +12,14 @@ const ArticleContent = ({ data: { title, content } }) => {
     if (hash) {
       // Wait for the dynamic content to render
       setTimeout(() => {
-        const id = hash.replace('#', '');
+        const id = hash.replace("#", "");
         const element = document.getElementById(id);
         if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
+          element.scrollIntoView({ behavior: "smooth" });
         }
-      }, 0); 
+      }, 0);
     }
-  }, [hash, content]); 
+  }, [hash, content]);
 
   return (
     <>
