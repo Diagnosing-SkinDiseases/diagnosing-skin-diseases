@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import Cookies from "js-cookie"; // Import js-cookie
 
 const AuthContext = createContext();
 
@@ -7,19 +8,19 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token"); // Use Cookies.get to retrieve the token
     console.log("Retrieved token:", token);
     setIsLoggedIn(!!token);
     setIsLoading(false);
   }, []);
 
   const login = (token) => {
-    localStorage.setItem("token", token);
+    Cookies.set("token", token, { expires: 1 }); // Use Cookies.set to store the token, with an expiry of 1 day
     setIsLoggedIn(true);
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
+    Cookies.remove("token"); // Use Cookies.remove to clear the token
     setIsLoggedIn(false);
   };
 
