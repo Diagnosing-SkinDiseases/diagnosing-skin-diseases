@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import About from "../AboutDSD/About";
+import About from "../About/About";
 import Article from "../Article/Article";
 import ArticlePage from "../ArticleList/ArticleList";
 import Glossary from "../Glossary/Glossary";
