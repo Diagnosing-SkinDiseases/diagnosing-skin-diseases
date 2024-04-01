@@ -8,19 +8,19 @@ const {
   deleteGlossaryItem,
 } = require("../controllers/glossaryItemController");
 
-// Create
+// Create glossary item
 glossaryItemRouter.post("/glossaryItem/create", createGlossaryItem);
 
-// Read all users
+// Read all glossary items
 glossaryItemRouter.get("/glossaryItem/read/all", getAllGlossaryItems);
 
-// Read
+// Read singular glossary
 glossaryItemRouter.get("/glossaryItem/read", getGlossaryItem);
 
-// Update
+// Update glossary item
 glossaryItemRouter.patch("/glossaryItem/update", updateGlossaryItem);
 
-// Delete
+// Delete glossary item
 glossaryItemRouter.delete("/glossaryItem/delete", deleteGlossaryItem);
 
 module.exports = glossaryItemRouter;

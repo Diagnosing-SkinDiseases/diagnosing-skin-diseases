@@ -9,22 +9,22 @@ const {
   deleteUser,
 } = require("../controllers/userController");
 
-// Create
+// Create user
 userRouter.post("/user/create", createUser);
 
 // Login
 userRouter.post("/user/login", loginUser);
 
-// Read all
+// Read all users
 userRouter.get("/user/read/all", getAllUsers);
 
-// Read
+// Read singular user
 userRouter.get("/user/read", getUser);
 
-// Update
+// Update user
 userRouter.patch("/user/update", updateUser);
 
-// Delete
+// Delete user
 userRouter.delete("/user/delete", deleteUser);
 
 module.exports = userRouter;

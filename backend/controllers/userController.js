@@ -75,13 +75,11 @@ const getAllUsers = async (req, res) => {
 // Read single user
 const getUser = async (req, res) => {
   const { id } = req.query;
-
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ error: "Invalid id" });
   }
 
   const user = await User.findById(id);
-
   if (!user) {
     return res.status(404).json({ error: "User not found" });
   }
@@ -92,7 +90,6 @@ const getUser = async (req, res) => {
 // Update user
 const updateUser = async (req, res) => {
   const { id, ...data } = req.body;
-
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ error: "Invalid id" });
   }
@@ -115,7 +112,6 @@ const updateUser = async (req, res) => {
 // Delete user
 const deleteUser = async (req, res) => {
   const { id } = req.body;
-
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ error: "Invalid id" });
   }
@@ -123,11 +119,9 @@ const deleteUser = async (req, res) => {
   const user = await User.findOneAndDelete({
     _id: ObjectId.createFromHexString(id),
   });
-
   if (!user) {
     return res.status(404).json({ error: "User not found" });
   }
-
   res.status(200).json(user);
 };
 

@@ -34,31 +34,26 @@ const getAllGlossaryItems = async (req, res) => {
 // Read single glossaryItem
 const getGlossaryItem = async (req, res) => {
   const { id } = req.query;
-
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ error: "Invalid id" });
   }
 
   const glossaryItem = await GlossaryItem.findById(id);
-
   if (!glossaryItem) {
     return res.status(404).json({ error: "GlossaryItem not found" });
   }
-
   res.status(200).json(glossaryItem);
 };
 
 // Update glossaryItem
 const updateGlossaryItem = async (req, res) => {
   let { status } = req.body;
-
   if (status) {
     status = status.toUpperCase();
     req.body.status = status;
   }
 
   const { id, ...data } = req.body;
-
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ error: "Invalid id" });
   }
@@ -81,7 +76,6 @@ const updateGlossaryItem = async (req, res) => {
 // Delete glossaryItem
 const deleteGlossaryItem = async (req, res) => {
   const { id } = req.query;
-
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ error: "Invalid id" });
   }
@@ -89,11 +83,9 @@ const deleteGlossaryItem = async (req, res) => {
   const glossaryItem = await GlossaryItem.findOneAndDelete({
     _id: ObjectId.createFromHexString(id),
   });
-
   if (!glossaryItem) {
     return res.status(404).json({ error: "GlossaryItem not found" });
   }
-
   res.status(200).json(glossaryItem);
 };
 
