@@ -6,7 +6,7 @@ const About = () => {
   return (
     <div className="container">
       <h2 className="mt-4" style={{ color: "#007bff" }}>
-        About DSD
+        About
       </h2>
       <div className="row">
         <Sidebar />
