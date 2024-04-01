@@ -12,6 +12,8 @@ const articleRouter = require("./routers/articleRouter.js");
 
 // Dotenv access
 require("dotenv").config();
+
+// Environment variables
 const port = process.env.PORT;
 const mongoUser = process.env.DB_USER;
 const mongoPassword = process.env.PASSWORD;

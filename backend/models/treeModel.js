@@ -3,6 +3,7 @@ const Status = require("../enums/status");
 
 const Schema = mongoose.Schema;
 
+// define schema for node
 const nodeSchema = new Schema({
   currentId: {
     type: String,
@@ -26,6 +27,7 @@ const nodeSchema = new Schema({
   },
 });
 
+// define schema for tree
 const treeSchema = new Schema({
   name: {
     type: String,

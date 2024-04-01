@@ -1,3 +1,4 @@
+// enumeration of article content types
 const ArticleContentType = {
   HEADER1: "HEADER1",
   HEADER2: "HEADER2",
@@ -8,7 +9,7 @@ const ArticleContentType = {
   VIDEO: "VIDEO",
   SUBTITLE: "SUBTITLE",
   IMAGE: "IMAGE",
-  TITLE: "TITLE"
+  TITLE: "TITLE",
 };
 
 module.exports = ArticleContentType;
