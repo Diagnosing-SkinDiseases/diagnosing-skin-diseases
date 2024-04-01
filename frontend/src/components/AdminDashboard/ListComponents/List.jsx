@@ -2,14 +2,24 @@ import React, { useEffect, useState, useCallback } from "react";
 import labels from "../labels.json";
 import Button from "../GeneralComponents/Button";
 import ContentTypeEnum from "../enums/ContentTypeEnum";
-import "../styles/List.css"; 
+import "../styles/List.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import { apiDeleteGlossaryItem, apiUpdateGlossaryItem } from "../../../apiControllers/glossaryItemApiController";
-import { apiDeleteArticle, apiUpdateArticle } from "../../../apiControllers/articleApiController";
-import { apiDeleteTree, apiUpdateTree } from "../../../apiControllers/treeApiController";
+import {
+  apiDeleteGlossaryItem,
+  apiUpdateGlossaryItem,
+} from "../../../apiControllers/glossaryItemApiController";
+import {
+  apiDeleteArticle,
+  apiUpdateArticle,
+} from "../../../apiControllers/articleApiController";
+import {
+  apiDeleteTree,
+  apiUpdateTree,
+} from "../../../apiControllers/treeApiController";
 
+// Item component to display each item in the list
 const Item = ({ title, published, onPublish, onEdit, onDelete }) => (
   <div className="item">
     <span className="title">{title}</span>
@@ -34,7 +44,8 @@ const Item = ({ title, published, onPublish, onEdit, onDelete }) => (
   </div>
 );
 
-const List = ({ initialItems = [], contentType, searchQuery  }) => {
+// list component to display a list of items
+const List = ({ initialItems = [], contentType, searchQuery }) => {
   const [items, setItems] = useState(initialItems);
   const navigate = useNavigate();
 
@@ -42,7 +53,6 @@ const List = ({ initialItems = [], contentType, searchQuery  }) => {
   useEffect(() => {
     setItems(initialItems);
   }, [initialItems]);
-
 
   // Toggles the publish state of an item
   const handlePublishToggle = (index, item, contentType) => {
@@ -64,25 +74,31 @@ const List = ({ initialItems = [], contentType, searchQuery  }) => {
         console.log("Unknown content type for processing");
         return;
     }
-    updatePromise.then(() => {
-      console.log("items", items);
-      const newItems = items.map((item, i) => {
-      if (i === index) {
-        return { ...item, published: !item.published };
-      }
-      return item;
-    });
-      setItems(newItems);
-    })
-      .catch(error => {
+    // Update the item status in the database
+    updatePromise
+      .then(() => {
+        console.log("items", items);
+        const newItems = items.map((item, i) => {
+          if (i === index) {
+            return { ...item, published: !item.published };
+          }
+          return item;
+        });
+        setItems(newItems);
+      })
+      .catch((error) => {
         console.error("Error updating item status", error);
       });
   };
 
-  const handleEditBtn = useCallback((id) => {
-    const path = `/admin/${contentType.toLowerCase()}s/edit/${id}`; 
-    navigate(path, {state: { id }});
-  }, [navigate, contentType]);
+  // Handles the edit button click
+  const handleEditBtn = useCallback(
+    (id) => {
+      const path = `/admin/${contentType.toLowerCase()}s/edit/${id}`;
+      navigate(path, { state: { id } });
+    },
+    [navigate, contentType]
+  );
 
   // Handles the delete button click
   const handleDeleteBtn = (index, id) => {
@@ -104,10 +120,13 @@ const List = ({ initialItems = [], contentType, searchQuery  }) => {
         console.log("Unknown content type for processing");
         return;
     }
-    deletePromise.then((response) => {
-      console.log("Deleted", response.data);
-      setItems(newItems);
-    }).catch((error) => {
+    // Delete the item from the database
+    deletePromise
+      .then((response) => {
+        console.log("Deleted", response.data);
+        setItems(newItems);
+      })
+      .catch((error) => {
         console.log("Error:", error);
       });
   };
@@ -126,9 +145,9 @@ const List = ({ initialItems = [], contentType, searchQuery  }) => {
           />
         ))
       ) : (
-          <div className="item">
-            <span className="title">No search results found.</span>
-          </div>
+        <div className="item">
+          <span className="title">No search results found.</span>
+        </div>
       )}
     </div>
   );
