@@ -1,3 +1,4 @@
+// enumeration of content types
 const ContentTypeEnum = {
   DEFINITION: "Definition",
   ARTICLE: "Article",
