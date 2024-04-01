@@ -4,10 +4,10 @@ import "./styles/AdminCreateTrees.css";
 import { useState, useEffect } from "react";
 import EditTreeTitle from "./EditTreeTitle";
 import NodeArea from "./NodeArea";
-import { apiCreateTree } from "../../../../apiControllers/treeApiController";
 import ArticleCover from "./ArticleCover";
 import AboutLink from "./AboutLink";
 
+// Component to create a new tree
 const AdminCreateTree = ({
   existingTree,
   existingTitle,
