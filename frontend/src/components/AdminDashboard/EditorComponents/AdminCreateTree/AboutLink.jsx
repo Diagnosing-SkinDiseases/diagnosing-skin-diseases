@@ -1,5 +1,6 @@
 import React from "react";
 
+// Component to display the about article link
 const AboutLink = ({ aboutLink, setAboutLink }) => {
   const handleTextChange = (event) => {
     setAboutLink(event.target.value);
