@@ -9,16 +9,16 @@ const Sidebar = () => {
           className="list-group-item list-group-item-action active"
           aria-current="true"
         >
-          About the Program
+          About DSD
         </a>
         <a href="#" className="list-group-item list-group-item-action">
-          How to Use the Program
-        </a>
-        <a href="#" className="list-group-item list-group-item-action">
-          Troubleshooting
+          Using This Website
         </a>
         <a href="#" className="list-group-item list-group-item-action">
           Acknowledgements
+        </a>
+        <a href="#" className="list-group-item list-group-item-action">
+          Contact
         </a>
       </div>
     </div>
