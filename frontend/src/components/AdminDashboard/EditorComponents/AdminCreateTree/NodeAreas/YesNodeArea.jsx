@@ -2,6 +2,7 @@ import React from "react";
 import styles from "../styles/styles";
 import NodeEditor from "./NodeEditor";
 
+// Component to display all "yes" nodes
 const YesNodeArea = ({
   rootNode,
   setRootNode,
@@ -47,7 +48,6 @@ const YesNodeArea = ({
       return idA - idB;
     });
 
-    console.log("Yes nodes: ", yesNodes);
     return yesNodes.map((node, index) => {
       return (
         <NodeEditor
