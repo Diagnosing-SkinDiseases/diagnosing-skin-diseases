@@ -1,8 +1,6 @@
-/**
- * Main component for the user tree to render the tree structure.
- */
 import React, { useEffect, useState, useRef } from 'react';
 import { NodeComponent, InvisibleNodeComponent } from './NodeComponent';
+// import NodeDetails from './NodeDetails';
 import './UserTree.css';
 import CurrentNodeDetails from './CurrentNodeDetails';
 import SymbolIndication from './SymbolIndication';
@@ -11,15 +9,9 @@ import ZoomControls from './ZoomControls';
 // Global variable to store the leader lines
 let arrows = [];
 
+
+// Draw an arrow between two nodes
 // Source from: https://github.com/anseki/leader-line
-/**
- * Draw an arrow between two nodes using LeaderLine library.
- * @param {string} start - The ID of the starting node.
- * @param {string} end - The ID of the ending node.
- * @param {string} color - The color of the arrow (e.g., 'red', '#ff0000', 'rgb(255, 0, 0)').
- * @param {number} size - The size of the arrow.
- * @returns {LeaderLine|null} The LeaderLine instance representing the arrow, or null if LeaderLine is not available or the nodes are not found.
- */
 const drawArrow = (start, end, color, size) => {
     if (window.LeaderLine && document.getElementById(start) && document.getElementById(end)) {
         const line = new window.LeaderLine(
@@ -39,11 +31,7 @@ const drawArrow = (start, end, color, size) => {
         return line;
     }
 };
-/**
- * UserTree component for displaying a tree structure with interactive nodes.
- * @param {Object} props.treeData - The data representing the tree structure.
- * @returns {JSX.Element} JSX element representing the UserTree component.
- */
+
 const UserTree = ({ treeData }) => { // Destructure treeData from props
     const [zoomLevel, setZoomLevel] = useState(1); // Set the initial zoom level
     const treeName = treeData.name; // Set the tree name
@@ -51,42 +39,40 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
     const zoomRef = useRef(zoomLevel); // Ref to track the zoom level for event listeners
     const treeContainerRef = useRef(null); // Ref to track the tree container for event listeners
 
-    const greenArrow = "#3fc005"; // Set the green arrow color for yes branch
-    const redArrow = "#f44336"; // Set the red arrow color for no branch
-    const blueNode = "#1E90FF"; // Set the blue node color for question nodes
-    const yellowNode = "#FFD700"; // Set the yellow node color for result nodes
-    const greenNode = "#6ad669"; // Set the green node color for current node
+    const greenArrow = "#3fc005";
+    const redArrow = "#f44336";
+    const blueNode = "#1E90FF";
+    const yellowNode = "#FFD700";
+    const greenNode = "#6ad669";
 
-    const currentNodeIdRef = useRef(null); // Ref to track the current node ID
-    const [nodeRows, setNodeRows] = useState([]); // State to store the node rows
-    const [nodeColors, setNodeColors] = useState({}); // State to store the node colors
-    const [currentNodeId, setCurrentNodeId] = useState(treeData.nodes[0].currentId); // State to store the current node
-    const [previousNodeId, setPreviousNodeId] = useState(null); // State to store the previous node
-    const [currentNodeContent, setCurrentNodeContent] = useState(rootQuestion); // State to store the current node content
+    const currentNodeIdRef = useRef(null);
+    const [nodeRows, setNodeRows] = useState([]);
+    const [nodeColors, setNodeColors] = useState({});
+    const [currentNodeId, setCurrentNodeId] = useState(treeData.nodes[0].currentId);
+    const [previousNodeId, setPreviousNodeId] = useState(null);
+    const [currentNodeContent, setCurrentNodeContent] = useState(rootQuestion);
 
-    const zoomIn = (factor = 1.1) => setZoomLevel(zoomLevel => zoomLevel * factor); // Function to zoom in
-    const zoomOut = (factor = 1.1) => setZoomLevel(zoomLevel => zoomLevel / factor); // Function to zoom out
+    const zoomIn = (factor = 1.1) => setZoomLevel(zoomLevel => zoomLevel * factor);
+    const zoomOut = (factor = 1.1) => setZoomLevel(zoomLevel => zoomLevel / factor);
 
 
-    /**
-     * Handle the wheel event for zooming in and out of the user tree.
-     * @param {WheelEvent} event - The wheel event object.
-     */
     const handleWheel = (event) => {
         event.preventDefault(); // Prevent the default scroll behavior
-        const { deltaY } = event; // Get scroll direction
-        const rect = treeContainerRef.current.getBoundingClientRect(); // Get the bounding rectangle of the zoomed element
+        const { deltaY } = event;
+
+        const rect = treeContainerRef.current.getBoundingClientRect();
         const x = (event.clientX - rect.left) / zoomLevel; // Calculate x position relative to zoomed element
         const y = (event.clientY - rect.top) / zoomLevel; // Calculate y position relative to zoomed element
 
         // Update transform origin for zooming in/out at mouse position
         event.currentTarget.style.transformOrigin = `${x}px ${y}px`;
 
-        // Zoom in or out based on scroll direction
         if (deltaY < 0) {
             zoomIn();
+            console.log("zoom in");
         } else if (deltaY > 0) {
             zoomOut();
+            console.log("zoom out");
         }
 
         // Apply the transform origin for scaling at the mouse position to the zoomed element
@@ -94,6 +80,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         if (userTreeElement) {
             userTreeElement.style.transformOrigin = `${x}px ${y}px`;
         }
+        console.log("transform origin:", treeContainerRef.current.style.transformOrigin);
     };
 
     useEffect(() => {
@@ -448,6 +435,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
             </div>
         </>
     );
+
 };
 
 export default UserTree;
