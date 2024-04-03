@@ -1,5 +1,5 @@
 import React from 'react';
-import './NodeDetails.css';
+import '../css/NodeDetails.css';
 
 /**
  * Component for displaying the details of a node and providing navigation options.

@@ -3,7 +3,7 @@
  */
 import React, { useEffect, useState, useRef } from 'react';
 import { NodeComponent, InvisibleNodeComponent } from './NodeComponent';
-import './UserTree.css';
+import '../css/UserTree.css';
 import CurrentNodeDetails from './CurrentNodeDetails';
 import SymbolIndication from './SymbolIndication';
 import ZoomControls from './ZoomControls';
