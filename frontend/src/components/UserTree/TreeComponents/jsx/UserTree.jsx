@@ -39,6 +39,25 @@ const drawArrow = (start, end, color, size) => {
         return line;
     }
 };
+
+/**
+ * Parses the content of a question, transforming any embedded links into clickable HTML anchor tags
+ * while preserving the original link text. This ensures that links in the question content open in a new tab
+ * with secure rel attributes.
+ *
+ * @param {string} content - The content of the question to be parsed.
+ * @returns {string} The parsed content with anchor tags modified for safe external navigation and original link text preserved.
+ */
+const parseQuestionContent = (content) => {
+    console.log("parsing question content", content);
+    const parsedContent = content.replace(
+        /<a href="(.*?)"(.*?)>(.*?)<\/a>/g,
+        '<a href="$1" target="_blank" rel="noopener noreferrer" style="text-decoration: underline;">$3</a>'
+    );
+    console.log("question content parsed", parsedContent);
+    return parsedContent;
+};
+
 /**
  * UserTree component for displaying a tree structure with interactive nodes.
  * @param {Object} props.treeData - The data representing the tree structure.
@@ -264,6 +283,21 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         currentNodeIdRef.current = currentNodeId;
         colorNodes();
     }, [currentNodeId]);
+
+    /**
+     * useEffect hook to update the `currentNodeContent` state when the `currentNodeId` changes.
+     * 
+     * @param {string} currentNodeId - The ID of the current node.
+     * @param {Object} treeData - The data representing the tree structure, containing an array of node objects.
+     */
+    useEffect(() => {
+        const currentNode = treeData.nodes.find(n => n.currentId === currentNodeId);
+        if (currentNode) {
+            const parsedContent = parseQuestionContent(currentNode.content);
+            setCurrentNodeContent(parsedContent);
+            console.log("current node content change to:", parsedContent);
+        }
+    }, [currentNodeId, treeData.nodes]);
 
 
     /**
@@ -515,7 +549,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
     /**
      * Handles the "back" action for the current node in the tree structure.
      * This function updates the current node to the parent node of the current node, if it exists.
-     */ 
+     */
     const handleBack = () => {
         const currentNode = treeData.nodes.find(n => n.currentId === currentNodeId);
         if (currentNode && currentNode.parentId) {
@@ -528,7 +562,6 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         }
         colorNodes();
     };
-
 
     return (
         <>
@@ -551,7 +584,7 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
                         showBack={currentNodeId && currentNodeId !== treeData.nodes[0].currentId} // Show back button if not at root
                         showYes={!!(treeData.nodes.find(n => n.currentId === currentNodeId)?.yesChildId)} // Show "Yes" if there is a yesChildId
                         showNo={!!(treeData.nodes.find(n => n.currentId === currentNodeId)?.noChildId)} // Show "No" if there is a noChildId
-                        question={currentNodeContent} // Display the current node's content, display root question if not set
+                        question={<div dangerouslySetInnerHTML={{ __html: currentNodeContent }} />} // Display the current node's content, display root question if not set
                     />
                 </div>
             </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { apiGetTree } from "../../../apiControllers/treeApiController";
-import UserTree from "../TreeComponents/UserTree";
+import UserTree from "../TreeComponents/jsx/UserTree";
 import { useLocation } from "react-router-dom";
 
 /**

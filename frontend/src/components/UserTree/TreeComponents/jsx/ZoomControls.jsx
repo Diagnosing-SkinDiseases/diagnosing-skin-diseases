@@ -1,5 +1,5 @@
 import React from 'react';
-import '../css./ZoomControls.css';
+import '../css/ZoomControls.css';
 /**
  * Component for rendering zoom controls that allow the user to zoom in and out.
  *
