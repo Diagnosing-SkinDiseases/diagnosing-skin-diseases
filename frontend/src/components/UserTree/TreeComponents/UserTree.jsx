@@ -314,7 +314,6 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
         // Update the current node state and content
         const node = treeData.nodes.find(n => n.currentId === nodeId);
         setCurrentNodeId(nodeId);
-        console.log("Node clicked:", nodeId);
         setCurrentNodeContent(node ? node.content : rootQuestion);
 
         // Highlight the new current node

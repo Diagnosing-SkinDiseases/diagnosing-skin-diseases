@@ -4,6 +4,11 @@ import { apiGetTree } from "../../../apiControllers/treeApiController";
 import UserTree from "../TreeComponents/UserTree";
 import { useLocation } from "react-router-dom";
 
+/**
+ * Component for building and displaying a user tree based on the tree data fetched from an API.
+ *
+ * @returns {React.ReactElement} The UserTree component with the fetched tree data, or a loading message if the data is not yet available.
+ */
 function BuildUserTree() {
   const { id } = useParams();
   const [treeData, setTreeData] = useState(null);
@@ -25,7 +30,6 @@ function BuildUserTree() {
     try {
       const response = await apiGetTree(id);
       setTreeData(response.data);
-      // console.log('Tree data:', response.data);
     } catch (error) {
       console.error("Error fetching tree:", error);
     }
