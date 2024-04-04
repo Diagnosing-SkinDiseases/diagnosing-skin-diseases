@@ -153,7 +153,7 @@ function App() {
           <Route path="/treatment" element={<ArticlePage />}></Route>
 
           {/* Article */}
-          <Route path="/treatment/:id" element={<Article />}></Route>
+          <Route path="/treatment/:title/:id" element={<Article />}></Route>
 
           {/* Glossary */}
           <Route path="/glossary" element={<Glossary></Glossary>}></Route>

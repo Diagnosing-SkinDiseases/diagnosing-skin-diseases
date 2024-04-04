@@ -4,7 +4,13 @@ import { Link } from "react-router-dom"; // Assuming react-router for navigation
 function ArticleListItem({ article }) {
   return (
     <li className="article-list-item">
-      <Link to={`/treatment/${article._id}`}>{article.title}</Link>
+      <Link
+        to={`/treatment/${article.title.toLowerCase().replace(/ /g, "-")}/${
+          article._id
+        }`}
+      >
+        {article.title}
+      </Link>
     </li>
   );
 }
