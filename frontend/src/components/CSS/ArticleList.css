@@ -117,10 +117,13 @@ li {
   color: black;
 }
 
+<<<<<<< HEAD
 .ArticleList a:hover {
   color: gray;
 }
 
+=======
+>>>>>>> 66b448b (Update styles and settings in CSS files)
 /* Mobile styles */
 @media (max-width: 600px) {
   nav {

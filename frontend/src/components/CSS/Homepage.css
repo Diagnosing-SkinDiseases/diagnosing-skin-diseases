@@ -1,7 +1,18 @@
+<<<<<<< HEAD
 .Homepage {
   background-image: url("./background.jpg");
   background-size: cover;
   min-height: 90vh;
+=======
+:root {
+  --primary-font: "Garamond", serif;
+}
+
+.Homepage {
+  font-family: var(--primary-font);
+  background-color: white;
+  min-height: 100%;
+>>>>>>> 66b448b (Update styles and settings in CSS files)
   display: flex;
   flex-direction: column;
 }
@@ -12,7 +23,11 @@
   padding-top: 0%;
   padding-bottom: 0;
   margin-top: 0.5em !important;
+<<<<<<< HEAD
   margin-bottom: 0.5rem !important;
+=======
+  margin-bottom: 0 !important;
+>>>>>>> 66b448b (Update styles and settings in CSS files)
 }
 
 .container-fluid {
@@ -49,6 +64,7 @@
 }
 
 .card-body {
+<<<<<<< HEAD
   max-height: 15vh;
   min-height: 15vh;
   background: rgba(225, 234, 243, 0.718);
@@ -64,6 +80,22 @@
   /* text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); Optional: Add a subtle text shadow for depth */
   margin-bottom: 20px;
   /* Add some space between the title and the content/buttons */
+=======
+  background: rgba(
+    225,
+    234,
+    243,
+    0.718
+  ); /* Semi-transparent overlay for readability */
+
+  padding: 15px;
+}
+
+.card-title {
+  font-size: 20px; /* Increase font size */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Optional: Add a subtle text shadow for depth */
+  margin-bottom: 20px; /* Add some space between the title and the content/buttons */
+>>>>>>> 66b448b (Update styles and settings in CSS files)
 }
 
 .card-actions {
@@ -76,16 +108,23 @@
 }
 
 .card-action-btn {
+<<<<<<< HEAD
   width: 50% !important;
   /* Ensure the button takes up the full width */
   background-color: var(--btn-color);
   color: white;
   /* Text color */
+=======
+  width: 50% !important; /* Ensure the button takes up the full width */
+  background-color: #2277f6; /* Adjust the background color as needed */
+  color: white; /* Text color */
+>>>>>>> 66b448b (Update styles and settings in CSS files)
   border: none;
   padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+<<<<<<< HEAD
   font-size: 1rem;
   /* Adjust the font size as needed */
   transition: background-color 0.3s ease;
@@ -103,6 +142,20 @@
   background-color: var(--btn-color-hover);
   color: white;
   /* Text color */
+=======
+  font-size: 15px; /* Adjust the font size as needed */
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.btn {
+  height: 30px !important; /* Adjust the height of the button */
+  border-radius: 30px; /* Round the corners */
+}
+
+.card-action-btn:hover {
+  background-color: #1e5ae8; /* Darker shade for hover effect */
+  color: white; /* Text color */
+>>>>>>> 66b448b (Update styles and settings in CSS files)
 }
 
 .btn-container {

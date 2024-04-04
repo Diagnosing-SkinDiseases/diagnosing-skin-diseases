@@ -45,6 +45,7 @@
   flex-direction: column;
 }
 
+<<<<<<< HEAD
 .app-container {
   background-color: var(--back_ground);
   min-height: 100%;
@@ -57,6 +58,14 @@
   padding: 10px 0;
   width: 100%;
   position: absolute;
+=======
+.footer {
+  text-align: center;
+  background-color: whitesmoke;
+  padding: 10px 0;
+  margin-top: auto;
+  width: 100%;
+>>>>>>> 66b448b (Update styles and settings in CSS files)
 }
 
 @keyframes App-logo-spin {
