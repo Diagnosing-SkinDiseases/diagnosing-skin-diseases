@@ -31,7 +31,7 @@ const parseData = ({ type, content }, index) => {
           <img
             src={`${content}`}
             alt="Converted"
-            className="d-block w-50 mx-auto"
+            className="d-block w-25 mx-auto"
           />
         </div>
       );
