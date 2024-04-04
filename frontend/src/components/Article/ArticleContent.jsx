@@ -8,6 +8,10 @@ import { parseData } from "./articleComponentController";
 const ArticleContent = ({ data: { title, content } }) => {
   const { hash } = useLocation();
 
+  /**
+   * Handles hash navigation withing the article.
+   * - hash: The current hash value from the URL, to identify the target section.
+   */
   useEffect(() => {
     if (hash) {
       // Wait for the dynamic content to render
@@ -21,6 +25,7 @@ const ArticleContent = ({ data: { title, content } }) => {
     }
   }, [hash, content]);
 
+  
   return (
     <>
       {/* Content */}
