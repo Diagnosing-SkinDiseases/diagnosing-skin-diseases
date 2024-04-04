@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import labels from "../labels.json";
-import "../styles/Editor.css";
+import "../../CSS/Admin/Editor.css";
 import { apiGetGlossaryItem } from "../../../apiControllers/glossaryItemApiController";
 
 // The Definition component

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"; 
 import Controls from "./ListComponents/Controls";
 import List from "./ListComponents/List";
-import "./styles/AdminDashboard.css"; 
+import "../CSS/Admin/AdminDashboard.css"; 
 import ContentTypeEnum from './enums/ContentTypeEnum';
 import { apiGetAllGlossaryItems} from "../../apiControllers/glossaryItemApiController";
 import { apiGetAllArticles } from "../../apiControllers/articleApiController";

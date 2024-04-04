@@ -1,5 +1,5 @@
 import React from 'react';
-import '../css/SymbolIndication.css';
+import '../../../CSS/Tree/SymbolIndication.css';
 
 /**
  * Component for displaying the symbol indications for different types of nodes in the tree.

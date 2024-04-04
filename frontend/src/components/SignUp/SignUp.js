@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { apiCreateUser } from "../../apiControllers/userApiController";
 import SignUpForm from "./SignUpForm";
-import "./SignUp.css";
+import "../CSS/SignUp.css";
 
 function App() {
   const [serverError, setServerError] = useState("");

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../css/CurrentNodeDetails.css';
+import "../../../CSS/Tree/CurrentNodeDetails.css";
 
 /**
  * Component for displaying the details of the current node in the tree, along with navigation buttons.

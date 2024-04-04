@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../App/AuthContext";
-import "./NavBarComponent.css";
+import "../CSS/NavBarComponent.css";
 
 // Subtab component
 const NavSubtab = ({ show, titles }) => {

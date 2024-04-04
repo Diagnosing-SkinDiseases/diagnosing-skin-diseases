@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import labels from "../labels.json";
-import '../styles/ImageParagraphGroup.css';
+import '../../CSS/Admin/ImageParagraphGroup.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 

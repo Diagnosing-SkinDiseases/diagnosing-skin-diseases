@@ -1,7 +1,7 @@
 import React from 'react';
 import labels from "../labels.json";
 import Button from "../GeneralComponents/Button";
-import "../styles/Controls.css"; 
+import "../../CSS/Admin/Controls.css"; 
 
 const EditorButtons = ({ onPreview, onSave, onPublish }) => {
   return (

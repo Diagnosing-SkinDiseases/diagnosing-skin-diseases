@@ -2,8 +2,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import RootNodeSection from "./EditorComponents/RootNodeInput";
 import Controls from "./ListComponents/Controls";
-import "./styles/AdminDashboard.css";
-import "./styles/AdminEditTrees.css";
+import "../CSS/Admin/AdminDashboard.css";
+import "../CSS/Admin/AdminEditTrees.css";
 
 const AdminEditTrees = () => {
   return (

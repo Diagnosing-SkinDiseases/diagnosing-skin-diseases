@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
-import "./Homepage.css";
+import "../CSS/Homepage.css";
 import { apiGetAllTrees } from "../../apiControllers/treeApiController";
 
 const Card = ({ title, image, aboutLink, treeId }) => {

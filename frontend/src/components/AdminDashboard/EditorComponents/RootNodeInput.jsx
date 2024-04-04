@@ -5,7 +5,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import "../styles/AdminEditTrees.css";
+import "../../CSS/Admin/AdminEditTrees.css";
 
 const RootNodeSection = () => {
   const [showAdditionalInputsRoot, setShowAdditionalInputsRoot] =

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { apiGetAllGlossaryItems } from "../../apiControllers/glossaryItemApiController";
-import "./Glossary.css";
+import "../CSS/Glossary.css";
 import SearchBar from "./SearchBar";
 import LetterFilter from "./LetterFilter";
 import GlossaryContent from "./GlossaryContent";
@@ -29,7 +29,7 @@ function App() {
             // Check if previewData already exists in publishedItems by id or another unique property
             const previewDataExists = publishedItems.some(
               (item) => item.term === previewData.term
-            ); 
+            );
             if (!previewDataExists) {
               publishedItems = [...publishedItems, previewData];
             }
