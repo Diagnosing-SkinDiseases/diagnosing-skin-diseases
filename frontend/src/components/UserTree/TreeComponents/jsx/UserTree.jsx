@@ -50,13 +50,18 @@ const drawArrow = (start, end, color, size) => {
  */
 const parseQuestionContent = (content) => {
     console.log("parsing question content", content);
-    const parsedContent = content.replace(
+
+    const withLineBreaks = content.replace(/\n/g, '<br>');
+
+    const parsedContent = withLineBreaks.replace(
         /<a href="(.*?)"(.*?)>(.*?)<\/a>/g,
         '<a href="$1" target="_blank" rel="noopener noreferrer" style="text-decoration: underline;">$3</a>'
     );
+
     console.log("question content parsed", parsedContent);
     return parsedContent;
 };
+
 
 /**
  * UserTree component for displaying a tree structure with interactive nodes.
@@ -366,7 +371,8 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
     const handleNodeHover = nodeId => {
         const node = treeData.nodes.find(n => n.currentId === nodeId);
         if (node) {
-            setCurrentNodeContent(node.content); // Update content on hover
+            const parsedContent = parseQuestionContent(node.content);
+            setCurrentNodeContent(parsedContent); // Update content on hover
         }
 
         // Mouse leave event to reset content to current node or root node
@@ -375,7 +381,8 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
             nodeElement.onmouseleave = () => {
                 const currentId = currentNodeIdRef.current;
                 const currentNode = currentId ? treeData.nodes.find(n => n.currentId === currentId) : null;
-                setCurrentNodeContent(currentNode ? currentNode.content : rootQuestion);
+                const parsedContent = parseQuestionContent(currentNode ? currentNode.content : rootQuestion);
+                setCurrentNodeContent(parsedContent);
             };
         }
     };
