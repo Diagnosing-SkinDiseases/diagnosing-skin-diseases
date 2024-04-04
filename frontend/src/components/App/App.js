@@ -18,7 +18,6 @@ import { AuthProvider, useAuth } from "./AuthContext";
 import AdminDashboard from "../AdminDashboard/AdminDashboard";
 import ContentEditor from "../AdminDashboard/ContentEditor";
 import ContentTypeEnum from "../AdminDashboard/enums/ContentTypeEnum";
-import testData from "../AdminDashboard/testData.json";
 
 // This function wraps your Routes and uses useAuth to access the auth state
 function ProtectedRoute({ children }) {
@@ -30,8 +29,6 @@ function ProtectedRoute({ children }) {
 }
 
 function App() {
-  // test data for demo only
-  const { trees, definitions, articles } = testData;
 
   return (
     <AuthProvider>
@@ -45,7 +42,6 @@ function App() {
             element={
               <ProtectedRoute>
                 <AdminDashboard
-                  data={trees}
                   contentType={ContentTypeEnum.TREE}
                 />
               </ProtectedRoute>
@@ -89,7 +85,6 @@ function App() {
             path="/admin/articles"
             element={
               <AdminDashboard
-                data={articles}
                 contentType={ContentTypeEnum.ARTICLE}
               />
             }
@@ -115,7 +110,6 @@ function App() {
             path="/admin/definitions"
             element={
               <AdminDashboard
-                data={definitions}
                 contentType={ContentTypeEnum.DEFINITION}
               />
             }

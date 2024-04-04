@@ -4,17 +4,28 @@ import labels from "../labels.json";
 import "../styles/Editor.css";
 import { apiGetGlossaryItem } from "../../../apiControllers/glossaryItemApiController";
 
-// The Definition component
+/*
+* The Definition is a component to view and edit a glossary term and its definition.
+*
+* Props:
+*   - onUpdate (function): A callback function that is called with the updated title and definition.
+*
+* State:
+*   - title (string): The term of the glossary.
+*   - paragraph (string): The definition of the glossary term.
+*/
 const Definition = ({ onUpdate}) => {
-  const location = useLocation(); // Use useLocation to access the current location object
+  const location = useLocation(); // Get the location state
   const definition = location.state?.id; // Access the item passed in the state, if any
 
-  console.log("id ", definition);
   // State hooks for title and paragraph
   const [title, setTitle] = useState('');
   const [paragraph, setParagraph] = useState('');
 
-  // Initializes state 
+  /**
+   * useEffect hook to fetch a glossary item from the backend when the component mounts
+   * If an item is passed in the state, use it to fetch the definition from the backend
+   */
   useEffect(() => {
     if (definition) {
       // fetch using getDefinition(id)
@@ -29,26 +40,43 @@ const Definition = ({ onUpdate}) => {
     }
   }, [definition, onUpdate]);
 
-  // Handles the change in the title input field
+  /**
+   * Handles changes in the title input field
+   * Calls the onUpdate callback with the new title and the current paragraph
+   * @param {object} e The event object
+   */
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
     const newTitle = e.target.value;
     onUpdate(newTitle, paragraph);
-    console.log(title);
   };
 
-  // Handles the change in the paragraph textarea
+  /**
+   * Handles changes in the paragraph textarea
+   * Calls the onUpdate callback with the current title and new paragraph
+   * @param {object} e The event object
+   */
   const handleParagraphChange = (e) => {
-    setParagraph(e.target.value); // Update the paragraph state
+    setParagraph(e.target.value);
     const newParagraph = e.target.value;
     onUpdate(title, newParagraph);
   };
 
+  /**
+   * Handles changes in the paragraph textarea
+   * Resizes the textarea to fit the content
+   * @param {object} e The event object
+   */
   const handleInput = (e) => {
-    e.target.style.height = 'inherit'; // Reset the height - allows shrink if text is deleted
-    e.target.style.height = `${e.target.scrollHeight}px`; // Set the new height
+    e.target.style.height = 'inherit';
+    e.target.style.height = `${e.target.scrollHeight}px`;
   };
 
+
+  /**
+   * @return The definition component.
+   * Contains a title input and a paragraph textarea.
+   */
   return (
     <div className="definition">
       <div className="input-group">
@@ -72,6 +100,7 @@ const Definition = ({ onUpdate}) => {
       </div>
     </div>
   );
+
 };
 
 export default Definition; 
