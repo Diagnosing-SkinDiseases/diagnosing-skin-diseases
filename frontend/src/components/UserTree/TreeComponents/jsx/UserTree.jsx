@@ -441,9 +441,12 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
     const placeNodesByLevel = (nodes, maxLevel) => {
         if (!nodes || nodes.length === 0) return [];
 
+        const placedNodeIds = new Set();
+
         // Helper function to recursively place nodes by level
         const placeNode = (nodeId, level, maxLevel) => {
             if (level > maxLevel) return null;
+            if (placedNodeIds.has(nodeId)) return null;
 
             // Find the node with the specified ID
             const node = nodeId ? nodes.find(n => n.currentId === nodeId) : null;
@@ -453,6 +456,8 @@ const UserTree = ({ treeData }) => { // Destructure treeData from props
                 // Generate a unique key for visible nodes with the current ID
                 nodeElement = <NodeComponent id={node.currentId} color={blueNode} key={node.currentId} onClick={() => handleNodeClick(node.currentId)} onMouseEnter={() => handleNodeHover(node.currentId)} />;
                 children = [];
+
+                placedNodeIds.add(nodeId);
 
                 const yesChildId = node.yesChildId;
                 const noChildId = node.noChildId;
