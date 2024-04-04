@@ -2,6 +2,8 @@
   --primary-font: "Roboto";
   --primary-color: #90ee90;
   --theme_blue: #007bff;
+  --btn-color: #2277f6;
+  --btn-color-hover: #1e5ae8;
 }
 
 .App {

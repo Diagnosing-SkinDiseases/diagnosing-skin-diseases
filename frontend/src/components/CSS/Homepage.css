@@ -1,5 +1,5 @@
 .Homepage {
-  background-color: white;
+  background-color: var(--primary-color);
   min-height: 100%;
   display: flex;
   flex-direction: column;
@@ -63,7 +63,7 @@
 
 .card-action-btn {
   width: 50% !important; /* Ensure the button takes up the full width */
-  background-color: #2277f6; /* Adjust the background color as needed */
+  background-color: var(--btn-color);
   color: white; /* Text color */
   border: none;
   padding: 0;
@@ -80,7 +80,7 @@
 }
 
 .card-action-btn:hover {
-  background-color: #1e5ae8; /* Darker shade for hover effect */
+  background-color: var(--btn-color-hover);
   color: white; /* Text color */
 }
 
