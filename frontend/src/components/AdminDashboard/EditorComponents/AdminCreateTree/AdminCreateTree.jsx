@@ -48,7 +48,7 @@ const AdminCreateTree = ({
     }
     console.log("existing", existingTree);
     console.log(title);
-    console.log(rootNode);
+    console.log("root", rootNode);
 
     function flattenAllNodes(node) {
       if (!node) {

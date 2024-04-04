@@ -236,7 +236,8 @@ const NodeEditor = ({
                   className="white-bar-input-dropdown-additional"
                   type="text"
                   value={node.content}
-                  disabled={true}
+                  data-node-id={node.currentId}
+                  onChange={onChangeNodeContent}
                 />
                 <button
                   style={styles.deleteButton}
@@ -257,7 +258,8 @@ const NodeEditor = ({
                   className="white-bar-input-dropdown-additional"
                   type="text"
                   value={node.content}
-                  disabled={true}
+                  data-node-id={node.currentId}
+                  onChange={onChangeNodeContent}
                 />
                 <button
                   style={styles.deleteButton}
@@ -308,7 +310,7 @@ const NodeEditor = ({
                       <div
                         style={styles.existingNodesDropdownItem}
                         className="white-bar-input-dropdown-additional existing-nodes-dropdown-item"
-                        key={`dropdownItem${index}`}
+                        key={`dropdownItem${index}copy`}
                         data-node-id={currentNode.currentId}
                         data-node-type="yes"
                         onClick={(event) => onAddExistingNode(event, node)}
@@ -361,7 +363,7 @@ const NodeEditor = ({
                       <div
                         style={styles.existingNodesDropdownItem}
                         className="white-bar-input-dropdown-additional existing-nodes-dropdown-item"
-                        key={`dropdownItem${index}`}
+                        key={`dropdownItem${index}copy`}
                         data-node-id={currentNode.currentId}
                         data-node-type="no"
                         onClick={(event) => onAddExistingNode(event, node)}
