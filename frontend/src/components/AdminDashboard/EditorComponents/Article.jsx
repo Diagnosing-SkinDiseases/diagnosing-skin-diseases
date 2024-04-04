@@ -16,10 +16,6 @@ import { apiGetArticle } from '../../../apiControllers/articleApiController';
  * images, and videos. This component fetches article data from a backend service when an article
  * ID is available and renders editable inputs for each content block of the article.
  *
- * Props:
- * - onUpdate (function): Callback function that is called whenever the article's content blocks
- *   are updated. It receives the updated array of content blocks as its argument.
- * 
  * @param {Function} props.onUpdate - Callback function to be called with updated content blocks.
  * @returns {JSX.Element} The rendered component.
  */

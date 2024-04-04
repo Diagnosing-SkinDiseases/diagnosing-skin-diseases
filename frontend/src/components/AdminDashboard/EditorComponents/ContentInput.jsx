@@ -6,12 +6,29 @@ import "../styles/Editor.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
+/**
+ * ContentInput is a component for rendering and managing individual content blocks within an article.
+ * It supports various types of content blocks, including titles, headers, subtitles, and paragraphs. Each block
+ * can be edited, and changes are propagated through the `updateBlock` callback. The component also provides
+ * a delete button to remove the block from the article.
+ *
+ * @param {Object} props.block - The content block object to be rendered.
+ * @param {Function} props.updateBlock - Callback to update the block value.
+ * @param {Function} props.remove - Callback to remove the block.
+ * @param {String} [props.className] - Optional CSS class for additional styling.
+ * @returns {JSX.Element} The JSX rendering of the content input block.
+ */
 const ContentInput = ({ block, updateBlock, remove, className }) => {
   const handleChange = (e) => {
     console.log("handleChange ", block);
     updateBlock(e.target.value);
   };
 
+  /**
+   * A function that renders content based on the type of block.
+   *
+   * @return {JSX.Element} The JSX element representing the content based on the block type.
+   */
   const renderContentByType = () => {
     switch (block.type) {
       case ArticleContentType.TITLE:
@@ -28,6 +45,9 @@ const ContentInput = ({ block, updateBlock, remove, className }) => {
     }
   };
 
+  /**
+   * @returns The content input component.
+   */
   return (
     <div className={`content-input-wrapper ${className}`}>
         <div className={`content-input ${className}`}>
