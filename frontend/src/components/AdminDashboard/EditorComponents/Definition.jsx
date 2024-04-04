@@ -32,13 +32,13 @@ const Definition = ({ onUpdate}) => {
       apiGetGlossaryItem(definition).then((response) => {
         setTitle(response.data.term);
         setParagraph(response.data.definition);
-        onUpdate(title, definition);
+        onUpdate(title, paragraph);
       })
         .catch((error) => {
           console.error('Error fetching definition:', error);
         });
     }
-  }, [definition, onUpdate]);
+  }, [definition]);
 
   /**
    * Handles changes in the title input field
