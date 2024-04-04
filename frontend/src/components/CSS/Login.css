@@ -1,6 +1,6 @@
 /* Style the card for the login form */
 .login-card {
-  background: white;
+  background: var(--login-container);
   padding: 2em;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -36,8 +36,8 @@
   padding: 10px;
   border: none;
   border-radius: 20px;
-  background-color: #007bff;
-  color: white;
+  background-color: var(--btn-color);
+  color: var(btn-text-color);
   font-weight: bold;
   text-transform: uppercase;
   cursor: pointer;
@@ -45,7 +45,7 @@
 
 /* Hover state for the login button */
 .login-card button:hover {
-  background-color: #0056b3;
+  background-color: var(--btn-color-hover);
 }
 
 /* Ensure the form items align properly */
@@ -55,7 +55,7 @@
 }
 
 .error-message {
-  color: red;
+  color: var(error-message);
   margin: 1em;
   text-align: center;
 }

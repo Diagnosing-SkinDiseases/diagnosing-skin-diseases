@@ -2,11 +2,17 @@
   --primary-font: "Roboto";
   --primary-color: #196890;
   --theme_blue: #0589a3;
-  --light_blue: #4fb9c3;
-  --very_light_blue: #9fd9dd;
-  --back_ground_light_blue: #d9f4f6;
+  --footer: #4fb9c3;
+  --back_ground: #d9f4f6;
+  --nav-back_ground: #d9f4f6;
+  --nav-hover: #9fd9dd;
+  --nav-text: black;
+  --banner: #196890;
+  --login-container: #f5f5f5;
   --btn-color: #197090;
   --btn-color-hover: #1aa9c6;
+  --btn-text-color: white;
+  --error-message: red;
 }
 
 .App {
@@ -40,14 +46,14 @@
 }
 
 .app-container {
-  background-color: white;
+  background-color: var(--back_ground);
   min-height: 100%;
   flex-grow: 1;
 }
 
 .footer {
   text-align: center;
-  background-color: var(--very_light_blue);
+  background-color: var(--footer);
   padding: 10px 0;
   width: 100%;
   position: absolute;

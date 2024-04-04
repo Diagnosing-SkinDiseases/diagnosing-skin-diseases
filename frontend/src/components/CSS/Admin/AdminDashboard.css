@@ -1,7 +1,7 @@
 /* ---------- General ---------- */
 
 .admin-dashboard .controls-wrapper {
-  background-color: #fff;
+  background-color: var(--banner);
   width: 100%;
   display: flex;
   justify-content: center;
@@ -10,14 +10,14 @@
 .admin-dashboard .controls {
   display: flex;
   align-items: center;
-  background-color: #fff;
+  background-color: var(--banner);
   padding: 0.7em;
   font-size: 0.9em;
 }
 
 body {
   width: 100%;
-  background-color: rgba(0, 123, 255, 0.15);
+  background-color: var(--back_ground);
   margin: 0;
 }
 

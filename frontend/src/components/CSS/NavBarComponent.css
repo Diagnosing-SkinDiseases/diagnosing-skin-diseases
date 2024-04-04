@@ -2,7 +2,7 @@
   font-family: var(--primary-font);
   display: flex;
   justify-content: space-around;
-  background-color: var(--light_blue);
+  background-color: var(--nav-back_ground);
   font-size: 1.5em;
   z-index: 1000;
   padding: 0%;
@@ -14,11 +14,12 @@
   position: relative;
   list-style-type: none;
   font-weight: bold;
+  background-color: var(--nav-back_ground);
 }
 
 /* Apply a subtle highlight and lift effect to nav items on hover */
 .nav-item:hover {
-  background-color: var(--very_light_blue);
+  background-color: var(--nav-hover);
   /* Lighter shade for the background */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   /* Soft shadow for a "lifted" effect */
@@ -34,17 +35,17 @@
   display: block;
   padding: 14px;
   text-decoration: none;
-  color: black;
+  color: var(--nav-text);
   width: 100%;
 }
 
 a.nav-link.active {
-  color: var(--very_light_blue);
+  color: var(--nav-text);
   text-decoration: none;
 }
 
 .nav-link:active {
-  color: var(--light_blue);
+  color: var(--nav-text);
 }
 
 .dropdown-content {
@@ -52,7 +53,7 @@ a.nav-link.active {
   position: absolute;
   font-weight: bold;
   width: 100%;
-  background-color: var(--light_blue);
+  background-color: var(--nav-back_ground);
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   padding: 12px 16px;
   z-index: 1;
@@ -70,14 +71,14 @@ a.nav-link.active {
 .subtab-item {
   display: block;
   margin: 10px 0;
-  color: var(--light_blue);
+  background-color: var(--nav-back_ground);
   text-decoration: none;
   padding: 10px;
   font-weight: normal;
 }
 
 .subtab-item:hover {
-  background-color: var(--very_light_blue);
+  background-color: var(--nav-hover);
   /* Lighter shade for the background */
   color: black;
   /* Keep the text color consistent or change as desired */
@@ -91,7 +92,7 @@ a.nav-link.active {
 }
 
 .subtab-item a {
-  color: black;
+  color: var(--nav-text);
   text-decoration: none;
 }
 
@@ -100,6 +101,7 @@ a.nav-link.active {
   /* Initially hidden */
   position: absolute;
   /* Other styles as necessary */
+  background-color: var(--nav-back_ground);
 }
 
 .has-nested-dropdown:hover .dropdown-content {
@@ -123,7 +125,7 @@ a.nav-link.active {
 
 .nav-item.active .nav-link,
 .nav-item.active:hover .nav-link {
-  background-color: var(--very_light_blue);
+  background-color: var(--nav-hover);
   /* Slightly darker than the hover color to indicate active state */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   /* A more pronounced shadow to give a "lifted" effect */
