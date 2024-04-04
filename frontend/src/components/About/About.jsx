@@ -10,7 +10,7 @@ const About = () => {
       </h2>
       <div className="row">
         <Sidebar />
-        <MainContent />
+        {/* <MainContent /> */}
       </div>
     </div>
   );
