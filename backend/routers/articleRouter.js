@@ -8,19 +8,19 @@ const {
   deleteArticle,
 } = require("../controllers/articleController");
 
-// Create
+// Create article
 articleRouter.post("/article/create", createArticle);
 
-// Read all
+// Read all articles
 articleRouter.get("/article/read/all", getAllArticles);
 
-// Read
+// Read singular article
 articleRouter.get("/article/read", getArticle);
 
-// Update
+// Update article
 articleRouter.patch("/article/update", updateArticle);
 
-// Delete
+// Delete article
 articleRouter.delete("/article/delete", deleteArticle);
 
 module.exports = articleRouter;

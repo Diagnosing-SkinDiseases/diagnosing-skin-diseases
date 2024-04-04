@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "../styles/styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
-import { useState } from "react";
-
+// Component to edit a single node
 const NodeEditor = ({
   rootNode,
   setRootNode,
@@ -39,6 +38,7 @@ const NodeEditor = ({
     return `node${idCounter + 1}`;
   };
 
+  // Generate a new node with a unique ID
   function generateNode(content) {
     const newId = generateNodeId();
     const newNode = {
@@ -72,6 +72,7 @@ const NodeEditor = ({
     setRootNode((prevRootNode) => updateContentRecursively(prevRootNode));
   };
 
+  // Add a new node to the yesChild array of a target node
   const addYesChild = (targetNodeId, nodeToInsert) => {
     const addYesChildToTarget = (node) => {
       if (node.currentId === targetNodeId) {
@@ -97,6 +98,7 @@ const NodeEditor = ({
     setRootNode(newRootNode); // This should trigger a re-render
   };
 
+  // Add a new node to the noChild array of a target node
   const addNoChild = (targetNodeId, nodeToInsert) => {
     const addNoChildToTarget = (node) => {
       if (node.currentId === targetNodeId) {
@@ -119,6 +121,7 @@ const NodeEditor = ({
     setRootNode(updatedRootNode);
   };
 
+  // Delete a child node from the tree
   const deleteChild = (nodeIdToDelete) => {
     const deleteNodeRecursively = (node) => {
       if (node.currentId === nodeIdToDelete) {
@@ -144,6 +147,7 @@ const NodeEditor = ({
     updateNodeContent(nodeIdToUpdate, newContent);
   };
 
+  // Add a new node to the tree
   const onAddNode = (event) => {
     let newNode = generateNode();
     let targetNodeId = event.target.getAttribute("data-node-id");
@@ -168,6 +172,7 @@ const NodeEditor = ({
     }
   };
 
+  // Add an existing node to the tree
   const onAddExistingNode = (event, newNode) => {
     let targetNodeId = event.target.getAttribute("data-node-id");
     let addType = event.target.getAttribute("data-node-type");
@@ -179,9 +184,9 @@ const NodeEditor = ({
     }
   };
 
+  // Delete a node from the tree
   const onDeleteNode = (event) => {
     let targetNodeId = event.currentTarget.getAttribute("data-node-id");
-    console.log("Deleting:", targetNodeId);
     deleteChild(targetNodeId);
   };
 

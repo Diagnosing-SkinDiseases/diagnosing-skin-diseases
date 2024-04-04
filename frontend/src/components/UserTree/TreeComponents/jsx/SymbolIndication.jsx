@@ -1,6 +1,11 @@
 import React from 'react';
-import './SymbolIndication.css';
+import '../css/SymbolIndication.css';
 
+/**
+ * Component for displaying the symbol indications for different types of nodes in the tree.
+ * 
+ * @returns {React.ReactElement} The SymbolIndication component with colored symbols and their descriptions.
+ */
 const SymbolIndication = () => {
     const blueNode = "#1E90FF";
     const yellowNode = "#FFD700";

@@ -8,7 +8,6 @@ const createTree = async (req, res) => {
   if (status) {
     status = status.toUpperCase();
   }
-
   nodeTree = inOrderToList(nodeTree, []);
 
   try {
@@ -38,36 +37,30 @@ const getAllTrees = async (req, res) => {
 // Read single tree
 const getTree = async (req, res) => {
   const { id } = req.query;
-
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ error: "Invalid id" });
   }
 
   const tree = await Tree.findById(id);
-
   if (!tree) {
     return res.status(404).json({ error: "Tree not found" });
   }
-
   res.status(200).json(tree);
 };
 
 // Update tree
 const updateTree = async (req, res) => {
   let { nodeTree, status } = req.body;
-
   if (status) {
     status = status.toUpperCase();
     req.body.status = status;
   }
-
   if (nodeTree) {
     nodeTree = inOrderToList(nodeTree, []);
     req.body.nodes = nodeTree;
   }
 
   const { id, ...data } = req.body;
-
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ error: "Invalid id" });
   }
@@ -90,7 +83,6 @@ const updateTree = async (req, res) => {
 // Delete tree
 const deleteTree = async (req, res) => {
   const { id } = req.query;
-
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ error: "Invalid id" });
   }
@@ -98,11 +90,9 @@ const deleteTree = async (req, res) => {
   const tree = await Tree.findOneAndDelete({
     _id: ObjectId.createFromHexString(id),
   });
-
   if (!tree) {
     return res.status(404).json({ error: "Tree not found" });
   }
-
   res.status(200).json(tree);
 };
 

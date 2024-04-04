@@ -8,19 +8,19 @@ const {
   deleteTree,
 } = require("../controllers/treeController");
 
-// Create
+// Create tree
 treeRouter.post("/tree/create", createTree);
 
-// Read all
+// Read all trees
 treeRouter.get("/tree/read/all", getAllTrees);
 
-// Read
+// Read singular tree
 treeRouter.get("/tree/read", getTree);
 
-// Update
+// Update tree
 treeRouter.patch("/tree/update", updateTree);
 
-// Delete
+// Delete tree
 treeRouter.delete("/tree/delete", deleteTree);
 
 module.exports = treeRouter;

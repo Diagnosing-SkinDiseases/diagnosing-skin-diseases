@@ -1,9 +1,8 @@
 import React from "react";
 import NodeEditor from "./NodeEditor";
 import styles from "../styles/styles";
-import { useEffect } from "react";
 
-// style={styles.nodeContainer}
+// Component to display the root node
 const RootNodeArea = ({
   rootNode,
   setRootNode,

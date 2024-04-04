@@ -2,6 +2,7 @@ import React from "react";
 import styles from "../styles/styles";
 import NodeEditor from "./NodeEditor";
 
+// Component to display all "no" nodes
 const NoNodeArea = ({
   rootNode,
   setRootNode,
@@ -47,7 +48,6 @@ const NoNodeArea = ({
       return idA - idB;
     });
 
-    console.log("No nodes: ", noNodes);
     return noNodes.map((node, index) => {
       return (
         <NodeEditor
