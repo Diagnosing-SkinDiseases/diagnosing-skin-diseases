@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../App/AuthContext";
+import DSD from "../NavBar/DSD.png";
 import "../CSS/NavBarComponent.css";
 
 // Subtab component
@@ -157,7 +158,7 @@ const NavBarComponent = () => {
 
   return (
     <div className="navbar">
-      <div className="nav-logo"> Logo </div>
+      <img className="nav-logo" src={DSD} alt="DSD Logo" />
       {links.map((link, index) => (
         <div
           key={index}

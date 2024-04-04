@@ -39,8 +39,12 @@
   min-height: 100%;
 }
 
-footer {
-  position: relative;
+.footer {
+  text-align: center;
+  background-color: whitesmoke;
+  padding: 10px 0;
+  margin-top: auto;
+  width: 100%;
 }
 
 @keyframes App-logo-spin {

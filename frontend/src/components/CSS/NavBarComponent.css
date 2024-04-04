@@ -1,9 +1,15 @@
+:root {
+  --primary-font: "Garamond", serif;
+}
+
 .navbar {
+  font-family: var(--primary-font);
   display: flex;
   justify-content: space-around;
-  background-color: #007bff;
+  background-color: whitesmoke;
   font-size: 1.5em;
   z-index: 1000;
+  padding: 0%;
 }
 
 .nav-item {
@@ -11,29 +17,28 @@
   text-align: center;
   position: relative;
   list-style-type: none;
-  font-weight: bold;
+}
+
+/* Apply a subtle highlight and lift effect to nav items on hover */
+.nav-item:hover {
+  background-color: #f0f0f0; /* Lighter shade for the background */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for a "lifted" effect */
+  transform: translateY(-2px); /* Slight "lift" effect */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease,
+    transform 0.3s ease; /* Smooth transition for the effects */
 }
 
 .nav-link {
   display: block;
   padding: 14px;
   text-decoration: none;
-  color: white;
+  color: black;
   width: 100%;
-}
-
-.nav-item a:hover {
-  background-color: #4097f3;
-  color: white;
 }
 
 a.nav-link.active {
   color: white;
   text-decoration: none;
-}
-
-.nav-link:visited {
-  color: white;
 }
 
 .nav-link:active {
@@ -44,7 +49,7 @@ a.nav-link.active {
   display: none;
   position: absolute;
   width: 100%;
-  background-color: #007bff;
+  background-color: whitesmoke;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   padding: 12px 16px;
   z-index: 1;
@@ -69,16 +74,16 @@ a.nav-link.active {
 }
 
 .subtab-item:hover {
-  color: white;
-  background-color: #4097f3;
-}
-
-.subtab-item:visited {
-  color: white;
+  background-color: #f0f0f0; /* Lighter shade for the background */
+  color: black; /* Keep the text color consistent or change as desired */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* This adds a slight shadow that makes the item "pop" */
+  transform: translateY(-2px); /* Optional: adds a subtle "lift" effect */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease,
+    transform 0.3s ease; /* Smooth transition for the effect */
 }
 
 .subtab-item a {
-  color: white;
+  color: black;
   text-decoration: none;
 }
 
@@ -101,15 +106,17 @@ a.nav-link.active {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 200px;
+  max-width: 300px;
+  max-height: 100px;
 }
 
-.nav-item.active .nav-link {
-  color: white;
-  font-weight: bold;
-  background-color: #4097f3;
-}
-.nav-link:hover {
-  background-color: #4097f3;
-  color: white;
+.nav-item.active .nav-link,
+.nav-item.active:hover .nav-link {
+  background-color: #e0e0e0; /* Slightly darker than the hover color to indicate active state */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* A more pronounced shadow to give a "lifted" effect */
+  transform: scale(
+    1.05
+  ); /* Slightly increase the size to give an augmented effect */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease,
+    transform 0.3s ease; /* Smooth transition for the effect */
 }

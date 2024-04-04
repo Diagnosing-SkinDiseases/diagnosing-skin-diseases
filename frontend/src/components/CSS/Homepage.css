@@ -1,9 +1,10 @@
 :root {
-  --theme_blue: rgb(0, 123, 255);
+  --primary-font: "Garamond", serif;
 }
 
 .Homepage {
-  font-family: "Arial", sans-serif;
+  font-family: var(--primary-font);
+  background-color: white;
   min-height: 100%;
   display: flex;
   flex-direction: column;
@@ -11,8 +12,11 @@
 
 .homepage-text {
   text-align: left;
-  color: var(--theme_blue);
   font-weight: bold;
+  padding-top: 0%;
+  padding-bottom: 0;
+  margin-top: 0.5em !important;
+  margin-bottom: 0 !important;
 }
 
 .container-fluid {
@@ -40,19 +44,17 @@
 
 .card-body {
   background: rgba(
-    19,
-    115,
-    240,
+    225,
+    234,
+    243,
     0.718
   ); /* Semi-transparent overlay for readability */
-  color: white;
+
   padding: 15px;
 }
 
 .card-title {
   font-size: 20px; /* Increase font size */
-  font-weight: bold; /* Make the font weight bold */
-  color: white;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Optional: Add a subtle text shadow for depth */
   margin-bottom: 20px; /* Add some space between the title and the content/buttons */
 }
@@ -66,25 +68,25 @@
 
 .card-action-btn {
   width: 50% !important; /* Ensure the button takes up the full width */
-  background-color: white; /* Primary button color */
+  background-color: #2277f6; /* Adjust the background color as needed */
+  color: white; /* Text color */
   border: none;
-  color: var(--theme_blue); /* Text color */
   padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: "Arial", sans-serif; /* Match the font family */
   font-size: 15px; /* Adjust the font size as needed */
-  font-weight: bold;
   transition: background-color 0.3s ease; /* Smooth transition for hover effect */
 }
 
 .btn {
   height: 30px !important; /* Adjust the height of the button */
+  border-radius: 30px; /* Round the corners */
 }
 
 .card-action-btn:hover {
-  background-color: #0056b3; /* Darker shade for hover effect */
+  background-color: #1e5ae8; /* Darker shade for hover effect */
+  color: white; /* Text color */
 }
 
 .btn-container {

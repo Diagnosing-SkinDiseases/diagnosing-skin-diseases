@@ -1,39 +1,38 @@
-
 :root {
-    --primary-color: #007bff;
+  --primary-color: #007bff;
 }
 
 /* ---------- General ---------- */
 
 .admin-dashboard .controls-wrapper {
-    background-color: #fff;
-    width: 100%;
-    display: flex;
-    justify-content: center;
+  background-color: #fff;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .admin-dashboard .controls {
-    display: flex;
-    align-items: center;
-    background-color: #fff;
-    padding: 0.7em;
-    font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  padding: 0.7em;
+  font-size: 0.9em;
 }
 
 body {
-    width: 100%;
-    background-color: rgba(0, 123, 255, 0.15);
-    margin: 0;
+  width: 100%;
+  background-color: rgba(0, 123, 255, 0.15);
+  margin: 0;
 }
 
 /* ---------- Header ---------- */
 .list-title {
-    margin: 2em auto;
-    width: 85%;
+  margin: 2em auto;
+  width: 85%;
 }
 
 .list-title h2 {
-    width: 85%;
-    color: var(--primary-color);
-    font-weight: 200;
+  width: 85%;
+  color: var(--primary-color);
+  font-weight: 200;
 }

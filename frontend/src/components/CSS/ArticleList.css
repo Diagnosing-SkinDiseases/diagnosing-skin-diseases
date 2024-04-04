@@ -111,15 +111,6 @@ a {
   text-decoration: none;
 }
 
-.footer {
-  text-align: center;
-  background-color: #007bff;
-  color: white;
-  padding: 10px 0;
-  margin-top: auto;
-  width: 100%;
-}
-
 /* Mobile styles */
 @media (max-width: 600px) {
   nav {
