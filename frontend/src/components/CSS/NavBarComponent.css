@@ -1,7 +1,3 @@
-:root {
-  --primary-font: "Garamond", serif;
-}
-
 .navbar {
   font-family: var(--primary-font);
   display: flex;

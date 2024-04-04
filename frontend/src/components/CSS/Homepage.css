@@ -1,9 +1,4 @@
-:root {
-  --primary-font: "Garamond", serif;
-}
-
 .Homepage {
-  font-family: var(--primary-font);
   background-color: white;
   min-height: 100%;
   display: flex;
@@ -119,6 +114,11 @@
 
 .slick-next {
   right: -25px;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: black;
 }
 
 @media (max-width: 1024px) {

@@ -1,31 +1,3 @@
-nav {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #007bff;
-  padding: 10px 0;
-}
-
-nav ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  gap: 20px;
-}
-
-nav li {
-  color: white;
-  cursor: pointer;
-}
-
-.banner {
-  text-align: center;
-  background-color: #004085;
-  color: white;
-  padding: 40px 0;
-}
-
 .glossary-header {
   display: flex;
   justify-content: space-between;
@@ -35,21 +7,19 @@ nav li {
 
 .glossary-title {
   font-size: 2rem;
-  color: #007bff;
 }
 
 .alphabet-selector {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  background-color: #8dbbf7;
+  background-color: whitesmoke;
   padding: 10px;
 }
 
 .alphabet-selector button {
-  border: 1px solid #007bff;
-  background-color: #007bff;
-  color: #fff;
+  border: 1px solid rgb(191, 186, 186);
+  background-color: rgb(191, 186, 186);
   padding: 10px;
   cursor: pointer;
   border-radius: 5px;
@@ -59,13 +29,19 @@ nav li {
 }
 
 .alphabet-selector button:hover {
-  background-color: #0056b3;
-  border-color: #0056b3;
+  background-color: grey; /* Lighter shade for the background */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for a "lifted" effect */
+  transform: translateY(-2px); /* Slight "lift" effect */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease,
+    transform 0.3s ease; /* Smooth transition for the effects */
 }
 
 .alphabet-selector button.selected {
-  background-color: #0056b3;
-  border-color: #0056b3;
+  background-color: grey; /* Lighter shade for the background */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for a "lifted" effect */
+  transform: translateY(-2px); /* Slight "lift" effect */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease,
+    transform 0.3s ease; /* Smooth transition for the effects */
 }
 
 .search-bar {
@@ -78,11 +54,12 @@ nav li {
   margin-right: 5px;
   padding: 5px;
   border: 1px solid #ccc;
+  border-radius: 20px;
 }
 
 .search-bar button {
   padding: 5px 10px;
-  background-color: #007bff;
+  background-color: #2277f6;
   border: none;
   border-radius: 20px;
   color: white;
@@ -90,8 +67,7 @@ nav li {
 }
 
 .letter-banner {
-  background-color: #007bff;
-  color: white;
+  background-color: gray;
   text-align: center;
   padding: 10px;
   margin: 20px 0;
@@ -104,8 +80,10 @@ nav li {
   padding: 20px;
 }
 
-.glossary-list h2 {
+.glossary-list h3 {
   margin-bottom: 10px;
+  font-size: medium;
+  color: black;
 }
 
 .glossary-list ul {
@@ -119,14 +97,9 @@ nav li {
 
 .glossary-list-item.selected {
   background-color: #acc2da !important;
-  color: white;
   border-radius: 5px;
   padding: 10px;
   margin: -5px;
-}
-
-.glossary-list-item.selected h3 {
-  color: #fff;
 }
 
 /* Mobile styles */

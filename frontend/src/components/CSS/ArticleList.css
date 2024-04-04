@@ -41,14 +41,13 @@ nav li {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  background-color: #8dbbf7;
+  background-color: whitesmoke;
   padding: 10px;
 }
 
 .alphabet-selector button {
-  border: 1px solid #007bff;
-  background-color: #007bff;
-  color: #fff;
+  border: 1px solid rgb(191, 186, 186);
+  background-color: rgb(191, 186, 186);
   padding: 10px;
   cursor: pointer;
   border-radius: 5px;
@@ -58,13 +57,19 @@ nav li {
 }
 
 .alphabet-selector button:hover {
-  background-color: #0056b3;
-  border-color: #0056b3;
+  background-color: grey; /* Lighter shade for the background */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for a "lifted" effect */
+  transform: translateY(-2px); /* Slight "lift" effect */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease,
+    transform 0.3s ease; /* Smooth transition for the effects */
 }
 
 .alphabet-selector button.selected {
-  background-color: #0056b3;
-  border-color: #0056b3;
+  background-color: grey; /* Lighter shade for the background */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for a "lifted" effect */
+  transform: translateY(-2px); /* Slight "lift" effect */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease,
+    transform 0.3s ease; /* Smooth transition for the effects */
 }
 
 .search-bar {
@@ -107,8 +112,13 @@ li {
   padding: 20px;
 }
 
-a {
+.ArticleList a {
   text-decoration: none;
+  color: black;
+}
+
+.ArticleList a:hover {
+  color: gray;
 }
 
 /* Mobile styles */
