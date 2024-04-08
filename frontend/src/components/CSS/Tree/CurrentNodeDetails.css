@@ -3,7 +3,7 @@
   top: 100px;
   right: 2px;
   z-index: 10;
-  border: 5px solid var(--primary-color);
+  border: 5px solid var(--theme_blue);
   border-radius: 5px;
   padding: 0.1rem;
   background-color: white;
@@ -16,7 +16,7 @@
 
 .question {
   font-size: 1.5rem;
-  color: black;
+  color: var(--primary-color);
   margin-bottom: 1rem;
   margin-left: 0.5rem;
   margin-right: 0.5rem;

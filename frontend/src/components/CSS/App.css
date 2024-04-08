@@ -1,9 +1,12 @@
 :root {
   --primary-font: "Roboto";
-  --primary-color: #90ee90;
-  --theme_blue: #007bff;
-  --btn-color: #2277f6;
-  --btn-color-hover: #1e5ae8;
+  --primary-color: #196890;
+  --theme_blue: #0589a3;
+  --light_blue: #4fb9c3;
+  --very_light_blue: #9fd9dd;
+  --back_ground_light_blue: #d9f4f6;
+  --btn-color: #197090;
+  --btn-color-hover: #1aa9c6;
 }
 
 .App {
@@ -44,7 +47,7 @@
 
 .footer {
   text-align: center;
-  background-color: whitesmoke;
+  background-color: var(--very_light_blue);
   padding: 10px 0;
   width: 100%;
   position: absolute;

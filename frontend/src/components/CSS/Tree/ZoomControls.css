@@ -1,5 +1,5 @@
 .zoom-controls {
-  border: #007bff solid 3px;
+  border: var(--theme_blue) solid 3px;
   position: fixed;
   left: 20%;
   z-index: 1000;
@@ -13,7 +13,7 @@
 }
 
 .zoom-button {
-  background-color: #007bff;
+  background-color: var(--theme_blue);
   border: none;
   color: white;
   padding: 10px 15px;
@@ -27,6 +27,6 @@
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: var(--light_blue);
   }
 }

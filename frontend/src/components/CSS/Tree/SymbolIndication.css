@@ -1,5 +1,5 @@
 .symbol-indication {
-  border: 5px solid var(--primary-color);
+  border: 5px solid var(--theme_blue);
   border-radius: 10px;
   padding: 3px;
   background-color: white;
