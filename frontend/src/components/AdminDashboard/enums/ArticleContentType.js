@@ -1,4 +1,6 @@
-// enumeration of article content types
+/**
+ * An enumeration for defining the types of content that can appear within an article
+ */
 const ArticleContentType = {
   TITLE: "Title",
   SUBTITLE: "Subtitle",
