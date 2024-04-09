@@ -7,13 +7,21 @@ import { apiGetAllGlossaryItems} from "../../apiControllers/glossaryItemApiContr
 import { apiGetAllArticles } from "../../apiControllers/articleApiController";
 import { apiGetAllTrees } from "../../apiControllers/treeApiController";
 
-// AdminDashboard component for managing items and filters
+/**
+ * AdminDashboard is a functional component that renders an admin interface
+ * for managing content such as definitions, articles, and trees.
+ *
+ * @param {string} contentType - The current type of content being managed.
+ */
 const AdminDashboard = ({contentType}) => {
 
   // State to manage filtered items
   const [filteredItems, setFilteredItems] = useState();
   const [allItems, setAllItems] = useState([]);
 
+  /**
+   * React useEffect Hook to fetch data on component mount or when contentType changes.
+   */
   useEffect(() => {
     const fetchData = async () => {
       let apiResponse;
@@ -43,6 +51,13 @@ const AdminDashboard = ({contentType}) => {
     fetchData().catch(console.error);
   }, [contentType]);
 
+  /**
+   * Processes and sets items based on the content type.
+   *
+   * @param {array} data - the data to be processed
+   * @param {string} contentType - the type of content to be processed
+   * @return {void} 
+   */
   const processAndSetItems = (data, contentType) => {
     let processedItems = [];
 
@@ -78,9 +93,14 @@ const AdminDashboard = ({contentType}) => {
   };
 
 
-  // Handles the filter change
+  
+  /**
+   * Handles the change of a filter value.
+   *
+   * @param {string} newFilterValue - The new value to filter by
+   * @return {void} 
+   */
   const handleFilterChange = (newFilterValue) => {
-    console.log("Changing filter to:", newFilterValue);
 
     const newFilteredItems = allItems.filter((item) => {
       if (newFilterValue === "published") return item.published;
@@ -88,13 +108,17 @@ const AdminDashboard = ({contentType}) => {
       return true; // Default case for "all"
     });
 
-    console.log("Filtered items:", newFilteredItems);
     setFilteredItems(newFilteredItems);
   };
 
-  // Handles the search
+  
+  /**
+   * Handles the search functionality by filtering items based on the search query.
+   *
+   * @param {string} searchQuery - The search query to filter items.
+   * @return {void} 
+   */
   const handleSearch = (searchQuery) => {
-    console.log("Searching for", searchQuery);
      const query = searchQuery.toLowerCase();
      const newFilteredItems = allItems.filter((item) =>
        item.title.toLowerCase().includes(query)
@@ -102,6 +126,11 @@ const AdminDashboard = ({contentType}) => {
      setFilteredItems(newFilteredItems);
   };
 
+  /**
+   * Renders the content header based on the content type.
+   *
+   * @return {string} The content header based on the content type.
+   */
   const renderContentHeader = () => {
     switch (contentType) {
       case ContentTypeEnum.DEFINITION:
@@ -115,6 +144,9 @@ const AdminDashboard = ({contentType}) => {
     }
   }
 
+  /**
+   * Renders the AdminDashboard component.
+   */
   return (
     <div className="admin-dashboard">
       <Controls
