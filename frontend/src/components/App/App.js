@@ -177,8 +177,8 @@ function App() {
           {/* About DSD */}
           <Route path="/about" element={<About />}></Route>
         </Routes>
+        <footer className="footer">Footer</footer>
       </div>
-      <footer className="footer">Footer</footer>
     </AuthProvider>
   );
 }
