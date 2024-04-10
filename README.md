@@ -6,9 +6,12 @@ Our application aims to revolutionize skin disease diagnosis with an intuitive i
 
 ## Technologies Used
 
-- **React**: Frontend framework for building user interfaces.
 - **MongoDB**: NoSQL database used for storing user data and application information.
+- **Express.js**: Web application framework for building APIs.
+- **React**: Frontend framework for building user interfaces.
 - **Node.js**: JavaScript runtime environment used for server-side development.
+- **Javascript**: enable dynamic content on the client-side, enhancing interactivity for users
+- **HTML/CSS**: Markup and styling languages used for frontend development.
 - **Vercel**: Deployment platform for hosting the application.
 
 ## Website
