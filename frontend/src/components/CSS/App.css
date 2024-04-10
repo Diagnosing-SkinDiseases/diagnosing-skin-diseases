@@ -90,9 +90,10 @@ h3 {
 .footer {
   text-align: center;
   background-color: var(--footer);
-  padding: 10px 0;
+  padding: 1rem;
   width: 100%;
   position: absolute;
+  bottom: 0;
 }
 
 @keyframes App-logo-spin {
