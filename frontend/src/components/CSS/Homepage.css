@@ -56,7 +56,7 @@
   opacity: 0.9;
   padding: 1rem;
   padding-top: 2.5rem;
-  overflow: auto;
+  overflow: visible;
 }
 
 .card-title {
@@ -100,7 +100,6 @@
 .card-action-btn:hover {
   background-color: var(--btn-color-hover);
   color: white;
-  /* Text color */
 }
 
 .btn-container {
@@ -146,12 +145,18 @@
     flex: 1 0 calc(50% - 20px);
     /* Adjust so two cards fit within the space */
   }
+  .card-body {
+    padding: 0.8rem;
+  }
 }
 
 @media (max-width: 600px) {
   .card-custom {
     flex: 1 0 calc(100% - 20px);
     /* Adjust so one card fits within the space */
+  }
+  .card-body {
+    padding: 0.5rem;
   }
 }
 
