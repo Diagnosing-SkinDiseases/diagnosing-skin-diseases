@@ -1,8 +1,8 @@
 /* ---------- Buttons ----------*/
 .button {
   height: 2.5em;
-  background-color: var(--primary-color);
-  color: white;
+  background-color: var(--btn-color);
+  color: var(--btn-text-color);
   padding: auto;
   border: none;
   border-radius: 20px;
@@ -99,8 +99,8 @@
 }
 
 .select-content li:hover {
-  background-color: var(--primary-color);
-  color: white;
+  background-color: var(--btn-color-hover);
+  color: var(--btn-text-color);
   font-weight: bolder;
 }
 

@@ -10,13 +10,3 @@
   display: grid;
   place-items: center;
 }
-
-.banner-text {
-  color: white;
-  font-weight: lighter;
-}
-
-.banner-container {
-  height: 10em;
-  background-color: rgb(10, 43, 78);
-}

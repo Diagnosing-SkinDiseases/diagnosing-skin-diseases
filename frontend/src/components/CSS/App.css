@@ -67,6 +67,10 @@
   flex-direction: column;
 }
 
+h3 {
+  color: var(--title-text);
+}
+
 .app-container {
   background-color: var(--back_ground);
   min-height: 100%;
