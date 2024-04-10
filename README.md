@@ -71,9 +71,8 @@ This application is optimized for and best viewed on the following browsers:
 - frontend/.env
 - backend/.vercel.json
 
-4. **Installation**:
+4. **Installation**: Please ensure you have backend/.env and frontend/.env installed
 
-- Please ensure you have backend/.env and frontend/.env installed
 - Open two terminals
   - Terminal 1 Commands:
     - cd backend
@@ -90,14 +89,15 @@ This application is optimized for and best viewed on the following browsers:
 
 5. **Running the Application**:
 
-   - Start the React frontend by running `npm start` in the project directory.
-   - Ensure MongoDB is running locally or configure the application to connect to a remote MongoDB instance.
+- Start the React frontend by running `npm start` in the project directory.
+- Ensure MongoDB is running locally or configure the application to connect to a remote MongoDB instance.
 
 6. **Usage**:
-   - Access the application through your browser (by default, it should be available at <http://localhost:3000>).
-   - Answer the prompted questions with yes or no responses.
-   - Based on your inputs, the application will provide a diagnosis and recommended treatment.
-   - Explore supplementary articles for detailed information on specific diseases and treatments.
+
+- Access the application through your browser (by default, it should be available at <http://localhost:3000>).
+- Answer the prompted questions with yes or no responses.
+- Based on your inputs, the application will provide a diagnosis and recommended treatment.
+- Explore supplementary articles for detailed information on specific diseases and treatments.
 
 ## Contribution
 
