@@ -61,7 +61,7 @@
 .label {
   margin-bottom: 0.5em;
   margin-top: 1em;
-  color: var(--primary-color);
+  color: var(--header-text);
 }
 
 #art-title {
@@ -133,7 +133,7 @@
   width: 2.5em;
   height: 2.5em;
   border: none;
-  background: var(--primary-color);
+  background: var(--btn-color);
   cursor: pointer;
   color: #fff;
 }
@@ -199,7 +199,7 @@
 }
 
 .fa-upload-icon {
-  color: var(--primary-color);
+  color: var(--btn-color);
   font-size: 5em;
 }
 
@@ -208,7 +208,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: #afcae6 solid 1px;
+  border: solid 1px var(--btn-color);
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 1em;

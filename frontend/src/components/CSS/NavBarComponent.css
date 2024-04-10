@@ -119,8 +119,8 @@ a.nav-link.active {
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 300px;
-  max-height: 100px;
+  width: 200px;
+  height: 100px;
 }
 
 .nav-item.active .nav-link,

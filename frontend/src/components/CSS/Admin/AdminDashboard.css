@@ -1,7 +1,7 @@
 /* ---------- General ---------- */
 
 .admin-dashboard .controls-wrapper {
-  background-color: var(--banner);
+  background-color: var(--header);
   width: 100%;
   display: flex;
   justify-content: center;
@@ -10,15 +10,9 @@
 .admin-dashboard .controls {
   display: flex;
   align-items: center;
-  background-color: var(--banner);
+  background-color: var(--header);
   padding: 0.7em;
   font-size: 0.9em;
-}
-
-body {
-  width: 100%;
-  background-color: var(--back_ground);
-  margin: 0;
 }
 
 /* ---------- Header ---------- */
@@ -29,6 +23,6 @@ body {
 
 .list-title h2 {
   width: 85%;
-  color: var(--primary-color);
+  color: var(--header-text);
   font-weight: 200;
 }

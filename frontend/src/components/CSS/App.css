@@ -23,16 +23,18 @@
   /* Article List & Glossary */
   --glossary-hightlight: #0589a3;
   --selecter-banner: #0589a3;
+  --banner: #196890;
 
   /* Page Elements */
-  --banner: #196890;
-  --login-container: #f5f5f5;
-  --error-message: red;
+  --title-text: black;
+  --header-text: black;
+  --header: #74a1b7;
+
   --text: black;
   --placeholder-text: #aaa;
-  --header: #196890;
-  --header-text: black;
-  --title-text: black;
+  --error-message: red;
+
+  --login-container: #f5f5f5;
 }
 
 .App {

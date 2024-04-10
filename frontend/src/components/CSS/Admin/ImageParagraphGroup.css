@@ -27,7 +27,7 @@
 .upload-icon {
   font-size: 7em;
   cursor: pointer;
-  color: var(--primary-color);
+  color: var(--btn-color);
   margin: auto;
 }
 
