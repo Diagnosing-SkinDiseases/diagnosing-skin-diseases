@@ -8,7 +8,7 @@ const parseData = ({ type, content }, index) => {
     case ArticleContentType.HEADER1:
       return <h2 key={index}>{content}</h2>;
     case ArticleContentType.HEADER2:
-      return <h3 key={index}>{content}</h3>;
+      return <h2 key={index}>{content}</h2>;
     case ArticleContentType.PARAGRAPH:
       const parsedContent = content.replace(
         /<a href="(.*?)">(.*?)<\/a>/g,
