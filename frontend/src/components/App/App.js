@@ -29,7 +29,6 @@ function ProtectedRoute({ children }) {
 }
 
 function App() {
-
   return (
     <AuthProvider>
       <div className="app-container">
@@ -41,9 +40,7 @@ function App() {
             path="/admin/trees"
             element={
               <ProtectedRoute>
-                <AdminDashboard
-                  contentType={ContentTypeEnum.TREE}
-                />
+                <AdminDashboard contentType={ContentTypeEnum.TREE} />
               </ProtectedRoute>
             }
           ></Route>
@@ -84,53 +81,80 @@ function App() {
           <Route
             path="/admin/articles"
             element={
-              <AdminDashboard
-                contentType={ContentTypeEnum.ARTICLE}
-              />
+              <ProtectedRoute>
+                <AdminDashboard contentType={ContentTypeEnum.ARTICLE} />
+              </ProtectedRoute>
             }
           ></Route>
           {/* Admin - Articles - Add */}
           <Route
             path="/admin/articles/add"
-            element={<ContentEditor contentType={ContentTypeEnum.ARTICLE} />}
+            element={
+              <ProtectedRoute>
+                <ContentEditor contentType={ContentTypeEnum.ARTICLE} />
+              </ProtectedRoute>
+            }
           ></Route>
 
           {/* Admin - Articles - Edit */}
           <Route
             path="/admin/articles/edit/:id"
-            element={<ContentEditor contentType={ContentTypeEnum.ARTICLE} />}
+            element={
+              <ProtectedRoute>
+                <ContentEditor contentType={ContentTypeEnum.ARTICLE} />
+              </ProtectedRoute>
+            }
           ></Route>
 
           {/* Admin - Articles - Preview */}
-          <Route path="admin/articles/preview" element={<Article />}></Route>
+          <Route
+            path="admin/articles/preview"
+            element={
+              <ProtectedRoute>
+                <Article />
+              </ProtectedRoute>
+            }
+          ></Route>
 
           {/* Admin - Glossary */}
 
           <Route
             path="/admin/definitions"
             element={
-              <AdminDashboard
-                contentType={ContentTypeEnum.DEFINITION}
-              />
+              <ProtectedRoute>
+                <AdminDashboard contentType={ContentTypeEnum.DEFINITION} />
+              </ProtectedRoute>
             }
           ></Route>
 
           {/* Admin - Glossary - Add */}
           <Route
             path="/admin/definitions/add"
-            element={<ContentEditor contentType={ContentTypeEnum.DEFINITION} />}
+            element={
+              <ProtectedRoute>
+                <ContentEditor contentType={ContentTypeEnum.DEFINITION} />
+              </ProtectedRoute>
+            }
           ></Route>
 
           {/* Admin - Glossary - Edit */}
           <Route
             path="/admin/definitions/edit/:id"
-            element={<ContentEditor contentType={ContentTypeEnum.DEFINITION} />}
+            element={
+              <ProtectedRoute>
+                <ContentEditor contentType={ContentTypeEnum.DEFINITION} />
+              </ProtectedRoute>
+            }
           ></Route>
 
           {/* Admin - Glossary - Preview */}
           <Route
             path="admin/definitions/preview"
-            element={<Glossary />}
+            element={
+              <ProtectedRoute>
+                <Glossary />
+              </ProtectedRoute>
+            }
           ></Route>
 
           {/* User Routes */}
