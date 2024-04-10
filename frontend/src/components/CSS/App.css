@@ -67,8 +67,12 @@
   flex-direction: column;
 }
 
-h3 {
+h1 {
   color: var(--title-text);
+}
+
+h3 {
+  color: var(--header-text);
 }
 
 .app-container {
