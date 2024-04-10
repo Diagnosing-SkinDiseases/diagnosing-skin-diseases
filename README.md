@@ -52,20 +52,48 @@ This application is optimized for and best viewed on the following browsers:
 
 ## How to Use
 
-1. **Installation**: Clone this repository to your local machine.
+1. **Setup**:
+
+- Clone this repository to your local machine.
+- Windows, Mac, or Linux OS
+- Node.js
+- npm
+- [MongoDB](https://account.mongodb.com/account/login)
+  - Sign in using the client’s credentials
+  - Ensure that “Cluster0” is live
 
 2. **Dependencies**: Ensure you have [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed on your system.
 
-3. **Setup**:
+3. **Configurations**:
+   Please check the Vercel deployment for .env variables, or request them from the client:
 
-   - Navigate to the project directory and run `npm install` to install dependencies.
+- backend/.env
+- frontend/.env
+- backend/.vercel.json
 
-4. **Running the Application**:
+4. **Installation**:
+
+- Please ensure you have backend/.env and frontend/.env installed
+- Open two terminals
+  - Terminal 1 Commands:
+    - cd backend
+    - npm i
+    - npm start
+  - Terminal 2 Commands:
+    - cd frontend
+    - npm i
+    - npm start
+- This starts a localhosted instance of your Server (backend) and Client (frontend)
+- Please change frontend\src\api.js when using a localhosted Server
+- Assign “testApi” to “apiUrl”, replacing “hostedApi”
+- When ready for deployment, assign “hostedApi” back to “apiUrl” to ensure the hosted Client uses the hosted Server
+
+5. **Running the Application**:
 
    - Start the React frontend by running `npm start` in the project directory.
    - Ensure MongoDB is running locally or configure the application to connect to a remote MongoDB instance.
 
-5. **Usage**:
+6. **Usage**:
    - Access the application through your browser (by default, it should be available at <http://localhost:3000>).
    - Answer the prompted questions with yes or no responses.
    - Based on your inputs, the application will provide a diagnosis and recommended treatment.
