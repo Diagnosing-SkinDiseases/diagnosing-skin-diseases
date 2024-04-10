@@ -30,6 +30,7 @@ nav li {
 
 .article-title {
   font-size: 2rem;
+  color: var(--title-text);
 }
 
 .alphabet-selector {
