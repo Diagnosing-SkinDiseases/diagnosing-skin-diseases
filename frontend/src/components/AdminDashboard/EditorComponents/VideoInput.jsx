@@ -4,11 +4,31 @@ import "../styles/List.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
+/**
+ * The VideoInput component allows users to input a video URL, 
+ * which then gets transformed into an embeddable video preview. 
+ *
+ * @param {Object} block - The video block to be rendered.
+ * @param {Function} updateBlock - A function to update the state of the block with a new video URL.
+ * @param {Function} remove - A function to remove the video block from its parent component.
+ * @returns {JSX.Element} The rendered video input.
+ */
 const VideoInput = ({ block, updateBlock, remove }) => {
+  /**
+   * Handles changes to the input field, updating the block's value with the new video URL.
+   * 
+   * @param {Event} e - The input event triggering the change.
+   */
   const handleChange = (e) => {
     updateBlock(e.target.value); 
   };
 
+  /**
+    * Converts a standard YouTube video URL into an embeddable URL format. 
+   * 
+   * @param {string} url - The video URL to be converted.
+   * @returns {string} The embeddable URL if the input is a YouTube URL, otherwise the original URL.
+   */
   const getEmbedUrl = (url) => {
     // A basic function to convert a YouTube URL to an embed URL
     // This should be expanded to handle different URL formats and video services
@@ -21,6 +41,9 @@ const VideoInput = ({ block, updateBlock, remove }) => {
     return url; // If not a YouTube URL, return the original URL
   };
 
+  /**
+   * @returns {JSX.Element} The rendered video input.
+   */
    return (
     <div className="video-input-container">
   {block.value && (

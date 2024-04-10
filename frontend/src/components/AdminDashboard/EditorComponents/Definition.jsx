@@ -4,7 +4,7 @@ import labels from "../labels.json";
 import "../styles/Editor.css";
 import { apiGetGlossaryItem } from "../../../apiControllers/glossaryItemApiController";
 
-/*
+/** 
 * The Definition is a component to view and edit a glossary term and its definition.
 *
 * Props:
@@ -13,6 +13,9 @@ import { apiGetGlossaryItem } from "../../../apiControllers/glossaryItemApiContr
 * State:
 *   - title (string): The term of the glossary.
 *   - paragraph (string): The definition of the glossary term.
+*
+* @param {Function} props.onUpdate - Callback function to be called with updated title and definition.
+* @returns {JSX.Element} The rendered component.
 */
 const Definition = ({ onUpdate}) => {
   const location = useLocation(); // Get the location state

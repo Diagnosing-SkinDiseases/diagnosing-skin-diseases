@@ -19,7 +19,16 @@ import {
   apiUpdateTree,
 } from "../../../apiControllers/treeApiController";
 
-// Item component to display each item in the list
+/**
+ * Item component displays a single item with its title, publication state, and action buttons.
+ * 
+ * @param {string} props.title The title of the item.
+ * @param {boolean} props.published The publication state of the item, true for published.
+ * @param {Function} props.onPublish The function to call when the publish/unpublish button is clicked.
+ * @param {Function} props.onEdit The function to call when the edit button is clicked.
+ * @param {Function} props.onDelete The function to call when the delete button is clicked.
+ * @returns {JSX.Element} The rendered item component.
+ */
 const Item = ({ title, published, onPublish, onEdit, onDelete }) => (
   <div className="item">
     <span className="title">{title}</span>
@@ -44,17 +53,34 @@ const Item = ({ title, published, onPublish, onEdit, onDelete }) => (
   </div>
 );
 
-// list component to display a list of items
+/**
+ * List component manages and displays a list of items. 
+ * 
+ * @param {Array} props.initialItems The initial list of items to be displayed.
+ * @param {string} props.contentType The type of content being managed, based on ContentTypeEnum.
+ * @param {string} [props.searchQuery] The query used to filter the list of items. Optional.
+ * @returns {JSX.Element} The rendered list of items.
+ */
 const List = ({ initialItems = [], contentType, searchQuery }) => {
   const [items, setItems] = useState(initialItems);
   const navigate = useNavigate();
 
-  // Effect hook to update state when initialItems prop changes
+  /**
+   * Effect hook to set the initial list of items.
+   * It updates the state of `items` whenever `initialItems` changes.
+   */
   useEffect(() => {
     setItems(initialItems);
   }, [initialItems]);
 
-  // Toggles the publish state of an item
+  /**
+   * Toggles the publish status of an item and updates its state in the database.
+   * Depending on the content type, it calls the respective API controller to update the item.
+   *
+   * @param {number} index - The index of the item in the list.
+   * @param {Object} item - The item whose publish status is to be toggled.
+   * @param {string} contentType - The type of content, used to determine the appropriate API controller.
+   */
   const handlePublishToggle = (index, item, contentType) => {
     let updatePromise;
     let newStatus = item.published ? "UNPUBLISHED" : "PUBLISHED";
@@ -91,7 +117,11 @@ const List = ({ initialItems = [], contentType, searchQuery }) => {
       });
   };
 
-  // Handles the edit button click
+  /**
+   * Handles the edit button click event by navigating to the edit page for the item.
+   *
+   * @param {number} id - The id of the item to be edited.
+   */
   const handleEditBtn = useCallback(
     (id) => {
       const path = `/admin/${contentType.toLowerCase()}s/edit/${id}`;
@@ -100,7 +130,12 @@ const List = ({ initialItems = [], contentType, searchQuery }) => {
     [navigate, contentType]
   );
 
-  // Handles the delete button click
+  /**
+   * Deletes an item from the list and updates its state in the database.
+   *
+   * @param {number} index - The index of the item in the list.
+   * @param {number} id - The id of the item to be deleted.
+   */
   const handleDeleteBtn = (index, id) => {
     console.log("Delete clicked", id);
     let deletePromise;
@@ -131,6 +166,11 @@ const List = ({ initialItems = [], contentType, searchQuery }) => {
       });
   };
 
+  /**
+   * Renders a list of items, each with actions to publish/unpublish, edit, or delete.
+   *
+   * @returns {JSX.Element} The list of items with their actions or a message indicating no items.
+   */
   return (
     <div className="list">
       {items.length > 0 ? (

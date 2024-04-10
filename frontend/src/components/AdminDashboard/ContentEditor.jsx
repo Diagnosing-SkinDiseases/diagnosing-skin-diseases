@@ -21,7 +21,12 @@ import {
   apiUpdateTree,
 } from "../../apiControllers/treeApiController";
 
-// ContentEditor Component
+/**
+ * ContentEditor is a component for creating and editing different types of content
+ * such as definitions, articles, and trees. 
+ *
+ * @param {string} contentType - The type of content being edited, which determines the form and API calls.
+ */
 const ContentEditor = ({ contentType }) => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -38,6 +43,12 @@ const ContentEditor = ({ contentType }) => {
   // Determine if we are in edit mode
   const isEditMode = id !== undefined;
 
+  /**
+   * Parses the article content to extract title and content.
+   *
+   * @param {array} articleContent - the content of the article to be parsed
+   * @return {object} the parsed article content with title and content
+   */
   const parseArticleContent = (articleContent) => {
     return {
       title: articleContent[0]?.value || "", // Ensure there is a default value
@@ -48,6 +59,11 @@ const ContentEditor = ({ contentType }) => {
     };
   };
 
+  /**
+   * Creates a parsed definition object with the given title and paragraph.
+   *
+   * @return {Object} - The parsed definition object with the term and definition properties.
+   */
   const parsedDefinition = () => {
     return {
       term: title,
@@ -55,6 +71,12 @@ const ContentEditor = ({ contentType }) => {
     };
   };
 
+  /**
+   * Checks if the form is ready to be saved based on the content type and its specific requirements.
+   * Sets an error message if the form is not ready to be saved.
+   *
+   * @return {boolean} true if the form is ready to save, false otherwise
+   */
   const isReadyToSave = () => {
     let message = "";
     switch (contentType) {
@@ -91,20 +113,37 @@ const ContentEditor = ({ contentType }) => {
     return !message; // Returns true if the message is empty, meaning the form is ready to save
   };
 
-  // Update parent state based on child component updates
+  
+  /**
+   * Updates the definition with the given title, paragraph, and status.
+   *
+   * @param {type} title - the title of the definition
+   * @param {type} paragraph - the paragraph of the definition
+   * @param {type} status - the status of the definition
+   * @return {type} undefined
+   */
   const handleDefinitionUpdate = (title, paragraph, status) => {
     setTitle(title);
     setParagraph(paragraph);
     setStatus(status);
   };
 
+  /**
+   * Handles updates to the article content by updating the component's state.
+   *
+   * @param {Array} updatedBlocks - The updated content blocks of the article.
+   */
   const handleArticleUpdate = (updatedBlocks) => {
-    console.log("updatedBlocks", updatedBlocks);
     // Handle the update accordingly
     setArticleContent(updatedBlocks);
   };
 
-  // Helper function to render the content based on the contentType
+  
+  /**
+   * Renders the content based on the content type.
+   *
+   * @return {JSX.Element} The rendered content based on the content type.
+   */
   const renderContent = () => {
     switch (contentType) {
       case ContentTypeEnum.DEFINITION:
@@ -118,6 +157,12 @@ const ContentEditor = ({ contentType }) => {
     }
   };
 
+  /**
+   * Update an item with a new status and optional title or paragraph.
+   *
+   * @param {string} newStatus - the new status for the item
+   * @return {void} 
+   */
   const updateItem = (newStatus) => {
     let updatedItem = {
       id: id,
@@ -141,7 +186,7 @@ const ContentEditor = ({ contentType }) => {
         let parsedArticle = parseArticleContent(articleContent);
         parsedArticle.id = id;
         parsedArticle.status = newStatus;
-        console.log("payload", parsedArticle);
+        
         updatePromise = apiUpdateArticle(parsedArticle);
         break;
       case ContentTypeEnum.TREE:
@@ -161,7 +206,6 @@ const ContentEditor = ({ contentType }) => {
 
     updatePromise
       .then((response) => {
-        console.log("Item updated:", response);
         navigate(path);
       })
       .catch((error) => {
@@ -169,6 +213,12 @@ const ContentEditor = ({ contentType }) => {
       });
   };
 
+  /**
+   * Creates an item based on the given status.
+   *
+   * @param {string} status - the status of the item to be created
+   * @return {void} 
+   */
   const createItem = (status) => {
     let createPromise;
     switch (contentType) {
@@ -205,6 +255,10 @@ const ContentEditor = ({ contentType }) => {
       });
   };
 
+  /**
+   * Handles the save or update action.
+   *
+   */
   const handleSaveOrUpdateBtn = () => {
     const status = "UNPUBLISHED";
     if (isEditMode) {
@@ -214,8 +268,10 @@ const ContentEditor = ({ contentType }) => {
     }
   };
 
+  /**
+   * Handles the publish button action.
+   */
   const handlePublishBtn = () => {
-    console.log("status", status);
     const publishStatus = "PUBLISHED";
     if (isEditMode) {
       updateItem(publishStatus);
@@ -224,6 +280,9 @@ const ContentEditor = ({ contentType }) => {
     }
   };
 
+  /**
+   * Handling the preview button click event. 
+   */
   const handlePreviewBtn = () => {
     let previewPath = "";
     let previewData = {};
@@ -232,7 +291,6 @@ const ContentEditor = ({ contentType }) => {
       case ContentTypeEnum.DEFINITION:
         previewPath = `/admin/definitions/preview`;
         previewData = parsedDefinition();
-        console.log("Parsed definition", previewData);
         break;
       case ContentTypeEnum.ARTICLE:
         previewPath = `/admin/articles/preview`;
@@ -267,6 +325,9 @@ const ContentEditor = ({ contentType }) => {
     window.open(url, "_blank");
   };
 
+  /**
+   * @returns {JSX.Element} The rendered admin dashboard's editor section.
+   */
   return (
     <div className="admin-dashboard">
       <div className="editor">
