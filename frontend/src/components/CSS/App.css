@@ -75,6 +75,11 @@ h3 {
   color: var(--header-text);
 }
 
+.list-group-item.active {
+  background-color: var(--btn-color-hover);
+  border-color: var(--btn-color-hover);
+}
+
 .app-container {
   background-color: var(--back_ground);
   min-height: 100%;
