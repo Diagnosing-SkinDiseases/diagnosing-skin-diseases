@@ -1,7 +1,7 @@
 import React from 'react';
 import labels from "../labels.json";
 import Button from "../GeneralComponents/Button";
-import "../styles/Controls.css"; 
+import "../../CSS/Admin/Controls.css"; 
 
 /**
  * Generates editor buttons for preview, save, and publish actions.

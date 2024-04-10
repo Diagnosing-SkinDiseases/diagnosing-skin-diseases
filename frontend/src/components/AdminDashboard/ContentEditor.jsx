@@ -5,8 +5,8 @@ import Definition from "./EditorComponents/Definition";
 import Article from "./EditorComponents/Article";
 import { useNavigate, useParams } from "react-router-dom";
 import Tree from "./EditorComponents/Tree";
-import "./styles/List.css";
-import "./styles/AdminDashboard.css";
+import "../CSS/Admin/List.css";
+import "../CSS/Admin/AdminDashboard.css";
 // API controllers for each content type
 import {
   apiCreateGlossaryItem,

@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import labels from "../labels.json";
 import Button from "../GeneralComponents/Button";
 import ContentTypeEnum from "../enums/ContentTypeEnum";
-import "../styles/Controls.css"; 
+import "../../CSS/Admin/Controls.css"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";

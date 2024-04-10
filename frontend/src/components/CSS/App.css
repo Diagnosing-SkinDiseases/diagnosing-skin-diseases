@@ -1,0 +1,104 @@
+:root {
+  --primary-font: "Roboto";
+  --primary-color: #196890;
+  --theme_blue: #0589a3;
+
+  /* Background */
+  --back_ground: #d9f4f6;
+  --background-image: url("./background.jpg");
+
+  /* Navbar */
+  --nav-back_ground: #d9f4f6;
+  --nav-hover: #9fd9dd;
+  --nav-text: black;
+
+  /* Footer */
+  --footer: #4fb9c3;
+
+  /* Buttons */
+  --btn-color: #197090;
+  --btn-color-hover: #1aa9c6;
+  --btn-text-color: white;
+
+  /* Article List & Glossary */
+  --glossary-hightlight: #0589a3;
+  --selecter-banner: #0589a3;
+  --banner: #196890;
+
+  /* Page Elements */
+  --title-text: black;
+  --header-text: black;
+  --header: #74a1b7;
+
+  --text: black;
+  --placeholder-text: #aaa;
+  --error-message: red;
+
+  --login-container: #f5f5f5;
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-link {
+  color: var(--primary-color);
+}
+
+#root {
+  font-family: var(--primary-font);
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+}
+
+h1 {
+  color: var(--title-text);
+}
+
+h3 {
+  color: var(--header-text);
+}
+
+.list-group-item.active {
+  background-color: var(--btn-color-hover);
+  border-color: var(--btn-color-hover);
+}
+
+.app-container {
+  background-color: var(--back_ground);
+  min-height: 100%;
+  flex-grow: 1;
+}
+
+.footer {
+  text-align: center;
+  background-color: var(--footer);
+  padding: 10px 0;
+  width: 100%;
+  position: absolute;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

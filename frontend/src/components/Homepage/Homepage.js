@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
-import "./Homepage.css";
+import "../CSS/Homepage.css";
 import { apiGetAllTrees } from "../../apiControllers/treeApiController";
 
 const Card = ({ title, image, aboutLink, treeId }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="card h-100 card-custom">
+    <div className="card h-100 card-custom card-container">
       <img src={image} alt={title} className="card-img-top" />
 
       <div className="card-body">
@@ -52,7 +52,7 @@ function Homepage() {
   }, []);
 
   const settings = {
-    dots: true,
+    dots: false,
     infinite: false,
     speed: 500,
     slidesToShow: 4,

@@ -1,5 +1,5 @@
 import ArticleBG from "./ArticleBG";
-import "./article.css";
+import "../CSS/Article.css";
 import { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { apiGetArticle } from "../../apiControllers/articleApiController";

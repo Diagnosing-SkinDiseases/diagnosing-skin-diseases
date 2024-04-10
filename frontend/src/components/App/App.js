@@ -11,7 +11,7 @@ import NavBarComponent from "../NavBar/NavBar";
 import Signup from "../SignUp/SignUp";
 import UserTree from "../UserTree/UserTrees/BuildUserTree";
 import BuildUserTree from "../UserTree/UserTrees/BuildUserTree";
-import "./App.css";
+import "../CSS/App.css";
 import { AuthProvider, useAuth } from "./AuthContext";
 
 // Admin Imports
@@ -195,8 +195,8 @@ function App() {
           {/* About DSD */}
           <Route path="/about" element={<About />}></Route>
         </Routes>
+        <footer className="footer">Footer</footer>
       </div>
-      <footer className="footer">Footer</footer>
     </AuthProvider>
   );
 }
