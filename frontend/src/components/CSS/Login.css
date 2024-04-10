@@ -55,7 +55,7 @@
 }
 
 .error-message {
-  color: var(error-message);
+  color: var(--error-message);
   margin: 1em;
   text-align: center;
 }
