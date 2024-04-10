@@ -9,7 +9,7 @@ const About = () => {
     <div className="container">
       <div className="row">
         <div className="col-md-3">
-          <h2 className="mt-4 text-center" style={{ color: "#007bff" }}>
+          <h2 className="mt-4 text-center" >
             About
           </h2>
         </div>

@@ -2,7 +2,7 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #007bff;
+  background-color: var(--nav-back_ground);
   padding: 10px 0;
 }
 
@@ -15,15 +15,8 @@ nav ul {
 }
 
 nav li {
-  color: white;
+  color: var(--text);
   cursor: pointer;
-}
-
-.banner {
-  text-align: center;
-  background-color: #004085;
-  color: white;
-  padding: 40px 0;
 }
 
 .article-header {
@@ -31,6 +24,8 @@ nav li {
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
+  background-color: var(--header);
+  color: var(--header-text);
 }
 
 .article-title {
@@ -41,13 +36,13 @@ nav li {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  background-color: whitesmoke;
+  background-color: var(--selecter-banner);
   padding: 10px;
 }
 
 .alphabet-selector button {
-  border: 1px solid rgb(191, 186, 186);
-  background-color: rgb(191, 186, 186);
+  border: 1px solid var(--btn-color);
+  background-color: var(--btn-color);
   padding: 10px;
   cursor: pointer;
   border-radius: 5px;
@@ -57,7 +52,7 @@ nav li {
 }
 
 .alphabet-selector button:hover {
-  background-color: grey; /* Lighter shade for the background */
+  background-color: var(--btn-color-hover);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for a "lifted" effect */
   transform: translateY(-2px); /* Slight "lift" effect */
   transition: background-color 0.3s ease, box-shadow 0.3s ease,
@@ -65,7 +60,7 @@ nav li {
 }
 
 .alphabet-selector button.selected {
-  background-color: grey; /* Lighter shade for the background */
+  background-color: var(--btn-color-hover);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for a "lifted" effect */
   transform: translateY(-2px); /* Slight "lift" effect */
   transition: background-color 0.3s ease, box-shadow 0.3s ease,
@@ -86,15 +81,15 @@ nav li {
 
 .search-bar button {
   padding: 5px 10px;
-  background-color: #007bff;
+  background-color: var(--btn-color);
   border: none;
   border-radius: 20px;
-  color: white;
+  color: var(--btn-text-color);
   cursor: pointer;
 }
 
 .letter-banner {
-  background-color: #007bff;
+  background-color: var(--banner);
   color: white;
   text-align: center;
   padding: 10px;
@@ -114,7 +109,7 @@ li {
 
 .ArticleList a {
   text-decoration: none;
-  color: black;
+  color: var(--text);
 }
 
 /* Mobile styles */

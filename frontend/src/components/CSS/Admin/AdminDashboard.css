@@ -1,18 +1,7 @@
-<<<<<<< HEAD
 /* ---------- General ---------- */
 
 .admin-dashboard .controls-wrapper {
   background-color: var(--banner);
-=======
-:root {
-  --primary-color: #007bff;
-}
-
-/* ---------- General ---------- */
-
-.admin-dashboard .controls-wrapper {
-  background-color: #fff;
->>>>>>> 66b448b (Update styles and settings in CSS files)
   width: 100%;
   display: flex;
   justify-content: center;
@@ -21,22 +10,14 @@
 .admin-dashboard .controls {
   display: flex;
   align-items: center;
-<<<<<<< HEAD
   background-color: var(--banner);
-=======
-  background-color: #fff;
->>>>>>> 66b448b (Update styles and settings in CSS files)
   padding: 0.7em;
   font-size: 0.9em;
 }
 
 body {
   width: 100%;
-<<<<<<< HEAD
   background-color: var(--back_ground);
-=======
-  background-color: rgba(0, 123, 255, 0.15);
->>>>>>> 66b448b (Update styles and settings in CSS files)
   margin: 0;
 }
 

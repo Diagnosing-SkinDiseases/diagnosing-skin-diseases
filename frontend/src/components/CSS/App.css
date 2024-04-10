@@ -4,6 +4,7 @@
   --theme_blue: #0589a3;
   --footer: #4fb9c3;
   --back_ground: #d9f4f6;
+  --background-image: url("./background.jpg");
   --nav-back_ground: #d9f4f6;
   --nav-hover: #9fd9dd;
   --nav-text: black;
@@ -13,6 +14,12 @@
   --btn-color-hover: #1aa9c6;
   --btn-text-color: white;
   --error-message: red;
+  --text: black;
+  --selecter-banner: #0589a3;
+  --header: #196890;
+  --header-text: white;
+  --title-text: white;
+  --glossary-hightlight: #0589a3;
 }
 
 .App {
@@ -45,7 +52,6 @@
   flex-direction: column;
 }
 
-<<<<<<< HEAD
 .app-container {
   background-color: var(--back_ground);
   min-height: 100%;
@@ -58,14 +64,6 @@
   padding: 10px 0;
   width: 100%;
   position: absolute;
-=======
-.footer {
-  text-align: center;
-  background-color: whitesmoke;
-  padding: 10px 0;
-  margin-top: auto;
-  width: 100%;
->>>>>>> 66b448b (Update styles and settings in CSS files)
 }
 
 @keyframes App-logo-spin {

@@ -37,7 +37,7 @@
   border: none;
   border-radius: 20px;
   background-color: var(--btn-color);
-  color: var(btn-text-color);
+  color: var(--btn-text-color);
   font-weight: bold;
   text-transform: uppercase;
   cursor: pointer;
