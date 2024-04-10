@@ -2,25 +2,37 @@
   --primary-font: "Roboto";
   --primary-color: #196890;
   --theme_blue: #0589a3;
-  --footer: #4fb9c3;
+
+  /* Background */
   --back_ground: #d9f4f6;
   --background-image: url("./background.jpg");
+
+  /* Navbar */
   --nav-back_ground: #d9f4f6;
   --nav-hover: #9fd9dd;
   --nav-text: black;
-  --banner: #196890;
-  --login-container: #f5f5f5;
+
+  /* Footer */
+  --footer: #4fb9c3;
+
+  /* Buttons */
   --btn-color: #197090;
   --btn-color-hover: #1aa9c6;
   --btn-text-color: white;
+
+  /* Article List & Glossary */
+  --glossary-hightlight: #0589a3;
+  --selecter-banner: #0589a3;
+
+  /* Page Elements */
+  --banner: #196890;
+  --login-container: #f5f5f5;
   --error-message: red;
   --text: black;
   --placeholder-text: #aaa;
-  --selecter-banner: #0589a3;
   --header: #196890;
   --header-text: black;
   --title-text: black;
-  --glossary-hightlight: #0589a3;
 }
 
 .App {
