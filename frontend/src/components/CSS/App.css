@@ -44,6 +44,8 @@
   --error-message: red;
 
   --login-container: #f5f5f5;
+
+  --about-hover: #715529;
 }
 
 .App {
@@ -91,6 +93,10 @@ h3 {
 
 .list-group-item {
   color: var(--header-text);
+}
+
+.list-group-item:hover {
+  color: var(--about-hover);
 }
 
 .list-group-item.active {
