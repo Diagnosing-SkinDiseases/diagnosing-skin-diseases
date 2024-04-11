@@ -61,6 +61,8 @@ a.nav-link.active {
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   padding: 12px 16px;
   z-index: 1;
+  font-size: smaller;
+  font-weight: bold;
 }
 
 .nav-item:hover .dropdown-content {
@@ -84,7 +86,7 @@ a.nav-link.active {
 .subtab-item:hover {
   background-color: var(--nav-hover);
   /* Lighter shade for the background */
-  color: #fefefe;
+  color: var(--nav-text);
   /* Keep the text color consistent or change as desired */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   /* This adds a slight shadow that makes the item "pop" */
