@@ -17,7 +17,8 @@
   justify-content: center;
   flex-wrap: wrap;
   background-color: var(--selecter-banner);
-  padding: 10px;
+  margin-inline: 20px;
+  border-radius: 10px;
 }
 
 .alphabet-selector button {
@@ -67,20 +68,20 @@
   border-radius: 20px;
   color: var(--btn-text-color);
   cursor: pointer;
+  margin-inline: 5px;
 }
 
 .letter-banner {
   background-color: var(--banner);
   text-align: center;
-  padding: 10px;
-  margin: 20px 0;
   font-size: 1.5em;
   font-weight: bold;
+  border-radius: 10px;
+  margin-inline: 20px;
 }
 
 .glossary-list {
   list-style-type: none;
-  padding: 20px;
 }
 
 .glossary-list h3 {
@@ -91,7 +92,6 @@
 
 .glossary-list ul {
   list-style: none;
-  padding: 0;
 }
 
 .glossary-list li {
@@ -102,7 +102,12 @@
   background-color: var(--glossary-hightlight);
   border-radius: 5px;
   padding: 10px;
-  margin: -5px;
+  color: var(--nav-text-hover);
+  width: 97%;
+}
+
+.glossary-list-item.selected h3 {
+  color: var(--nav-text-hover);
 }
 
 /* Mobile styles */
