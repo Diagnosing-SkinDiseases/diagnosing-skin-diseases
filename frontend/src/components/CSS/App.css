@@ -1,7 +1,10 @@
 :root {
   --primary-font: "Roboto";
   --primary-color: #196890;
+  --hover-color: #1aa9c6;
+  --footer-color: #4fb9c3;
   --theme_blue: #0589a3;
+  --header-color: #74a1b7;
 
   /* Background */
   --back_ground: #d9f4f6;
@@ -13,22 +16,22 @@
   --nav-text: black;
 
   /* Footer */
-  --footer: #4fb9c3;
+  --footer: var(--footer-color);
 
   /* Buttons */
-  --btn-color: #197090;
-  --btn-color-hover: #1aa9c6;
+  --btn-color: var(--primary-color);
+  --btn-color-hover: var(--hover-color);
   --btn-text-color: white;
 
   /* Article List & Glossary */
-  --glossary-hightlight: #0589a3;
-  --selecter-banner: #0589a3;
-  --banner: #196890;
+  --glossary-hightlight: var(--theme_blue);
+  --selecter-banner: var(--theme_blue);
+  --banner: var(--primary-color);
 
   /* Page Elements */
   --title-text: black;
   --header-text: black;
-  --header: #74a1b7;
+  --header: var(--header-color);
 
   --text: black;
   --placeholder-text: #aaa;
