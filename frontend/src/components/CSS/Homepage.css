@@ -43,7 +43,7 @@
 
 .card-img-top {
   width: 100%;
-  height: 10rem;
+  height: 12rem;
   object-fit: cover;
   /* Ensure images cover the card area properly */
   object-position: center;
@@ -55,6 +55,7 @@
   background: #e3d2b3;
   opacity: 0.9;
   overflow: visible;
+  height: 20px;
 }
 
 .homepage-button {
