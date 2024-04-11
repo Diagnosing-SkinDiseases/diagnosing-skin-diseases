@@ -198,7 +198,6 @@ function App() {
           <Route path="/about" element={<About />}></Route>
         </Routes>
         <div class="footer-placeholder"></div>
-        <footer className="footer">Footer</footer>
         <footer className="footer">© Diagnosing Skin Diseases</footer>
       </div>
     </AuthProvider>
