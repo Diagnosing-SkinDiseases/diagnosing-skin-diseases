@@ -86,7 +86,7 @@ function Homepage() {
     <div className="Homepage">
       <div className="container-fluid">
         <h2 className="homepage-text my-4">
-          Primary Lesions & Diagnostic Groups
+          Diagnose by Primary Lesion & Condition
         </h2>
         <Slider {...settings}>
           {trees.map((tree, index) => (
