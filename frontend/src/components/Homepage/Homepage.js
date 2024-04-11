@@ -16,9 +16,14 @@ const Card = ({ title, image, aboutLink, treeId }) => {
           <h3 className="card-title">{title}</h3>
         </div>
         <div className="card-actions">
-          <a href={aboutLink} className="btn card-action-btn">
+          <button
+            className="btn card-action-btn"
+            onClick={() =>
+              navigate(`${new URL(aboutLink).pathname}?treeId=${treeId}`)
+            }
+          >
             About
-          </a>
+          </button>
           <button
             className="btn card-action-btn"
             onClick={() => navigate(`/trees/${treeId}`)}

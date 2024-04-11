@@ -127,11 +127,4 @@ a.nav-link.active {
 .nav-item.active:hover .nav-link {
   background-color: var(--nav-hover);
   /* Slightly darker than the hover color to indicate active state */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  /* A more pronounced shadow to give a "lifted" effect */
-  transform: scale(1.05);
-  /* Slightly increase the size to give an augmented effect */
-  transition: background-color 0.3s ease, box-shadow 0.3s ease,
-    transform 0.3s ease;
-  /* Smooth transition for the effect */
 }

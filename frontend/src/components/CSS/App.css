@@ -1,7 +1,10 @@
 :root {
   --primary-font: "Roboto";
   --primary-color: #196890;
+  --hover-color: #1aa9c6;
+  --footer-color: #4fb9c3;
   --theme_blue: #0589a3;
+  --header-color: #74a1b7;
 
   /* Background */
   --back_ground: #d9f4f6;
@@ -13,28 +16,29 @@
   --nav-text: black;
 
   /* Footer */
-  --footer: #4fb9c3;
+  --footer: var(--footer-color);
 
   /* Buttons */
-  --btn-color: #197090;
-  --btn-color-hover: #1aa9c6;
+  --btn-color: var(--primary-color);
+  --btn-color-hover: var(--hover-color);
   --btn-text-color: white;
 
   /* Article List & Glossary */
-  --glossary-hightlight: #0589a3;
-  --selecter-banner: #0589a3;
-  --banner: #196890;
+  --glossary-hightlight: var(--theme_blue);
+  --selecter-banner: var(--theme_blue);
+  --banner: var(--primary-color);
 
   /* Page Elements */
   --title-text: black;
   --header-text: black;
-  --header: #74a1b7;
+  --header: var(--header-color);
 
   --text: black;
   --placeholder-text: #aaa;
   --error-message: red;
 
   --login-container: #f5f5f5;
+  --card-color: rgba(225, 234, 243, 0.718);
 }
 
 .App {
@@ -64,7 +68,8 @@
 body {
   display: flex;
   flex-direction: column;
-  max-height: 100%;
+  max-height: 100vh;
+  overflow: visible;
 }
 
 h1 {
@@ -82,14 +87,13 @@ h3 {
 
 .app-container {
   background-color: var(--back_ground);
-  min-height: 100%;
   flex-grow: 1;
 }
 
 .footer {
   text-align: center;
   background-color: var(--footer);
-  padding: 10px 0;
+  padding: 1rem;
   width: 100%;
   position: absolute;
 }

@@ -10,3 +10,7 @@
   display: grid;
   place-items: center;
 }
+
+.article-nav-button.button  {
+  width: 12em;
+}
