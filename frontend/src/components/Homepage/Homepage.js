@@ -4,6 +4,18 @@ import Slider from "react-slick";
 import "../CSS/Homepage.css";
 import { apiGetAllTrees } from "../../apiControllers/treeApiController";
 
+/**
+ * Card Component
+ *
+ * This component renders a card for each diagnostic tree. It displays the tree's image, title, and provides
+ * buttons to navigate to detailed information about the tree or to start a diagnosis.
+ *
+ * Props:
+ *   title (String): Title of the diagnostic tree.
+ *   image (String): URL of the tree's cover image.
+ *   aboutLink (String): URL for the page with more information about the tree.
+ *   treeId (String): Unique identifier for the diagnostic tree.
+ */
 const Card = ({ title, image, aboutLink, treeId }) => {
   const navigate = useNavigate();
 
@@ -36,6 +48,22 @@ const Card = ({ title, image, aboutLink, treeId }) => {
   );
 };
 
+/**
+ * Homepage Component
+ *
+ * Main landing page of the application displaying a slider of diagnostic trees. Each tree is presented
+ * with its cover image and name, along with options to learn more or start a diagnosis. The trees are
+ * fetched from an API and filtered to only show those that are published.
+ *
+ * State:
+ *   trees (Array): List of diagnostic trees retrieved from the API and filtered by status.
+ *
+ * API:
+ *   apiGetAllTrees: Fetches the list of all trees from the backend.
+ *
+ * Effects:
+ *   useEffect initializes the fetch process on component mount and updates the `trees` state with published trees.
+ */
 function Homepage() {
   const [trees, setTrees] = useState([]);
 
@@ -43,7 +71,6 @@ function Homepage() {
     const fetchTrees = async () => {
       try {
         const response = await apiGetAllTrees();
-        // Filter the response to only include trees with a status of "PUBLISHED"
         const publishedTrees = response.data.filter(
           (tree) => tree.status === "PUBLISHED"
         );
