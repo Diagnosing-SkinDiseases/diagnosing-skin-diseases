@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
-import "../CSS/Homepage.css";
 import { apiGetAllTrees } from "../../apiControllers/treeApiController";
+import "../CSS/Homepage.css";
 
 const Card = ({ title, image, aboutLink, treeId }) => {
   const navigate = useNavigate();
@@ -16,11 +16,14 @@ const Card = ({ title, image, aboutLink, treeId }) => {
           <h3 className="card-title">{title}</h3>
         </div>
         <div className="card-actions">
-          <a href={aboutLink} className="btn card-action-btn">
-            About
-          </a>
           <button
-            className="btn card-action-btn"
+            className="homepage-button"
+            onClick={() => navigate(`/placeholder`)}
+          >
+            About
+          </button>
+          <button
+            className="homepage-button"
             onClick={() => navigate(`/trees/${treeId}`)}
           >
             Start Diagnosis
