@@ -50,8 +50,8 @@
 }
 
 .card-body {
-  max-height: 15vh;
-  min-height: 15vh;
+  max-height: 12vh;
+  min-height: 12vh;
   background: #e3d2b3;
   opacity: 0.9;
   overflow: visible;
@@ -79,7 +79,7 @@
 
 .card-title {
   font-size: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   color: var(--card-title);
 }
 
