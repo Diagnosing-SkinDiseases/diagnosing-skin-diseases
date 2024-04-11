@@ -1,7 +1,7 @@
 #user-tree-page {
   height: 83vh;
   position: relative;
-  background-color: var(--back_ground_light_blue);
+  background-color: var(--background);
 }
 
 #tree-name {
@@ -9,7 +9,7 @@
   align-items: center;
   justify-content: center;
   display: flex;
-  color: var(--primary-color);
+  color: var(--title-text);
   z-index: 1;
   position: absolute;
   top: 0;
