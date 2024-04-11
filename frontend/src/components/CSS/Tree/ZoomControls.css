@@ -1,9 +1,9 @@
 .zoom-controls {
-  border: var(--theme_blue) solid 3px;
+  border: var(--border) solid 3px;
   position: fixed;
   left: 20%;
   z-index: 1000;
-  background: white;
+  background: var(--box-color);
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   display: flex;
@@ -13,9 +13,9 @@
 }
 
 .zoom-button {
-  background-color: var(--theme_blue);
+  background-color: var(--btn-color);
   border: none;
-  color: white;
+  color: var(--btn-text-color);
   padding: 10px 15px;
   margin: 5px;
   text-align: center;
@@ -27,6 +27,6 @@
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: var(--light_blue);
+    background-color: var(--btn-color-hover);
   }
 }

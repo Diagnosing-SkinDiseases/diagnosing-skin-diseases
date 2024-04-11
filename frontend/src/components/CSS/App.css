@@ -31,6 +31,10 @@
   --header-text: #715529;
   --header: #eee9df;
 
+  /* Tree elements */
+  --border: #715529;
+  --box-color: white;
+
   --text: #715529;
   --placeholder-text: #aaa;
   --error-message: red;
