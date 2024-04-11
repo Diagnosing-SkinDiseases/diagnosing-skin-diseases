@@ -1,5 +1,6 @@
 .navbar {
   font-family: var(--primary-font);
+  color: var(--nav-back_ground);
   display: flex;
   justify-content: space-around;
   background-color: var(--nav-back_ground);
@@ -15,6 +16,9 @@
   list-style-type: none;
   font-weight: bold;
   background-color: var(--nav-back_ground);
+  border-radius: 10px;
+  margin-inline: 10px;
+  width: 80px;
 }
 
 /* Apply a subtle highlight and lift effect to nav items on hover */
@@ -36,7 +40,7 @@
   padding: 14px;
   text-decoration: none;
   color: var(--nav-text);
-  width: 100%;
+  border-radius: 10px;
 }
 
 a.nav-link.active {
@@ -80,7 +84,7 @@ a.nav-link.active {
 .subtab-item:hover {
   background-color: var(--nav-hover);
   /* Lighter shade for the background */
-  color: black;
+  color: #fefefe;
   /* Keep the text color consistent or change as desired */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   /* This adds a slight shadow that makes the item "pop" */
@@ -121,6 +125,7 @@ a.nav-link.active {
   align-items: center;
   width: 200px;
   height: 100px;
+  margin-right: 60px;
 }
 
 .nav-item.active .nav-link,

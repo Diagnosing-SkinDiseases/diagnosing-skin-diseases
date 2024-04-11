@@ -1,36 +1,37 @@
 :root {
   --primary-font: "Roboto";
-  --primary-color: #196890;
-  --theme_blue: #0589a3;
+  --primary-color: #fefefe;
+  --theme_blue: #e4ddd0;
 
   /* Background */
-  --back_ground: #d9f4f6;
-  --background-image: url("./background.jpg");
+  --back_ground: #eee9df;
+  /* --background-image: url("./background.jpg"); */
 
   /* Navbar */
-  --nav-back_ground: #d9f4f6;
-  --nav-hover: #9fd9dd;
-  --nav-text: black;
+  --nav-back_ground: #e4ddd0;
+  --nav-hover: #d0be9f;
+  --nav-text: #715529;
+  --nav-text-hover: #fefefe;
 
   /* Footer */
-  --footer: #4fb9c3;
+  --footer: #e4ddd0;
 
   /* Buttons */
-  --btn-color: #197090;
-  --btn-color-hover: #1aa9c6;
-  --btn-text-color: white;
+  --btn-color: #e4ddd0;
+  --btn-color-hover: #d0be9f;
+  --btn-text-color: #715529;
 
   /* Article List & Glossary */
-  --glossary-hightlight: #0589a3;
-  --selecter-banner: #0589a3;
-  --banner: #196890;
+  --glossary-hightlight: #927448;
+  --selecter-banner: #baa57f;
+  --banner: #baa57f;
 
   /* Page Elements */
-  --title-text: black;
-  --header-text: black;
-  --header: #74a1b7;
+  --title-text: #715529;
+  --header-text: #715529;
+  --header: #eee9df;
 
-  --text: black;
+  --text: #715529;
   --placeholder-text: #aaa;
   --error-message: red;
 
@@ -45,6 +46,10 @@
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+.navbar a:hover {
+  color: var(--nav-text-hover);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -92,7 +97,7 @@ h3 {
   background-color: var(--footer);
   padding: 1rem;
   width: 100%;
-  position: absolute;
+  position: sticky;
 }
 
 @keyframes App-logo-spin {
