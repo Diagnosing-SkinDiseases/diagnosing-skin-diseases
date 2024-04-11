@@ -30,7 +30,7 @@
   margin: 5px;
   text-align: center;
   flex: 0 0 calc(7.5% - 10px);
-  color: var(--nav-text);
+  color: var(--nav-text-hover);
   font-weight: bold;
 }
 
@@ -60,17 +60,23 @@
   margin-right: 5px;
   padding: 5px;
   border: 1px solid #ccc;
-  border-radius: 20px;
+  border-radius: 10px;
+}
+
+input:focus {
+  outline: none;
+  border: 1px solid #715529;
 }
 
 .search-bar button {
   padding: 5px 10px;
   background-color: var(--btn-color);
   border: none;
-  border-radius: 20px;
+  border-radius: 10px;
   color: var(--btn-text-color);
   cursor: pointer;
   margin-inline: 5px;
+  focus-color: var(--btn-color-hover);
 }
 
 .letter-banner {
@@ -101,7 +107,7 @@
 }
 
 .glossary-list-item.selected {
-  background-color: var(--glossary-hightlight);
+  background-color: var(--banner);
   border-radius: 5px;
   padding: 10px;
   color: var(--nav-text-hover);
