@@ -30,7 +30,7 @@
 .node-symbol-text {
   font-size: 1rem;
   font-style: bold;
-  color: var(--primary-color);
+  color: var(--text);
   display: flex;
   align-items: center;
 }
