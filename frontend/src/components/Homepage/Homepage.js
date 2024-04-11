@@ -17,8 +17,9 @@ const Card = ({ title, image, aboutLink, treeId }) => {
         </div>
         <div className="card-actions">
           <button
+            href={aboutLink}
             className="homepage-button"
-            onClick={() => navigate(`/placeholder`)}
+            onClick={() => window.open(aboutLink, "_blank")}
           >
             About
           </button>
