@@ -8,7 +8,7 @@ const Card = ({ title, image, aboutLink, treeId }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="card h-100 card-custom card-container">
+    <div className="card card-custom card-container">
       <img src={image} alt={title} className="card-img-top" />
 
       <div className="card-body">

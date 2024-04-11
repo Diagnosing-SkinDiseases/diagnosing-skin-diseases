@@ -22,7 +22,7 @@
   padding-left: 3rem;
   margin-right: auto;
   margin-left: auto;
-  height: 83vh;
+  overflow: auto;
 }
 
 .card-container {
@@ -31,7 +31,7 @@
   justify-content: flex-start;
   align-items: stretch;
   /* gap: 1rem; Gap between picture and text */
-  margin-bottom: 1.8rem;
+  margin-bottom: 1rem;
   border: 0.3rem solid var(--theme_blue);
 }
 
@@ -104,7 +104,8 @@
 
 /* Slick Carousel Customizations */
 .slick-slide {
-  margin: 15px;
+  margin-left: 1em;
+  margin-right: 1em;
 }
 
 .slick-list {

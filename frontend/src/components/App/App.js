@@ -195,6 +195,7 @@ function App() {
           {/* About DSD */}
           <Route path="/about" element={<About />}></Route>
         </Routes>
+        <div class="footer-placeholder"></div>
         <footer className="footer">Footer</footer>
       </div>
     </AuthProvider>
