@@ -7,11 +7,11 @@
 - [Managing Existing Definitions](#managing-existing-definitions)
 - [Additiional Management Options](#additiional-management-options)
 
-#### Prerequisites
+### Prerequisites
 
 ```Admin must be logged in.```
 
-#### Creating a New Definition
+### Creating a New Definition
 
 1. **Navigate to Glossary/ List of Definitions**
 
@@ -41,7 +41,7 @@
    
 
 ***
-#### Managing Existing Definitions
+### Managing Existing Definitions
 
 - **Navigate to Glossary/ Definitions List**
 
@@ -62,7 +62,7 @@
 
 ***
 
-#### Additiional Management Options
+### Additiional Management Options
 
 - **Filtering**
 
