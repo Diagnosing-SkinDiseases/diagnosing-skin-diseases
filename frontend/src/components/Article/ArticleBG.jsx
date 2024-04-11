@@ -9,7 +9,7 @@ const ArticleBG = ({ data }) => {
 
   // Back button for certain cases
   const BackButton = () => {
-    console.log(document.referrer);
+    console.log("Referrer", document.referrer);
     if (!document.referrer) {
       return;
     }
