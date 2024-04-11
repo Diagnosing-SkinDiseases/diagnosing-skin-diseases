@@ -14,7 +14,7 @@
   text-align: center;
   position: relative;
   list-style-type: none;
-  font-weight: bold;
+  font-weight: 500;
   background-color: var(--nav-back_ground);
   border-radius: 10px;
   margin-inline: 10px;
