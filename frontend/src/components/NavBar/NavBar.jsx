@@ -4,7 +4,19 @@ import { useAuth } from "../App/AuthContext";
 import DSD from "../NavBar/DSD.png";
 import "../CSS/NavBarComponent.css";
 
-// Subtab component
+/**
+ * NavSubtab Component
+ * 
+ * A reusable component for rendering nested dropdown menus within the NavBar. It shows nested subtabs when the user
+ * hovers over an item that contains further nested items. It hides when there are no items to show.
+ *
+ * Props:
+ *   show (boolean): A flag to determine whether the subtab should be displayed or not.
+ *   titles (array): An array of objects describing each subtab, including the name, path, and nested subTabs.
+ *
+ * State:
+ *   activeSubtab (string | null): Tracks the subtab that is currently active (hovered by the user).
+ */
 const NavSubtab = ({ show, titles }) => {
   const [activeSubtab, setActiveSubtab] = useState(null);
 
@@ -39,7 +51,21 @@ const NavSubtab = ({ show, titles }) => {
   );
 };
 
-// Main NavBar component
+/**
+ * NavBarComponent
+ * 
+ * Main navigation bar component of the application. It displays different links based on the user's authentication
+ * status and includes functionality for nested subtabs. It uses conditional rendering to switch between links for
+ * authenticated users and guests. The component also handles navigation and active link highlighting.
+ *
+ * Uses:
+ *   useAuth: Hook to access authentication status.
+ *   useLocation: Hook to get the current URL path to highlight the active link.
+ *   useNavigate: Hook for programmatically navigating to other routes.
+ *
+ * State:
+ *   activeLink (string): Tracks which main link is currently active.
+ */
 const NavBarComponent = () => {
   const { isLoggedIn } = useAuth();
   const location = useLocation();
@@ -49,7 +75,7 @@ const NavBarComponent = () => {
   // Determine if a link is active based on the current path
   const isActiveLink = (linkPath) => location.pathname === linkPath;
 
-  // Adjusted handle click for page reload with useNavigate
+  // Handle link click: navigate to the path, and for non-subtab links, force a page reload
   const handleClick = (path, hasSubTabs) => {
     if (!hasSubTabs) {
       navigate(path); // Use navigate to change the path
@@ -57,7 +83,7 @@ const NavBarComponent = () => {
     }
   };
 
-  // Define links for main tabs for authenticated users
+  // Links definition for authenticated users
   const authLinks = [
     { name: "Diagnostic Trees", path: "/admin/trees", subTabs: [] },
     { name: "Articles", path: "/admin/articles", subTabs: [] },
@@ -65,7 +91,7 @@ const NavBarComponent = () => {
     { name: "Logout", path: "/logout", subTabs: [] },
   ];
 
-  // Define links for main tabs for guests
+  // Links definition for guests
   const guestLinks = [
     { name: "Diagnostic Trees", path: "/", subTabs: [] },
     {
@@ -168,7 +194,6 @@ const NavBarComponent = () => {
           onMouseEnter={() => setActiveLink(link.name)}
           onMouseLeave={() => setActiveLink("")}
         >
-          {/* Adjust Link to div and handle clicks */}
           <div
             onClick={() => handleClick(link.path, link.subTabs.length > 0)}
             className={`nav-link ${activeLink === link.name ? "active" : ""}`}
