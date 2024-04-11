@@ -3,15 +3,17 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import About from "../About/About";
 import Article from "../Article/Article";
 import ArticlePage from "../ArticleList/ArticleList";
+import "../CSS/App.css";
 import Glossary from "../Glossary/Glossary";
 import Homepage from "../Homepage/Homepage";
 import Login from "../Login/Login";
 import Logout from "../Logout/Logout";
 import NavBarComponent from "../NavBar/NavBar";
 import Signup from "../SignUp/SignUp";
-import UserTree from "../UserTree/UserTrees/BuildUserTree";
-import BuildUserTree from "../UserTree/UserTrees/BuildUserTree";
-import "../CSS/App.css";
+import {
+  default as BuildUserTree,
+  default as UserTree,
+} from "../UserTree/UserTrees/BuildUserTree";
 import { AuthProvider, useAuth } from "./AuthContext";
 
 // Admin Imports
@@ -195,7 +197,7 @@ function App() {
           {/* About DSD */}
           <Route path="/about" element={<About />}></Route>
         </Routes>
-        <footer className="footer">Footer</footer>
+        <footer className="footer">© Diagnosing Skin Diseases</footer>
       </div>
     </AuthProvider>
   );
