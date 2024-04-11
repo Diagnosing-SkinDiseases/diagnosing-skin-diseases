@@ -1,8 +1,8 @@
 import React from 'react';
 import Button from '../GeneralComponents/Button';
 import ArticleContentType from '../enums/ArticleContentType';
-import "../styles/List.css"; 
-import "../styles/Editor.css"; 
+import "../../CSS/Admin/List.css";
+import "../../CSS/Admin/Editor.css"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 

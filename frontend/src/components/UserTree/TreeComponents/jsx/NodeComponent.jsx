@@ -1,5 +1,5 @@
 import React from 'react';
-import '../css/NodeComponent.css';
+import '../../../CSS/Tree/NodeComponent.css';
 
 /**
  * Represents a visible node in the tree structure.

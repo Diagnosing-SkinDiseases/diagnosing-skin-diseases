@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import labels from "../labels.json";
 import Button from "../GeneralComponents/Button";
 import ContentTypeEnum from "../enums/ContentTypeEnum";
-import "../styles/List.css";
+import "../../CSS/Admin/List.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";

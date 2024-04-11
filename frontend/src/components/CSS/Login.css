@@ -1,6 +1,6 @@
-/* Style the card for the SignUp form */
-.SignUp-card {
-  background: white;
+/* Style the card for the login form */
+.login-card {
+  background: var(--login-container);
   padding: 2em;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -10,13 +10,13 @@
 }
 
 /* Style the heading */
-.SignUp-card h2 {
+.login-card h2 {
   text-align: center;
   margin-bottom: 1em;
 }
 
 /* Style the form inputs */
-.SignUp-card input {
+.login-card input {
   width: 100%;
   padding: 10px;
   margin-bottom: 1em;
@@ -26,42 +26,36 @@
 }
 
 /* Style the placeholder text */
-.SignUp-card input::placeholder {
+.login-card input::placeholder {
   color: #aaa;
 }
 
 /* Style the login button */
-.SignUp-card button {
+.login-card button {
   width: 100%;
   padding: 10px;
   border: none;
   border-radius: 20px;
-  background-color: #007bff;
-  color: white;
+  background-color: var(--btn-color);
+  color: var(--btn-text-color);
   font-weight: bold;
   text-transform: uppercase;
   cursor: pointer;
 }
 
 /* Hover state for the login button */
-.SignUp-card button:hover {
-  background-color: #0056b3;
+.login-card button:hover {
+  background-color: var(--btn-color-hover);
 }
 
 /* Ensure the form items align properly */
-.SignUp-card form {
+.login-card form {
   display: flex;
   flex-direction: column;
 }
 
 .error-message {
-  color: red;
-  margin: 1em;
-  text-align: center;
-}
-
-.signup-status {
-  color: blue;
+  color: var(--error-message);
   margin: 1em;
   text-align: center;
 }

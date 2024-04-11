@@ -1,0 +1,16 @@
+.article-container {
+  background-color: white;
+}
+
+.article .article-h3 {
+  font-size: large;
+}
+
+.banner-text-container {
+  display: grid;
+  place-items: center;
+}
+
+.article-nav-button.button  {
+  width: 12em;
+}
