@@ -115,6 +115,7 @@ h3 {
   padding: 1rem;
   width: 100%;
   position: sticky;
+  margin-top: 5rem;
 }
 
 @keyframes App-logo-spin {
