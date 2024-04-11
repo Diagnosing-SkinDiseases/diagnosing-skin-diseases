@@ -89,6 +89,10 @@ h3 {
   color: var(--header-text);
 }
 
+.list-group-item {
+  color: var(--header-text);
+}
+
 .list-group-item.active {
   background-color: var(--btn-color-hover);
   border-color: var(--btn-color-hover);
