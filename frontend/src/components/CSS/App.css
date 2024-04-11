@@ -121,13 +121,11 @@ h3 {
 }
 
 .footer {
-  text-align: center;
-  background-color: var(--footer);
   padding: 1rem;
   width: 100%;
-  position: sticky;
-  color: var(--nav-text);
-  font-weight: 400;
+  position: absolute;
+  bottom: 0;
+  height: 4em;
 }
 
 @keyframes App-logo-spin {
