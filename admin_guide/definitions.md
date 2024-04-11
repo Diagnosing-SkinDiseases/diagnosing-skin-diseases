@@ -6,11 +6,11 @@
 - [Creating a New Definition](#creating-a-new-definition)
 - [Managing Existing Definitions](#managing-existing-definitions)
 - [Additiional Management Options](#additiional-management-options)
-
+***
 ### Prerequisites
 
 ```Admin must be logged in.```
-
+***
 ### Creating a New Definition
 
 1. **Navigate to Glossary/ List of Definitions**

@@ -1,4 +1,4 @@
-## Linking Articles Guide
+# Linking Articles Guide
 
 ## Table of Contents
 
@@ -7,7 +7,8 @@
 - [Link to Another Article (New Browser Tab)](#3-link-to-another-article-new-browser-tab)
 - [Link to a Specific Place in Another Article](#4-link-to-a-specific-place-in-another-article)
 
-### 1. **Link to Another Article (General Step)**
+***
+### **Link to Another Article (General Step)**
 To create a link to another article use the following template:
 
 ```html
@@ -19,8 +20,8 @@ Between the opening `<a>` tag and the closing `</a>` tag, type the text to be di
 
 #### 1.2. Specify the Link URL
 Inside the quotation marks of the href attribute, paste or type the URL of the article or page to link to. This URL is the destination of the link.
-
-### 2. **Link to Another Article (Same Browser Tab)**
+***
+### **Link to Another Article (Same Browser Tab)**
 
 To create a link that opens in the same browser tab, use the `target="_self_"` attribute.
 
@@ -35,8 +36,8 @@ To create a link that opens in the same browser tab, use the `target="_self_"` a
 DIAGNOSIS: Vitiligo.<br>
 <a href="https://diagnosing-skin-diseases.vercel.app/treatment/vitiligo/660525a2de64816625be7be5" target="_self">Click here to view article.</a>
 ```
-
-### 3. **Link to Another Article (New Browser Tab)**
+***
+###  **Link to Another Article (New Browser Tab)**
 
 To make a link open in a new browser tab, use the `target="_blank"` attribute. 
 
@@ -51,12 +52,12 @@ To make a link open in a new browser tab, use the `target="_blank"` attribute.
 DIAGNOSIS: Vitiligo.<br>
 <a href="https://diagnosing-skin-diseases.vercel.app/treatment/vitiligo/660525a2de64816625be7be5" target="_blank">Click here to view article.</a>
 ```
-
-### 4. **Link to a Specific Place in Another Article**
+***
+### **Link to a Specific Place in Another Article**
 
 For linking directly to a specific section within another article, ensure that the target location has a unique `id`. Then, create a link pointing to that `id`.
 
-#### 4.1. Setting an ID:
+#### 1. Setting an ID:
 
 This will need to be done using HTML within the article that you're linking to.
 
@@ -70,7 +71,7 @@ This will need to be done using HTML within the article that you're linking to.
 <span id="vitiligo-treatment">Treatment</span>
 ```
 
-#### 4.2. Linking to the ID
+#### 2. Linking to the ID
 
 When creating a link to this specific place, you'll use HTML to include the `id` in the link URL.
 

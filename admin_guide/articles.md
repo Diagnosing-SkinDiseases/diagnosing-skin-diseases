@@ -6,11 +6,11 @@
 - [Creating a New Article](#creating-a-new-article)
 - [Managing Existing Articles](#managing-existing-articles)
 - [Additional Management Options](#additional-management-options)
-
+***
 ### Prerequisites
 
 `Admin must be logged in.`
-
+***
 ### Creating a New Article
 
 1. **Navigate to Articles/ List of Articles**
