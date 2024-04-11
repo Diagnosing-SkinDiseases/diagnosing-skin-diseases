@@ -29,7 +29,6 @@
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: stretch;
-  gap: 1rem;
   margin-bottom: 1rem;
   border: 2px solid var(--card-color);
 }
@@ -40,7 +39,6 @@
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   flex: 1 0 calc(33.333% - 40px);
-  min-height: 300px;
 }
 
 .card-img-top {
