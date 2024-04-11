@@ -9,6 +9,10 @@ const ArticleBG = ({ data }) => {
 
   // Back button for certain cases
   const BackButton = () => {
+    if (new URL(window.location).pathname === "/about") {
+      return;
+    }
+
     return (
       <button
         className="article-nav-button button"
