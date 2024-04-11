@@ -54,10 +54,28 @@
 .card-body {
   max-height: 15vh;
   min-height: 15vh;
-  background: var(--card-color);
+  background: #e3d2b3;
   opacity: 0.9;
   padding: 1rem;
   overflow: visible;
+}
+
+.homepage-button {
+  border: 2px solid var(--btn-color);
+  background-color: var(--glossary-hightlight);
+  cursor: pointer;
+  border-radius: 5px;
+  text-align: center;
+  width: 50%;
+  color: var(--nav-text-hover);
+  font-weight: bold;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.homepage-button:hover {
+  background-color: var(--nav-hover);
+  color: var(--nav-text);
 }
 
 .card-title {
