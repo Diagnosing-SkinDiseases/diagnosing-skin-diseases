@@ -19,7 +19,7 @@
 .definition .input-group label,
 .article .input-group label {
   display: block;
-  color: var(--primary-color);
+  color: var(--header-text);
 }
 
 .definition .input-group input,
@@ -217,5 +217,5 @@
 .upload-label-text {
   align-items: center;
   padding-top: 0.3em;
-  color: var(--primary-color);
+  color: var(--header-text);
 }
