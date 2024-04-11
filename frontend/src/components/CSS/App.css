@@ -17,9 +17,9 @@
   --footer: #e4ddd0;
 
   /* Buttons */
-  --btn-color: #d0be9f;
-  --btn-color-hover: #e4ddd0;
-  --btn-text-color: #715529;
+  --btn-color: #927448;
+  --btn-color-hover: #715529;
+  --btn-text-color: white;
 
   /* Article List & Glossary */
   --glossary-hightlight: #927448;
@@ -36,7 +36,7 @@
   --error-message: red;
 
   --login-container: #f5f5f5;
-  --card-color: rgba(225, 234, 243, 0.718);
+  --card-color: #e4ddd0;
 }
 
 .App {
