@@ -19,7 +19,7 @@ const Card = ({ title, image, aboutLink, treeId }) => {
           <button
             href={aboutLink}
             className="homepage-button"
-            onClick={() => window.open(aboutLink, "_blank")}
+            onClick={() => (window.location.href = aboutLink)}
           >
             About
           </button>
