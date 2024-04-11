@@ -1,5 +1,4 @@
 #user-tree-page {
-  height: 83vh;
   position: relative;
   background-color: var(--background);
 }
@@ -22,7 +21,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 89vh;
   overflow: auto;
   min-width: 100%;
   z-index: 10;
