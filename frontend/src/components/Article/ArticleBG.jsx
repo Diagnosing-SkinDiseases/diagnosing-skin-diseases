@@ -12,7 +12,7 @@ const ArticleBG = ({ data }) => {
     return (
       <button
         className="article-nav-button button"
-        onClick={() => (window.location = document.referrer)}
+        onClick={() => window.history.back()}
       >
         Previous
       </button>
@@ -40,7 +40,7 @@ const ArticleBG = ({ data }) => {
           <ArticleContent data={data}></ArticleContent>
         </div>
         <div className="row justify-content-between mt-3 px-2">
-          {new URL(document.referrer).pathname !== "/about" && BackButton()}
+          <BackButton></BackButton>
           {searchParams.get("treeId") && ToTreeButton()}
         </div>
       </div>
