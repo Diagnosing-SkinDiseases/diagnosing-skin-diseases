@@ -9,21 +9,14 @@ const ArticleBG = ({ data }) => {
 
   // Back button for certain cases
   const BackButton = () => {
-    console.log("Referrer", document.referrer);
-    if (!document.referrer) {
-      return;
-    }
-
-    if (new URL(document.referrer).pathname !== "/about") {
-      return (
-        <button
-          className="article-nav-button button"
-          onClick={() => (window.location = document.referrer)}
-        >
-          Previous
-        </button>
-      );
-    }
+    return (
+      <button
+        className="article-nav-button button"
+        onClick={() => window.history.back()}
+      >
+        Previous
+      </button>
+    );
   };
 
   // To tree button for certain cases
