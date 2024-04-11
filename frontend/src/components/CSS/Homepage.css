@@ -54,7 +54,6 @@
   min-height: 15vh;
   background: #e3d2b3;
   opacity: 0.9;
-  padding: 1rem;
   overflow: visible;
 }
 
@@ -99,7 +98,6 @@
   color: var(--btn-text-color);
   /* Text color */
   border: none;
-  padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
