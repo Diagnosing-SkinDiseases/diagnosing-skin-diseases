@@ -9,14 +9,21 @@ const ArticleBG = ({ data }) => {
 
   // Back button for certain cases
   const BackButton = () => {
-    return (
-      <button
-        className="article-nav-button button"
-        onClick={() => (window.location = document.referrer)}
-      >
-        Previous
-      </button>
-    );
+    console.log(document.referrer);
+    if (!document.referrer) {
+      return;
+    }
+
+    if (new URL(document.referrer).pathname !== "/about") {
+      return (
+        <button
+          className="article-nav-button button"
+          onClick={() => (window.location = document.referrer)}
+        >
+          Previous
+        </button>
+      );
+    }
   };
 
   // To tree button for certain cases
@@ -40,7 +47,7 @@ const ArticleBG = ({ data }) => {
           <ArticleContent data={data}></ArticleContent>
         </div>
         <div className="row justify-content-between mt-3 px-2">
-          {new URL(document.referrer).pathname !== "/about" && BackButton()}
+          <BackButton></BackButton>
           {searchParams.get("treeId") && ToTreeButton()}
         </div>
       </div>
