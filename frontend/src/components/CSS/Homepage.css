@@ -60,12 +60,12 @@
 
 .homepage-button {
   border: 1px solid var(--btn-color);
-  background-color: var(--glossary-hightlight);
+  background-color: var(--btn-color);
   cursor: pointer;
   border-radius: 5px;
   text-align: center;
   width: 40%;
-  color: var(--nav-text-hover);
+  color: var(--btn-text-color);
   font-weight: bold;
   padding-top: 5px;
   padding-bottom: 5px;
@@ -74,7 +74,7 @@
 
 .homepage-button:hover {
   background-color: var(--btn-color-hover);
-  color: var(--primary-color);
+  color: var(--btn-text-color);
 }
 
 .card-title {
@@ -90,39 +90,6 @@
   /* This positions the container to the top-right corner of the card */
   display: flex;
   gap: 15px;
-}
-
-.card-action-btn {
-  width: 50% !important;
-  /* Ensure the button takes up the full width */
-  background-color: var(--btn-color);
-  color: var(--btn-text-color);
-  /* Text color */
-  border: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1rem;
-  /* Adjust the font size as needed */
-  transition: background-color 0.3s ease;
-  /* Smooth transition for hover effect */
-}
-
-.btn {
-  height: 2rem !important;
-  /* Adjust the height of the button */
-  border-radius: 30px;
-  /* Round the corners */
-}
-
-.card-action-btn:hover {
-  background-color: var(--btn-color-hover);
-  color: var(--btn-text-color);
-}
-
-.btn-container {
-  display: none;
-  /* Hide the original btn-container if not needed */
 }
 
 /* Slick Carousel Customizations */
