@@ -7,6 +7,28 @@ import { apiGetAllTrees } from "../../apiControllers/treeApiController";
 const Card = ({ title, image, aboutLink, treeId }) => {
   const navigate = useNavigate();
 
+  const AboutButton = () => {
+    console.log(aboutLink);
+    if (!aboutLink.includes("/treatment")) {
+      return (
+        <button className="btn card-action-btn" onClick={() => navigate(`/`)}>
+          About
+        </button>
+      );
+    }
+
+    return (
+      <button
+        className="btn card-action-btn"
+        onClick={() =>
+          navigate(`${new URL(aboutLink).pathname}?treeId=${treeId}`)
+        }
+      >
+        About
+      </button>
+    );
+  };
+
   return (
     <div className="card card-custom card-container">
       <img src={image} alt={title} className="card-img-top" />
@@ -16,14 +38,7 @@ const Card = ({ title, image, aboutLink, treeId }) => {
           <h3 className="card-title">{title}</h3>
         </div>
         <div className="card-actions">
-          <button
-            className="btn card-action-btn"
-            onClick={() =>
-              navigate(`${new URL(aboutLink).pathname}?treeId=${treeId}`)
-            }
-          >
-            About
-          </button>
+          <AboutButton></AboutButton>
           <button
             className="btn card-action-btn"
             onClick={() => navigate(`/trees/${treeId}`)}
