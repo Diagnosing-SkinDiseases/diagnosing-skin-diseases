@@ -1,6 +1,6 @@
 .navbar {
   font-family: var(--primary-font);
-  color: var(--nav-back_ground);
+  color: var(--nav-text);
   display: flex;
   justify-content: space-around;
   background-color: var(--nav-back_ground);
