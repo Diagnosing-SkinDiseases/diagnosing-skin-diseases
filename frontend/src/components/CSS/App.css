@@ -109,7 +109,6 @@ h3 {
   background-color: var(--back_ground);
   position: relative;
   min-height: 100vh;
-  min-height: 100vh;
   margin: 0;
   padding: 0;
   overflow: auto;
