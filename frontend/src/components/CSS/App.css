@@ -1,44 +1,52 @@
 :root {
   --primary-font: "Roboto";
-  --primary-color: #196890;
-  --hover-color: #1aa9c6;
-  --footer-color: #4fb9c3;
-  --theme_blue: #0589a3;
-  --header-color: #74a1b7;
+  --primary-color: #fefefe;
+  --theme_blue: #e4ddd0;
 
   /* Background */
-  --back_ground: #d9f4f6;
-  --background-image: url("./background.jpg");
+  --back_ground: #eee9df;
+  /* --background-image: url("./background.jpg"); */
 
   /* Navbar */
-  --nav-back_ground: #d9f4f6;
-  --nav-hover: #9fd9dd;
-  --nav-text: black;
+  --nav-back_ground: #e4ddd0;
+  --nav-hover: #d0be9f;
+  --nav-text: #715529;
+  --nav-text-hover: #fefefe;
 
   /* Footer */
-  --footer: var(--footer-color);
+  --footer: #e4ddd0;
 
   /* Buttons */
-  --btn-color: var(--primary-color);
-  --btn-color-hover: var(--hover-color);
+  --btn-color: #927448;
+  --btn-color-hover: #715529;
   --btn-text-color: white;
 
   /* Article List & Glossary */
-  --glossary-hightlight: var(--theme_blue);
-  --selecter-banner: var(--theme_blue);
-  --banner: var(--primary-color);
+  --glossary-hightlight: #927448;
+  --selecter-banner: #baa57f;
+  --banner: #baa57f;
 
   /* Page Elements */
-  --title-text: black;
-  --header-text: black;
-  --header: var(--header-color);
+  --title-text: #715529;
+  --header-text: #715529;
+  --header: #eee9df;
 
-  --text: black;
+  /* Tree elements */
+  --border: #715529;
+  --box-color: white;
+
+  /* Card elements */
+  --card-color: #e4ddd0;
+  --card-title: #715529;
+  --card-border: #715529;
+
+  --text: #715529;
   --placeholder-text: #aaa;
   --error-message: red;
 
   --login-container: #f5f5f5;
-  --card-color: rgba(225, 234, 243, 0.718);
+
+  --about-hover: #715529;
 }
 
 .App {
@@ -48,6 +56,10 @@
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+.navbar a:hover {
+  color: var(--nav-text-hover);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -80,6 +92,14 @@ h3 {
   color: var(--header-text);
 }
 
+.list-group-item {
+  color: var(--header-text);
+}
+
+.list-group-item:hover {
+  color: var(--about-hover);
+}
+
 .list-group-item.active {
   background-color: var(--btn-color-hover);
   border-color: var(--btn-color-hover);
@@ -105,9 +125,9 @@ h3 {
   background-color: var(--footer);
   padding: 1rem;
   width: 100%;
-  position: absolute;
-  bottom: 0;  
-  height: 4em;
+  position: sticky;
+  color: var(--nav-text);
+  font-weight: 400;
 }
 
 @keyframes App-logo-spin {

@@ -16,7 +16,7 @@
 
 .publish-state {
   margin-right: 1rem;
-  color: var(--primary-color);
+  color: var(--header-text);
   font-size: 0.9rem;
 }
 

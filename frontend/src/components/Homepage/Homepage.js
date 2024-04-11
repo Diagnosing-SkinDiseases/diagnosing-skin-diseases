@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
-import "../CSS/Homepage.css";
 import { apiGetAllTrees } from "../../apiControllers/treeApiController";
+import "../CSS/Homepage.css";
 
 const Card = ({ title, image, aboutLink, treeId }) => {
   const navigate = useNavigate();
@@ -40,7 +40,14 @@ const Card = ({ title, image, aboutLink, treeId }) => {
         <div className="card-actions">
           <AboutButton></AboutButton>
           <button
-            className="btn card-action-btn"
+            href={aboutLink}
+            className="homepage-button"
+            onClick={() => (window.location.href = aboutLink)}
+          >
+            About
+          </button>
+          <button
+            className="homepage-button"
             onClick={() => navigate(`/trees/${treeId}`)}
           >
             Start Diagnosis
@@ -102,7 +109,7 @@ function Homepage() {
     <div className="Homepage">
       <div className="container-fluid">
         <h2 className="homepage-text my-4">
-          Primary Lesions & Diagnostic Groups
+          Diagnose by Primary Lesion & Condition
         </h2>
         <Slider {...settings}>
           {trees.map((tree, index) => (

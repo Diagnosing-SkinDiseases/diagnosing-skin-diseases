@@ -30,9 +30,8 @@
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: stretch;
-  /* gap: 1rem; Gap between picture and text */
   margin-bottom: 1rem;
-  border: 0.3rem solid var(--theme_blue);
+  border: 2px solid var(--card-border);
 }
 
 .card-custom {
@@ -41,65 +40,58 @@
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   flex: 1 0 calc(33.333% - 40px);
-  min-height: 300px;
 }
 
 .card-img-top {
   width: 100%;
-  height: 11rem;
+  height: 12rem;
   object-fit: cover;
   /* Ensure images cover the card area properly */
   object-position: center;
 }
 
 .card-body {
-  max-height: 13vh;
-  min-height: 13vh;
-  background: var(--card-color);
+  max-height: 12vh;
+  min-height: 12vh;
+  background: #e3d2b3;
   opacity: 0.9;
-  /* padding: 1rem; */
   overflow: visible;
+  height: 20px;
+}
+
+.homepage-button {
+  border: 1px solid var(--btn-color);
+  background-color: var(--btn-color);
+  cursor: pointer;
+  border-radius: 5px;
+  text-align: center;
+  width: 40%;
+  color: var(--btn-text-color);
+  font-weight: bold;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 10px;
+}
+
+.homepage-button:hover {
+  background-color: var(--btn-color-hover);
+  color: var(--btn-text-color);
 }
 
 .card-title {
   font-size: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  color: var(--card-title);
+  margin-left: 15px;
 }
 
 .card-actions {
   top: 0.8rem;
   right: 0.8rem;
   display: flex;
-  gap: 1rem;
-}
-
-.card-action-btn {
-  width: 50% !important;
-  background-color: var(--btn-color);
-  color: var(--btn-text-color);
-  /* Text color */
-  border: none;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-}
-
-.btn {
-  height: 2rem !important;
-  border-radius: 2rem;
-}
-
-.card-action-btn:hover {
-  background-color: var(--btn-color-hover);
-  color: var(--btn-text-color);
-}
-
-.btn-container {
-  display: none;
-  /* Hide the original btn-container if not needed */
+  gap: 15px;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
 /* Slick Carousel Customizations */

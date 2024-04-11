@@ -72,7 +72,7 @@ const NavBarComponent = () => {
       name: "How To...",
       subTabs: [
         {
-          name: "Use this website",
+          name: "Use This Website",
           path: "/treatment/how-to-use-this-website/660e2faa2dc5942805a12f08",
         },
         {
