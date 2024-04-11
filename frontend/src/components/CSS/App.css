@@ -35,12 +35,15 @@
   --border: #715529;
   --box-color: white;
 
+  /* Card elements */
+  --card-color: #e4ddd0;
+  --card-title: #715529;
+
   --text: #715529;
   --placeholder-text: #aaa;
   --error-message: red;
 
   --login-container: #f5f5f5;
-  --card-color: #e4ddd0;
 }
 
 .App {
