@@ -5,6 +5,23 @@ import SearchBar from "./SearchBar";
 import LetterFilter from "./LetterFilter";
 import GlossaryContent from "./GlossaryContent";
 
+/**
+ * App Component for Glossary Page
+ *
+ * Manages the state and interactions for a glossary page that displays a list of glossary items
+ * filterable by letters and searchable by terms. It fetches glossary items from the server,
+ * supports preview mode for admin users, and integrates with search and letter filtering components.
+ *
+ * State:
+ *   selectedLetter (String): The currently selected letter for filtering glossary items.
+ *   searchTerm (String): The current search term used to filter glossary items.
+ *   selectedItems (Array): A list of selected or highlighted glossary items.
+ *   glossaryItems (Array): The full list of glossary items fetched from the server.
+ *
+ * Effects:
+ *   useEffect hook is used to fetch glossary items from the API and handle initial preview mode setup
+ *   if accessed from an admin definitions preview path.
+ */
 function App() {
   const [selectedLetter, setSelectedLetter] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -45,20 +62,21 @@ function App() {
       );
   }, []);
 
-  // Function to update searchTerm state from SearchBar
+  // Updates searchTerm state from SearchBar input
   function handleSearch(term) {
     setSearchTerm(term);
-    setSelectedLetter(""); // Clear the selectedLetter when searching
+    setSelectedLetter("");
   }
 
-  // Function to update selectedLetter state from Selector
+  // Updates selectedLetter state from LetterFilter component
   function handleSelectLetter(letter) {
     setSelectedLetter((currentLetter) =>
       currentLetter === letter ? "" : letter
     );
-    setSearchTerm(""); // Clear the searchTerm when selecting a letter
+    setSearchTerm("");
   }
 
+  // Toggle selection state of an item
   function handleSelectItem(item) {
     const index = selectedItems.findIndex(
       (selectedItem) => selectedItem.term === item.term
