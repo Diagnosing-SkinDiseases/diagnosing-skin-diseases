@@ -1,18 +1,24 @@
-import {
-  faAngleDown,
-  faAngleUp,
-  faTimes,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect } from "react";
 import "./styles/AdminCreateTrees.css";
 import { useState } from "react";
 import YesNodeArea from "./NodeAreas/YesNodeArea";
 import NoNodeArea from "./NodeAreas/NoNodeArea";
-import styles from "./styles/styles";
 import RootNodeArea from "./NodeAreas/RootNodeArea";
 
+/**
+ * NodeArea component renders the areas for managing nodes in the decision tree.
+ * @param {Object} props - The props object containing properties passed to the component.
+ * @param {Object} props.rootNode - The root node of the decision tree.
+ * @param {Function} props.setRootNode - Function to set the root node of the decision tree.
+ * @returns {JSX.Element} - Returns the JSX element for the NodeArea component.
+ */
 const NodeArea = ({ rootNode, setRootNode }) => {
+  /**
+   * Recursively collects all nodes in the decision tree.
+   * @param {Object} node - The current node being processed.
+   * @param {Set} uniqueNodes - A Set to store unique node IDs.
+   * @returns {Array} - Returns an array containing all nodes in the decision tree.
+   */
   function collectAllNodes(node, uniqueNodes = new Set()) {
     let allNodes = [];
 
@@ -47,14 +53,17 @@ const NodeArea = ({ rootNode, setRootNode }) => {
   }
 
   useEffect(() => {
+    // Collect all nodes when the rootNode prop changes
     let allNodes = collectAllNodes(rootNode);
     console.log("All Nodes:", allNodes);
   }, [rootNode]);
 
   // Node ID state
   const [idCounter, setIdCounter] = useState(0);
+
   return (
     <>
+      {/* Render RootNodeArea */}
       <RootNodeArea
         rootNode={rootNode}
         setRootNode={setRootNode}
@@ -62,6 +71,7 @@ const NodeArea = ({ rootNode, setRootNode }) => {
         setIdCounter={setIdCounter}
         allNodes={collectAllNodes(rootNode)}
       ></RootNodeArea>
+      {/* Render YesNodeArea */}
       <YesNodeArea
         rootNode={rootNode}
         setRootNode={setRootNode}
@@ -69,6 +79,7 @@ const NodeArea = ({ rootNode, setRootNode }) => {
         setIdCounter={setIdCounter}
         allNodes={collectAllNodes(rootNode)}
       ></YesNodeArea>
+      {/* Render NoNodeArea */}
       <NoNodeArea
         rootNode={rootNode}
         setRootNode={setRootNode}

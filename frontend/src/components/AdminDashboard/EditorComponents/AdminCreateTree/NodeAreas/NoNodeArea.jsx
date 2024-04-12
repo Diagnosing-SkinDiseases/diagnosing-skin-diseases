@@ -2,7 +2,16 @@ import React from "react";
 import styles from "../styles/styles";
 import NodeEditor from "./NodeEditor";
 
-// Component to display all "no" nodes
+/**
+ * NoNodeArea component displays all "no" nodes of a decision tree.
+ * @param {Object} props - The props object containing properties passed to the component.
+ * @param {Object} props.rootNode - The root node of the decision tree.
+ * @param {Function} props.setRootNode - Function to set the root node of the decision tree.
+ * @param {number} props.idCounter - The counter for generating unique node IDs.
+ * @param {Function} props.setIdCounter - Function to set the counter for generating unique node IDs.
+ * @param {Array} props.allNodes - Array containing all nodes in the decision tree.
+ * @returns {JSX.Element|null} - Returns the JSX element for the NoNodeArea component or null if no "no" nodes exist.
+ */
 const NoNodeArea = ({
   rootNode,
   setRootNode,
@@ -10,25 +19,25 @@ const NoNodeArea = ({
   setIdCounter,
   allNodes,
 }) => {
-  // Function to get all no nodes
+  /**
+   * Function to collect all "no" nodes recursively.
+   * @param {Object} node - The current node being analyzed.
+   * @returns {Array} - An array containing all "no" nodes found.
+   */
   function collectNoNodes(node) {
     let noNodes = [];
 
-    // If the current node has "no" children, add them to the array and explore further
     if (node.noChild && node.noChild.length > 0) {
       node.noChild.forEach((child) => {
         if (child.parentId === node.currentId) {
           noNodes.push(child);
         }
-        // Recursively collect "no" nodes from this child
         noNodes = noNodes.concat(collectNoNodes(child));
       });
     }
 
-    // Also explore the "yes" children of the current node for any "no" children they might have
     if (node.yesChild && node.yesChild.length > 0) {
       node.yesChild.forEach((child) => {
-        // Only explore further; don't add the "no" nodes themselves
         noNodes = noNodes.concat(collectNoNodes(child));
       });
     }
@@ -36,15 +45,16 @@ const NoNodeArea = ({
     return noNodes;
   }
 
-  // Recursive function to render "no" nodes
+  /**
+   * Recursive function to render "no" nodes.
+   * @param {Object} node - The current node being rendered.
+   * @returns {JSX.Element[]} - An array of JSX elements representing the rendered "no" nodes.
+   */
   const renderNoNodes = (node) => {
     let noNodes = collectNoNodes(node);
     noNodes.sort((a, b) => {
-      // Remove "node" from the currentId and convert the remainder to an integer
       const idA = parseInt(a.currentId.replace("node", ""));
       const idB = parseInt(b.currentId.replace("node", ""));
-
-      // Compare the integers
       return idA - idB;
     });
 
@@ -58,10 +68,12 @@ const NoNodeArea = ({
           idCounter={idCounter}
           setIdCounter={setIdCounter}
           allNodes={allNodes}
-        ></NodeEditor>
+        />
       );
     });
   };
+
+  // Render NoNodeArea only if "no" nodes exist
   return (
     collectNoNodes(rootNode).length !== 0 && (
       <div style={styles.nodeContainer} className="root-node-section-container">

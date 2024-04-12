@@ -4,7 +4,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
-// Component to edit a single node
+/**
+ * Component to edit a single node within a decision tree.
+ * @param {Object} props - The props object containing properties passed to the component.
+ * @param {Object} props.rootNode - The root node of the decision tree.
+ * @param {Function} props.setRootNode - Function to set the root node of the decision tree.
+ * @param {Object} props.currentNode - The node currently being edited.
+ * @param {number} props.idCounter - The counter for generating unique node IDs.
+ * @param {Function} props.setIdCounter - Function to set the counter for generating unique node IDs.
+ * @param {Array} props.allNodes - Array containing all nodes in the decision tree.
+ * @returns {JSX.Element} - Returns the JSX element for the NodeEditor component.
+ */
 const NodeEditor = ({
   rootNode,
   setRootNode,
@@ -33,12 +43,20 @@ const NodeEditor = ({
     setExistingDropdownVisibleNo((prevState) => !prevState);
   };
 
+  /**
+   * Generates a new unique node ID based on the current counter value.
+   * @returns {string} - The generated node ID.
+   */
   const generateNodeId = () => {
     setIdCounter((prevVal) => prevVal + 1);
     return `node${idCounter + 1}`;
   };
 
-  // Generate a new node with a unique ID
+  /**
+   * Generates a new node with the provided content and a unique ID.
+   * @param {string} content - The content of the new node.
+   * @returns {Object} - The newly generated node.
+   */
   function generateNode(content) {
     const newId = generateNodeId();
     const newNode = {
@@ -51,7 +69,11 @@ const NodeEditor = ({
     return newNode;
   }
 
-  // Node interaction handlers
+  /**
+   * Updates the content of a specific node within the decision tree.
+   * @param {string} nodeIdToUpdate - The ID of the node to update.
+   * @param {string} newContent - The new content for the node.
+   */
   const updateNodeContent = (nodeIdToUpdate, newContent) => {
     const updateContentRecursively = (node) => {
       if (node.currentId === nodeIdToUpdate) {
@@ -72,14 +94,18 @@ const NodeEditor = ({
     setRootNode((prevRootNode) => updateContentRecursively(prevRootNode));
   };
 
-  // Add a new node to the yesChild array of a target node
+  /**
+   * Adds a new node to the yesChild array of a target node within the decision tree.
+   * @param {string} targetNodeId - The ID of the target node to add the new node to.
+   * @param {Object} nodeToInsert - The new node to insert.
+   */
   const addYesChild = (targetNodeId, nodeToInsert) => {
     const addYesChildToTarget = (node) => {
       if (node.currentId === targetNodeId) {
         // Match found, create a new node with updated yesChild array
         return {
           ...node,
-          yesChild: node.yesChild.concat(nodeToInsert), // concat returns a new array
+          yesChild: node.yesChild.concat(nodeToInsert),
         };
       } else if (node.noChild.length || node.yesChild.length) {
         // No match, but the node has children. Attempt to update children.
@@ -98,7 +124,11 @@ const NodeEditor = ({
     setRootNode(newRootNode); // This should trigger a re-render
   };
 
-  // Add a new node to the noChild array of a target node
+  /**
+   * Adds a new node to the noChild array of a target node within the decision tree.
+   * @param {string} targetNodeId - The ID of the target node to add the new node to.
+   * @param {Object} nodeToInsert - The new node to insert.
+   */
   const addNoChild = (targetNodeId, nodeToInsert) => {
     const addNoChildToTarget = (node) => {
       if (node.currentId === targetNodeId) {
@@ -184,7 +214,11 @@ const NodeEditor = ({
     }
   };
 
-  // Delete a node from the tree
+  /**
+   * Deletes a node from the tree.
+   * @param {Event} event - The event object triggered by the click event.
+   * @returns {void}
+   */
   const onDeleteNode = (event) => {
     let targetNodeId = event.currentTarget.getAttribute("data-node-id");
     deleteChild(targetNodeId);

@@ -2,7 +2,16 @@ import React from "react";
 import styles from "../styles/styles";
 import NodeEditor from "./NodeEditor";
 
-// Component to display all "yes" nodes
+/**
+ * YesNodeArea component displays all "yes" nodes in a decision tree.
+ * @param {Object} props - The props object containing properties passed to the component.
+ * @param {Object} props.rootNode - The root node of the decision tree.
+ * @param {Function} props.setRootNode - Function to set the root node of the decision tree.
+ * @param {number} props.idCounter - The counter for generating unique node IDs.
+ * @param {Function} props.setIdCounter - Function to set the counter for generating unique node IDs.
+ * @param {Array} props.allNodes - Array containing all nodes in the decision tree.
+ * @returns {JSX.Element|null} - Returns the JSX element for the YesNodeArea component if there are "yes" nodes, otherwise returns null.
+ */
 const YesNodeArea = ({
   rootNode,
   setRootNode,
@@ -10,25 +19,25 @@ const YesNodeArea = ({
   setIdCounter,
   allNodes,
 }) => {
-  // Function to get all yes nodes
+  /**
+   * Function to collect all "yes" nodes from a given node in the decision tree.
+   * @param {Object} node - The current node in the decision tree.
+   * @returns {Array} - Array containing all "yes" nodes.
+   */
   function collectYesNodes(node) {
     let yesNodes = [];
 
-    // If the current node has "yes" children, add them to the array and explore further
     if (node.yesChild && node.yesChild.length > 0) {
       node.yesChild.forEach((child) => {
         if (child.parentId === node.currentId) {
           yesNodes.push(child);
         }
-        // Recursively collect "yes" nodes from this child
         yesNodes = yesNodes.concat(collectYesNodes(child));
       });
     }
 
-    // Also explore the "no" children of the current node for any "yes" children they might have
     if (node.noChild && node.noChild.length > 0) {
       node.noChild.forEach((child) => {
-        // Only explore further; don't add the "no" nodes themselves
         yesNodes = yesNodes.concat(collectYesNodes(child));
       });
     }
@@ -36,15 +45,16 @@ const YesNodeArea = ({
     return yesNodes;
   }
 
-  // Recursive function to render "yes" nodes
+  /**
+   * Function to render all "yes" nodes recursively.
+   * @param {Object} node - The current node in the decision tree.
+   * @returns {JSX.Element[]} - Array of JSX elements representing the "yes" nodes.
+   */
   const renderYesNodes = (node) => {
     let yesNodes = collectYesNodes(node);
     yesNodes.sort((a, b) => {
-      // Remove "node" from the currentId and convert the remainder to an integer
       const idA = parseInt(a.currentId.replace("node", ""));
       const idB = parseInt(b.currentId.replace("node", ""));
-
-      // Compare the integers
       return idA - idB;
     });
 
@@ -62,6 +72,7 @@ const YesNodeArea = ({
       );
     });
   };
+
   return (
     collectYesNodes(rootNode).length !== 0 && (
       <div style={styles.nodeContainer} className="root-node-section-container">
