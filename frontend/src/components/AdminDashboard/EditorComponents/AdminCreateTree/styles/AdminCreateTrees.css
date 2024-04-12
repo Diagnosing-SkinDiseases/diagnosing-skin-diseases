@@ -49,7 +49,7 @@ h3 {
 }
 
 .white-bar-input-dropdown {
-  width: calc(100% - 40px);
+  width: calc(100% - 35px);
   margin-top: 0px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin-bottom: 0px;
@@ -87,8 +87,10 @@ h3 {
 .dropdown-button {
   width: 40px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border: 1px solid #ccc;
+  border: 0px;
   padding: 10px;
+  background-color: var(--btn-color);
+  color: var(--btn-text-color);
 }
 
 .dropdown-button:focus {
@@ -172,4 +174,19 @@ h3 {
 .existing-nodes-dropdown-item {
   cursor: pointer;
   transition: background-color 0.3s;
+  background-color: white
+}
+
+.existing-nodes-dropdown-item:hover {
+  background-color: rgb(253, 252, 252);
+  /* Change to gray on hover */
+}
+
+.tree-delete-button {
+  width: 40px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 0px;
+  padding: 10px;
+  background-color: var(--btn-color);
+  color: var(--btn-text-color);
 }

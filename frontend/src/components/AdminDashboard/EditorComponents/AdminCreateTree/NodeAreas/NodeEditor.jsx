@@ -216,6 +216,7 @@ const NodeEditor = ({
         {currentNode.parentId != null && (
           <button
             style={styles.deleteButton}
+            className="tree-delete-button"
             data-node-id={currentNode.currentId}
             onClick={onDeleteNode}
           >
@@ -241,6 +242,7 @@ const NodeEditor = ({
                 />
                 <button
                   style={styles.deleteButton}
+                  className="tree-delete-button"
                   data-node-id={node.currentId}
                   onClick={onDeleteNode}
                 >
@@ -263,6 +265,7 @@ const NodeEditor = ({
                 />
                 <button
                   style={styles.deleteButton}
+                  className="tree-delete-button"
                   data-node-id={node.currentId}
                   onClick={onDeleteNode}
                 >
