@@ -12,6 +12,7 @@
 `Admin must be logged in.`
 ***
 ### Creating a New Article
+![Local GIF](./assets/article-creation.gif "Article creation example")
 
 1. **Navigate to Articles/ List of Articles**
 
@@ -46,6 +47,8 @@
 
     Click the **Publish** button to save and publicly display the new article.
 
+![Local Image](./assets/manage-article.jpg "Review and save article example")
+
 ***
 
 ### Managing Existing Articles
@@ -66,6 +69,8 @@
 
     Click the **Delete** button (trash icon) next to an article to remove the article permanently.
 
+![Local Image](./assets/article-management.jpg "Manage article example")
+
 ***
 
 ### Additional Management Options
@@ -73,7 +78,9 @@
 - **Filtering**
 
   To filter articles based on their publication status, select the relevant status in the dropdown filter next to the "Add article" button.
+![Local Image](./assets/filter-article.jpg "Filter example")
 
 - **Searching**
 
   Enter article title into the search bar next to the filter and press the Enter key or the search icon to quickly find articles.
+![Local Image](./assets/search-article.jpg "Search example")
