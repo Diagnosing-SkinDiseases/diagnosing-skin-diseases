@@ -12,6 +12,7 @@
 ```Admin must be logged in.```
 ***
 ### Creating a New Definition
+![Local GIF](./assets/definition-creation.gif "Definition creation example")
 
 1. **Navigate to Glossary/ List of Definitions**
 
@@ -39,6 +40,7 @@
 
    Click the **Publish** button to save and publicly display the new definition.
    
+![Local Image](./assets/manage-definition.jpg "Review and save definition example")
 
 ***
 ### Managing Existing Definitions
@@ -60,6 +62,7 @@
 
    Click the **Delete** button (trash icon) next to a definition to remove the definition permanently.
 
+![Local Image](./assets/definition-management.jpg "Manage definition example")
 ***
 
 ### Additiional Management Options
@@ -67,7 +70,9 @@
 - **Filtering**
 
    To filter definitions based on their publication status select relevant status in the dropdown filter next to "Add definition" button.
+![Local Image](./assets/filter.jpg "Filter example")
 
 - **Searching** 
 
    Enter term into search bar next to filter and press Enter key or search icon to quickly find definitions.
+![Local Image](./assets/search.jpg "Search example")
