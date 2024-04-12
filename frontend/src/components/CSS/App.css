@@ -12,7 +12,7 @@
   --nav-text-hover: #fefefe;
 
   /* Footer */
-  --footer: #e4ddd0;
+  --footer: #715529;
 
   /* Buttons */
   --btn-color: #927448;
@@ -125,6 +125,7 @@ h3 {
   bottom: 0;
   height: 4em;
   text-align: center;
+  color: var(--footer)
 }
 
 @keyframes App-logo-spin {
