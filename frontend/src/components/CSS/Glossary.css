@@ -96,6 +96,7 @@ input:focus {
   margin-bottom: 10px;
   font-size: medium;
   color: var(--nav-text);
+  font-weight: 400;
 }
 
 .glossary-list ul {
