@@ -202,7 +202,10 @@ function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
         <div className="footer-placeholder"></div>
-        <footer className="footer">© Diagnosing Skin Diseases</footer>
+        <footer className="footer">
+          © 2024 Diagnosing Skin Diseases and Dr. Eileen Murray. Questions?
+          Contact us.
+        </footer>
       </div>
     </AuthProvider>
   );
