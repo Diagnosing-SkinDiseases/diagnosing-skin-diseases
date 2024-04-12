@@ -4,6 +4,7 @@ import "../CSS/Glossary.css";
 import SearchBar from "./SearchBar";
 import LetterFilter from "./LetterFilter";
 import GlossaryContent from "./GlossaryContent";
+import LoadingPage from "../Loading/LoadingPage";
 
 /**
  * App Component for Glossary Page
@@ -27,6 +28,7 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedItems, setSelectedItems] = useState([]);
   const [glossaryItems, setGlossaryItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const url = new URL(window.location.href);
@@ -56,6 +58,7 @@ function App() {
         }
 
         setGlossaryItems(publishedItems);
+        setIsLoading(false);
       })
       .catch((error) =>
         console.error("Error fetching glossary items: ", error)
@@ -103,13 +106,17 @@ function App() {
           onSelectLetter={handleSelectLetter}
           selectedLetter={selectedLetter}
         />
-        <GlossaryContent
-          items={glossaryItems}
-          selectedLetter={selectedLetter}
-          searchTerm={searchTerm}
-          selectedItems={selectedItems}
-          onSelectItem={handleSelectItem}
-        />
+        {isLoading ? (
+          <LoadingPage></LoadingPage>
+        ) : (
+          <GlossaryContent
+            items={glossaryItems}
+            selectedLetter={selectedLetter}
+            searchTerm={searchTerm}
+            selectedItems={selectedItems}
+            onSelectItem={handleSelectItem}
+          />
+        )}
       </div>
     </div>
   );
