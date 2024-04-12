@@ -20,6 +20,7 @@ Between the opening `<a>` tag and the closing `</a>` tag, type the text to be di
 
 #### 1.2. Specify the Link URL
 Inside the quotation marks of the href attribute, paste or type the URL of the article or page to link to. This URL is the destination of the link.
+![Local Image](./assets/linking-articles.jpg "Link articles example")
 ***
 ### **Link to Another Article (Same Browser Tab)**
 
