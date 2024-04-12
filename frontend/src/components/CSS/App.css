@@ -1,7 +1,5 @@
 :root {
   --primary-font: "Roboto";
-  --primary-color: #fefefe;
-  --theme_blue: #e4ddd0;
 
   /* Background */
   --back_ground: #eee9df;
@@ -99,7 +97,7 @@ h3 {
 }
 
 .list-group-item:hover {
-  color: var(--about-hover);
+  color: var(--btn-color-hover);
 }
 
 .list-group-item.active {
