@@ -42,7 +42,11 @@ const parseData = ({ type, content }, index) => {
       }
 
       let videoId = extractYouTubeVideoID(content);
-      return <VideoComponent key={index} videoId={videoId}></VideoComponent>;
+      return (
+        <div className="user-article-video-container">
+          <VideoComponent key={index} videoId={videoId}></VideoComponent>
+        </div>
+      );
     case ArticleContentType.SUBTITLE:
       return (
         <p key={index} style={styles.subtitle}>
