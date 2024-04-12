@@ -8,7 +8,7 @@ import '../../../CSS/Tree/SymbolIndication.css';
  */
 const SymbolIndication = () => {
     const blueNode = "#1E90FF";
-    const yellowNode = "#FFD700";
+    const yellowNode = "#ff9700";
     const greenNode = "#6ad669";
     return (
         <div className="symbol-indication">

@@ -82,7 +82,7 @@ const UserTree = ({ treeData }) => {
   const greenArrow = "#3fc005"; // Set the green arrow color for yes branch
   const redArrow = "#f44336"; // Set the red arrow color for no branch
   const blueNode = "#1E90FF"; // Set the blue node color for question nodes
-  const yellowNode = "#FFD700"; // Set the yellow node color for result nodes
+  const yellowNode = "#ff9700"; // Set the yellow node color for result nodes
   const greenNode = "#6ad669"; // Set the green node color for current node
 
   const currentNodeIdRef = useRef(null); // Ref to track the current node ID

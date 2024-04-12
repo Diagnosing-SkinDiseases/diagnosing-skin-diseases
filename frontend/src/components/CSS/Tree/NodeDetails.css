@@ -43,5 +43,5 @@
 
 .btn-back-to-current-node:hover,
 .btn-jump-to-this-node:hover {
-  background-color: #0056b3;
+  background-color: var(--btn-color-hover);
 }

@@ -17,7 +17,7 @@
 
 .node-component:hover {
     cursor: pointer;
-    border-color: #014d62;
+    border-color: black;
 }
 
 .currentNode {
