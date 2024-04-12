@@ -3,14 +3,22 @@ import ArticleContent from "./ArticleContent";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
+/**
+ * ArticleBG component renders the background layout for an article,
+ * including the article content and navigation buttons.
+ * @param {Object} data - The data object containing article content.
+ * @returns {JSX.Element} - Returns the JSX element for the article background.
+ */
 const ArticleBG = ({ data }) => {
+  // Get search params and navigate function from react-router-dom
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  // Back button for certain cases
+  // Back button component for certain cases
   const BackButton = () => {
+    // Check if current URL pathname is "/about" for excluding back button
     if (new URL(window.location).pathname === "/about") {
-      return;
+      return null;
     }
 
     return (
@@ -23,9 +31,11 @@ const ArticleBG = ({ data }) => {
     );
   };
 
-  // To tree button for certain cases
+  // Start diagnosis button component for certain cases
   const ToTreeButton = () => {
+    // Get treeId from search parameters
     const treeId = searchParams.get("treeId");
+    // Render button to start diagnosis if treeId is available
     return (
       <button
         className="article-nav-button button"
@@ -38,14 +48,18 @@ const ArticleBG = ({ data }) => {
 
   return (
     <>
-      {/* Background */}
+      {/* Background layout */}
       <div className="container pb-5 mt-5">
         <div className="row justify-content-center article-container">
+          {/* Render article content */}
           <ArticleContent data={data}></ArticleContent>
         </div>
+        {/* Navigation buttons */}
         <div className="row justify-content-between mt-3 px-2">
+          {/* Render BackButton component */}
           <BackButton></BackButton>
-          {searchParams.get("treeId") && ToTreeButton()}
+          {/* Render ToTreeButton component if treeId is available */}
+          {searchParams.get("treeId") && <ToTreeButton />}
         </div>
       </div>
     </>
