@@ -4,6 +4,7 @@ import SearchBar from "./SearchBar";
 import LetterFilter from "./LetterFilter";
 import ArticleListContent from "./ArticleListContent";
 import "../CSS/ArticleList.css";
+import LoadingPage from "../Loading/LoadingPage";
 
 /**
  * ArticleListPage Component
@@ -32,6 +33,7 @@ function ArticleListPage() {
   const [selectedLetter, setSelectedLetter] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [articles, setArticles] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     apiGetAllArticles()
@@ -41,6 +43,7 @@ function ArticleListPage() {
           (article) => article.status === "PUBLISHED"
         );
         setArticles(publishedArticles);
+        setIsLoading(false);
       })
       .catch((error) => console.error("Error fetching articles: ", error));
   }, []);
@@ -71,11 +74,15 @@ function ArticleListPage() {
           onSelectLetter={handleSelectLetter}
           selectedLetter={selectedLetter}
         />
-        <ArticleListContent
-          articles={articles}
-          selectedLetter={selectedLetter}
-          searchTerm={searchTerm}
-        />
+        {isLoading ? (
+          <LoadingPage></LoadingPage>
+        ) : (
+          <ArticleListContent
+            articles={articles}
+            selectedLetter={selectedLetter}
+            searchTerm={searchTerm}
+          />
+        )}
       </div>
     </div>
   );
