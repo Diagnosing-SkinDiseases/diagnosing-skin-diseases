@@ -27,6 +27,7 @@ const Article = ({ articleId = "" }) => {
     if (isPreviewMode) {
       const data = sessionStorage.getItem("previewData");
       setData(JSON.parse(data));
+      setIsLoading(false);
     } else if (articleId) {
       getArticle(articleId);
     } else if (paramId) {
