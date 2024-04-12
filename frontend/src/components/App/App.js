@@ -201,7 +201,7 @@ function App() {
           {/* 404 */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
-        <div class="footer-placeholder"></div>
+        <div className="footer-placeholder"></div>
         <footer className="footer">© Diagnosing Skin Diseases</footer>
       </div>
     </AuthProvider>
