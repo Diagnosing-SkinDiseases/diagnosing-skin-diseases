@@ -15,6 +15,7 @@ import {
   default as UserTree,
 } from "../UserTree/UserTrees/BuildUserTree";
 import { AuthProvider, useAuth } from "./AuthContext";
+import NotFoundPage from "../Error/NotFound";
 
 // Admin Imports
 import AdminDashboard from "../AdminDashboard/AdminDashboard";
@@ -196,6 +197,9 @@ function App() {
 
           {/* About DSD */}
           <Route path="/about" element={<About />}></Route>
+
+          {/* 404 */}
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
         <div class="footer-placeholder"></div>
         <footer className="footer">© Diagnosing Skin Diseases</footer>
