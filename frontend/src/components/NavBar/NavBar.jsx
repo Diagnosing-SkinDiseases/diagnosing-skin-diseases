@@ -6,7 +6,7 @@ import "../CSS/NavBarComponent.css";
 
 /**
  * NavSubtab Component
- * 
+ *
  * A reusable component for rendering nested dropdown menus within the NavBar. It shows nested subtabs when the user
  * hovers over an item that contains further nested items. It hides when there are no items to show.
  *
@@ -53,7 +53,7 @@ const NavSubtab = ({ show, titles }) => {
 
 /**
  * NavBarComponent
- * 
+ *
  * Main navigation bar component of the application. It displays different links based on the user's authentication
  * status and includes functionality for nested subtabs. It uses conditional rendering to switch between links for
  * authenticated users and guests. The component also handles navigation and active link highlighting.
@@ -180,7 +180,10 @@ const NavBarComponent = () => {
   ];
 
   // Use appropriate links based on authentication status
-  const links = isLoggedIn ? authLinks : guestLinks;
+  const links =
+    isLoggedIn && new URL(window.location).pathname.includes("/admin")
+      ? authLinks
+      : guestLinks;
 
   return (
     <div className="navbar">
