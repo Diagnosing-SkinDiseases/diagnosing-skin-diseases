@@ -81,6 +81,23 @@ const Card = ({ title, image, aboutLink, treeId }) => {
  */
 function Homepage() {
   const [trees, setTrees] = useState([]);
+  const [showArrows, setShowArrows] = useState(true);
+
+  const PrevArrow = (props) => {
+    const { className, style, onClick } = props;
+    if (showArrows) {
+      return <div className={className} onClick={onClick} />;
+    }
+    return <></>;
+  };
+
+  const NextArrow = (props) => {
+    const { className, style, onClick } = props;
+    if (showArrows) {
+      return <div className={className} onClick={onClick} />;
+    }
+    return <></>;
+  };
 
   useEffect(() => {
     const fetchTrees = async () => {
@@ -90,6 +107,7 @@ function Homepage() {
           (tree) => tree.status === "PUBLISHED"
         );
         setTrees(publishedTrees);
+        setShowArrows(publishedTrees.length > 8);
       } catch (error) {
         console.error("Failed to fetch trees", error);
       }
@@ -104,6 +122,8 @@ function Homepage() {
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 4,
+    prevArrow: <PrevArrow />,
+    nextArrow: <NextArrow />,
     rows: 2,
     responsive: [
       {
