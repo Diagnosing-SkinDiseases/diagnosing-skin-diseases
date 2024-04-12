@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import { apiGetAllTrees } from "../../apiControllers/treeApiController";
 import "../CSS/Homepage.css";
+import LoadingPage from "../Loading/LoadingPage";
 
 /**
  * Card Component
@@ -82,6 +83,7 @@ const Card = ({ title, image, aboutLink, treeId }) => {
 function Homepage() {
   const [trees, setTrees] = useState([]);
   const [showArrows, setShowArrows] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   const PrevArrow = (props) => {
     const { className, style, onClick } = props;
@@ -108,6 +110,7 @@ function Homepage() {
         );
         setTrees(publishedTrees);
         setShowArrows(publishedTrees.length > 8);
+        setIsLoading(false);
       } catch (error) {
         console.error("Failed to fetch trees", error);
       }
@@ -151,17 +154,21 @@ function Homepage() {
         <h2 className="homepage-text my-4">
           Diagnose by Primary Lesion & Condition
         </h2>
-        <Slider {...settings}>
-          {trees.map((tree, index) => (
-            <Card
-              key={index}
-              title={tree.name}
-              image={tree.coverImage}
-              aboutLink={tree.aboutLink}
-              treeId={tree._id}
-            />
-          ))}
-        </Slider>
+        {isLoading ? (
+          <LoadingPage></LoadingPage>
+        ) : (
+          <Slider {...settings}>
+            {trees.map((tree, index) => (
+              <Card
+                key={index}
+                title={tree.name}
+                image={tree.coverImage}
+                aboutLink={tree.aboutLink}
+                treeId={tree._id}
+              />
+            ))}
+          </Slider>
+        )}
       </div>
     </div>
   );
