@@ -5,6 +5,29 @@ import LetterFilter from "./LetterFilter";
 import ArticleListContent from "./ArticleListContent";
 import "../CSS/ArticleList.css";
 
+/**
+ * ArticleListPage Component
+ *
+ * Serves as the main container for the article list interface. It manages the state for articles fetched
+ * from an API, as well as states for user-selected search terms and letters. This component also handles
+ * the filtering logic based on user input and displays articles using child components such as SearchBar,
+ * LetterFilter, and ArticleListContent.
+ *
+ * State:
+ *   selectedLetter (String): The currently selected letter for filtering articles by their starting letter.
+ *   searchTerm (String): The current search term input by the user for filtering articles.
+ *   articles (Array): A list of articles retrieved from the server and filtered by their publication status.
+ *
+ * Effects:
+ *   useEffect is used to fetch all articles from the backend via API on component mount. Only articles
+ *   with a status of "PUBLISHED" are kept in the state to be displayed.
+ *
+ * Functionality:
+ *   - handleSearch: Updates the searchTerm state and clears the selectedLetter state to ensure
+ *     that filtering by search term takes precedence.
+ *   - handleSelectLetter: Updates the selectedLetter state and clears the searchTerm, allowing
+ *     the user to switch between filtering by letter and by search text dynamically.
+ */
 function ArticleListPage() {
   const [selectedLetter, setSelectedLetter] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
