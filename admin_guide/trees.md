@@ -15,6 +15,7 @@
 ***
 
 ### Creating a New Diagnostic Tree
+![Local GIF](./assets/tree-creation.gif "Tree creation example")
 
 1. **Navigate to Diagnostic Trees/ List of Diagnostic Trees**
 
@@ -49,6 +50,21 @@
 
    Click the **Publish** button to save and publicly display the new Diagnostic Tree.
 
+![Local Image](./assets/manage-tree.jpg "Review and save tree example")
+
+### Tree Creation Tips
+
+1. **Tag Tree Nodes**
+
+   Tag the nodes you create with x/y, where x is the depth of the tree, and y is the position of the node from the left side of the tree.
+![Local Image](./assets/tag-tree-editor.jpg "Tag Tree Editor")
+![Local Image](./assets/tag-tree-preview.jpg "Tag Tree Editor")
+
+2. **Clean Up**
+
+   After previewing your nodes, clean up any nodes you have tagged or made notes on. Save or Publish as desired.
+![Local Image](./assets/tag-tree-clean.jpg "Tag Tree Editor")
+
 ***
 
 ### Managing Existing Diagnostic Trees
@@ -70,6 +86,8 @@
 
    Click the **Delete** button (trash icon) next to a diagnostic tree to remove the diagnostic tree permanently.
 
+![Local Image](./assets/tree-management.jpg "Manage tree example")
+
 ***
 
 ### Additional Management Options
@@ -77,7 +95,9 @@
 - **Filtering**
 
    To filter Diagnostic Trees based on their publication status select relevant status in the dropdown filter next to "Add Diagnostic Tree" button.
+![Local Image](./assets/filter-tree.jpg "Filter example")
 
 - **Searching**
 
    Enter term into search bar next to filter and press Enter key or search icon to quickly find Diagnostic Trees.
+   ![Local Image](./assets/search-tree.jpg "Search example")
