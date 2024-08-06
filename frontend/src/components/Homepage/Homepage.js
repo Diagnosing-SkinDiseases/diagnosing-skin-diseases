@@ -8,8 +8,8 @@ import LoadingPage from "../Loading/LoadingPage";
 /**
  * Card Component
  *
- * This component renders a card for each diagnostic tree. It displays the tree's image, title, and provides
- * buttons to navigate to detailed information about the tree or to start a diagnosis.
+ * This component renders a card for each diagnostic tree. It displays the tree's image, title, a short description,
+ * and a button to start a diagnosis.
  *
  * Props:
  *   title (String): Title of the diagnostic tree.
@@ -20,38 +20,25 @@ import LoadingPage from "../Loading/LoadingPage";
 const Card = ({ title, image, aboutLink, treeId }) => {
   const navigate = useNavigate();
 
-  const AboutButton = () => {
-    console.log(aboutLink);
-    if (!aboutLink.includes("/treatment")) {
-      return (
-        <button className="homepage-button" onClick={() => navigate(`/`)}>
-          About
-        </button>
-      );
-    }
-
-    return (
-      <button
-        className="homepage-button"
-        onClick={() =>
-          navigate(`${new URL(aboutLink).pathname}?treeId=${treeId}`)
-        }
-      >
-        About
-      </button>
-    );
-  };
-
   return (
     <div className="card card-custom card-container">
       <img src={image} alt={title} className="card-img-top" />
-
       <div className="card-body">
         <div className="card-content">
           <h3 className="card-title">{title}</h3>
+          <p className="card-description">
+            This is a brief description of the diagnostic tree. It provides...
+            <a
+              className="card-link"
+              href={aboutLink}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Read more
+            </a>
+          </p>
         </div>
         <div className="card-actions">
-          <AboutButton></AboutButton>
           <button
             className="homepage-button"
             onClick={() => navigate(`/trees/${treeId}`)}
@@ -68,7 +55,7 @@ const Card = ({ title, image, aboutLink, treeId }) => {
  * Homepage Component
  *
  * Main landing page of the application displaying a slider of diagnostic trees. Each tree is presented
- * with its cover image and name, along with options to learn more or start a diagnosis. The trees are
+ * with its cover image and name, along with an option to start a diagnosis. The trees are
  * fetched from an API and filtered to only show those that are published.
  *
  * State:
@@ -105,6 +92,7 @@ function Homepage() {
     const fetchTrees = async () => {
       try {
         const response = await apiGetAllTrees();
+        console.log("Trees payload: ", response.data);
         const publishedTrees = response.data.filter(
           (tree) => tree.status === "PUBLISHED"
         );
@@ -118,6 +106,33 @@ function Homepage() {
 
     fetchTrees();
   }, []);
+
+  useEffect(() => {
+    const adjustCardTitles = () => {
+      const cardTitles = document.querySelectorAll(".card-title");
+      let maxHeight = 0;
+      cardTitles.forEach((title) => {
+        title.style.height = "auto";
+        const height = title.offsetHeight;
+        if (height > maxHeight) {
+          maxHeight = height;
+        }
+      });
+      cardTitles.forEach((title) => {
+        title.style.height = `${maxHeight}px`;
+      });
+    };
+
+    // Call the function to adjust the card titles
+    adjustCardTitles();
+
+    // Optionally, you might want to call this function on window resize
+    window.addEventListener("resize", adjustCardTitles);
+
+    return () => {
+      window.removeEventListener("resize", adjustCardTitles);
+    };
+  }, [trees]);
 
   const settings = {
     dots: false,
@@ -155,7 +170,7 @@ function Homepage() {
           Diagnose by Primary Lesion & Condition
         </h2>
         {isLoading ? (
-          <LoadingPage></LoadingPage>
+          <LoadingPage />
         ) : (
           <Slider {...settings}>
             {trees.map((tree, index) => (
