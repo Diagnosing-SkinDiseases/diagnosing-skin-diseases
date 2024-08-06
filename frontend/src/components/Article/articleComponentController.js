@@ -62,7 +62,6 @@ const parseData = ({ type, content }, index) => {
         </p>
       );
     default:
-      console.log("No match");
       return null;
   }
 };

@@ -97,13 +97,12 @@ const List = ({ initialItems = [], contentType, searchQuery }) => {
         updatePromise = apiUpdateTree(updatedItem);
         break;
       default:
-        console.log("Unknown content type for processing");
+        console.error("Unknown content type for processing");
         return;
     }
     // Update the item status in the database
     updatePromise
       .then(() => {
-        console.log("items", items);
         const newItems = items.map((item, i) => {
           if (i === index) {
             return { ...item, published: !item.published };
@@ -137,7 +136,6 @@ const List = ({ initialItems = [], contentType, searchQuery }) => {
    * @param {number} id - The id of the item to be deleted.
    */
   const handleDeleteBtn = (index, id) => {
-    console.log("Delete clicked", id);
     let deletePromise;
     const newItems = items.filter((_, i) => i !== index);
 
@@ -152,17 +150,16 @@ const List = ({ initialItems = [], contentType, searchQuery }) => {
         deletePromise = apiDeleteTree(id);
         break;
       default:
-        console.log("Unknown content type for processing");
+        console.error("Unknown content type for processing");
         return;
     }
     // Delete the item from the database
     deletePromise
       .then((response) => {
-        console.log("Deleted", response.data);
         setItems(newItems);
       })
       .catch((error) => {
-        console.log("Error:", error);
+        console.error("Error:", error);
       });
   };
 

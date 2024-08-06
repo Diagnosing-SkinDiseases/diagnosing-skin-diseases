@@ -63,9 +63,7 @@ const Article = ({ onUpdate}) => {
   useEffect(() => {
     if (article) {
       apiGetArticle(article).then((response) => {
-        console.log(response.data);
         const parsedContent = parseArticleData(response.data);
-        console.log("parsedContent ", parsedContent);
         let i = 0;
         parsedContent.forEach(block => {
           renderContentInput(block, i);
