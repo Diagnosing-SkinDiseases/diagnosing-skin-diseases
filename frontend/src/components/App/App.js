@@ -203,8 +203,11 @@ function App() {
         </Routes>
         <div className="footer-placeholder"></div>
         <footer className="footer">
-          © 2024 Diagnosing Skin Diseases and Dr. Eileen Murray. Questions?
-          Contact us.
+          © 2024 Diagnosing Skin Diseases and Dr. Eileen Murray.
+          Questions?&nbsp;
+          <a href="/about?selectedItem=Contact" className="footer-link">
+            Contact us.
+          </a>
         </footer>
       </div>
     </AuthProvider>

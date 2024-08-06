@@ -136,6 +136,19 @@ h3 {
   color: var(--footer)
 }
 
+.footer-link {
+  /* Ensures the link inherits the color from the surrounding text */
+  color: inherit;
+  /* Removes the underline from the link */
+  text-decoration: none;  
+  font-weight: 600;
+}
+
+.footer-link:hover {
+  /* Adds underline on hover for better visibility */
+  text-decoration: underline;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
