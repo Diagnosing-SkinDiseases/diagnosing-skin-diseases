@@ -225,7 +225,6 @@ const Tree = ({ existingId, setTreePayload }) => {
       if (existingId) {
         apiGetTree(existingId)
           .then((res) => {
-            console.log("Success", res.data);
             setExistingTree(toListAllChildren(fromList(res.data.nodes)));
             setExistingTitle(res.data.name);
             setExistingAboutLink(res.data.aboutLink);
@@ -233,12 +232,10 @@ const Tree = ({ existingId, setTreePayload }) => {
             setDataLoaded(true);
           })
           .catch((err) => {
-            console.log("err", err);
+            console.error("err", err);
           });
       }
     };
-
-    console.log(existingId);
 
     getTree();
   }, []);

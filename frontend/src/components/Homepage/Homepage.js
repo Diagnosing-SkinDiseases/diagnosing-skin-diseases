@@ -21,7 +21,6 @@ const Card = ({ title, image, aboutLink, treeId }) => {
   const navigate = useNavigate();
 
   const AboutButton = () => {
-    console.log(aboutLink);
     if (!aboutLink.includes("/treatment")) {
       return (
         <button className="homepage-button" onClick={() => navigate(`/`)}>

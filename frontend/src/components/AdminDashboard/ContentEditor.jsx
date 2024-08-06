@@ -195,12 +195,12 @@ const ContentEditor = ({ contentType }) => {
           treePayload.status = newStatus;
           updatePromise = apiUpdateTree(treePayload);
         } else {
-          console.log("Invalid update payload");
+          console.error("Invalid update payload");
           return;
         }
         break;
       default:
-        console.log("Unknown content type for processing");
+        console.error("Unknown content type for processing");
         return;
     }
 
@@ -237,12 +237,12 @@ const ContentEditor = ({ contentType }) => {
           treePayload.status = status;
           createPromise = apiCreateTree(treePayload);
         } else {
-          console.log("Invalid create payload");
+          console.error("Invalid create payload");
           return;
         }
         break;
       default:
-        console.log("Unknown content type for creation");
+        console.error("Unknown content type for creation");
         return;
     }
 
@@ -300,7 +300,6 @@ const ContentEditor = ({ contentType }) => {
         previewPath = `/admin/trees/preview`;
         // Helper function
         const inOrderToList = (node, acc) => {
-          console.log("Node", node);
           if (node) {
             let { parentId, content, currentId, yesChild, noChild } = node;
             let parsedNode = { currentId, content, parentId };
@@ -314,10 +313,9 @@ const ContentEditor = ({ contentType }) => {
         };
         previewData = treePayload;
         previewData.nodes = inOrderToList(previewData.nodeTree, []);
-        console.log("treeview", previewData);
         break;
       default:
-        console.log("Unknown content type.");
+        console.error("Unknown content type.");
         return;
     }
     sessionStorage.setItem("previewData", JSON.stringify(previewData));

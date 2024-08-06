@@ -53,7 +53,6 @@ const drawArrow = (start, end, color, size) => {
  * @returns {string} The parsed content with anchor tags modified for safe external navigation and original link text preserved.
  */
 const parseQuestionContent = (content) => {
-  console.log("parsing question content", content);
 
   const withLineBreaks = content.replace(/\n/g, "<br>");
 
@@ -62,7 +61,6 @@ const parseQuestionContent = (content) => {
     '<a href="$1" rel="noopener noreferrer" style="text-decoration: underline;">$3</a>'
   );
 
-  console.log("question content parsed", parsedContent);
   return parsedContent;
 };
 
@@ -308,7 +306,6 @@ const UserTree = ({ treeData }) => {
     if (currentNode) {
       const parsedContent = parseQuestionContent(currentNode.content);
       setCurrentNodeContent(parsedContent);
-      console.log("current node content change to:", parsedContent);
     }
   }, [currentNodeId, treeData.nodes]);
 

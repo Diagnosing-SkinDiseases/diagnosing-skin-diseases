@@ -55,7 +55,6 @@ const NodeArea = ({ rootNode, setRootNode }) => {
   useEffect(() => {
     // Collect all nodes when the rootNode prop changes
     let allNodes = collectAllNodes(rootNode);
-    console.log("All Nodes:", allNodes);
   }, [rootNode]);
 
   // Node ID state

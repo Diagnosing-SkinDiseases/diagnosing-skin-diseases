@@ -42,7 +42,6 @@ function App() {
     setServerError(""); // Clear any existing errors before a new request
     try {
       const response = await apiCreateUser(user);
-      console.log("User created:", response.data);
       // Handle success (e.g., display success message, clear form, etc.)
     } catch (error) {
       // Construct a user-friendly error message based on the server's response

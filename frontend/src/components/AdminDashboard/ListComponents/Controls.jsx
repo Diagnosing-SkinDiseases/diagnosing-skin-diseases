@@ -31,7 +31,7 @@ const Controls = ({ onFilterChange, onSearch, contentType }) => {
       [ContentTypeEnum.ARTICLE]: "/admin/articles/add",
       [ContentTypeEnum.DEFINITION]: "/admin/definitions/add"
     };
-    const path = pathMap[contentType] || console.log("Unknown content type");
+    const path = pathMap[contentType] || console.error("Unknown content type");
     if (path) navigate(path);
   }, [contentType, navigate]);
 

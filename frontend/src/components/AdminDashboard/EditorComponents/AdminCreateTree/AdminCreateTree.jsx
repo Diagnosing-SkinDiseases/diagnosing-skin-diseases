@@ -51,14 +51,6 @@ const AdminCreateTree = ({
   );
 
   useEffect(() => {
-    if (existingTree) {
-      console.log("Edit mode");
-    } else {
-      console.log("Add mode");
-    }
-    console.log("existing", existingTree);
-    console.log(title);
-    console.log("root", rootNode);
 
     /**
      * Recursively flattens the tree structure.
@@ -94,9 +86,7 @@ const AdminCreateTree = ({
       aboutLink: aboutLink,
       status: "published",
     };
-    console.log("payload", payload);
     setTreePayload(payload);
-    console.log("payload set");
   }, [title, rootNode, coverImage, aboutLink]);
 
   return (
