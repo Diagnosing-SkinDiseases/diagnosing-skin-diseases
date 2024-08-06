@@ -90,6 +90,7 @@ input:focus {
 
 .glossary-list {
   list-style-type: none;
+  cursor: pointer;
 }
 
 .glossary-list h3 {
