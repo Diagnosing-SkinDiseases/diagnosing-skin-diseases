@@ -109,6 +109,10 @@ h3 {
   color: var(--btn-text-color);
 }
 
+.list-group-item:hover {
+  font-size: 1.1em;
+}
+
 .app-container {
   background-color: var(--back_ground);
   position: relative;
