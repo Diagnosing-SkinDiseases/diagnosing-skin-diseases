@@ -105,6 +105,10 @@ h3 {
   border-color: var(--btn-color-hover);
 }
 
+.list-group-item.active:hover {
+  color: var(--btn-text-color);
+}
+
 .app-container {
   background-color: var(--back_ground);
   position: relative;
