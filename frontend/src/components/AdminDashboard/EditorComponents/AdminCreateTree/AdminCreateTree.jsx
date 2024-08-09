@@ -4,8 +4,13 @@ import "./styles/AdminCreateTrees.css";
 import { useState, useEffect } from "react";
 import EditTreeTitle from "./EditTreeTitle";
 import NodeArea from "./NodeArea";
+import TestFlow from "./NodeFlow/TestFlow";
+import NodeFlow from "./NodeFlow/NodeFlow";
 import ArticleCover from "./ArticleCover";
 import AboutLink from "./AboutLink";
+
+// Sample Data for Testing
+import SampleTree from "./NodeFlow/TestTree";
 
 /**
  * AdminCreateTree component allows creating or editing a decision tree in the admin panel.
@@ -28,16 +33,24 @@ const AdminCreateTree = ({
   const [title, setTitle] = useState(existingTitle !== "" ? existingTitle : "");
 
   // Node State
+  // const [rootNode, setRootNode] = useState(
+  //   existingTree !== null
+  //     ? existingTree
+  //     : {
+  //         currentId: "node0",
+  //         content: "",
+  //         parentId: null,
+  //         noChild: [],
+  //         yesChild: [],
+  //         xPos: 0,
+  //         yPos: 0,
+  //       }
+  // );
+
+  // TESTING PURPOSES FOR SAMPLE ROOT NODE
+  // Node State
   const [rootNode, setRootNode] = useState(
-    existingTree !== null
-      ? existingTree
-      : {
-          currentId: "node0",
-          content: "",
-          parentId: null,
-          noChild: [],
-          yesChild: [],
-        }
+    existingTree !== null ? existingTree : SampleTree
   );
 
   // Image State
@@ -51,7 +64,6 @@ const AdminCreateTree = ({
   );
 
   useEffect(() => {
-
     /**
      * Recursively flattens the tree structure.
      * @param {Object} node - The current node being processed.
@@ -105,8 +117,11 @@ const AdminCreateTree = ({
             coverImage={coverImage}
             setCoverImage={setCoverImage}
           ></ArticleCover>
-          {/* NodeArea component */}
-          <NodeArea rootNode={rootNode} setRootNode={setRootNode}></NodeArea>
+          {/* NodeArea component - deprecated */}
+          {/* <NodeArea rootNode={rootNode} setRootNode={setRootNode}></NodeArea> */}
+          {/* NodeFlow component */}
+          {/* <TestFlow></TestFlow> */}
+          <NodeFlow rootNode={rootNode} setRootNode={setRootNode}></NodeFlow>
         </div>
       </div>
     </>
