@@ -12,9 +12,13 @@ import styles from "./styles";
 const parseData = ({ type, content }, index) => {
   switch (type) {
     case ArticleContentType.HEADER1:
-      return <h2 key={index}>{content}</h2>;
     case ArticleContentType.HEADER2:
-      return <h2 key={index}>{content}</h2>;
+      return (
+        <div key={index}>
+          <hr /> {/* Horizontal separator/line */}
+          <h2>{content}</h2>
+        </div>
+      );
     case ArticleContentType.PARAGRAPH:
       // Replace anchor tags with target="_blank" attribute for opening links in new tab
       const parsedContent = content.replace(

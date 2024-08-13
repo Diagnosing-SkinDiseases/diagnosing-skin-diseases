@@ -37,7 +37,7 @@ const ArticleContent = ({ data: { title, content } }) => {
         {/* Title */}
         <div className="container mt-4 p-0 article-title text-center">
           <h1>{title}</h1>
-          <hr></hr>
+          {/* <hr></hr> */}
         </div>
 
         {/* Article */}
