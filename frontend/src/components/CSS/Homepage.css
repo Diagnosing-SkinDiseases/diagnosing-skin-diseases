@@ -38,7 +38,6 @@
   position: relative;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   flex: 1 0 calc(33.333% - 40px);
 }
 
@@ -53,7 +52,6 @@
 .card-body {
   max-height: 12vh;
   min-height: 12vh;
-  background: #e3d2b3;
   opacity: 0.9;
   overflow: visible;
   height: 20px;
@@ -71,6 +69,11 @@
   padding-top: 5px;
   padding-bottom: 5px;
   border-radius: 10px;
+}
+
+.about-btn {
+  background-color: var(--btn-text-color);
+  color: var(--btn-color);
 }
 
 .homepage-button:hover {
