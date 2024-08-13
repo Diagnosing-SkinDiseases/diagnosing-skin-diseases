@@ -30,7 +30,7 @@
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: stretch;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   border: 2px solid var(--card-border);
 }
 
