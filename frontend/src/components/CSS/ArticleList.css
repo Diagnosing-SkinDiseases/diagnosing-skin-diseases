@@ -23,7 +23,7 @@ nav li {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
+  padding: 25px;
   background-color: var(--header);
   color: var(--header-text);
 }
@@ -35,10 +35,8 @@ nav li {
 
 .alphabet-selector {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   flex-wrap: wrap;
-  background-color: var(--selecter-banner);
-  padding: 10px;
 }
 
 .alphabet-selector button {
@@ -106,7 +104,7 @@ li {
   margin-bottom: 10px;
   list-style-type: none;
   padding: 20px;
-  margin-left: 10px;
+  /* margin-left: 10px; */
 }
 
 .ArticleList a {

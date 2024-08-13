@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
+  padding: 25px;
   background-color: var(--header);
   color: var(--header-text);
 }
@@ -14,10 +14,9 @@
 
 .alphabet-selector {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   flex-wrap: wrap;
-  background-color: var(--selecter-banner);
-  margin-inline: 20px;
+  margin: 0 15px;
   border-radius: 10px;
 }
 
@@ -27,7 +26,6 @@
   padding: 10px;
   cursor: pointer;
   border-radius: 5px;
-  margin: 5px;
   text-align: center;
   flex: 0 0 calc(7.5% - 10px);
   color: var(--nav-text-hover);
@@ -84,7 +82,7 @@ input:focus {
   text-align: center;
   font-size: 1.5em;
   font-weight: bold;
-  border-radius: 10px;
+  border-radius: 7px;
   margin-inline: 20px;
 }
 
