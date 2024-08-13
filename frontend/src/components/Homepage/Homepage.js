@@ -23,7 +23,7 @@ const Card = ({ title, image, aboutLink, treeId }) => {
   const AboutButton = () => {
     if (!aboutLink.includes("/treatment")) {
       return (
-        <button className="homepage-button" onClick={() => navigate(`/`)}>
+        <button className="homepage-button about-btn" onClick={() => navigate(`/`)}>
           About
         </button>
       );
@@ -31,7 +31,7 @@ const Card = ({ title, image, aboutLink, treeId }) => {
 
     return (
       <button
-        className="homepage-button"
+        className="homepage-button about-btn"
         onClick={() =>
           navigate(`${new URL(aboutLink).pathname}?treeId=${treeId}`)
         }
