@@ -73,7 +73,6 @@
 #root {
   font-family: var(--primary-font);
   margin: 0;
-  padding-left: 8px;
 }
 
 body {
@@ -162,8 +161,8 @@ html {
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
-  background-color: var(--back_ground);
+  /* width: 8px; */
+  /* background-color: var(--back_ground); */
 }
 
 ::-webkit-scrollbar-thumb {

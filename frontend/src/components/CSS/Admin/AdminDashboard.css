@@ -1,16 +1,16 @@
 /* ---------- General ---------- */
 
 .admin-dashboard .controls-wrapper {
-  background-color: var(--header);
   width: 100%;
   display: flex;
   justify-content: center;
+  border-top: 2px solid var(--btn-color);  /* Add top border */
+  border-bottom: 2px solid var(--btn-color);  /* Add bottom border */
 }
 
 .admin-dashboard .controls {
   display: flex;
   align-items: center;
-  background-color: var(--header);
   padding: 0.7em;
   font-size: 0.9em;
 }
