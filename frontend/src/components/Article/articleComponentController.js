@@ -14,7 +14,7 @@ const parseData = ({ type, content }, index) => {
     case ArticleContentType.HEADER1:
     case ArticleContentType.HEADER2:
       return (
-        <div key={index}>
+        <div key={index} id={content}>
           <hr /> {/* Horizontal separator/line */}
           <h2>{content}</h2>
         </div>
@@ -70,4 +70,29 @@ const parseData = ({ type, content }, index) => {
   }
 };
 
-export { parseData };
+/**
+ * generateSummary function creates a summary with hyperlinks to headers within the article.
+ * @param {Array} content - An array containing objects representing different types of content in the article.
+ * @returns {JSX.Element} - Returns a JSX element for the summary.
+ */
+const generateSummary = (content) => {
+  return (
+    <ul className="summary-list">
+      {content
+        .filter(
+          (item) =>
+            item.type === ArticleContentType.HEADER1 ||
+            item.type === ArticleContentType.HEADER2
+        )
+        .map(({ content }, index) => (
+          <li key={index}>
+            <a href={`#${content}`} className="summary-link">
+              {content}
+            </a>
+          </li>
+        ))}
+    </ul>
+  );
+};
+
+export { parseData, generateSummary };

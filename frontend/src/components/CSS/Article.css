@@ -18,3 +18,63 @@
   margin-bottom: 3em;
   margin-top: 2em;
 }
+
+/* Summary */
+
+.summary-list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  align-items: center;
+  /* Align items vertically to center */
+}
+
+.summary-list li {
+  margin-right: 15px;
+  /* Space between items */
+  position: relative;
+  line-height: 1;
+  /* Reduce line height to make the items occupy less vertical space */
+  margin-bottom: 0px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.summary-list li::after {
+  content: "|";
+  /* Vertical separator */
+  position: absolute;
+  right: -10px;
+  /* Position separator */
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  /* Ensure separator spans the full height */
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  /* Increase font size for the separator */
+  font-weight: 500;
+  /* Make the separator bold */
+  color: var(--title-text);
+  /* Adjust color to match your design */
+}
+
+.summary-list li:last-child::after {
+  content: "";
+  /* Remove separator for the last item */
+}
+
+.summary-link {
+  text-decoration: none;
+  color: var(--title-text);
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.summary-link:hover {
+  text-decoration: underline;
+}
