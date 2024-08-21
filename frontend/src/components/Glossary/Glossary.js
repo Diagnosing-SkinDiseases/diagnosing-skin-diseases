@@ -5,6 +5,8 @@ import SearchBar from "./SearchBar";
 import LetterFilter from "./LetterFilter";
 import GlossaryContent from "./GlossaryContent";
 import LoadingPage from "../Loading/LoadingPage";
+import ErrorMessage from "../Error/ErrorMessage";
+import messages from "../App/messages";
 
 /**
  * App Component for Glossary Page
@@ -40,7 +42,6 @@ function App() {
         let publishedItems = response.data.filter(
           (item) => item.status === "PUBLISHED"
         );
-
         if (isPreviewMode) {
           const previewDataString = sessionStorage.getItem("previewData");
           if (previewDataString) {
@@ -108,6 +109,8 @@ function App() {
         />
         {isLoading ? (
           <LoadingPage></LoadingPage>
+        ) : glossaryItems.length === 0 ? (
+          <ErrorMessage message={messages.Glossary.noDefinitionsAvailable} />
         ) : (
           <GlossaryContent
             items={glossaryItems}
