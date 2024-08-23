@@ -95,4 +95,21 @@ const generateSummary = (content) => {
   );
 };
 
-export { parseData, generateSummary };
+/**
+ * renderError function renders an error message with a dynamic email link.
+ * @param {string} message - The error message containing a placeholder for email.
+ * @param {string} email - The email address to be included in the message.
+ * @returns {JSX.Element} - Returns a JSX element for the error message.
+ */
+const renderError = (message, email) => {
+  const parts = message.split("emailAddress");
+  return (
+    <>
+      {parts[0]}
+      <a href={`mailto:${email}`}>{email}</a>
+      {parts[1]}
+    </>
+  );
+};
+
+export { parseData, generateSummary, renderError };
