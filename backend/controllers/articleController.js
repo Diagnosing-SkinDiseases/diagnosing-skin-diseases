@@ -32,18 +32,31 @@ const getAllArticles = async (req, res) => {
 
 // Read single article
 const getArticle = async (req, res) => {
-  const { id } = req.query;
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ error: "Invalid id" });
-  }
+  try {
+    const { id } = req.query;
 
-  const article = await Article.findById(id);
-  if (!article) {
-    return res.status(404).json({ error: "Article not found" });
-  }
+    // Validate ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "Invalid id" });
+    }
 
-  res.status(200).json(article);
+    // Find article by id
+    const article = await Article.findById(id);
+    if (!article) {
+      return res.status(404).json({ error: "Article not found" });
+    }
+
+    // Success
+    return res.status(200).json(article);
+  } catch (error) {
+    // General error handling
+    console.error("Error fetching article:", error);
+    return res
+      .status(500)
+      .json({ error: "Server error, please try again later." });
+  }
 };
+
 
 // Update article
 const updateArticle = async (req, res) => {
