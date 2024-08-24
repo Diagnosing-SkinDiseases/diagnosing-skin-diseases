@@ -295,7 +295,12 @@ const ContentEditor = ({ contentType }) => {
       case ContentTypeEnum.ARTICLE:
         previewPath = `/admin/articles/preview`;
         previewData = parseArticleContent(articleContent);
-        break;
+        
+        // Filter out any empty content blocks
+      previewData.content = previewData.content.filter(
+        (block) => block.content !== ""
+      );
+      break;
       case ContentTypeEnum.TREE:
         previewPath = `/admin/trees/preview`;
         // Helper function
