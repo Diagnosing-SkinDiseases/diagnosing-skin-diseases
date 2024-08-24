@@ -230,6 +230,10 @@ const ContentEditor = ({ contentType }) => {
       case ContentTypeEnum.ARTICLE:
         let parsedArticle = parseArticleContent(articleContent);
         parsedArticle.status = status;
+
+        // Filter out empty content blocks
+        parsedArticle.content = parsedArticle.content.filter(block => block.content.trim() !== "");
+        
         createPromise = apiCreateArticle(parsedArticle);
         break;
       case ContentTypeEnum.TREE:
