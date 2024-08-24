@@ -33,9 +33,11 @@ const Definition = ({ onUpdate}) => {
     if (definition) {
       // fetch using getDefinition(id)
       apiGetGlossaryItem(definition).then((response) => {
-        setTitle(response.data.term);
-        setParagraph(response.data.definition);
-        onUpdate(title, paragraph);
+        const fetchedTitle = response.data.term;
+        const fetchedParagraph = response.data.definition;
+        setTitle(fetchedTitle);
+        setParagraph(fetchedParagraph);
+        onUpdate(fetchedTitle, fetchedParagraph);
       })
         .catch((error) => {
           console.error('Error fetching definition:', error);
