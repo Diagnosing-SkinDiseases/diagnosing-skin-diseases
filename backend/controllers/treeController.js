@@ -99,8 +99,8 @@ const deleteTree = async (req, res) => {
 // Helper functions
 const inOrderToList = (node, acc) => {
   if (node) {
-    let { parentId, content, currentId, yesChild, noChild } = node;
-    let parsedNode = { currentId, content, parentId };
+    let { parentId, content, currentId, yesChild, noChild, xPos, yPos } = node;
+    let parsedNode = { currentId, content, parentId, xPos, yPos };
     parsedNode.noChildId = noChild ? noChild.currentId : null;
     parsedNode.yesChildId = yesChild ? yesChild.currentId : null;
     acc.push(parsedNode);
