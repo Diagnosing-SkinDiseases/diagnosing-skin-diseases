@@ -42,15 +42,6 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
     setDataLoaded(true);
   }, []);
 
-  // print max counter
-  useEffect(() => {
-    console.log("idCounter", idCounter);
-  }, [idCounter]);
-
-  // useEffect(() => {
-  //   console.log("Flow Nodes", nodes);
-  // }, [nodes]);
-
   useEffect(() => {
     if (dataLoaded) {
       console.log("ln", loadedNodes);
@@ -59,9 +50,6 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
       setNodes((nds) => {
         const filtered = nds.filter((flowNode) => {
           const keepIds = flattenTree(rootNode).map((node) => node.currentId);
-          console.log("keepIds", keepIds);
-          console.log("currIds", nds);
-          console.log(keepIds.includes(flowNode.id));
           return keepIds.includes(flowNode.id);
         });
         return filtered;
@@ -69,9 +57,6 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
 
       const filtered = loadedNodes.filter((flowNode) => {
         const keepIds = flattenTree(rootNode).map((node) => node.currentId);
-        // console.log("keepIds", keepIds);
-        // console.log("currIds", loadedNodes);
-        // console.log(keepIds.includes(flowNode.id));
         return keepIds.includes(flowNode.id);
       });
 
@@ -245,14 +230,95 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
     },
   }));
 
+  /**
+   * Adds a new node to the yesChild array of a target node within the decision tree.
+   * @param {string} targetNodeId - The ID of the target node to add the new node to.
+   * @param {Object} nodeToInsert - The new node to insert.
+   */
+  const addYesChild = (targetNodeId, nodeToInsert) => {
+    const addYesChildToTarget = (node) => {
+      if (node.currentId === targetNodeId) {
+        // Match found, create a new node with updated yesChild array
+        return {
+          ...node,
+          yesChild: node.yesChild.concat(nodeToInsert),
+        };
+      } else if (node.noChild.length || node.yesChild.length) {
+        // No match, but the node has children. Attempt to update children.
+        return {
+          ...node,
+          noChild: node.noChild.map(addYesChildToTarget),
+          yesChild: node.yesChild.map(addYesChildToTarget),
+        };
+      }
+      // No match and no children to update, return node as is
+      return node;
+    };
+
+    // Create a new root node with updated structure
+    let newRootNode = addYesChildToTarget(rootNode);
+    setRootNode(newRootNode); // This should trigger a re-render
+  };
+
+  /**
+   * Adds a new node to the noChild array of a target node within the decision tree.
+   * @param {string} targetNodeId - The ID of the target node to add the new node to.
+   * @param {Object} nodeToInsert - The new node to insert.
+   */
+  const addNoChild = (targetNodeId, nodeToInsert) => {
+    const addNoChildToTarget = (node) => {
+      if (node.currentId === targetNodeId) {
+        return {
+          ...node,
+          noChild: [...node.noChild, nodeToInsert],
+        };
+      }
+      // Recursively process both noChild and yesChild arrays
+      const updatedNoChild = node.noChild.map(addNoChildToTarget);
+      const updatedYesChild = node.yesChild.map(addNoChildToTarget);
+
+      return {
+        ...node,
+        noChild: updatedNoChild,
+        yesChild: updatedYesChild,
+      };
+    };
+    const updatedRootNode = addNoChildToTarget(rootNode);
+    setRootNode(updatedRootNode);
+  };
+
   const onConnect = useCallback(
     (params) =>
       setEdges((eds) => {
         console.log("pr", params);
         console.log("ed", eds);
-        return addEdge(params, eds);
+
+        const newEdge = {
+          id: `edge_${params.source}_${params.target}`,
+          source: params.source,
+          target: params.target,
+          sourceHandle: params.sourceHandle,
+          className:
+            params.sourceHandle === "no"
+              ? "tree-flow-no-edge"
+              : "tree-flow-yes-edge",
+        };
+
+        let targetNode = findTreeNodeById(rootNode, params.target);
+
+        console.log("CNN TNRN", rootNode);
+        console.log("CNN TNID", params.target);
+        console.log("CNN TN", targetNode);
+
+        if (params.sourceHandle === "no") {
+          addNoChild(params.source, findTreeNodeById(rootNode, params.target));
+        } else {
+          addYesChild(params.source, findTreeNodeById(rootNode, params.target));
+        }
+
+        return eds.concat(newEdge);
       }),
-    [setEdges]
+    [setEdges, rootNode]
   );
 
   const onSave = useCallback(() => {
@@ -308,6 +374,8 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
    */
   const findTreeNodeById = (rootNode, targetNodeId) => {
     const _findTreeNodeById = (node) => {
+      console.log("fun tn", targetNodeId);
+      console.log("fun n", node);
       if (node === undefined) {
         return undefined;
       }

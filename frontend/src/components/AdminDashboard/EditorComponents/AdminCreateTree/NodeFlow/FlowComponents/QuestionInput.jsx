@@ -419,7 +419,7 @@ function QuestionInput({
         position={Position.Bottom}
         id="no"
         style={handleStyle.no}
-        isConnectable={isConnectable}
+        isConnectable={!noChildPresent()}
         className="tree-flow-handle"
       />
       <Handle
@@ -427,7 +427,7 @@ function QuestionInput({
         position={Position.Bottom}
         id="yes"
         style={handleStyle.yes}
-        isConnectable={isConnectable}
+        isConnectable={!yesChildPresent()}
         className="tree-flow-handle"
       />
     </div>
