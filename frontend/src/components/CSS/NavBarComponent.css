@@ -20,8 +20,10 @@
   font-weight: 500;
   background-color: var(--nav-back_ground);
   border-radius: 10px;
-  margin-inline: 10px;
+  /* margin-inline: 10px; */
   width: 80px;
+  cursor: pointer;
+  height: 100%;
 }
 
 /* Apply a subtle highlight and lift effect to nav items on hover */
