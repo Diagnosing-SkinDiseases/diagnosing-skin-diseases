@@ -62,88 +62,110 @@ const ContentEditor = ({ contentType }) => {
    *
    * @return {Object} - The parsed definition object with the term and definition properties.
    */
-  const parsedDefinition = () => {
+  const parsedDefinition = (sanitizedContent) => {
     return {
-      term: title,
-      definition: paragraph,
+      term: sanitizedContent.title,
+      definition: sanitizedContent.paragraph,
     };
   };
 
   /**
-   * Removes empty leading, trailing spaces and filters out empty blocks
+   * Sanitizes the content by removing leading and trailing spaces, removing empty content blocks,
+   * setting new state, and returning updated content.
+   *
+   * @return {Promise<object>} - A promise that resolves to the sanitized content.
    */
-  const removeEmptyContentBlocks = () => {
+  const sanitizeContentBlocks = () => {
     return new Promise((resolve) => {
-        if (contentType === ContentTypeEnum.DEFINITION) {
-            const trimmedTitle = title.trim();
-            const trimmedParagraph = paragraph.trim();
-            setTitle(trimmedTitle);
-            setParagraph(trimmedParagraph);
-        } else if (contentType === ContentTypeEnum.ARTICLE) {
-            const trimmedBlocks = articleContent.map(block => ({
-                ...block,
-                value: block.value.trim(),
-            })).filter(block => block.value !== "");
-          setArticleContent(trimmedBlocks);
-        } else if (contentType === ContentTypeEnum.TREE) {
-            if (treePayload) {
-                const trimmedTreePayload = {
-                    ...treePayload,
-                    name: treePayload.name.trim(),
-                    coverImage: treePayload.coverImage.trim(),
-                    aboutLink: treePayload.aboutLink.trim(),
-                };
+      let updatedContent;
 
-                const trimNodeTree = (node) => {
-                    if (node) {
-                        node.content = node.content.trim();
-                        if (node.yesChild) trimNodeTree(node.yesChild);
-                        if (node.noChild) trimNodeTree(node.noChild);
-                    }
-                };
+      if (contentType === ContentTypeEnum.DEFINITION) {
+        const trimmedTitle = title.trim();
+        const trimmedParagraph = paragraph.trim();
+        setTitle(trimmedTitle);
+        setParagraph(trimmedParagraph);
+        updatedContent = {
+          title: trimmedTitle,
+          paragraph: trimmedParagraph,
+        };
+      } else if (contentType === ContentTypeEnum.ARTICLE) {
 
-                trimNodeTree(trimmedTreePayload.nodeTree);
-                setTreePayload(trimmedTreePayload);
-            }
+        const trimmedBlocks = articleContent.map((block) => {
+        if (block && block.value !== undefined) {
+          return {
+            ...block,
+            value: block.value.trim(),
+          };
         }
-        resolve(); // Resolve the promise after state updates
+        // Handle undefined blocks or blocks without value
+        return block;
+      });
+        // Remove empty blocks that are not titles
+        const sanitizedContent = 
+          trimmedBlocks
+            .filter((block) => block.type === 'Title' || block.value !== "") // Keep title blocks and non-empty blocks
+        ;
+        setArticleContent(sanitizedContent);
+        updatedContent = sanitizedContent;
+      } else if (contentType === ContentTypeEnum.TREE) {
+        if (treePayload) {
+          const trimmedTreePayload = {
+            ...treePayload,
+            name: treePayload.name.trim(),
+            coverImage: treePayload.coverImage.trim(),
+            aboutLink: treePayload.aboutLink.trim(),
+          };
+
+          const trimNodeTree = (node) => {
+            if (node) {
+              node.content = node.content.trim();
+              if (node.yesChild) trimNodeTree(node.yesChild);
+              if (node.noChild) trimNodeTree(node.noChild);
+            }
+          };
+
+          trimNodeTree(trimmedTreePayload.nodeTree);
+          setTreePayload(trimmedTreePayload);
+          updatedContent = trimmedTreePayload;
+        }
+      }
+      resolve(updatedContent); // Resolve the promise with sanitized content
     });
-};
+  };
 
 
   /**
-   * Checks if the form is ready to be saved based on the content type and its specific requirements.
+   * Checks if the form is ready to be saved based on the sanitized content.
    * Sets an error message if the form is not ready to be saved.
    *
    * @return {boolean} true if the form is ready to save, false otherwise
    */
-  const isReadyToSave = () => {
+  const isReadyToSave = async (sanitizedContent) => {
     let message = "";
-    
+
     switch (contentType) {
       case ContentTypeEnum.DEFINITION:
-        const term = parsedDefinition().term;
-        const definition = parsedDefinition().definition;
+        const term = sanitizedContent.title;
+        const definition = sanitizedContent.paragraph;
         if (!term || !definition) {
           message = "Please, provide term and definition.";
         }
         break;
       case ContentTypeEnum.ARTICLE:
-        const title = parseArticleContent(articleContent).title;
-        const content = parseArticleContent(articleContent).content;
+        const title = parseArticleContent(sanitizedContent).title;
+        const content = parseArticleContent(sanitizedContent).content;
         if (!title || content.length === 0) {
           message = "Please, provide article title and content.";
         }
         break;
       case ContentTypeEnum.TREE:
         if (
-          treePayload.name === "" ||
-          treePayload.nodeTree.content === "" ||
-          treePayload.coverImage === "" ||
-          treePayload.aboutLink === ""
+          !sanitizedContent.name ||
+          !sanitizedContent.nodeTree.content ||
+          !sanitizedContent.coverImage ||
+          !sanitizedContent.aboutLink
         ) {
-          message =
-            "Please, provide tree title, about link, cover image and at least the root node filled.";
+          message = "Please, provide tree title, about link, cover image and at least the root node filled.";
         }
         break;
       default:
@@ -153,7 +175,6 @@ const ContentEditor = ({ contentType }) => {
     setErrorMessage(message);
     return !message; // Returns true if the message is empty, meaning the form is ready to save
   };
-
   
   /**
    * Updates the definition with the given title, paragraph, and status.
@@ -204,18 +225,18 @@ const ContentEditor = ({ contentType }) => {
    * @param {string} newStatus - the new status for the item
    * @return {void} 
    */
-  const updateItem = (newStatus) => {
+  const updateItem = (newStatus, sanitizedContent) => {
     let updatedItem = {
       id: id,
       status: newStatus,
     };
 
     if (title !== "") {
-      updatedItem.term = title;
+      updatedItem.term = sanitizedContent.title;
     }
 
     if (paragraph !== "") {
-      updatedItem.definition = paragraph;
+      updatedItem.definition = sanitizedContent.paragraph;
     }
 
     let updatePromise;
@@ -224,17 +245,17 @@ const ContentEditor = ({ contentType }) => {
         updatePromise = apiUpdateGlossaryItem(updatedItem);
         break;
       case ContentTypeEnum.ARTICLE:
-        let parsedArticle = parseArticleContent(articleContent);
+        let parsedArticle = parseArticleContent(sanitizedContent);
         parsedArticle.id = id;
         parsedArticle.status = newStatus;
         
         updatePromise = apiUpdateArticle(parsedArticle);
         break;
       case ContentTypeEnum.TREE:
-        if (treePayload) {
-          treePayload.id = id;
-          treePayload.status = newStatus;
-          updatePromise = apiUpdateTree(treePayload);
+        if (sanitizedContent) {
+          sanitizedContent.id = id;
+          sanitizedContent.status = newStatus;
+          updatePromise = apiUpdateTree(sanitizedContent);
         } else {
           console.error("Invalid update payload");
           return;
@@ -260,16 +281,16 @@ const ContentEditor = ({ contentType }) => {
    * @param {string} status - the status of the item to be created
    * @return {void} 
    */
-  const createItem = (status) => {
+  const createItem = (status, sanitizedContent) => {
     let createPromise;
     switch (contentType) {
       case ContentTypeEnum.DEFINITION:
-        let item = parsedDefinition();
+        let item = parsedDefinition(sanitizedContent);
         item.status = status;
         createPromise = apiCreateGlossaryItem(item);
         break;
       case ContentTypeEnum.ARTICLE:
-        let parsedArticle = parseArticleContent(articleContent);
+        let parsedArticle = parseArticleContent(sanitizedContent);
         parsedArticle.status = status;
 
         // Filter out empty content blocks
@@ -278,9 +299,9 @@ const ContentEditor = ({ contentType }) => {
         createPromise = apiCreateArticle(parsedArticle);
         break;
       case ContentTypeEnum.TREE:
-        if (treePayload) {
-          treePayload.status = status;
-          createPromise = apiCreateTree(treePayload);
+        if (sanitizedContent) {
+          sanitizedContent.status = status;
+          createPromise = apiCreateTree(sanitizedContent);
         } else {
           console.error("Invalid create payload");
           return;
@@ -304,52 +325,50 @@ const ContentEditor = ({ contentType }) => {
    * Handles the save or update action.
    *
    */
-  const handleSaveOrUpdateBtn = () => {
-  removeEmptyContentBlocks().then(() => {
-    if (isReadyToSave()) {  // Check readiness after content is trimmed and cleaned
+  const handleSaveOrUpdateBtn = async () => {
+    const sanitizedContent = await sanitizeContentBlocks();
+    if (await isReadyToSave(sanitizedContent)) { // Check readiness after content is sanitized
       const status = "UNPUBLISHED";
       if (isEditMode) {
-        updateItem(status);
+        updateItem(status, sanitizedContent);
       } else {
-        createItem(status);
+        createItem(status, sanitizedContent);
       }
     }
-  });
-};
+  };
 
   /**
    * Handles the publish button action.
    */
-  const handlePublishBtn = () => {
-  removeEmptyContentBlocks().then(() => {
-    if (isReadyToSave()) {  // Check readiness after content is trimmed and cleaned
+  const handlePublishBtn = async () => {
+    const sanitizedContent = await sanitizeContentBlocks();
+    if (await isReadyToSave(sanitizedContent)) { // Check readiness after content is sanitized
       const publishStatus = "PUBLISHED";
       if (isEditMode) {
-        updateItem(publishStatus);
+        updateItem(publishStatus, sanitizedContent);
       } else {
-        createItem(publishStatus);
+        createItem(publishStatus, sanitizedContent);
       }
     }
-  });
-};
+  };
 
   /**
    * Handling the preview button click event. 
    */
-  const handlePreviewBtn = () => {
-  removeEmptyContentBlocks().then(() => {
-    if (isReadyToSave()) {  // Check readiness after content is trimmed and cleaned
+  const handlePreviewBtn = async () => {
+    const sanitizedContent = await sanitizeContentBlocks();
+    if (await isReadyToSave(sanitizedContent)) { // Check readiness after content is sanitized
       let previewPath = "";
       let previewData = {};
 
       switch (contentType) {
         case ContentTypeEnum.DEFINITION:
           previewPath = `/admin/definitions/preview`;
-          previewData = parsedDefinition();
+          previewData = parsedDefinition(sanitizedContent);
           break;
         case ContentTypeEnum.ARTICLE:
           previewPath = `/admin/articles/preview`;
-          previewData = parseArticleContent(articleContent);
+          previewData = parseArticleContent(sanitizedContent);
           break;
         case ContentTypeEnum.TREE:
           previewPath = `/admin/trees/preview`;
@@ -365,7 +384,7 @@ const ContentEditor = ({ contentType }) => {
             }
             return acc;
           };
-          previewData = treePayload;
+          previewData = sanitizedContent;
           previewData.nodes = inOrderToList(previewData.nodeTree, []);
           break;
         default:
@@ -377,8 +396,7 @@ const ContentEditor = ({ contentType }) => {
       const url = `${window.location.origin}${previewPath}`;
       window.open(url, "_blank");
     }
-  });
-};
+  };
 
   /**
    * @returns {JSX.Element} The rendered admin dashboard's editor section.
