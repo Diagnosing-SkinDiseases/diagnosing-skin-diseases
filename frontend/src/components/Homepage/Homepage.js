@@ -17,7 +17,7 @@ import LoadingPage from "../Loading/LoadingPage";
  *   aboutLink (String): URL for the page with more information about the tree.
  *   treeId (String): Unique identifier for the diagnostic tree.
  */
-const Card = ({ title, image, aboutLink, treeId }) => {
+const Card = ({ title, image, aboutLink, previewText,treeId }) => {
   const navigate = useNavigate();
 
   return (
@@ -27,7 +27,8 @@ const Card = ({ title, image, aboutLink, treeId }) => {
         <div className="card-content">
           <h3 className="card-title">{title}</h3>
           <p className="card-description">
-            This is a brief description of the diagnostic tree. It provides...
+            {previewText ||
+              "This is a brief description of the diagnostic tree. It provides..."}
             <a
               className="card-link"
               href={aboutLink}
@@ -92,7 +93,6 @@ function Homepage() {
     const fetchTrees = async () => {
       try {
         const response = await apiGetAllTrees();
-        console.log("Trees payload: ", response.data);
         const publishedTrees = response.data.filter(
           (tree) => tree.status === "PUBLISHED"
         );
@@ -179,6 +179,7 @@ function Homepage() {
                 title={tree.name}
                 image={tree.coverImage}
                 aboutLink={tree.aboutLink}
+                previewText={tree.previewText}
                 treeId={tree._id}
               />
             ))}
