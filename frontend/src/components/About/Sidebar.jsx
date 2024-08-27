@@ -1,9 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const Sidebar = ({ setArticleId }) => {
-  const [selectedItem, setSelectedItem] = useState("About DSD");
+const Sidebar = ({ setArticleId, selectedArticleId }) => {
+  const [selectedItem, setSelectedItem] = useState("");
+
+  useEffect(() => {
+    // Map articleId to selectedItem
+    switch (selectedArticleId) {
+      case "660e30352dc5942805a1372d":
+        setSelectedItem("About DSD");
+        break;
+      case "660e303a2dc5942805a137c0":
+        setSelectedItem("Using This Website");
+        break;
+      case "660e303f2dc5942805a13854":
+        setSelectedItem("Acknowledgements");
+        break;
+      case "660e30442dc5942805a138e9":
+        setSelectedItem("Contact");
+        break;
+      default:
+        setSelectedItem("About DSD");
+    }
+  }, [selectedArticleId]);
 
   const handleItemClick = (itemName) => {
+    const articleIdMap = {
+      "About DSD": "660e30352dc5942805a1372d",
+      "Using This Website": "660e303a2dc5942805a137c0",
+      "Acknowledgements": "660e303f2dc5942805a13854",
+      "Contact": "660e30442dc5942805a138e9",
+    };
+    setArticleId(articleIdMap[itemName]);
     setSelectedItem(itemName);
   };
 
@@ -15,10 +42,7 @@ const Sidebar = ({ setArticleId }) => {
           className={`list-group-item list-group-item-action ${
             selectedItem === "About DSD" ? "active" : ""
           }`}
-          onClick={() => {
-            handleItemClick("About DSD");
-            setArticleId("660e30352dc5942805a1372d");
-          }}
+          onClick={() => handleItemClick("About DSD")}
         >
           About DSD
         </button>
@@ -27,10 +51,7 @@ const Sidebar = ({ setArticleId }) => {
           className={`list-group-item list-group-item-action ${
             selectedItem === "Using This Website" ? "active" : ""
           }`}
-          onClick={() => {
-            handleItemClick("Using This Website");
-            setArticleId("660e303a2dc5942805a137c0");
-          }}
+          onClick={() => handleItemClick("Using This Website")}
         >
           Using This Website
         </button>
@@ -39,10 +60,7 @@ const Sidebar = ({ setArticleId }) => {
           className={`list-group-item list-group-item-action ${
             selectedItem === "Acknowledgements" ? "active" : ""
           }`}
-          onClick={() => {
-            handleItemClick("Acknowledgements");
-            setArticleId("660e303f2dc5942805a13854");
-          }}
+          onClick={() => handleItemClick("Acknowledgements")}
         >
           Acknowledgements
         </button>
@@ -51,10 +69,7 @@ const Sidebar = ({ setArticleId }) => {
           className={`list-group-item list-group-item-action ${
             selectedItem === "Contact" ? "active" : ""
           }`}
-          onClick={() => {
-            handleItemClick("Contact");
-            setArticleId("660e30442dc5942805a138e9");
-          }}
+          onClick={() => handleItemClick("Contact")}
         >
           Contact
         </button>

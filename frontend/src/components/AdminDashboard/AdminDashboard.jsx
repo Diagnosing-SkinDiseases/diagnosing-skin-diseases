@@ -84,7 +84,7 @@ const AdminDashboard = ({contentType}) => {
         }));
         break;
       default:
-        console.log("Unknown content type for processing");
+        console.error("Unknown content type for processing");
         return;
     }
 

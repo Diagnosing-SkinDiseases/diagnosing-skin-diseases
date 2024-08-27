@@ -30,7 +30,6 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = Cookies.get("token"); // Retrieve the token from cookies
-    console.log("Retrieved token:", token);
     setIsLoggedIn(!!token); // Set login state based on the presence of a token
     setIsLoading(false); // Set loading state to false after checking token
   }, []);

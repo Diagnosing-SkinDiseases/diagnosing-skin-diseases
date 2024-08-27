@@ -9,7 +9,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
  * @param {Object} data - The data object containing article content.
  * @returns {JSX.Element} - Returns the JSX element for the article background.
  */
-const ArticleBG = ({ data }) => {
+const ArticleBG = ({ data, errorMsg }) => {
   // Get search params and navigate function from react-router-dom
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -52,7 +52,7 @@ const ArticleBG = ({ data }) => {
       <div className="container pb-5 mt-5">
         <div className="row justify-content-center article-container">
           {/* Render article content */}
-          <ArticleContent data={data}></ArticleContent>
+          <ArticleContent data={data} errorMsg = {errorMsg}></ArticleContent>
         </div>
         {/* Navigation buttons */}
         <div className="row justify-content-between mt-3 px-2">

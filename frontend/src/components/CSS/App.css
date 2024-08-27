@@ -36,7 +36,7 @@
   /* Card elements */
   --card-color: #e4ddd0;
   --card-title: #715529;
-  --card-border: #715529;
+  --card-border: #927448;
 
   --text: #715529;
   --placeholder-text: #aaa;
@@ -73,8 +73,6 @@
 #root {
   font-family: var(--primary-font);
   margin: 0;
-  padding-left: 8px;
-  background-color: var(--back_ground);
 }
 
 body {
@@ -105,8 +103,16 @@ h3 {
   border-color: var(--btn-color-hover);
 }
 
+.list-group-item.active:hover {
+  color: var(--btn-text-color);
+}
+
+.list-group-item:hover {
+  font-size: 1.1em;
+}
+
 .app-container {
-  background-color: var(--back_ground);
+  background-color: white;
   position: relative;
   min-height: 100vh;
   margin: 0;
@@ -128,6 +134,19 @@ h3 {
   color: var(--footer)
 }
 
+.footer-link {
+  /* Ensures the link inherits the color from the surrounding text */
+  color: inherit;
+  /* Removes the underline from the link */
+  text-decoration: none;  
+  font-weight: 600;
+}
+
+.footer-link:hover {
+  /* Adds underline on hover for better visibility */
+  text-decoration: underline;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -142,8 +161,8 @@ html {
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
-  background-color: var(--back_ground);
+  /* width: 8px; */
+  /* background-color: var(--back_ground); */
 }
 
 ::-webkit-scrollbar-thumb {

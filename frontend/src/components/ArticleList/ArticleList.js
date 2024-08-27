@@ -5,6 +5,8 @@ import LetterFilter from "./LetterFilter";
 import ArticleListContent from "./ArticleListContent";
 import "../CSS/ArticleList.css";
 import LoadingPage from "../Loading/LoadingPage";
+import ErrorMessage from "../Error/ErrorMessage";
+import messages from "../App/messages";
 
 /**
  * ArticleListPage Component
@@ -76,6 +78,8 @@ function ArticleListPage() {
         />
         {isLoading ? (
           <LoadingPage></LoadingPage>
+        ) : articles.length === 0 ? (
+          <ErrorMessage message={messages.Article.noArticlesAvailable} />
         ) : (
           <ArticleListContent
             articles={articles}

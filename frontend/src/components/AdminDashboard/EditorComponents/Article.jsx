@@ -63,9 +63,7 @@ const Article = ({ onUpdate}) => {
   useEffect(() => {
     if (article) {
       apiGetArticle(article).then((response) => {
-        console.log(response.data);
         const parsedContent = parseArticleData(response.data);
-        console.log("parsedContent ", parsedContent);
         let i = 0;
         parsedContent.forEach(block => {
           renderContentInput(block, i);
@@ -103,9 +101,18 @@ const Article = ({ onUpdate}) => {
     onUpdate(updatedBlocks);
 };
 
+  /**
+   * Removes the content block at the specified index from the contentBlocks array.
+   *
+   * @param {number} index - The index of the block to be removed
+   * @return {void}
+   */
   const removeContentBlock = (index) => {
-    setContentBlocks(contentBlocks.filter((_, i) => i !== index));
+    const updatedBlocks = contentBlocks.filter((_, i) => i !== index);
+    setContentBlocks(updatedBlocks);
+    onUpdate(updatedBlocks); // Update the parent component with the new state
   };
+
 
   /**
    * Renders content input based on the block and index.

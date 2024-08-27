@@ -30,7 +30,7 @@
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: stretch;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   border: 2px solid var(--card-border);
 }
 
@@ -71,6 +71,11 @@
   padding-top: 5px;
   padding-bottom: 5px;
   border-radius: 10px;
+}
+
+.about-btn {
+  background-color: var(--btn-text-color);
+  color: var(--btn-color);
 }
 
 .homepage-button:hover {

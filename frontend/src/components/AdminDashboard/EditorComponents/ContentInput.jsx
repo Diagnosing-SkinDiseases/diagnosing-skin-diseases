@@ -20,7 +20,6 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
  */
 const ContentInput = ({ block, updateBlock, remove, className }) => {
   const handleChange = (e) => {
-    console.log("handleChange ", block);
     updateBlock(e.target.value);
   };
 

@@ -179,6 +179,18 @@ function App() {
           {/* Glossary */}
           <Route path="/glossary" element={<Glossary></Glossary>}></Route>
 
+          {/* How To */}
+          <Route path="/how-to/:title/:id" element={<Article />}></Route>
+          <Route
+            path="/how-to-understand-skin/:title/:id"
+            element={<Article />}
+          ></Route>
+          <Route
+            path="/how-to-diagnose/:title/:id"
+            element={<Article />}
+          ></Route>
+          <Route path="/how-to-treat/:title/:id" element={<Article />}></Route>
+
           {/*Login*/}
           <Route path="/login" element={<Login></Login>}></Route>
 
@@ -203,8 +215,11 @@ function App() {
         </Routes>
         <div className="footer-placeholder"></div>
         <footer className="footer">
-          © 2024 Diagnosing Skin Diseases and Dr. Eileen Murray. Questions?
-          Contact us.
+          © 2024 Diagnosing Skin Diseases and Dr. Eileen Murray.
+          Questions?&nbsp;
+          <a href="/about?selectedItem=Contact" className="footer-link">
+            Contact us.
+          </a>
         </footer>
       </div>
     </AuthProvider>
