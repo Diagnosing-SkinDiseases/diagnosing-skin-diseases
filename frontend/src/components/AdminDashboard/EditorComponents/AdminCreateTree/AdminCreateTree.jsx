@@ -33,25 +33,25 @@ const AdminCreateTree = ({
   const [title, setTitle] = useState(existingTitle !== "" ? existingTitle : "");
 
   // Node State
-  // const [rootNode, setRootNode] = useState(
-  //   existingTree !== null
-  //     ? existingTree
-  //     : {
-  //         currentId: "node0",
-  //         content: "",
-  //         parentId: null,
-  //         noChild: [],
-  //         yesChild: [],
-  //         xPos: 0,
-  //         yPos: 0,
-  //       }
-  // );
+  const [rootNode, setRootNode] = useState(
+    existingTree !== null
+      ? existingTree
+      : {
+          currentId: "node0",
+          content: "",
+          parentId: null,
+          noChild: [],
+          yesChild: [],
+          xPos: 0,
+          yPos: 0,
+        }
+  );
 
   // TESTING PURPOSES FOR SAMPLE ROOT NODE
   // Node State
-  const [rootNode, setRootNode] = useState(
-    existingTree !== null ? existingTree : SampleTree
-  );
+  // const [rootNode, setRootNode] = useState(
+  //   existingTree !== null ? existingTree : SampleTree
+  // );
 
   // Image State
   const [coverImage, setCoverImage] = useState(
