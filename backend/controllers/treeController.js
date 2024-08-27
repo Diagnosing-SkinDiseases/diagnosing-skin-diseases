@@ -124,11 +124,27 @@ const inOrderToList = (node, acc) => {
   return acc;
 };
 
+/**
+ * Extracts the article ID from a given URL.
+ * @param {string} url - The URL to extract the article ID from.
+ * @returns {string} The article ID extracted from the URL.
+ */
 const extractArticleId = (url) => {
   const parts = url.split("/");
   return parts.pop();
 }
 
+  /**
+   * Extracts a preview text from an article with the given ID.
+   * It takes the first content block of type 'PARAGRAPH' and extracts up to
+   * 100 characters of its content. If the content is longer than 100 characters,
+   * it ensures the preview text ends on a full word by finding the last space and
+   * truncating there. If the content is shorter than 100 characters, the full
+   * content is returned.
+   * @param {string} articleId - The ID of the article to extract the preview
+   * text from.
+   * @returns {string} The preview text.
+   */
 const extractPreviewText = async (articleId) => {
   try {
     const article = await Article.findById(articleId);
