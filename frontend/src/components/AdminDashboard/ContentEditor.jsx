@@ -72,6 +72,49 @@ const ContentEditor = ({ contentType }) => {
   };
 
   /**
+   * Removes empty leading, trailing spaces and filters out empty blocks
+   */
+  const removeEmptyContentBlocks = () => {
+    return new Promise((resolve) => {
+        if (contentType === ContentTypeEnum.DEFINITION) {
+            const trimmedTitle = title.trim();
+            const trimmedParagraph = paragraph.trim();
+            setTitle(trimmedTitle);
+            setParagraph(trimmedParagraph);
+        } else if (contentType === ContentTypeEnum.ARTICLE) {
+            const trimmedBlocks = articleContent.map(block => ({
+                ...block,
+                value: block.value.trim(),
+            })).filter(block => block.value !== "");
+          setArticleContent(trimmedBlocks);
+        } else if (contentType === ContentTypeEnum.TREE) {
+            if (treePayload) {
+                const trimmedTreePayload = {
+                    ...treePayload,
+                    name: treePayload.name.trim(),
+                    coverImage: treePayload.coverImage.trim(),
+                    aboutLink: treePayload.aboutLink.trim(),
+                };
+
+                const trimNodeTree = (node) => {
+                    if (node) {
+                        node.content = node.content.trim();
+                        if (node.yesChild) trimNodeTree(node.yesChild);
+                        if (node.noChild) trimNodeTree(node.noChild);
+                    }
+                };
+
+                trimNodeTree(trimmedTreePayload.nodeTree);
+                setTreePayload(trimmedTreePayload);
+            }
+        }
+
+        resolve(); // Resolve the promise after state updates
+    });
+};
+
+
+  /**
    * Checks if the form is ready to be saved based on the content type and its specific requirements.
    * Sets an error message if the form is not ready to be saved.
    *
@@ -79,6 +122,7 @@ const ContentEditor = ({ contentType }) => {
    */
   const isReadyToSave = () => {
     let message = "";
+    
     switch (contentType) {
       case ContentTypeEnum.DEFINITION:
         const term = parsedDefinition().term;
@@ -264,73 +308,76 @@ const ContentEditor = ({ contentType }) => {
    *
    */
   const handleSaveOrUpdateBtn = () => {
-    const status = "UNPUBLISHED";
-    if (isEditMode) {
-      updateItem(status);
-    } else {
-      createItem(status);
-    }
+    removeEmptyContentBlocks()
+        .then(() => {
+            const status = "UNPUBLISHED";
+            if (isEditMode) {
+                updateItem(status);
+            } else {
+                createItem(status);
+            }
+        });
   };
 
   /**
    * Handles the publish button action.
    */
   const handlePublishBtn = () => {
-    const publishStatus = "PUBLISHED";
-    if (isEditMode) {
-      updateItem(publishStatus);
-    } else {
-      createItem(publishStatus);
-    }
-  };
+    removeEmptyContentBlocks()
+        .then(() => {
+            const publishStatus = "PUBLISHED";
+            if (isEditMode) {
+                updateItem(publishStatus);
+            } else {
+                createItem(publishStatus);
+            }
+        });
+};
 
   /**
    * Handling the preview button click event. 
    */
   const handlePreviewBtn = () => {
-    let previewPath = "";
-    let previewData = {};
+    removeEmptyContentBlocks()
+        .then(() => {
+            let previewPath = "";
+            let previewData = {};
 
-    switch (contentType) {
-      case ContentTypeEnum.DEFINITION:
-        previewPath = `/admin/definitions/preview`;
-        previewData = parsedDefinition();
-        break;
-      case ContentTypeEnum.ARTICLE:
-        previewPath = `/admin/articles/preview`;
-        previewData = parseArticleContent(articleContent);
-        
-        // Filter out any empty content blocks
-      previewData.content = previewData.content.filter(
-        (block) => block.content !== ""
-      );
-      break;
-      case ContentTypeEnum.TREE:
-        previewPath = `/admin/trees/preview`;
-        // Helper function
-        const inOrderToList = (node, acc) => {
-          if (node) {
-            let { parentId, content, currentId, yesChild, noChild } = node;
-            let parsedNode = { currentId, content, parentId };
-            parsedNode.noChildId = noChild ? noChild.currentId : null;
-            parsedNode.yesChildId = yesChild ? yesChild.currentId : null;
-            acc.push(parsedNode);
-            inOrderToList(node.noChild, acc);
-            inOrderToList(node.yesChild, acc);
-          }
-          return acc;
-        };
-        previewData = treePayload;
-        previewData.nodes = inOrderToList(previewData.nodeTree, []);
-        break;
-      default:
-        console.error("Unknown content type.");
-        return;
-    }
-    sessionStorage.setItem("previewData", JSON.stringify(previewData));
-    const url = `${window.location.origin}${previewPath}`;
-    window.open(url, "_blank");
-  };
+            switch (contentType) {
+                case ContentTypeEnum.DEFINITION:
+                    previewPath = `/admin/definitions/preview`;
+                    previewData = parsedDefinition();
+                    break;
+                case ContentTypeEnum.ARTICLE:
+                    previewPath = `/admin/articles/preview`;
+                    previewData = parseArticleContent(articleContent);
+                    break;
+                case ContentTypeEnum.TREE:
+                    previewPath = `/admin/trees/preview`;
+                    const inOrderToList = (node, acc) => {
+                        if (node) {
+                            let { parentId, content, currentId, yesChild, noChild } = node;
+                            let parsedNode = { currentId, content, parentId };
+                            parsedNode.noChildId = noChild ? noChild.currentId : null;
+                            parsedNode.yesChildId = yesChild ? yesChild.currentId : null;
+                            acc.push(parsedNode);
+                            inOrderToList(node.noChild, acc);
+                            inOrderToList(node.yesChild, acc);
+                        }
+                        return acc;
+                    };
+                    previewData = treePayload;
+                    previewData.nodes = inOrderToList(previewData.nodeTree, []);
+                    break;
+                default:
+                    console.error("Unknown content type.");
+                    return;
+            }
+            sessionStorage.setItem("previewData", JSON.stringify(previewData));
+            const url = `${window.location.origin}${previewPath}`;
+            window.open(url, "_blank");
+        });
+};
 
   /**
    * @returns {JSX.Element} The rendered admin dashboard's editor section.
