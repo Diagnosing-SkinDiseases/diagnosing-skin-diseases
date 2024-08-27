@@ -51,7 +51,7 @@
 }
 
 .card-body {
-  background: #e3d2b3;
+  /* background: #e3d2b3; */
   opacity: 0.9;
   display: flex;
   flex-direction: column;
