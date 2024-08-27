@@ -34,11 +34,9 @@ const ContentEditor = ({ contentType }) => {
   const [paragraph, setParagraph] = useState("");
   const [status, setStatus] = useState("");
   const [articleContent, setArticleContent] = useState([]);
+  const [treePayload, setTreePayload] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const path = `/admin/${contentType.toLowerCase()}s`;
-
-  // Tree State
-  const [treePayload, setTreePayload] = useState(null);
 
   // Determine if we are in edit mode
   const isEditMode = id !== undefined;
@@ -108,7 +106,6 @@ const ContentEditor = ({ contentType }) => {
                 setTreePayload(trimmedTreePayload);
             }
         }
-
         resolve(); // Resolve the promise after state updates
     });
 };
@@ -308,75 +305,79 @@ const ContentEditor = ({ contentType }) => {
    *
    */
   const handleSaveOrUpdateBtn = () => {
-    removeEmptyContentBlocks()
-        .then(() => {
-            const status = "UNPUBLISHED";
-            if (isEditMode) {
-                updateItem(status);
-            } else {
-                createItem(status);
-            }
-        });
-  };
+  removeEmptyContentBlocks().then(() => {
+    if (isReadyToSave()) {  // Check readiness after content is trimmed and cleaned
+      const status = "UNPUBLISHED";
+      if (isEditMode) {
+        updateItem(status);
+      } else {
+        createItem(status);
+      }
+    }
+  });
+};
 
   /**
    * Handles the publish button action.
    */
   const handlePublishBtn = () => {
-    removeEmptyContentBlocks()
-        .then(() => {
-            const publishStatus = "PUBLISHED";
-            if (isEditMode) {
-                updateItem(publishStatus);
-            } else {
-                createItem(publishStatus);
-            }
-        });
+  removeEmptyContentBlocks().then(() => {
+    if (isReadyToSave()) {  // Check readiness after content is trimmed and cleaned
+      const publishStatus = "PUBLISHED";
+      if (isEditMode) {
+        updateItem(publishStatus);
+      } else {
+        createItem(publishStatus);
+      }
+    }
+  });
 };
 
   /**
    * Handling the preview button click event. 
    */
   const handlePreviewBtn = () => {
-    removeEmptyContentBlocks()
-        .then(() => {
-            let previewPath = "";
-            let previewData = {};
+  removeEmptyContentBlocks().then(() => {
+    if (isReadyToSave()) {  // Check readiness after content is trimmed and cleaned
+      let previewPath = "";
+      let previewData = {};
 
-            switch (contentType) {
-                case ContentTypeEnum.DEFINITION:
-                    previewPath = `/admin/definitions/preview`;
-                    previewData = parsedDefinition();
-                    break;
-                case ContentTypeEnum.ARTICLE:
-                    previewPath = `/admin/articles/preview`;
-                    previewData = parseArticleContent(articleContent);
-                    break;
-                case ContentTypeEnum.TREE:
-                    previewPath = `/admin/trees/preview`;
-                    const inOrderToList = (node, acc) => {
-                        if (node) {
-                            let { parentId, content, currentId, yesChild, noChild } = node;
-                            let parsedNode = { currentId, content, parentId };
-                            parsedNode.noChildId = noChild ? noChild.currentId : null;
-                            parsedNode.yesChildId = yesChild ? yesChild.currentId : null;
-                            acc.push(parsedNode);
-                            inOrderToList(node.noChild, acc);
-                            inOrderToList(node.yesChild, acc);
-                        }
-                        return acc;
-                    };
-                    previewData = treePayload;
-                    previewData.nodes = inOrderToList(previewData.nodeTree, []);
-                    break;
-                default:
-                    console.error("Unknown content type.");
-                    return;
+      switch (contentType) {
+        case ContentTypeEnum.DEFINITION:
+          previewPath = `/admin/definitions/preview`;
+          previewData = parsedDefinition();
+          break;
+        case ContentTypeEnum.ARTICLE:
+          previewPath = `/admin/articles/preview`;
+          previewData = parseArticleContent(articleContent);
+          break;
+        case ContentTypeEnum.TREE:
+          previewPath = `/admin/trees/preview`;
+          const inOrderToList = (node, acc) => {
+            if (node) {
+              let { parentId, content, currentId, yesChild, noChild } = node;
+              let parsedNode = { currentId, content, parentId };
+              parsedNode.noChildId = noChild ? noChild.currentId : null;
+              parsedNode.yesChildId = yesChild ? yesChild.currentId : null;
+              acc.push(parsedNode);
+              inOrderToList(node.noChild, acc);
+              inOrderToList(node.yesChild, acc);
             }
-            sessionStorage.setItem("previewData", JSON.stringify(previewData));
-            const url = `${window.location.origin}${previewPath}`;
-            window.open(url, "_blank");
-        });
+            return acc;
+          };
+          previewData = treePayload;
+          previewData.nodes = inOrderToList(previewData.nodeTree, []);
+          break;
+        default:
+          console.error("Unknown content type.");
+          return;
+      }
+
+      sessionStorage.setItem("previewData", JSON.stringify(previewData));
+      const url = `${window.location.origin}${previewPath}`;
+      window.open(url, "_blank");
+    }
+  });
 };
 
   /**
@@ -389,19 +390,13 @@ const ContentEditor = ({ contentType }) => {
         {errorMessage && <div className="error-message">{errorMessage}</div>}
         <EditorButtons
           onPreview={() => {
-            if (isReadyToSave()) {
               handlePreviewBtn();
-            }
           }}
           onSave={() => {
-            if (isReadyToSave()) {
               handleSaveOrUpdateBtn();
-            }
           }}
           onPublish={() => {
-            if (isReadyToSave()) {
               handlePublishBtn();
-            }
           }}
         />
       </div>
