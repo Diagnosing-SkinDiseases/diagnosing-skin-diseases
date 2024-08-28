@@ -3,14 +3,9 @@ import React from "react";
 import "./styles/AdminCreateTrees.css";
 import { useState, useEffect } from "react";
 import EditTreeTitle from "./EditTreeTitle";
-import NodeArea from "./NodeArea";
-import TestFlow from "./NodeFlow/TestFlow";
 import NodeFlow from "./NodeFlow/NodeFlow";
 import ArticleCover from "./ArticleCover";
 import AboutLink from "./AboutLink";
-
-// Sample Data for Testing
-import SampleTree from "./NodeFlow/TestTree";
 
 /**
  * AdminCreateTree component allows creating or editing a decision tree in the admin panel.
@@ -46,12 +41,6 @@ const AdminCreateTree = ({
           yPos: 0,
         }
   );
-
-  // TESTING PURPOSES FOR SAMPLE ROOT NODE
-  // Node State
-  // const [rootNode, setRootNode] = useState(
-  //   existingTree !== null ? existingTree : SampleTree
-  // );
 
   // Image State
   const [coverImage, setCoverImage] = useState(
@@ -117,10 +106,11 @@ const AdminCreateTree = ({
             coverImage={coverImage}
             setCoverImage={setCoverImage}
           ></ArticleCover>
-          {/* NodeArea component - deprecated */}
+
+          {/* NodeArea component - ARCHIVED FOR REFERENCE*/}
           {/* <NodeArea rootNode={rootNode} setRootNode={setRootNode}></NodeArea> */}
-          {/* NodeFlow component */}
-          {/* <TestFlow></TestFlow> */}
+
+          {/* NodeFlow component - CURRENT VERSION*/}
           <NodeFlow rootNode={rootNode} setRootNode={setRootNode}></NodeFlow>
         </div>
       </div>

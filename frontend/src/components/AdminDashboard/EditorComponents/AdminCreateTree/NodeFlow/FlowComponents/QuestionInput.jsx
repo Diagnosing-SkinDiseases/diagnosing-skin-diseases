@@ -1,17 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
-import { Handle, Position, useNodesState, addEdge } from "@xyflow/react";
+import { Handle, Position } from "@xyflow/react";
 import "../../../../../CSS/Admin/TreeEditorNodeFlow.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 const handleStyle = { no: { left: 50 }, yes: { left: 175 } };
-
-const edgeStyle = {
-  no: { stroke: "red", strokeWidth: 2 },
-  yes: { stroke: "green", strokeWidth: 2 },
-};
-
-const X_OFFSET = 50;
 
 function QuestionInput({
   data: {
@@ -38,8 +31,6 @@ function QuestionInput({
   isConnectable,
   positionAbsoluteX,
   positionAbsoluteY,
-  //   getNodeId,
-  ...restProps
 }) {
   const [currentNodeHeight, setCurrentNodeHeight] = useState(nodeHeight ?? 0);
   const [nodeColorClass, setNodeColorClass] = useState("tree-flow-root-color");
@@ -58,6 +49,9 @@ function QuestionInput({
     }
   }, [nodeHeight, currentNodeHeight, rootNode]);
 
+  /**
+   * Handles text input change.
+   */
   const onChange = useCallback(
     (evt) => {
       const newContent = evt.target.value;
@@ -70,6 +64,11 @@ function QuestionInput({
     [updateNodeContent, id]
   );
 
+  /**
+   * Adds a new node to the tree.
+   *
+   * @param {string} newNodeType - The type of the new node, either "yes" or "no".
+   */
   const addNewNode = (newNodeType) => {
     const updatedNodeHeight = currentNodeHeight + 1;
 
@@ -113,89 +112,38 @@ function QuestionInput({
     };
 
     setEdges((eds) => eds.concat(newEdge));
-
-    // if (updatedNodeHeight > maxTreeHeight) {
-    //   console.log("new max");
-    //   setMaxTreeHeight(updatedNodeHeight);
-    //   setAllNodes((nds) => {
-    //     nds.map((node, i) => {
-    //       console.log(`updating node ${i}`, node);
-    //       console.log(`${i} pos`, node.position);
-    //       console.log(`${i} hg`, node.data.nodeHeight);
-    //       console.log(`${i} hcomp`, updatedNodeHeight, node.data.nodeHeight);
-    //       console.log(`${i} type`, node.data.nodeType);
-
-    //       const offsetMultiplier =
-    //         (updatedNodeHeight - node.data.nodeHeight) * 1;
-
-    //       console.log(`${i} diff`, offsetMultiplier);
-
-    //       const totalXOffset = X_OFFSET * offsetMultiplier;
-
-    //       setSavedXOffset(totalXOffset);
-
-    //       let newXPosition = node.position.x;
-
-    //       switch (node.data.nodeType) {
-    //         case "no":
-    //           newXPosition = node.position.x - totalXOffset;
-    //           break;
-    //         case "yes":
-    //           newXPosition = node.position.x + totalXOffset;
-    //           break;
-    //         default:
-    //           break;
-    //       }
-
-    //       console.log(`nxp ${i}`, newXPosition);
-
-    //       node.position.x = newXPosition;
-    //       return node;
-    //     });
-    //     return nds;
-    //   });
-    // }
-
-    // if (updatedNodeHeight > maxTreeHeight) {
-    //   //console.log("new max");
-    //   setMaxTreeHeight(updatedNodeHeight);
-    //   setAllNodes((nds) => {
-    //     //console.log("RESETTING");
-    //     nds.map((node, i) => {
-    //       //console.log("recalculating node", i, node.position.x);
-    //       //console.log("ndata", i, node.data);
-
-    //       console.log("Disc1", maxTreeHeight, node.data.nodeHeight);
-
-    //       //console.log("Disc", maxTreeHeight - node.data.nodeHeight);
-
-    //       if (node.position.x !== undefined) {
-    //         //console.log("new node", i, node);
-    //         node.position.x =
-    //           node.position.x * (maxTreeHeight - node.data.nodeHeight);
-    //       }
-
-    //       return node;
-    //     });
-    //     return nds;
-    //   });
-    // }
   };
 
+  /**
+   * Deletes the current node from the tree by filtering it out of the
+   * `allNodes` state.
+   */
   const deleteFlowNode = () => {
     setAllNodes((nds) => nds.filter((node) => node.id !== id));
   };
 
+  /**
+   * Adds a new "no" node to the tree by calling `addNewNode` with the
+   * argument `"no"`.
+   */
   const onAddNoNode = () => {
-    console.log("no");
-
     addNewNode("no");
   };
 
+  /**
+   * Adds a new "yes" node to the tree by calling `addNewNode` with the
+   * argument `"yes"`.
+   */
   const onAddYesNode = () => {
     addNewNode("yes");
   };
 
+  /**
+   * Finds a node in a decision tree by its ID.
+   * @param {Object} rootNode - The root node of the decision tree.
+   * @param {string} targetNodeId - The ID of the node to find.
+   * @returns {Object|undefined} - Returns the node object if found, otherwise returns undefined.
+   */
   const findNodeById = (targetNodeId) => {
     const _findNodeById = (node) => {
       if (node === undefined) {
@@ -213,6 +161,10 @@ function QuestionInput({
     return _findNodeById(rootNode);
   };
 
+  /**
+   * Checks if the node with the given id has any children in its noChild array.
+   * @return {boolean} - True if the node has any children in its noChild array.
+   */
   const noChildPresent = () => {
     if (findNodeById(id) === undefined) {
       return false;
@@ -220,6 +172,10 @@ function QuestionInput({
     return findNodeById(id).noChild.length > 0;
   };
 
+  /**
+   * Checks if the node with the given id has any children in its yesChild array.
+   * @return {boolean} - True if the node has any children in its yesChild array.
+   */
   const yesChildPresent = () => {
     if (findNodeById(id) === undefined) {
       return false;
@@ -284,7 +240,11 @@ function QuestionInput({
     setRootNode(updatedRootNode);
   };
 
-  // Add a new node to the tree
+  /**
+   * Handles the addition of a new node to the decision tree.
+   * @param {Event} event - The event that triggered the addition of the node.
+   * Updates the tree data structure and triggers a re-render.
+   */
   const onAddNode = (event) => {
     let newNode = generateNode();
     let targetNodeId = id;
@@ -293,16 +253,7 @@ function QuestionInput({
     newNode.yPos = positionAbsoluteY + 250;
 
     if (addType === "yes") {
-      // Update data
-      /**
-       *         x:
-          newNodeType === "no"
-            ? positionAbsoluteX - (200 + savedXOffset)
-            : positionAbsoluteX + (200 + savedXOffset),
-        y: positionAbsoluteY + 250,
-       */
       newNode.xPos = positionAbsoluteX + (200 + savedXOffset);
-
       addYesChild(targetNodeId, newNode);
       // Update UI
       onAddYesNode();
@@ -315,7 +266,11 @@ function QuestionInput({
     }
   };
 
-  // Delete a child node from the tree
+  /**
+   * Deletes a node from the decision tree by its ID.
+   * @param {string} nodeIdToDelete - The ID of the node to delete.
+   * @returns {undefined} - Does not return anything, instead updates the tree data structure and triggers a re-render.
+   */
   const deleteChild = (nodeIdToDelete) => {
     const deleteNodeRecursively = (node) => {
       if (node.currentId === nodeIdToDelete) {
@@ -342,9 +297,14 @@ function QuestionInput({
   const onDeleteNode = (event) => {
     deleteFlowNode();
     deleteChild(id);
-    console.log("delfl", flattenTree(rootNode));
   };
 
+  /**
+   * Converts a string to title case.
+   *
+   * @param {string} str - The input string
+   * @return {string} The string converted to title case
+   */
   function toTitleCase(str) {
     return str
       .toLowerCase() // Convert the entire string to lowercase first

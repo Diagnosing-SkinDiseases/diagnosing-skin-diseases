@@ -7,8 +7,6 @@ import {
   useNodesState,
   useEdgesState,
   useReactFlow,
-  addEdge,
-  Panel,
   ReactFlowProvider,
 } from "@xyflow/react";
 
@@ -24,6 +22,16 @@ const getNodeId = () => `randomnode_${+new Date()}`;
 
 const flowKey = "example-flow";
 
+/**
+ * A React component that renders a React Flow graph and handles the loading and
+ * saving of the graph data to/from local storage. The component also provides
+ * functions to add nodes and edges to the graph and to update the content of an
+ * existing node.
+ *
+ * @param {Object} rootNode - The root node of the decision tree.
+ * @param {Function} setRootNode - A function to update the root node of the decision tree.
+ * @returns {JSX.Element} - A JSX element representing the React Flow graph.
+ */
 const NodeFlowInstance = ({ rootNode, setRootNode }) => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
@@ -44,9 +52,6 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
 
   useEffect(() => {
     if (dataLoaded) {
-      console.log("ln", loadedNodes);
-      console.log("rn", rootNode);
-      console.log("fn", flattenTree(rootNode));
       setNodes((nds) => {
         const filtered = nds.filter((flowNode) => {
           const keepIds = flattenTree(rootNode).map((node) => node.currentId);
@@ -64,6 +69,14 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
     }
   }, [rootNode, dataLoaded]);
 
+  /**
+   * Recursively loads the existing tree structure into the nodes and edges
+   * state variables.
+   * @param {Object} node - The current node being processed.
+   * @param {"root"|"yes"|"no"} type - The type of the current node.
+   * @returns {undefined} - Does not return a value.
+   * @private
+   */
   const loadExistingTree = () => {
     const _loadExistingTree = (node, type) => {
       if (node === undefined) {
@@ -88,17 +101,6 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
         },
       };
 
-      /**
-       *     const newEdge = {
-      id: `edge_${id}_${newNode.id}`,
-      source: id,
-      target: newNode.id,
-      sourceHandle: newNodeType,
-      className:
-        newNodeType === "no" ? "tree-flow-no-edge" : "tree-flow-yes-edge",
-    };
-       */
-
       if (node.yesChild[0]) {
         let formattedEdge = {
           id: `edge_${node.currentId}_${node.yesChild[0].currentId}`,
@@ -121,18 +123,25 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
         setEdges((eds) => eds.concat(formattedEdge));
       }
 
-      console.log("LOADING NODE", formattedNode);
-
       setNodes((nds) => nds.concat(formattedNode));
 
       _loadExistingTree(node.noChild[0], "no");
       _loadExistingTree(node.yesChild[0], "yes");
     };
-    console.log("Root pre load", rootNode);
 
     _loadExistingTree(rootNode, "root");
   };
 
+  /**
+   * Recursively flattens a tree structure into an array of nodes. The array
+   * will contain all nodes in the tree, in the order they were traversed (i.e.,
+   * pre-order traversal). This is useful for converting a tree structure into a
+   * flat array for things like rendering a list of all nodes in a tree.
+   *
+   * @param {Object} tree - The tree to flatten.
+   * @returns {Array} - An array of all nodes in the tree, in the order they were
+   *   traversed.
+   */
   function flattenTree(tree) {
     const result = [];
 
@@ -290,9 +299,6 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
   const onConnect = useCallback(
     (params) =>
       setEdges((eds) => {
-        console.log("pr", params);
-        console.log("ed", eds);
-
         const newEdge = {
           id: `edge_${params.source}_${params.target}`,
           source: params.source,
@@ -303,12 +309,6 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
               ? "tree-flow-no-edge"
               : "tree-flow-yes-edge",
         };
-
-        let targetNode = findTreeNodeById(rootNode, params.target);
-
-        console.log("CNN TNRN", rootNode);
-        console.log("CNN TNID", params.target);
-        console.log("CNN TN", targetNode);
 
         if (params.sourceHandle === "no") {
           addNoChild(params.source, findTreeNodeById(rootNode, params.target));
@@ -321,51 +321,6 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
     [setEdges, rootNode]
   );
 
-  const onSave = useCallback(() => {
-    if (rfInstance) {
-      const flow = rfInstance.toObject();
-      localStorage.setItem(flowKey, JSON.stringify(flow));
-    }
-  }, [rfInstance]);
-
-  const onRestore = useCallback(() => {
-    const restoreFlow = async () => {
-      const flow = JSON.parse(localStorage.getItem(flowKey));
-
-      if (flow) {
-        const { x = 0, y = 0, zoom = 1 } = flow.viewport;
-        setNodes(flow.nodes || []);
-        setEdges(flow.edges || []);
-        setViewport({ x, y, zoom });
-      }
-    };
-
-    restoreFlow();
-  }, [setNodes, setViewport]);
-
-  function findFlowNodeById(nodes, id) {
-    return nodes.find((node) => {
-      // console.log(node);
-      return node.id === id;
-    });
-  }
-
-  const onAdd = useCallback(() => {
-    console.log(nodes);
-    let foundNode = findFlowNodeById(nodes, "1");
-    console.log(foundNode);
-    const newNode = {
-      id: getNodeId(),
-      data: { label: "Added node" },
-      type: "questionInput",
-      position: {
-        x: foundNode.position.x - 200,
-        y: foundNode.position.y + 250,
-      },
-    };
-    setNodes((nds) => nds.concat(newNode));
-  }, [setNodes]);
-
   /**
    * Finds a node in a decision tree by its ID.
    * @param {Object} rootNode - The root node of the decision tree.
@@ -374,8 +329,6 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
    */
   const findTreeNodeById = (rootNode, targetNodeId) => {
     const _findTreeNodeById = (node) => {
-      console.log("fun tn", targetNodeId);
-      console.log("fun n", node);
       if (node === undefined) {
         return undefined;
       }
@@ -391,6 +344,11 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
     return _findTreeNodeById(rootNode);
   };
 
+  /**
+   * Updates the position of a node in the decision tree.
+   * @param {string} nodeIdToUpdate - The ID of the node to update.
+   * @param {Object} newPos - The new position of the node with x and y coordinates.
+   */
   const updateNodePosition = (nodeIdToUpdate, newPos) => {
     const updatePositionRecursively = (node) => {
       if (node.currentId === nodeIdToUpdate) {
@@ -411,18 +369,15 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
     setRootNode((prevRootNode) => updatePositionRecursively(prevRootNode));
   };
 
+  /**
+   * Handles the event when a node drag is stopped. Updates the
+   * position of the node in the decision tree.
+   * @param {Object} event - The event object from the ReactFlow library.
+   * @param {Object} node - The node object that was dragged.
+   */
   const handleNodeDragStop = (event, node) => {
     updateNodePosition(node.id, node.position);
-
-    console.log("Drag V", node);
-    console.log("Drag NPrev", findTreeNodeById(rootNode, node.id));
-
-    console.log(`NewPos {x: ${node.position.x}, y: ${node.position.y}} `);
   };
-
-  useEffect(() => {
-    onSave();
-  }, [onSave]);
 
   return (
     <ReactFlow
@@ -442,11 +397,6 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
       <Controls />
       <MiniMap />
       <Background variant="dots" gap={12} size={1} />
-      {/* <Panel position="top-right">
-        <button onClick={onSave}>save</button>
-        <button onClick={onRestore}>restore</button>
-        <button onClick={onAdd}>add node</button>
-      </Panel> */}
     </ReactFlow>
   );
 };
