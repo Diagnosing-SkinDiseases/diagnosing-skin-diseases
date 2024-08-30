@@ -93,19 +93,22 @@ const ContentEditor = ({ contentType }) => {
         const title = parseArticleContent(articleContent).title;
         const content = parseArticleContent(articleContent).content;
 
+        /**
+         * Checks if any of the elements in the given array have an empty content property value
+         * or if the array is empty.
+         *
+         * @param {Object[]} arr - The array of objects to check.
+         * @return {boolean} true if any of the elements have an empty content property or if the array is empty, false otherwise.
+         */
         function hasEmptyValue(arr) {
           return (
             arr.some((element) => {
-              console.log(element);
-
               return element.content === "";
             }) || arr.length === 0
           );
         }
 
-        console.log(hasEmptyValue(content));
-
-        // Check if any of the elements in the content array have an empty value or if the title is empty.
+        // Check if any of the elements in the content array have an empty value, if the content array is empty or if the title is empty.
 
         if (!title || hasEmptyValue(content)) {
           message = "Please provide article title and content.";
