@@ -23,7 +23,7 @@ import {
 
 /**
  * ContentEditor is a component for creating and editing different types of content
- * such as definitions, articles, and trees. 
+ * such as definitions, articles, and trees.
  *
  * @param {string} contentType - The type of content being edited, which determines the form and API calls.
  */
@@ -52,10 +52,12 @@ const ContentEditor = ({ contentType }) => {
   const parseArticleContent = (articleContent) => {
     return {
       title: articleContent[0]?.value || "", // Ensure there is a default value
-      content: articleContent.slice(1).map((item) => ({
-        type: item.type.toUpperCase(),
-        content: item.value,
-      })),
+      content: articleContent.slice(1).map((item) => {
+        return {
+          type: item.type.toUpperCase(),
+          content: item.value,
+        };
+      }),
     };
   };
 
@@ -90,8 +92,23 @@ const ContentEditor = ({ contentType }) => {
       case ContentTypeEnum.ARTICLE:
         const title = parseArticleContent(articleContent).title;
         const content = parseArticleContent(articleContent).content;
-        if (!title || content.length === 0) {
-          message = "Please, provide article title and content.";
+
+        function hasEmptyValue(arr) {
+          return (
+            arr.some((element) => {
+              console.log(element);
+
+              return element.content === "";
+            }) || arr.length === 0
+          );
+        }
+
+        console.log(hasEmptyValue(content));
+
+        // Check if any of the elements in the content array have an empty value or if the title is empty.
+
+        if (!title || hasEmptyValue(content)) {
+          message = "Please provide article title and content.";
         }
         break;
       case ContentTypeEnum.TREE:
@@ -113,7 +130,6 @@ const ContentEditor = ({ contentType }) => {
     return !message; // Returns true if the message is empty, meaning the form is ready to save
   };
 
-  
   /**
    * Updates the definition with the given title, paragraph, and status.
    *
@@ -138,7 +154,6 @@ const ContentEditor = ({ contentType }) => {
     setArticleContent(updatedBlocks);
   };
 
-  
   /**
    * Renders the content based on the content type.
    *
@@ -161,7 +176,7 @@ const ContentEditor = ({ contentType }) => {
    * Update an item with a new status and optional title or paragraph.
    *
    * @param {string} newStatus - the new status for the item
-   * @return {void} 
+   * @return {void}
    */
   const updateItem = (newStatus) => {
     let updatedItem = {
@@ -186,7 +201,7 @@ const ContentEditor = ({ contentType }) => {
         let parsedArticle = parseArticleContent(articleContent);
         parsedArticle.id = id;
         parsedArticle.status = newStatus;
-        
+
         updatePromise = apiUpdateArticle(parsedArticle);
         break;
       case ContentTypeEnum.TREE:
@@ -217,7 +232,7 @@ const ContentEditor = ({ contentType }) => {
    * Creates an item based on the given status.
    *
    * @param {string} status - the status of the item to be created
-   * @return {void} 
+   * @return {void}
    */
   const createItem = (status) => {
     let createPromise;
@@ -281,7 +296,7 @@ const ContentEditor = ({ contentType }) => {
   };
 
   /**
-   * Handling the preview button click event. 
+   * Handling the preview button click event.
    */
   const handlePreviewBtn = () => {
     let previewPath = "";
