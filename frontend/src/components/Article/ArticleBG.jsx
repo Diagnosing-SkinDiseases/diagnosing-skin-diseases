@@ -16,8 +16,9 @@ const ArticleBG = ({ data }) => {
 
   // Back button component for certain cases
   const BackButton = () => {
-    // Check if current URL pathname is "/about" for excluding back button
-    if (new URL(window.location).pathname === "/about") {
+    // Check if current URL pathname is "/about" or includes "/preview" for excluding back button
+    const pathname = new URL(window.location).pathname;
+    if (pathname === "/about" || pathname.includes("/preview")) {
       return null;
     }
 
