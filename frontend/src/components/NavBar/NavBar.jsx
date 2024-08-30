@@ -202,7 +202,9 @@ const NavBarComponent = () => {
 
   return (
     <div className="navbar">
-      <img className="nav-logo" src={DSD} alt="DSD Logo" />
+      <Link to="/">
+        <img className="nav-logo" src={DSD} alt="DSD Logo" />
+      </Link>
       {links.map((link, index) => (
         <div
           key={index}
