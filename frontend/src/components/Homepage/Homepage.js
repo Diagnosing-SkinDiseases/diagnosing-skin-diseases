@@ -58,37 +58,12 @@ const Card = ({ title, image, aboutLink, previewText, treeId }) => {
  * Main landing page of the application displaying a slider of diagnostic trees. Each tree is presented
  * with its cover image and name, along with an option to start a diagnosis. The trees are
  * fetched from an API and filtered to only show those that are published.
- *
- * State:
- *   trees (Array): List of diagnostic trees retrieved from the API and filtered by status.
- *
- * API:
- *   apiGetAllTrees: Fetches the list of all trees from the backend.
- *
- * Effects:
- *   useEffect initializes the fetch process on component mount and updates the `trees` state with published trees.
  */
 function Homepage() {
   const [trees, setTrees] = useState([]);
-  const [showArrows, setShowArrows] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
-  const PrevArrow = (props) => {
-    const { className, style, onClick } = props;
-    if (showArrows) {
-      return <div className={className} onClick={onClick} />;
-    }
-    return <></>;
-  };
-
-  const NextArrow = (props) => {
-    const { className, style, onClick } = props;
-    if (showArrows) {
-      return <div className={className} onClick={onClick} />;
-    }
-    return <></>;
-  };
-
+  // Fetch diagnostic trees from the API
   useEffect(() => {
     const fetchTrees = async () => {
       try {
@@ -97,7 +72,6 @@ function Homepage() {
           (tree) => tree.status === "PUBLISHED"
         );
         setTrees(publishedTrees);
-        setShowArrows(publishedTrees.length > 8);
         setIsLoading(false);
       } catch (error) {
         console.error("Failed to fetch trees", error);
@@ -107,64 +81,56 @@ function Homepage() {
     fetchTrees();
   }, []);
 
-  /**
-   * Adjust the height of card titles to match the tallest one
-   */
+  // Function to adjust card title heights
   const adjustCardTitles = () => {
     const cardTitles = document.querySelectorAll(".card-title");
-    let maxHeight = 0;
+    let maxTitleHeight = 0;
 
     cardTitles.forEach((title) => {
-      title.style.height = "auto"; // Reset height to auto before recalculating
-      const height = title.offsetHeight;
-      if (height > maxHeight) {
-        maxHeight = height;
+      title.style.height = "auto";
+      if (title.offsetHeight > maxTitleHeight) {
+        maxTitleHeight = title.offsetHeight;
       }
     });
 
     cardTitles.forEach((title) => {
-      title.style.height = `${maxHeight}px`;
+      title.style.height = `${maxTitleHeight}px`;
     });
   };
 
-  /**
-   * Adjust the height of card descriptions (preview text) to match the tallest one
-   */
+  // Function to adjust card preview description heights
   const adjustCardPreviews = () => {
     const cardDescriptions = document.querySelectorAll(".card-description");
-    let maxHeight = 0;
+    let maxDescriptionHeight = 0;
 
-    cardDescriptions.forEach((desc) => {
-      desc.style.height = "auto"; // Reset height to auto before recalculating
-      const height = desc.offsetHeight;
-      if (height > maxHeight) {
-        maxHeight = height;
+    cardDescriptions.forEach((description) => {
+      description.style.height = "auto";
+      if (description.offsetHeight > maxDescriptionHeight) {
+        maxDescriptionHeight = description.offsetHeight;
       }
     });
 
-    cardDescriptions.forEach((desc) => {
-      desc.style.height = `${maxHeight}px`;
+    cardDescriptions.forEach((description) => {
+      description.style.height = `${maxDescriptionHeight}px`;
     });
   };
 
   useEffect(() => {
-    const adjustCardHeights = () => {
-      adjustCardTitles();
-      adjustCardPreviews();
-    };
+    // Call both adjustCardTitles and adjustCardPreviews
+    adjustCardTitles();
+    adjustCardPreviews();
 
-    // Call the function to adjust the card titles and preview text
-    adjustCardHeights();
-
-    // Re-run the functions when the window is resized
-    window.addEventListener("resize", adjustCardHeights);
+    window.addEventListener("resize", adjustCardTitles);
+    window.addEventListener("resize", adjustCardPreviews);
 
     return () => {
-      window.removeEventListener("resize", adjustCardHeights);
+      window.removeEventListener("resize", adjustCardTitles);
+      window.removeEventListener("resize", adjustCardPreviews);
     };
   }, [trees]);
 
-  const settings = {
+  // Slider settings including arrow visibility and vertical scrolling for smaller screens
+  const sliderSettings = {
     dots: false,
     infinite: false,
     speed: 500,
@@ -173,6 +139,7 @@ function Homepage() {
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
     rows: 2,
+    vertical: false, // Default horizontal scrolling
     responsive: [
       {
         breakpoint: 1024,
@@ -180,6 +147,9 @@ function Homepage() {
           slidesToShow: 2,
           slidesToScroll: 2,
           rows: 2,
+          vertical: false, // Horizontal scrolling for medium screens
+          prevArrow: <PrevArrow />,
+          nextArrow: <NextArrow />,
         },
       },
       {
@@ -188,6 +158,9 @@ function Homepage() {
           slidesToShow: 1,
           slidesToScroll: 1,
           rows: 2,
+          vertical: false, // Horizontal scrolling for smaller screens
+          prevArrow: <PrevArrow />,
+          nextArrow: <NextArrow />,
         },
       },
     ],
@@ -200,7 +173,7 @@ function Homepage() {
         {isLoading ? (
           <LoadingPage />
         ) : (
-          <Slider {...settings}>
+          <Slider {...sliderSettings}>
             {trees.map((tree, index) => (
               <Card
                 key={index}
@@ -217,5 +190,16 @@ function Homepage() {
     </div>
   );
 }
+
+// Arrow components for slider navigation
+const PrevArrow = (props) => {
+  const { className, style, onClick } = props;
+  return <div className={`${className} arrow`} onClick={onClick} />;
+};
+
+const NextArrow = (props) => {
+  const { className, style, onClick } = props;
+  return <div className={`${className} arrow`} onClick={onClick} />;
+};
 
 export default Homepage;
