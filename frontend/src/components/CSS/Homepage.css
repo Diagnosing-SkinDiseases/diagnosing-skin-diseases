@@ -168,6 +168,34 @@
   }
 }
 
+/* Styles for the arrows */
+.arrow {
+  /* Basic arrow styling */
+  /* background: #000; */
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+/* Hide arrows on large screens */
+@media (min-width: 1025px) {
+
+  .slick-prev,
+  .slick-next {
+    display: none !important;
+  }
+}
+
+/* Ensure arrows are visible on medium and smaller screens */
+@media (max-width: 1024px) {
+
+  .slick-prev,
+  .slick-next {
+    display: block !important;
+  }
+}
+
 /* Import Slick Carousel styles */
 @import "~slick-carousel/slick/slick.css";
 @import "~slick-carousel/slick/slick-theme.css";
