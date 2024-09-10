@@ -148,14 +148,14 @@ const ContentEditor = ({ contentType }) => {
         const term = sanitizedContent.title;
         const definition = sanitizedContent.paragraph;
         if (!term || !definition) {
-          message = "Please, provide term and definition.";
+          message = "Please provide term and definition.";
         }
         break;
       case ContentTypeEnum.ARTICLE:
         const title = parseArticleContent(sanitizedContent).title;
         const content = parseArticleContent(sanitizedContent).content;
         if (!title || content.length === 0) {
-          message = "Please, provide article title and content.";
+          message = "Please provide article title and content.";
         }
         break;
       case ContentTypeEnum.TREE:
@@ -165,7 +165,7 @@ const ContentEditor = ({ contentType }) => {
           !sanitizedContent.coverImage ||
           !sanitizedContent.aboutLink
         ) {
-          message = "Please, provide tree title, about link, cover image and at least the root node filled.";
+          message = "Please provide tree title, about link, cover image and at least the root node filled.";
         }
         break;
       default:
