@@ -167,7 +167,7 @@ function Homepage() {
     <div className="Homepage">
       <div className="container-fluid">
         <h2 className="homepage-text my-4">
-          Diagnose by Primary Lesion & Condition
+          Diagnose by Primary Lesion
         </h2>
         {isLoading ? (
           <LoadingPage />
