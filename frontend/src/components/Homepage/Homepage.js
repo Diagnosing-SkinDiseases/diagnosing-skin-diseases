@@ -17,7 +17,7 @@ import LoadingPage from "../Loading/LoadingPage";
  *   aboutLink (String): URL for the page with more information about the tree.
  *   treeId (String): Unique identifier for the diagnostic tree.
  */
-const Card = ({ title, image, aboutLink, previewText,treeId }) => {
+const Card = ({ title, image, aboutLink, previewText, treeId }) => {
   const navigate = useNavigate();
 
   return (
@@ -107,30 +107,60 @@ function Homepage() {
     fetchTrees();
   }, []);
 
+  /**
+   * Adjust the height of card titles to match the tallest one
+   */
+  const adjustCardTitles = () => {
+    const cardTitles = document.querySelectorAll(".card-title");
+    let maxHeight = 0;
+
+    cardTitles.forEach((title) => {
+      title.style.height = "auto"; // Reset height to auto before recalculating
+      const height = title.offsetHeight;
+      if (height > maxHeight) {
+        maxHeight = height;
+      }
+    });
+
+    cardTitles.forEach((title) => {
+      title.style.height = `${maxHeight}px`;
+    });
+  };
+
+  /**
+   * Adjust the height of card descriptions (preview text) to match the tallest one
+   */
+  const adjustCardPreviews = () => {
+    const cardDescriptions = document.querySelectorAll(".card-description");
+    let maxHeight = 0;
+
+    cardDescriptions.forEach((desc) => {
+      desc.style.height = "auto"; // Reset height to auto before recalculating
+      const height = desc.offsetHeight;
+      if (height > maxHeight) {
+        maxHeight = height;
+      }
+    });
+
+    cardDescriptions.forEach((desc) => {
+      desc.style.height = `${maxHeight}px`;
+    });
+  };
+
   useEffect(() => {
-    const adjustCardTitles = () => {
-      const cardTitles = document.querySelectorAll(".card-title");
-      let maxHeight = 0;
-      cardTitles.forEach((title) => {
-        title.style.height = "auto";
-        const height = title.offsetHeight;
-        if (height > maxHeight) {
-          maxHeight = height;
-        }
-      });
-      cardTitles.forEach((title) => {
-        title.style.height = `${maxHeight}px`;
-      });
+    const adjustCardHeights = () => {
+      adjustCardTitles();
+      adjustCardPreviews();
     };
 
-    // Call the function to adjust the card titles
-    adjustCardTitles();
+    // Call the function to adjust the card titles and preview text
+    adjustCardHeights();
 
-    // Optionally, you might want to call this function on window resize
-    window.addEventListener("resize", adjustCardTitles);
+    // Re-run the functions when the window is resized
+    window.addEventListener("resize", adjustCardHeights);
 
     return () => {
-      window.removeEventListener("resize", adjustCardTitles);
+      window.removeEventListener("resize", adjustCardHeights);
     };
   }, [trees]);
 
@@ -166,9 +196,7 @@ function Homepage() {
   return (
     <div className="Homepage">
       <div className="container-fluid">
-        <h2 className="homepage-text my-4">
-          Diagnose by Primary Lesion
-        </h2>
+        <h2 className="homepage-text my-4">Diagnose by Primary Lesion</h2>
         {isLoading ? (
           <LoadingPage />
         ) : (
