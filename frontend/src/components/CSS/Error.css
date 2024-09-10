@@ -10,3 +10,8 @@
   text-align: center;
   margin-top: 5%;
 }
+
+.error-info-message a {
+  color: var(--text);
+  font-weight: 700;
+}

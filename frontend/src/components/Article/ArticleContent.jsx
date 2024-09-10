@@ -40,7 +40,7 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
             <hr />
           </div>
           <div className="container summary text-center">
-            <p>{errorMsg}</p>
+            <p className="error-info-message">{errorMsg}</p>
           </div>
         </div>
       ) : (
