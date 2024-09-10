@@ -1,15 +1,15 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { parseData } from "./articleComponentController";
+import { parseData, generateSummary, renderError } from "./articleComponentController";
 
 /**
- * ArticleContent component renders the content of an article, including the title and dynamic content.
+ * ArticleContent component renders the content of an article, including the title, summary, and dynamic content.
  * @param {Object} data - The data object containing the title and content of the article.
  * @param {string} data.title - The title of the article.
  * @param {Array} data.content - An array containing objects representing different types of content in the article.
  * @returns {JSX.Element} - Returns the JSX element for the article content.
  */
-const ArticleContent = ({ data: { title, content } }) => {
+const ArticleContent = ({ data: { title, content }, errorMsg }) => {
   // Get hash value from URL location
   const { hash } = useLocation();
 
@@ -32,20 +32,38 @@ const ArticleContent = ({ data: { title, content } }) => {
 
   return (
     <>
-      {/* Content */}
-      <div className="container px-5">
-        {/* Title */}
-        <div className="container mt-4 p-0 article-title text-center">
-          <h1>{title}</h1>
-          <hr></hr>
+      {errorMsg ? (
+        // Display error message if available
+        <div className="container px-5">
+          <div className="container mt-4 article-title text-center">
+            <h1>Not Found</h1>
+            <hr />
+          </div>
+          <div className="container summary text-center">
+            <p className="error-info-message">{errorMsg}</p>
+          </div>
         </div>
+      ) : (
+        // Display article content if no error message
+        <div className="container px-5">
+          {/* Title */}
+          <div className="container mt-4 article-title text-center">
+            <h1>{title}</h1>
+            <hr />
+          </div>
 
-        {/* Article */}
-        <div className="container p-4 pt-2">
-          {/* Dynamic Content*/}
-          {content.map(parseData)}
+          {/* Summary */}
+          <div className="container summary">
+            {generateSummary(content)}
+          </div>
+
+          {/* Article */}
+          <div className="container p-4 pt-0">
+            {/* Dynamic Content */}
+            {content.map(parseData)}
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

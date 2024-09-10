@@ -2,3 +2,16 @@
   text-align: center;
   margin-top: 15%;
 }
+
+.error-info-message {
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: var(--text);
+  text-align: center;
+  margin-top: 5%;
+}
+
+.error-info-message a {
+  color: var(--text);
+  font-weight: 700;
+}

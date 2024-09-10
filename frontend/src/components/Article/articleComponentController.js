@@ -12,9 +12,13 @@ import styles from "./styles";
 const parseData = ({ type, content }, index) => {
   switch (type) {
     case ArticleContentType.HEADER1:
-      return <h2 key={index}>{content}</h2>;
     case ArticleContentType.HEADER2:
-      return <h2 key={index}>{content}</h2>;
+      return (
+        <div key={index} id={content}>
+          <hr /> {/* Horizontal separator/line */}
+          <h2>{content}</h2>
+        </div>
+      );
     case ArticleContentType.PARAGRAPH:
       // Replace anchor tags with target="_blank" attribute for opening links in new tab
       const parsedContent = content.replace(
@@ -66,4 +70,46 @@ const parseData = ({ type, content }, index) => {
   }
 };
 
-export { parseData };
+/**
+ * generateSummary function creates a summary with hyperlinks to headers within the article.
+ * @param {Array} content - An array containing objects representing different types of content in the article.
+ * @returns {JSX.Element} - Returns a JSX element for the summary.
+ */
+const generateSummary = (content) => {
+  return (
+    <ul className="summary-list">
+      {content
+        .filter(
+          (item) =>
+            item.type === ArticleContentType.HEADER1 ||
+            item.type === ArticleContentType.HEADER2
+        )
+        .map(({ content }, index) => (
+          <li key={index}>
+            <a href={`#${content}`} className="summary-link">
+              {content}
+            </a>
+          </li>
+        ))}
+    </ul>
+  );
+};
+
+/**
+ * renderError function renders an error message with a dynamic email link.
+ * @param {string} message - The error message containing a placeholder for email.
+ * @param {string} email - The email address to be included in the message.
+ * @returns {JSX.Element} - Returns a JSX element for the error message.
+ */
+const renderError = (message, email) => {
+  const parts = message.split("emailAddress");
+  return (
+    <>
+      {parts[0]}
+      <a href={`mailto:${email}`}>{email}</a>
+      {parts[1]}
+    </>
+  );
+};
+
+export { parseData, generateSummary, renderError };

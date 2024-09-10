@@ -179,6 +179,18 @@ function App() {
           {/* Glossary */}
           <Route path="/glossary" element={<Glossary></Glossary>}></Route>
 
+          {/* How To */}
+          <Route path="/how-to/:title/:id" element={<Article />}></Route>
+          <Route
+            path="/how-to-understand-skin/:title/:id"
+            element={<Article />}
+          ></Route>
+          <Route
+            path="/how-to-diagnose/:title/:id"
+            element={<Article />}
+          ></Route>
+          <Route path="/how-to-treat/:title/:id" element={<Article />}></Route>
+
           {/*Login*/}
           <Route path="/login" element={<Login></Login>}></Route>
 

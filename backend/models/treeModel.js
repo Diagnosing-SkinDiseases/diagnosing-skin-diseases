@@ -60,6 +60,10 @@ const treeSchema = new Schema({
     required: true,
     enum: Object.values(Status),
   },
+  previewText: {
+    type: String, 
+    required: false, 
+  },
 });
 
 module.exports = mongoose.model("Tree", treeSchema);

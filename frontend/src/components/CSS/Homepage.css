@@ -1,6 +1,5 @@
 .Homepage {
   background: var(--background);
-  /* background-image: var(--background-image); */
   background-color: var(--background);
   background-size: cover;
   display: flex;
@@ -23,6 +22,7 @@
   margin-right: auto;
   margin-left: auto;
   overflow: auto;
+  max-width: 2500px;
 }
 
 .card-container {
@@ -30,33 +30,33 @@
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: stretch;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   border: 2px solid var(--card-border);
 }
 
 .card-custom {
   position: relative;
   border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); */
   flex: 1 0 calc(33.333% - 40px);
+  display: flex;
+  flex-direction: column;
 }
 
 .card-img-top {
   width: 100%;
   height: 12rem;
   object-fit: cover;
-  /* Ensure images cover the card area properly */
   object-position: center;
 }
 
 .card-body {
-  max-height: 12vh;
-  min-height: 12vh;
-  background: #e3d2b3;
+  /* background: #e3d2b3; */
   opacity: 0.9;
-  overflow: visible;
-  height: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1rem;
 }
 
 .homepage-button {
@@ -65,12 +65,17 @@
   cursor: pointer;
   border-radius: 5px;
   text-align: center;
-  width: 40%;
+  width: 100%;
   color: var(--btn-text-color);
   font-weight: bold;
   padding-top: 5px;
   padding-bottom: 5px;
   border-radius: 10px;
+}
+
+.about-btn {
+  background-color: var(--btn-text-color);
+  color: var(--btn-color);
 }
 
 .homepage-button:hover {
@@ -83,18 +88,33 @@
   margin-bottom: 10px;
   color: var(--card-title);
   margin-left: 15px;
+  line-height: 1.2;
+  /* Adjust the line height for one line */
+  min-height: 1.2em;
+  /* Ensure it fits one line based on the line-height */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-link {
+  color: var(--card-title);
+  font-weight: 600;
+}
+
+.card-description,
+.card-link {
+  color: var(--card-title);
+  margin-left: 15px;
+}
+
+.card-content {
+  flex: 1;
 }
 
 .card-actions {
-  top: 0.8rem;
-  right: 0.8rem;
-  display: flex;
-  gap: 15px;
-  flex-direction: row;
-  justify-content: space-around;
+  margin-top: auto;
 }
 
-/* Slick Carousel Customizations */
 .slick-slide {
   margin-left: 1em;
   margin-right: 1em;
@@ -131,8 +151,8 @@
 @media (max-width: 1024px) {
   .card-custom {
     flex: 1 0 calc(50% - 20px);
-    /* Adjust so two cards fit within the space */
   }
+
   .card-body {
     padding: 0.8rem;
   }
@@ -141,10 +161,38 @@
 @media (max-width: 600px) {
   .card-custom {
     flex: 1 0 calc(100% - 20px);
-    /* Adjust so one card fits within the space */
   }
+
   .card-body {
     padding: 0.5rem;
+  }
+}
+
+/* Styles for the arrows */
+.arrow {
+  /* Basic arrow styling */
+  /* background: #000; */
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+/* Hide arrows on large screens */
+@media (min-width: 1025px) {
+
+  .slick-prev,
+  .slick-next {
+    display: none !important;
+  }
+}
+
+/* Ensure arrows are visible on medium and smaller screens */
+@media (max-width: 1024px) {
+
+  .slick-prev,
+  .slick-next {
+    display: block !important;
   }
 }
 
