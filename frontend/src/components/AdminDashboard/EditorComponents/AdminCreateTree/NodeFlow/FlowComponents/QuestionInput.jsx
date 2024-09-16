@@ -324,7 +324,7 @@ function QuestionInput({
         />
       )}
 
-      <div>
+      <div className="tree-flow-node-content">
         {/* Header */}
         <div className="tree-flow-header">
           <span className="tree-flow-question">
@@ -344,7 +344,7 @@ function QuestionInput({
           <textarea
             name="text"
             onChange={onChange}
-            className="nodrag"
+            className="nodrag tree-flow-textarea nowheel"
             id="text"
             rows="3"
             value={textValue}
