@@ -46,7 +46,8 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
   // Load existing nodes once on page load
   useEffect(() => {
     setNodes([]);
-    loadExistingTree();
+    // Check for max node id in existing tree
+    setIdCounter(loadExistingTree());
     setDataLoaded(true);
   }, []);
 
@@ -78,15 +79,15 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
    * @private
    */
   const loadExistingTree = () => {
-    const _loadExistingTree = (node, type) => {
+    const _loadExistingTree = (node, type, maxCounter) => {
       if (node === undefined) {
-        return;
+        return maxCounter;
       }
 
       let currentNodeCounter = parseInt(node.currentId.match(/\d+/)[0]);
 
-      if (currentNodeCounter + 1 > idCounter) {
-        setIdCounter(currentNodeCounter + 1);
+      if (currentNodeCounter + 1 > maxCounter) {
+        maxCounter = currentNodeCounter + 1;
       }
 
       let formattedNode = {
@@ -125,11 +126,14 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
 
       setNodes((nds) => nds.concat(formattedNode));
 
-      _loadExistingTree(node.noChild[0], "no");
-      _loadExistingTree(node.yesChild[0], "yes");
+      let noMax = _loadExistingTree(node.noChild[0], "no", maxCounter);
+      let yesMax = _loadExistingTree(node.yesChild[0], "yes", maxCounter);
+
+      return Math.max(noMax, yesMax);
     };
 
-    _loadExistingTree(rootNode, "root");
+    let loadedCounter = _loadExistingTree(rootNode, "root", 0);
+    return loadedCounter;
   };
 
   /**
