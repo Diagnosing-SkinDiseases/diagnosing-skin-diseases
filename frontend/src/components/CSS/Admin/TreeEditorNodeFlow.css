@@ -2,6 +2,15 @@
     border: 1px solid black;
     padding: 1em;
     background: white;
+    width: 15em;
+    height: 15em;
+}
+
+.tree-flow-node-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .text-updater-node label {
@@ -44,6 +53,7 @@
 
 .tree-flow-header {
     display: flex;
+    width: 100%
 }
 
 .tree-flow-delete {
@@ -51,12 +61,21 @@
 }
 
 .tree-flow-text {
-    margin-top: 0.25em
+    margin-top: 0.25em;
+    width: 100%;
+    height: 80%;
+}
+
+.tree-flow-textarea {
+    width: 100%;
+    height: 100%;
 }
 
 .tree-flow-question {
     font-size: 1.25em;
     font-weight: 500;
+    width: 100%;
+    text-align: center;
 }
 
 .tree-flow-handle {
