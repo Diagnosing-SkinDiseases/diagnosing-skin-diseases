@@ -1,5 +1,5 @@
 /* Modal background */
-.modal {
+.delete-modal {
     display: none;
     position: fixed;
     top: 0;
@@ -9,14 +9,15 @@
     background-color: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
+    z-index: 1000;
 }
 
-.modal.show {
+.delete-modal.show {
     display: flex;
 }
 
 /* Modal content box */
-.modal-content {
+.delete-modal-content {
     background-color: white;
     padding: 20px;
     border-radius: 5px;
@@ -37,15 +38,10 @@
 
 .delete-modal-text {
     font-size: 1.2em;
-    /* Adjust font size for readability */
-    color: #333;
-    /* Use a dark gray for contrast */
+    color: var(--title-text);
     line-height: 1.5;
-    /* Increase line height for better readability */
     margin-bottom: 20px;
-    /* Add spacing below the text */
     text-align: center;
-    /* Center-align the text within the modal */
 }
 
 /* Container for the buttons */
@@ -53,7 +49,6 @@
     display: flex;
     justify-content: flex-end;
     gap: 0.8em;
-    /* Optional: Adds space between buttons */
 }
 
 /* Primary confirm button */
@@ -71,7 +66,6 @@
 /* Primary confirm button hover effect */
 .delete-modal-confirm:hover {
     background-color: var(--btn-color-hover);
-    /* Darker shade on hover */
 }
 
 /* Secondary cancel button */
