@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100vw;
+    width: 100%;
 }
 
 .ut-content-main-content {
@@ -51,15 +51,16 @@
 
 .ut-tree-flow-leaf-color {
     background-color: #F2EBE2;
+    border: 10px solid #D2B48C;
 }
 
 .ut-tree-flow-no-edge>path {
-    stroke: #A52A2A;
+    stroke: red;
     stroke-width: 0.6em;
 }
 
 .ut-tree-flow-yes-edge>path {
-    stroke: #8F9779;
+    stroke: green;
     stroke-width: 0.6em;
 }
 

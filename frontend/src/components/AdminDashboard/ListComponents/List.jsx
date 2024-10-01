@@ -21,7 +21,7 @@ import {
 
 /**
  * Item component displays a single item with its title, publication state, and action buttons.
- * 
+ *
  * @param {string} props.title The title of the item.
  * @param {boolean} props.published The publication state of the item, true for published.
  * @param {Function} props.onPublish The function to call when the publish/unpublish button is clicked.
@@ -54,8 +54,8 @@ const Item = ({ title, published, onPublish, onEdit, onDelete }) => (
 );
 
 /**
- * List component manages and displays a list of items. 
- * 
+ * List component manages and displays a list of items.
+ *
  * @param {Array} props.initialItems The initial list of items to be displayed.
  * @param {string} props.contentType The type of content being managed, based on ContentTypeEnum.
  * @param {string} [props.searchQuery] The query used to filter the list of items. Optional.
@@ -136,31 +136,44 @@ const List = ({ initialItems = [], contentType, searchQuery }) => {
    * @param {number} id - The id of the item to be deleted.
    */
   const handleDeleteBtn = (index, id) => {
-    let deletePromise;
-    const newItems = items.filter((_, i) => i !== index);
+    // Show the confirmation alert
+    const confirmDelete = window.confirm(
+      "This will permanently delete the item."
+    );
 
-    switch (contentType) {
-      case ContentTypeEnum.DEFINITION:
-        deletePromise = apiDeleteGlossaryItem(id);
-        break;
-      case ContentTypeEnum.ARTICLE:
-        deletePromise = apiDeleteArticle(id);
-        break;
-      case ContentTypeEnum.TREE:
-        deletePromise = apiDeleteTree(id);
-        break;
-      default:
-        console.error("Unknown content type for processing");
-        return;
+    // If the user clicks "Yes" (OK), proceed with the delete
+    if (confirmDelete) {
+      let deletePromise;
+
+      const newItems = items.filter((_, i) => i !== index);
+
+      switch (contentType) {
+        case ContentTypeEnum.DEFINITION:
+          deletePromise = apiDeleteGlossaryItem(id);
+          break;
+        case ContentTypeEnum.ARTICLE:
+          deletePromise = apiDeleteArticle(id);
+          break;
+        case ContentTypeEnum.TREE:
+          deletePromise = apiDeleteTree(id);
+          break;
+        default:
+          console.error("Unknown content type for processing");
+          return;
+      }
+
+      // Delete the item from the database
+      deletePromise
+        .then((response) => {
+          setItems(newItems);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    } else {
+      // If the user clicks "No" (Cancel), do nothing
+      return;
     }
-    // Delete the item from the database
-    deletePromise
-      .then((response) => {
-        setItems(newItems);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
   };
 
   /**

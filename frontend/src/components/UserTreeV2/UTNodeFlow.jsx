@@ -394,7 +394,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
       fitView
       fitViewOptions={{ padding: 2 }}
       nodeTypes={nodeTypes}
-      minZoom={0.071} // Set the minimum zoom level (zoom out)
+      minZoom={0.081} // Set the minimum zoom level (zoom out)
       deleteKeyCode={"Disabled"}
       onNodeDragStop={handleNodeDragStop}
     >
