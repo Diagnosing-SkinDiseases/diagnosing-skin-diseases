@@ -27,36 +27,6 @@ const UserTreeV2 = ({ existingId, setTreePayload }) => {
   }, []);
 
   /**
-   * Renders the appropriate content based on the existence of an existing tree.
-   * @returns {JSX.Element} - Returns the JSX element for the tree creation form.
-   */
-  // const renderContent = () => {
-  //   if (existingId) {
-  //     return (
-  //       dataLoaded && (
-  //         <UTContent
-  //           existingTitle={existingTitle}
-  //           existingTree={existingTree}
-  //           existingAboutLink={existingAboutLink}
-  //           existingCoverImage={existingCoverImage}
-  //           setTreePayload={setTreePayload}
-  //         />
-  //       )
-  //     );
-  //   } else {
-  //     return (
-  //       <UTContent
-  //         existingTitle={""}
-  //         existingTree={null}
-  //         existingAboutLink={existingAboutLink}
-  //         existingCoverImage={existingCoverImage}
-  //         setTreePayload={setTreePayload}
-  //       ></UTContent>
-  //     );
-  //   }
-  // };
-
-  /**
    * Finds a node in the tree by its ID.
    * @param {Array} nodes - The array of nodes in the tree.
    * @param {string} nodeId - The ID of the node to find.
@@ -267,7 +237,6 @@ const UserTreeV2 = ({ existingId, setTreePayload }) => {
       />
     )
   );
-  // return <>Hello World</>;
 };
 
 export default UserTreeV2;

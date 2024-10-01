@@ -2,13 +2,7 @@ import React, { useEffect, useState } from "react";
 import UTNodeFlow from "./UTNodeFlow";
 import "../CSS/UserTreeV2.css";
 
-const UTContent = ({
-  existingTitle,
-  existingTree,
-  existingAboutLink,
-  existingCoverImage,
-  setTreePayload,
-}) => {
+const UTContent = ({ existingTitle, existingTree }) => {
   // Node State
   const [rootNode, setRootNode] = useState(
     existingTree !== null
@@ -23,12 +17,6 @@ const UTContent = ({
           yPos: 0,
         }
   );
-
-  useEffect(() => {
-    console.log("existingTree", existingTree);
-    console.log("existingTitle", existingTitle);
-    // console.log(sessionStorage.getItem("previewData"));
-  }, [existingTree]);
 
   return (
     <>

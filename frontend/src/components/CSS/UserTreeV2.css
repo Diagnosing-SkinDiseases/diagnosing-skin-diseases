@@ -6,6 +6,10 @@
     width: 100%;
 }
 
+.ut-content-title {
+    margin-top: 0.2em;
+}
+
 .ut-content-main-content {
     display: flex;
     flex-direction: column;
