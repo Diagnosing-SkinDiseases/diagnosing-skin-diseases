@@ -2,14 +2,14 @@ import React, { useState, useCallback } from "react";
 import labels from "../labels.json";
 import Button from "../GeneralComponents/Button";
 import ContentTypeEnum from "../enums/ContentTypeEnum";
-import "../../CSS/Admin/Controls.css"; 
+import "../../CSS/Admin/Controls.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
 /**
  * Controls component provides UI for adding new content, filtering, and searching within the content list.
- * 
+ *
  * @param {Function} props.onFilterChange - Callback function that is called when the filter option is changed.
  * @param {Function} props.onSearch - Callback function that is called when a search is performed.
  * @param {string} props.contentType - Type of content, determines the labels and actions for add button and filters.
@@ -22,48 +22,45 @@ const Controls = ({ onFilterChange, onSearch, contentType }) => {
   const [searchResults, setSearchResults] = useState([]);
 
   /**
-   * Handles the "Add" action based on the content type. It navigates to the appropriate 
-   * add page for the given content type. 
+   * Handles the "Add" action based on the content type. It navigates to the appropriate
+   * add page for the given content type.
    */
   const handleAdd = useCallback(() => {
     const pathMap = {
       [ContentTypeEnum.TREE]: "/admin/trees/add",
       [ContentTypeEnum.ARTICLE]: "/admin/articles/add",
-      [ContentTypeEnum.DEFINITION]: "/admin/definitions/add"
+      [ContentTypeEnum.DEFINITION]: "/admin/definitions/add",
     };
     const path = pathMap[contentType] || console.error("Unknown content type");
     if (path) navigate(path);
   }, [contentType, navigate]);
 
   /**
-   * Updates the local filter state 
-   * 
+   * Updates the local filter state
+   *
    * @param {string} event - The new filter value selected by the user.
-   * @return {void} 
+   * @return {void}
    */
   const handleFilterChange = (event) => {
     setFilter(event);
     onFilterChange(event);
   };
 
-  
-  
   /**
    * A function that handles the change event for the search input.
    *
    * @param {Event} event - the event object
-   * @return {void} 
+   * @return {void}
    */
   const handleSearchChange = (event) => {
     setInput(event.target.value);
   };
 
-  
   /**
    * Handles the submit event for the search form.
    *
    * @param {event} event - the event object
-   * @return {void} 
+   * @return {void}
    */
   const handleSearchSubmit = (event) => {
     event.preventDefault();
@@ -78,7 +75,11 @@ const Controls = ({ onFilterChange, onSearch, contentType }) => {
   return (
     <div className="controls-wrapper">
       <div className="controls">
-        <Button label={labels.buttonLabels.add[contentType.toLowerCase()]} onClick={handleAdd} className="button" />
+        <Button
+          label={labels.buttonLabels.add[contentType.toLowerCase()]}
+          onClick={handleAdd}
+          className="button"
+        />
         <FilterComponent
           labels={labels}
           value={filter}
@@ -97,7 +98,7 @@ const Controls = ({ onFilterChange, onSearch, contentType }) => {
 
 /**
  * The FilterComponent renders a dropdown menu allowing the user to select a filter option.
- * 
+ *
  * @param {Object} props.labels - An object containing label strings for the component, including options for the dropdown.
  * @param {string} props.value - The current value of the filter, used to set the initial selected option in the dropdown.
  * @param {Function} props.onChange - A callback function to be called with the new selected option when the selection changes.
@@ -107,17 +108,15 @@ const FilterComponent = ({ labels, value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(value);
 
-  
   /**
    * Handles the dropdown toggle.
-   * 
+   *
    * @returns {void}
    */
   const handleDropdownToggle = () => {
     setIsOpen(!isOpen);
   };
 
-  
   /**
    * Handles the selection of an option.
    *
@@ -132,7 +131,7 @@ const FilterComponent = ({ labels, value, onChange }) => {
 
   /**
    * Renders the dropdown menu for filter.
-   * 
+   *
    * @returns {JSX.Element} The JSX filterdropwon component.
    */
   return (
@@ -159,7 +158,6 @@ const FilterComponent = ({ labels, value, onChange }) => {
   );
 };
 
-
 /**
  * Renders a search field component with a search input and submit button.
  *
@@ -185,6 +183,5 @@ const SearchField = ({ value, onChange, onSubmit, placeholder }) => {
     </form>
   );
 };
-
 
 export default Controls;
