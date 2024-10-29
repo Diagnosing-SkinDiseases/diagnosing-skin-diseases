@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import '../CSS/ContactForm.css';
+import {contactFormController} from "../../apiControllers/contactApiController"; 
 
 const ContactForm = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -9,83 +10,76 @@ const ContactForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!captchaToken) {
       alert('Please complete the reCAPTCHA.');
       return;
     }
 
-    setLoading(true); // Display loader during submission
+    setLoading(true);
 
     const form = e.target;
     const formData = new FormData(form);
-    formData.append('_replyto', formData.get('email'));
-    formData.delete('g-recaptcha-response');
 
+    // Call the controller to handle form submission through backend API
     try {
-      await fetch(form.action, {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Accept': 'application/json',
-        },
+      const response = await contactFormController({
+        name: formData.get('name'),
+        email: formData.get('email'),
+        message: formData.get('message'),
+        captchaToken, // Send captcha token to backend for verification
       });
-      setFormSubmitted(true); // Show success message after submission
+
+      if (response.ok) {
+        setFormSubmitted(true);
+      } else {
+        alert('Failed to submit the form. Please try again.');
+      }
     } catch (error) {
       console.error('Form submission error:', error);
     } finally {
-      setLoading(false); // Hide loader after submission
-      setCaptchaToken(null); // Reset captcha token
+      setLoading(false);
+      setCaptchaToken(null); // Reset captcha token after form submission
     }
   };
 
   const handleCaptchaChange = (token) => {
-    setCaptchaToken(token);
+    setCaptchaToken(token); // Store captcha token on change
   };
 
   return (
     <div className="container pb-5 mt-5 contact-form-container">
-        <div className="container px-5 contact-form">
-          <h1>Contact Us</h1>
-          {formSubmitted ? (
-            <p className='contact-form-success'>Thank you for reaching out! We will get back to you soon.</p>
-          ) : (
-            <form 
-              // check env varibales
-              action="form_url" 
-              method="POST" 
-              onSubmit={handleSubmit}
-            >
-              <input type="hidden" name="_subject" value="DSD Contact Form Submission" />
-              
-              <label className='contact-form-label' htmlFor="name">Name:</label>
-              <input className='contact-form-input' type="text" id="name" name="name" autocomplete="on" required disabled={loading} />
+      <div className="container px-5 contact-form">
+        <h1>Contact Us</h1>
+        {formSubmitted ? (
+          <p className='contact-form-success'>Thank you for reaching out! We will get back to you soon.</p>
+        ) : (
+          <form onSubmit={handleSubmit}>
+            <label className='contact-form-label' htmlFor="name">Name:</label>
+            <input className='contact-form-input' type="text" id="name" name="name" autoComplete="on" required disabled={loading} />
 
-              <label className='contact-form-label' htmlFor="email">Email:</label>
-              <input className='contact-form-input' type="email" id="email" name="email" autocomplete="on" required disabled={loading} />
+            <label className='contact-form-label' htmlFor="email">Email:</label>
+            <input className='contact-form-input' type="email" id="email" name="email" autoComplete="on" required disabled={loading} />
 
-              <label className='contact-form-label' htmlFor="message">Message:</label>
-              <textarea className='contact-form-textarea' id="message" name="message" rows="5" required disabled={loading}></textarea>
+            <label className='contact-form-label' htmlFor="message">Message:</label>
+            <textarea className='contact-form-textarea' id="message" name="message" rows="5" required disabled={loading}></textarea>
 
-              <input type="hidden" name="_captcha" value="false" />
+            {/* reCAPTCHA */}
+            <ReCAPTCHA
+              className='contact-form-recaptcha'
+              sitekey={process.env.REACT_APP_RECAPTCHA_KEY}
+              onChange={handleCaptchaChange}
+            />
 
-              {/* Google reCAPTCHA */}
-              <ReCAPTCHA
-                className='contact-form-recaptcha'
-                // check env variables
-                sitekey="recaptcha_key" 
-                onChange={handleCaptchaChange}
-              />
-
-              {loading ? (
-                <button type="submit" disabled>
-                  Submitting...
-                </button>
-              ) : (
-                <button type="submit">Send</button>
-              )}
-            </form>
-          )}
-        </div>
+            {loading ? (
+              <button type="submit" disabled>Submitting...</button>
+            ) : (
+               <button type="submit" disabled={!captchaToken}> {/* Disabled until reCAPTCHA is verified */}
+                  Send</button>
+            )}
+          </form>
+        )}
+      </div>
     </div>
   );
 };
