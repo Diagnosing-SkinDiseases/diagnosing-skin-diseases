@@ -31,6 +31,10 @@
     background-color: rgb(153, 231, 153);
 }
 
+.tree-flow-selected-color {
+    background-color: rgb(233, 233, 129);
+}
+
 .tree-flow-no-edge > path {
     stroke: red;
     stroke-width: 0.2em;

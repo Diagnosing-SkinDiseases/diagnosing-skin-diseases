@@ -8,6 +8,7 @@ import {
   useEdgesState,
   useReactFlow,
   ReactFlowProvider,
+  Panel,
 } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
@@ -15,12 +16,36 @@ import "@xyflow/react/dist/style.css";
 import "../../../../CSS/Admin/TreeEditorNodeFlow.css";
 
 import QuestionInput from "./FlowComponents/QuestionInput";
+import DetailedEdge from "./FlowComponents/DetailedEdge";
 
 const nodeTypes = { questionInput: QuestionInput };
 
 const getNodeId = () => `randomnode_${+new Date()}`;
 
 const flowKey = "example-flow";
+
+/**
+ * Finds a node in a decision tree by its ID.
+ * @param {Object} rootNode - The root node of the decision tree.
+ * @param {string} targetNodeId - The ID of the node to find.
+ * @returns {Object|undefined} - Returns the node object if found, otherwise returns undefined.
+ */
+const findTreeNodeById = (rootNode, targetNodeId) => {
+  const _findTreeNodeById = (node) => {
+    if (node === undefined) {
+      return undefined;
+    }
+    if (node.currentId === targetNodeId) {
+      return node;
+    }
+    const noResult = _findTreeNodeById(node.noChild[0]);
+    const yesResult = _findTreeNodeById(node.yesChild[0]);
+
+    return noResult || yesResult;
+  };
+
+  return _findTreeNodeById(rootNode);
+};
 
 /**
  * A React component that renders a React Flow graph and handles the loading and
@@ -33,15 +58,30 @@ const flowKey = "example-flow";
  * @returns {JSX.Element} - A JSX element representing the React Flow graph.
  */
 const NodeFlowInstance = ({ rootNode, setRootNode }) => {
+  // Primary visual state
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  // Track data state
   const [dataLoaded, setDataLoaded] = useState(false);
+  // Node ID state
+  const [idCounter, setIdCounter] = useState(0);
+  // Selected Node state
+  const [selectedNode, setSelectedNode] = useState(
+    findTreeNodeById(rootNode, "node0")
+  );
+  // Force re render
+  const [canvasKey, setCanvasKey] = useState(0);
+
+  // Re render component
+  const forceReRender = () => {
+    setCanvasKey((prevKey) => prevKey + 1); // Change the key to trigger re-render
+  };
+
+  // Additional misc data
   const [maxTreeHeight, setMaxTreeHeight] = useState(0);
   const [savedXOffset, setSavedXOffset] = useState(0);
   const [rfInstance, setRfInstance] = useState(null);
   const { setViewport } = useReactFlow();
-  // Node ID state
-  const [idCounter, setIdCounter] = useState(0);
 
   // Load existing nodes once on page load
   useEffect(() => {
@@ -51,6 +91,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
     setDataLoaded(true);
   }, []);
 
+  // Maps the data changes to the visual components
   useEffect(() => {
     if (dataLoaded) {
       setNodes((nds) => {
@@ -69,6 +110,27 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
       setNodes(filtered);
     }
   }, [rootNode, dataLoaded]);
+
+  // Function to trigger re-render of all nodes
+  const forceNodesReRender = () => {
+    console.log("ForceNodesReRender");
+    setRootNode((prevRootNode) => ({
+      ...prevRootNode,
+      data: {
+        ...prevRootNode?.data,
+        _forceUpdate: Math.random(), // Harmless, random change
+      },
+    }));
+    console.log(rootNode);
+  };
+
+  // Act on changes to the selected node
+  useEffect(() => {
+    console.log("Selected(Canvas)", selectedNode);
+    console.log("TEST", selectedNode.currentId);
+    forceReRender();
+    forceNodesReRender();
+  }, [selectedNode]);
 
   /**
    * Recursively loads the existing tree structure into the nodes and edges
@@ -109,6 +171,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
           target: node.yesChild[0].currentId,
           sourceHandle: "yes",
           className: "tree-flow-yes-edge",
+          type: "detailed",
         };
         setEdges((eds) => eds.concat(formattedEdge));
       }
@@ -120,6 +183,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
           target: node.noChild[0].currentId,
           sourceHandle: "no",
           className: "tree-flow-no-edge",
+          type: "detailed",
         };
         setEdges((eds) => eds.concat(formattedEdge));
       }
@@ -240,6 +304,9 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
       setEdges,
       edges,
       flattenTree,
+      selectedNode,
+      setSelectedNode,
+      forceReRender,
     },
   }));
 
@@ -312,6 +379,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
             params.sourceHandle === "no"
               ? "tree-flow-no-edge"
               : "tree-flow-yes-edge",
+          type: "detailed",
         };
 
         if (params.sourceHandle === "no") {
@@ -324,29 +392,6 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
       }),
     [setEdges, rootNode]
   );
-
-  /**
-   * Finds a node in a decision tree by its ID.
-   * @param {Object} rootNode - The root node of the decision tree.
-   * @param {string} targetNodeId - The ID of the node to find.
-   * @returns {Object|undefined} - Returns the node object if found, otherwise returns undefined.
-   */
-  const findTreeNodeById = (rootNode, targetNodeId) => {
-    const _findTreeNodeById = (node) => {
-      if (node === undefined) {
-        return undefined;
-      }
-      if (node.currentId === targetNodeId) {
-        return node;
-      }
-      const noResult = _findTreeNodeById(node.noChild[0]);
-      const yesResult = _findTreeNodeById(node.yesChild[0]);
-
-      return noResult || yesResult;
-    };
-
-    return _findTreeNodeById(rootNode);
-  };
 
   /**
    * Updates the position of a node in the decision tree.
@@ -387,6 +432,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
     <ReactFlow
       nodes={nodes}
       edges={edges}
+      edgeTypes={{ detailed: DetailedEdge }}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}
@@ -398,6 +444,21 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
       deleteKeyCode={"Disabled"}
       onNodeDragStop={handleNodeDragStop}
     >
+      <Panel position="top-right">
+        <div
+          style={{
+            backgroundColor: "lightgrey", // Light grey background
+            border: "1px solid black", // Black border
+            padding: "10px", // Padding for inner spacing
+            borderRadius: "8px", // Optional: Rounded corners
+          }}
+        >
+          <button style={{ margin: "5px" }}>Add Yes</button>
+          <button style={{ margin: "5px" }}>Add No</button>
+          <button style={{ margin: "5px" }}>Delete</button>
+          <button style={{ margin: "5px" }}>Lock Angle</button>
+        </div>
+      </Panel>
       <Controls />
       <MiniMap />
       <Background variant="dots" gap={12} size={1} />

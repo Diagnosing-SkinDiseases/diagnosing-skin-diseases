@@ -25,6 +25,9 @@ function QuestionInput({
     edges,
     flattenTree,
     content,
+    setSelectedNode,
+    selectedNode,
+    forceReRender,
     ...restData
   },
   id,
@@ -36,6 +39,14 @@ function QuestionInput({
   const [nodeColorClass, setNodeColorClass] = useState("tree-flow-root-color");
   const [textValue, setTextValue] = useState(content);
 
+  // Logging
+  useEffect(() => {
+    if (selectedNode !== undefined) {
+      console.log("inNode", selectedNode.currentId);
+    }
+  }, [selectedNode]);
+
+  // Assign color based on type
   useEffect(() => {
     switch (nodeType) {
       case "no":
@@ -109,6 +120,7 @@ function QuestionInput({
       sourceHandle: newNodeType,
       className:
         newNodeType === "no" ? "tree-flow-no-edge" : "tree-flow-yes-edge",
+      type: "detailed",
     };
 
     setEdges((eds) => eds.concat(newEdge));
@@ -313,8 +325,23 @@ function QuestionInput({
       .join(" "); // Join the words back together
   }
 
+  /**
+   * Changes selectedNode
+   */
+  const clickSelectNode = () => {
+    console.log("Selected(inNode)", id, findNodeById(id));
+    setSelectedNode(findNodeById(id));
+  };
+
   return (
-    <div className={`tree-flow-question-node ${nodeColorClass}`}>
+    <div
+      className={`tree-flow-question-node ${
+        selectedNode && selectedNode.currentId === id
+          ? "tree-flow-selected-color"
+          : nodeColorClass
+      }`}
+      onClick={clickSelectNode}
+    >
       {nodeType !== "root" && (
         <Handle
           type="target"
@@ -352,7 +379,7 @@ function QuestionInput({
         </div>
 
         {/* Buttons */}
-        <div className="tree-flow-child-buttons">
+        {/* <div className="tree-flow-child-buttons">
           {noChildPresent() || (
             <button
               className="tree-flow-add-no-child"
@@ -372,7 +399,7 @@ function QuestionInput({
               Yes Node
             </button>
           )}
-        </div>
+        </div> */}
       </div>
       <Handle
         type="source"
