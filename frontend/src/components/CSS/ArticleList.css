@@ -1,4 +1,4 @@
-nav {
+/* nav {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -24,7 +24,6 @@ nav li {
   justify-content: space-between;
   align-items: center;
   padding: 25px;
-  /* background-color: var(--header); */
   color: var(--header-text);
 }
 
@@ -52,18 +51,21 @@ nav li {
 
 .alphabet-selector button:hover {
   background-color: var(--btn-color-hover);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for a "lifted" effect */
-  transform: translateY(-2px); /* Slight "lift" effect */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  transform: translateY(-2px); 
   transition: background-color 0.3s ease, box-shadow 0.3s ease,
-    transform 0.3s ease; /* Smooth transition for the effects */
+    transform 0.3s ease; 
 }
 
 .alphabet-selector button.selected {
   background-color: var(--btn-color-hover);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for a "lifted" effect */
-  transform: translateY(-2px); /* Slight "lift" effect */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  
+  transform: translateY(-2px); 
+  
   transition: background-color 0.3s ease, box-shadow 0.3s ease,
-    transform 0.3s ease; /* Smooth transition for the effects */
+    transform 0.3s ease; 
+    
 }
 
 .search-bar {
@@ -104,23 +106,23 @@ li {
   margin-bottom: 10px;
   list-style-type: none;
   padding: 20px;
-  /* margin-left: 10px; */
+
 }
 
 .ArticleList a {
   text-decoration: none;
   color: var(--text);
-}
+} */
 
 /* Mobile styles */
-@media (max-width: 600px) {
+/* @media (max-width: 600px) {
   nav {
     flex-direction: column;
   }
 
   nav ul {
     flex-direction: column;
-    gap: 10px; /* Smaller gap for mobile */
+    gap: 10px; 
   }
 
   .article-header {
@@ -130,21 +132,108 @@ li {
   .article-title,
   .search-bar-container {
     width: 100%;
-    text-align: center; /* Center title text on small screens */
-    margin-bottom: 1rem; /* Add space between the title and the search bar */
+    text-align: center; 
+    margin-bottom: 1rem; 
   }
 
   .search-bar {
-    flex-direction: column; /* Stack input and button on mobile */
+    flex-direction: column; 
   }
 
   .search-bar input,
   .search-bar button {
-    width: 100%; /* Full width on small screens */
-    margin: 5px 0; /* Add margin for stacked layout */
+    width: 100%; 
+    margin: 5px 0; 
   }
 
   .alphabet-selector button {
     flex: 0 0 calc(10% - 10px);
   }
+} */
+
+
+.article-list-page {
+  font-family: Arial, sans-serif;
+}
+
+.jump-section {
+  background-color: var(--btn-color);
+  color: #fff;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+
+.jump-section span {
+  color: #ffffffcf;
+  pointer-events: none;
+}
+
+.alphabet {
+  display: flex;
+  gap: 5px;
+  margin-left: 5px;
+}
+
+.alphabet a {
+  text-decoration: none;
+  padding: 0 5px;
+}
+
+.alphabet .active {
+  color: #fff;
+}
+
+.alphabet .inactive {
+  color: #cccccc90;
+  pointer-events: none;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  /* 3 equal columns */
+  gap: 20px;
+  padding: 20px;
+}
+
+.section-column {
+  /* No additional styling needed for column alignment */
+}
+
+.section {
+  background-color: transparent;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.section h3 {
+  font-size: 32px;
+  /* Larger font size for prominence */
+  font-weight: bold;
+  /* Bold font to make headers stand out */
+  color: var(--card-title);
+  /* Dark color for strong contrast */
+  margin: 0 0 8px;
+  /* Add spacing below header */
+  padding-bottom: 5px;
+  /* Extra padding for separation */
+  text-transform: uppercase;
+  /* Keep headers uppercase for emphasis */
+  letter-spacing: 1px;
+  /* Increase letter spacing for a clear, bold look */
+}
+
+.section ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.article-list-item {
+  margin: 3px 0;
+  color: var(--card-title);
+  text-decoration: none;
+  font-weight: 500;
 }
