@@ -3,73 +3,20 @@ const FormData = require("form-data");
 
 // Controller to handle contact form submission
 const contactController = async (req, res) => {
-  const { name, email, message, captchaToken } = req.body;
+  const { name, email, message } = req.body; // Removed captchaToken from here
 
-  // reCAPTCHA secret key and verification URL
-    const secretKey = process.env.RECAPTCHA_SECRET_KEY;
-    const captchaVerificationBaseURL = process.env.RECAPTCHA_VERIFICATION_URL;
-    // Construct the full verification URL
-    const captchaVerificationURL = `${captchaVerificationBaseURL}?secret=${secretKey}&response=${captchaToken}`;
+  // Prepare form data for FormSubmit service
+  const formData = new FormData();
+  formData.append("_replyto", email);
+  formData.append("name", name);
+  formData.append("email", email);
+  formData.append("message", message);
 
-  // Helper function to make an HTTPS POST request
-  const postRequest = (url, data, headers = {}) => {
-    return new Promise((resolve, reject) => {
-      const urlObj = new URL(url);
-      const options = {
-        hostname: urlObj.hostname,
-        path: urlObj.pathname + urlObj.search,
-        method: "POST",
-        headers,
-      };
-
-      const req = https.request(options, (res) => {
-        let data = "";
-        res.on("data", (chunk) => {
-          data += chunk;
-        });
-        res.on("end", () => {
-          resolve(JSON.parse(data));
-        });
-      });
-
-      req.on("error", (e) => reject(e));
-
-      if (data) {
-        req.write(data);
-      }
-
-      req.end();
-    });
-  };
+  // Headers for form submission
+  const formHeaders = formData.getHeaders();
+  const formSubmitUrl = process.env.FORM_URL;
 
   try {
-    // Verify reCAPTCHA with Google API
-    const captchaData = `secret=${secretKey}&response=${captchaToken}`;
-    const captchaHeaders = {
-      "Content-Type": "application/x-www-form-urlencoded",
-      "Content-Length": Buffer.byteLength(captchaData),
-    };
-    const captchaResult = await postRequest(
-      captchaVerificationURL,
-      captchaData,
-      captchaHeaders
-    );
-
-    if (!captchaResult.success) {
-      return res.status(400).json({ message: "Captcha verification failed" });
-    }
-
-    // Prepare form data for FormSubmit service
-    const formData = new FormData();
-    formData.append("_replyto", email);
-    formData.append("name", name);
-    formData.append("email", email);
-    formData.append("message", message);
-
-    // Headers for form submission
-    const formHeaders = formData.getHeaders();
-      const formSubmitUrl = process.env.FORM_URL;
-
     // Submit form to FormSubmit service
     const formResponse = await postRequest(
       formSubmitUrl,
@@ -88,7 +35,37 @@ const contactController = async (req, res) => {
   }
 };
 
+// Helper function to make an HTTPS POST request
+const postRequest = (url, data, headers = {}) => {
+  return new Promise((resolve, reject) => {
+    const urlObj = new URL(url);
+    const options = {
+      hostname: urlObj.hostname,
+      path: urlObj.pathname + urlObj.search,
+      method: "POST",
+      headers,
+    };
+
+    const req = https.request(options, (res) => {
+      let data = "";
+      res.on("data", (chunk) => {
+        data += chunk;
+      });
+      res.on("end", () => {
+        resolve(JSON.parse(data));
+      });
+    });
+
+    req.on("error", (e) => reject(e));
+
+    if (data) {
+      req.write(data);
+    }
+
+    req.end();
+  });
+};
+
 module.exports = {
   contactController,
 };
-

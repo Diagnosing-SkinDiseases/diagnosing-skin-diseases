@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import '../CSS/ContactForm.css';
-import {contactFormController} from "../../apiControllers/contactApiController"; 
+import { contactFormController } from "../../apiControllers/contactApiController"; 
 
 const ContactForm = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [captchaToken, setCaptchaToken] = useState(null);
+
+  const handleCaptchaChange = (token) => {
+    setCaptchaToken(token); 
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,33 +22,51 @@ const ContactForm = () => {
 
     setLoading(true);
 
-    const form = e.target;
-    const formData = new FormData(form);
+    const formData = new FormData(e.target); 
+    const requestBody = {
+      event: {
+        token: captchaToken,
+        expectedAction: "submit_contact_form", 
+        siteKey: process.env.REACT_APP_RECAPTCHA_KEY,
+      },
+    };
 
-    // Call the controller to handle form submission through backend API
     try {
-      const response = await contactFormController({
+      // Verify reCAPTCHA
+      const response = await fetch(`https://recaptchaenterprise.googleapis.com/v1/projects/dsd-contact-form-1727805515226/assessments?key=${process.env.REACT_APP_API_KEY}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      const verificationResult = await response.json();
+
+      if (!verificationResult.token?.success) {
+        alert('reCAPTCHA verification failed. Please try again.');
+        return;
+      }
+
+      // Handle form submission
+      const contactResponse = await contactFormController({
         name: formData.get('name'),
         email: formData.get('email'),
         message: formData.get('message'),
-        captchaToken, // Send captcha token to backend for verification
       });
 
-      if (response.ok) {
+      if (contactResponse.ok) {
         setFormSubmitted(true);
       } else {
         alert('Failed to submit the form. Please try again.');
       }
     } catch (error) {
       console.error('Form submission error:', error);
+      alert('An error occurred while submitting the form. Please try again later.'); 
     } finally {
       setLoading(false);
-      setCaptchaToken(null); // Reset captcha token after form submission
+      setCaptchaToken(null); // Reset captcha token after submission
     }
-  };
-
-  const handleCaptchaChange = (token) => {
-    setCaptchaToken(token); // Store captcha token on change
   };
 
   return (
@@ -56,10 +78,10 @@ const ContactForm = () => {
         ) : (
           <form onSubmit={handleSubmit}>
             <label className='contact-form-label' htmlFor="name">Name:</label>
-            <input className='contact-form-input' type="text" id="name" name="name" autoComplete="on" required disabled={loading} />
+            <input className='contact-form-input' type="text" id="name" name="name" required disabled={loading} />
 
             <label className='contact-form-label' htmlFor="email">Email:</label>
-            <input className='contact-form-input' type="email" id="email" name="email" autoComplete="on" required disabled={loading} />
+            <input className='contact-form-input' type="email" id="email" name="email" required disabled={loading} />
 
             <label className='contact-form-label' htmlFor="message">Message:</label>
             <textarea className='contact-form-textarea' id="message" name="message" rows="5" required disabled={loading}></textarea>
@@ -71,12 +93,9 @@ const ContactForm = () => {
               onChange={handleCaptchaChange}
             />
 
-            {loading ? (
-              <button type="submit" disabled>Submitting...</button>
-            ) : (
-               <button type="submit" disabled={!captchaToken}> {/* Disabled until reCAPTCHA is verified */}
-                  Send</button>
-            )}
+            <button type="submit" disabled={loading || !captchaToken}>
+              {loading ? 'Submitting...' : 'Send'}
+            </button>
           </form>
         )}
       </div>
