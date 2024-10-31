@@ -3,8 +3,11 @@ import apiUrl from "../api";
 
 // The controller that sends data to the backend
 const contactFormController = async (payload) => {
+  payload.append("_subject", "DSD Contact Form Submission");
+  payload.append("_replyto", payload.get("email"));
+  payload.delete("g-recaptcha-response");
     try {
-    const response = await axios.post(`${apiUrl}/contact`, payload, {
+    const response = await axios.post(process.env.REACT_APP_FORM_URL, payload, {
       headers: {
         "Content-Type": "application/json",
       },
