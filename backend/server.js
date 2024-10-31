@@ -9,7 +9,6 @@ const userRouter = require("./routers/userRouter.js");
 const glossaryItemRouter = require("./routers/glossaryRouter.js");
 const treeRouter = require("./routers/treeRouter.js");
 const articleRouter = require("./routers/articleRouter.js");
-const contactRouter = require("./routers/contactRouter.js");
 
 // Dotenv access
 require("dotenv").config();
@@ -40,9 +39,6 @@ app.use("/api", treeRouter);
 
 // Article endpoints
 app.use("/api", articleRouter);
-
-// Contact form endpoints
-app.use("/api", contactRouter);
 
 // Connect to db
 const mongoUri = `mongodb+srv://${mongoUser}:${mongoPassword}@cluster0.1anl6wt.mongodb.net/${mongoDB}?retryWrites=true&w=majority`;
