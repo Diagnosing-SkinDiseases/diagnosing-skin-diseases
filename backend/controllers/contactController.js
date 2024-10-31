@@ -25,8 +25,11 @@ const contactController = async (req, res) => {
     );
 
     if (formResponse.success) {
+      console.log("form submit url: " + formSubmitUrl);
+      console.log("form data: " + formData);
       return res.status(200).json({ message: "Form submitted successfully" });
     } else {
+      console.error("Failed to submit form:", formResponse.message);
       return res.status(500).json({ message: "Failed to submit form" });
     }
   } catch (error) {
