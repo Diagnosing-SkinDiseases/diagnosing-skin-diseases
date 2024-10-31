@@ -33,20 +33,20 @@ const ContactForm = () => {
 
     try {
       // Verify reCAPTCHA
-      const response = await fetch(`https://recaptchaenterprise.googleapis.com/v1/projects/dsd-contact-form-1727805515226/assessments?key=${process.env.REACT_APP_API_KEY}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestBody),
-      });
+      // const response = await fetch(`https://recaptchaenterprise.googleapis.com/v1/projects/dsd-contact-form-1727805515226/assessments?key=${process.env.REACT_APP_API_KEY}`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify(requestBody),
+      // });
 
-      const verificationResult = await response.json();
+      // const verificationResult = await response.json();
 
-      if (!verificationResult.token?.success) {
-        alert('reCAPTCHA verification failed. Please try again.');
-        return;
-      }
+      // if (!verificationResult.token?.success) {
+      //   alert('reCAPTCHA verification failed. Please try again.');
+      //   return;
+      // }
 
       // Handle form submission
       const contactResponse = await contactFormController({
@@ -55,14 +55,16 @@ const ContactForm = () => {
         message: formData.get('message'),
       });
 
-      if (contactResponse.ok) {
+      if (contactResponse.status === 200) {
         setFormSubmitted(true);
       } else {
-        alert('Failed to submit the form. Please try again.');
+        console.error('Failed to submit contact form:', contactResponse);
+        // TODO : add msg for user
       }
     } catch (error) {
       console.error('Form submission error:', error);
       alert('An error occurred while submitting the form. Please try again later.'); 
+      // TODO : add msg for user
     } finally {
       setLoading(false);
       setCaptchaToken(null); // Reset captcha token after submission
