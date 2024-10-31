@@ -60,3 +60,13 @@
     color: var(--header-text);
     font-size: 1.2rem;
 }
+
+.error-text {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+.result-error {
+    font-size: 1.2em;
+}
