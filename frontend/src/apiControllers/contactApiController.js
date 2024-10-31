@@ -4,8 +4,7 @@ import apiUrl from "../api";
 // The controller that sends data to the backend
 const contactFormController = async (payload) => {
     try {
-    console.log(JSON.stringify(payload));
-    const response = await axios.post(`${apiUrl}/contactRouter`, payload, {
+    const response = await axios.post(`${apiUrl}/contact`, payload, {
       headers: {
         "Content-Type": "application/json",
       },
