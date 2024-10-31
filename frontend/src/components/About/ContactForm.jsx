@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import '../CSS/ContactForm.css';
+import strings from '../strings.json'
 import { contactFormController } from "../../apiControllers/contactApiController"; 
 
 const ContactForm = () => {
@@ -8,63 +9,111 @@ const ContactForm = () => {
   const [loading, setLoading] = useState(false);
   const [captchaToken, setCaptchaToken] = useState(null);
 
-  const handleCaptchaChange = (token) => {
-    setCaptchaToken(token); 
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  
+  // Error states
+  const [nameError, setNameError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [messageError, setMessageError] = useState('');
+  const [captchaError, setCaptchaError] = useState('');
+  const [formError, setFormError] = useState(''); 
+
+  // Utility functions
+  const sanitizeInput = (input) => input.trim();
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
+  // Error Reset Handlers
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+    if (nameError) setNameError(''); 
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    if (emailError) setEmailError(''); 
+  };
+
+  const handleMessageChange = (e) => {
+    setMessage(e.target.value);
+    if (messageError) setMessageError(''); 
+  };
+
+  const handleCaptchaChange = (token) => {
+    setCaptchaToken(token);
+    setCaptchaError(''); 
+  };
+
+  // Validation Function
+  const validateForm = () => {
+    let isValid = true;
+
+    // Reset error messages
+    setNameError('');
+    setEmailError('');
+    setMessageError('');
+    setCaptchaError('');
+    setFormError('');
+
+    if (!sanitizeInput(name)) {
+      setNameError(strings.ContactForm.nameError);
+      isValid = false;
+    }
+    if (!sanitizeInput(email)) {
+      setEmailError(strings.ContactForm.emailRequiredError);
+      isValid = false;
+    } else if (!validateEmail(email)) {
+      setEmailError(strings.ContactForm.emailInvalidError);
+      isValid = false;
+    }
+    if (!sanitizeInput(message)) {
+      setMessageError(strings.ContactForm.messageError);
+      isValid = false;
+    }
+    if (!captchaToken) {
+      setCaptchaError(strings.ContactForm.captchaError);
+      isValid = false;
+    }
+    return isValid;
+  };
+
+  // Form Submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!validateForm()) return;
+
+    // Check if captcha token is missing or expired and trigger a new one if necessary
     if (!captchaToken) {
-      alert('Please complete the reCAPTCHA.');
-      return;
+        setCaptchaError(strings.captchaError);
+        return;
     }
 
-    setLoading(true);
+    setLoading(true); // Show loader
 
-    const formData = new FormData(e.target); 
-    const requestBody = {
-      event: {
-        token: captchaToken,
-        expectedAction: "submit_contact_form", 
-        siteKey: process.env.REACT_APP_RECAPTCHA_KEY,
-      },
-    };
+    const formData = new FormData();
+    formData.append("name", sanitizeInput(name));
+    formData.append("email", sanitizeInput(email));
+    formData.append("message", sanitizeInput(message));
+    formData.append("g-recaptcha-response", captchaToken);
 
     try {
-      // Verify reCAPTCHA
-      // const response = await fetch(`https://recaptchaenterprise.googleapis.com/v1/projects/dsd-contact-form-1727805515226/assessments?key=${process.env.REACT_APP_API_KEY}`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(requestBody),
-      // });
-
-      // const verificationResult = await response.json();
-
-      // if (!verificationResult.token?.success) {
-      //   alert('reCAPTCHA verification failed. Please try again.');
-      //   return;
-      // }
-
-      // Handle form submission
-      const contactResponse = await contactFormController({
-        name: formData.get('name'),
-        email: formData.get('email'),
-        message: formData.get('message'),
-      });
-
+      const contactResponse = await contactFormController(formData);
       if (contactResponse.status === 200) {
         setFormSubmitted(true);
+        setFormError(''); // Reset error message on success
       } else {
         console.error('Failed to submit contact form:', contactResponse);
-        // TODO : add msg for user
+        setFormError(strings.ContactForm.submissionError);
       }
     } catch (error) {
       console.error('Form submission error:', error);
-      alert('An error occurred while submitting the form. Please try again later.'); 
-      // TODO : add msg for user
+      setFormError(strings.ContactForm.genericError);
     } finally {
       setLoading(false);
       setCaptchaToken(null); // Reset captcha token after submission
@@ -72,34 +121,70 @@ const ContactForm = () => {
   };
 
   return (
-    <div className="container pb-5 mt-5 contact-form-container">
-      <div className="container px-5 contact-form">
-        <h1>Contact Us</h1>
-        {formSubmitted ? (
-          <p className='contact-form-success'>Thank you for reaching out! We will get back to you soon.</p>
-        ) : (
-          <form onSubmit={handleSubmit}>
-            <label className='contact-form-label' htmlFor="name">Name:</label>
-            <input className='contact-form-input' type="text" id="name" name="name" required disabled={loading} />
+    <div className="container pb-5 mt-5">
+      <div className="row justify-content-center article-container">
+        <div className="container px-5 contact-form">
+          <h1>{strings.ContactForm.contactUs}</h1>
+          {formSubmitted ? (
+            <p>{strings.ContactForm.thankYouMessage}</p>
+          ) : (
+            <>
+              {formError && <p className="error-text result-error">{formError}</p>}
+              <form onSubmit={handleSubmit} noValidate>
+                {/* name */}
+                <label className='contact-form-label' htmlFor="name">{strings.ContactForm.nameLabel}</label>
+                <input
+                  className='contact-form-input'
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={name}
+                  onChange={handleNameChange}
+                  disabled={loading}
+                />
+                {nameError && <p className="error-text">{nameError}</p>}
 
-            <label className='contact-form-label' htmlFor="email">Email:</label>
-            <input className='contact-form-input' type="email" id="email" name="email" required disabled={loading} />
+                {/* email */}
+                <label className='contact-form-label' htmlFor="email">{strings.ContactForm.emailLabel}</label>
+                <input
+                  className='contact-form-input'
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={email}
+                  onChange={handleEmailChange}
+                  disabled={loading}
+                />
+                {emailError && <p className="error-text">{emailError}</p>}
 
-            <label className='contact-form-label' htmlFor="message">Message:</label>
-            <textarea className='contact-form-textarea' id="message" name="message" rows="5" required disabled={loading}></textarea>
+                {/* message */}
+                <label className='contact-form-label' htmlFor="message">{strings.ContactForm.messageLabel}</label>
+                <textarea
+                  className='contact-form-textarea'
+                  id="message"
+                  name="message"
+                  rows="5"
+                  value={message}
+                  onChange={handleMessageChange}
+                  disabled={loading}
+                ></textarea>
+                {messageError && <p className="error-text">{messageError}</p>}
 
-            {/* reCAPTCHA */}
-            <ReCAPTCHA
-              className='contact-form-recaptcha'
-              sitekey={process.env.REACT_APP_RECAPTCHA_KEY}
-              onChange={handleCaptchaChange}
-            />
+                {/* reCAPTCHA */}
+                <ReCAPTCHA
+                  className='contact-form-recaptcha'
+                  sitekey={process.env.REACT_APP_RECAPTCHA_KEY}
+                  onChange={handleCaptchaChange}
+                />
+                {captchaError && <p className="error-text">{captchaError}</p>}
 
-            <button type="submit" disabled={loading || !captchaToken}>
-              {loading ? 'Submitting...' : 'Send'}
-            </button>
-          </form>
-        )}
+                <button type="submit" disabled={loading || !captchaToken}>
+                  {loading ? strings.ContactForm.loadingText : strings.ContactForm.submitText}
+                </button>
+              </form>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
