@@ -36,6 +36,7 @@ nav li {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
+  
 }
 
 .alphabet-selector button {
@@ -151,12 +152,23 @@ li {
   }
 } */
 
+/* V2 */
 
-.article-list-page {
-  font-family: Arial, sans-serif;
+.article-list-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px;
+    color: var(--header-text);
 }
 
-.jump-section {
+.article-list-title {
+    font-size: 2rem;
+    color: var(--title-text);
+    font-weight: 500;
+}
+
+.article-list-jump-section {
   background-color: var(--btn-color);
   color: #fff;
   padding: 10px;
@@ -165,50 +177,52 @@ li {
   justify-content: start;
 }
 
-.jump-section span {
-  color: #ffffffcf;
+.article-list-jump-section span {
+  color: #ffffff;
   pointer-events: none;
 }
 
-.alphabet {
+.article-list-alphabet {
   display: flex;
   gap: 5px;
   margin-left: 5px;
 }
 
-.alphabet a {
+.article-list-alphabet a {
   text-decoration: none;
   padding: 0 5px;
 }
 
-.alphabet .active {
+.article-list-alphabet-letter.active {
   color: #fff;
 }
 
-.alphabet .inactive {
+.article-list-alphabet-letter.inactive {
   color: #cccccc90;
   pointer-events: none;
 }
 
-.content {
+.article-list-content {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   /* 3 equal columns */
   gap: 20px;
   padding: 20px;
+  scroll-padding-top: 200px;
+      /* Adjust based on navbar height */
 }
 
-.section-column {
+.article-list-section-column {
   /* No additional styling needed for column alignment */
 }
 
-.section {
+.article-list-section {
   background-color: transparent;
   padding: 5px;
   border-radius: 5px;
 }
 
-.section h3 {
+.article-list-section h3 {
   font-size: 32px;
   /* Larger font size for prominence */
   font-weight: bold;
@@ -225,15 +239,15 @@ li {
   /* Increase letter spacing for a clear, bold look */
 }
 
-.section ul {
+.article-list-section ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
 
-.article-list-item {
+.article-list-section-item {
   margin: 3px 0;
   color: var(--card-title);
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 400;
 }

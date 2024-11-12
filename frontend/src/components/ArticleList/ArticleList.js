@@ -95,37 +95,54 @@ import messages from "../App/messages";
 
 // ArticleListPage.js
 const dummyData = {
-  A: ["Automated Customer Service"],
-  B: ["Blazops"],
+  A: [{ title: "Automated Customer Service", _id: "1" }],
+  B: [{ title: "Blazops", _id: "2" }],
   C: [
-    "Call Center",
-    "Chatbot Marketing",
-    "Conversational AI",
-    "CSAT",
-    "Customer Activation",
-    "Customer Acquisition Cost",
-    "Customer Cohort Analysis",
-    "Customer Feedback Strategy",
-    "Customer Follow Up",
-    "Customer Journey",
-    "Customer Lifetime Value",
-    "Customer Onboarding",
-    "Customer Relationship Management",
-    "Customer Segmentation",
-    "Customer Service",
-    "Customer Support",
+    { title: "Call Center", _id: "3" },
+    { title: "Chatbot Marketing", _id: "4" },
+    { title: "Conversational AI", _id: "5" },
+    { title: "CSAT", _id: "6" },
+    { title: "Customer Activation", _id: "7" },
+    { title: "Customer Acquisition Cost", _id: "8" },
+    { title: "Customer Cohort Analysis", _id: "9" },
+    { title: "Customer Feedback Strategy", _id: "10" },
+    { title: "Customer Follow Up", _id: "11" },
+    { title: "Customer Journey", _id: "12" },
+    { title: "Customer Lifetime Value", _id: "13" },
+    { title: "Customer Onboarding", _id: "14" },
+    { title: "Customer Relationship Management", _id: "15" },
+    { title: "Customer Segmentation", _id: "16" },
+    { title: "Customer Service", _id: "17" },
+    { title: "Customer Support", _id: "18" },
   ],
-  F: ["First Contact Resolution", "First Party Data"],
-  H: ["Help Desk"],
-  I: ["IVR Deflection"],
-  L: ["Lead Generation", "Lifecycle Marketing"],
-  M: ["Marketing Campaigns", "Marketing Funnel", "Marketing Qualified Lead"],
-  N: ["NPS Score"],
-  P: ["Proactive Support", "Product Adoption", "Push Notification"],
-  S: ["Sales Qualified Lead"],
-  T: ["Tiered Support"],
-  U: ["User Onboarding"],
-  W: ["Welcome Page", "Workforce Engagement Management"],
+  F: [
+    { title: "First Contact Resolution", _id: "19" },
+    { title: "First Party Data", _id: "20" },
+  ],
+  H: [{ title: "Help Desk", _id: "21" }],
+  I: [{ title: "IVR Deflection", _id: "22" }],
+  L: [
+    { title: "Lead Generation", _id: "23" },
+    { title: "Lifecycle Marketing", _id: "24" },
+  ],
+  M: [
+    { title: "Marketing Campaigns", _id: "25" },
+    { title: "Marketing Funnel", _id: "26" },
+    { title: "Marketing Qualified Lead", _id: "27" },
+  ],
+  N: [{ title: "NPS Score", _id: "28" }],
+  P: [
+    { title: "Proactive Support", _id: "29" },
+    { title: "Product Adoption", _id: "30" },
+    { title: "Push Notification", _id: "31" },
+  ],
+  S: [{ title: "Sales Qualified Lead", _id: "32" }],
+  T: [{ title: "Tiered Support", _id: "33" }],
+  U: [{ title: "User Onboarding", _id: "34" }],
+  W: [
+    { title: "Welcome Page", _id: "35" },
+    { title: "Workforce Engagement Management", _id: "36" },
+  ],
 };
 
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -155,7 +172,8 @@ const ArticleListPage = () => {
           return acc;
         }, {});
 
-        setArticles(groupedArticles);
+        // setArticles(groupedArticles);
+        setArticles(dummyData);
         setIsLoading(false);
         console.log(groupedArticles);
       })
@@ -198,25 +216,43 @@ const ArticleListPage = () => {
 
   return (
     <div className="article-list-page">
-      <div className="jump-section">
+      <div className="article-list-banner">
+        {/* Title */}
+        <h1 className="article-list-title">Articles</h1>
+        {/* Search bar */}
+        <form className="search-bar">
+          <input
+            type="text"
+            value={searchTerm}
+            placeholder="  Search..."
+            aria-label="Search"
+          />
+          <button type="submit">Search</button>
+        </form>
+      </div>
+
+      <div className="article-list-jump-section">
         <span>Sections:</span>
-        <div className="alphabet">
+        <div className="article-list-alphabet">
           {alphabet.map((letter) => (
             <a
               href={articles[letter] ? `#${letter}` : undefined}
               key={letter}
-              className={articles[letter] ? "active" : "inactive"}
+              className={
+                "article-list-alphabet-letter " +
+                (articles[letter] ? "active" : "inactive")
+              }
             >
               {letter}
             </a>
           ))}
         </div>
       </div>
-      <div className="content">
+      <div className="article-list-content">
         {columns.map((column, columnIndex) => (
-          <div key={columnIndex} className="section-column">
+          <div key={columnIndex} className="article-list-section-column">
             {column.map(({ letter, items }) => (
-              <div key={letter} id={letter} className="section">
+              <div key={letter} id={letter} className="article-list-section">
                 <h3>{letter}</h3>
                 <ul>
                   {items.map((item, index) => {
@@ -227,7 +263,7 @@ const ArticleListPage = () => {
                           to={`/treatment/${item.title
                             .toLowerCase()
                             .replace(/ /g, "-")}/${item._id}`}
-                          className="article-list-item"
+                          className="article-list-section-item"
                         >
                           {item.title}
                         </Link>
