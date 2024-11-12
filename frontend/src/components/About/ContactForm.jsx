@@ -126,10 +126,10 @@ const ContactForm = () => {
         <div className="container px-5 contact-form">
           <h1>{strings.ContactForm.contactUs}</h1>
           {formSubmitted ? (
-            <p>{strings.ContactForm.thankYouMessage}</p>
+            <p className='result'>{strings.ContactForm.thankYouMessage}</p>
           ) : (
             <>
-              {formError && <p className="error-text result-error">{formError}</p>}
+              {formError && <p className="error-text result">{formError}</p>}
               <form onSubmit={handleSubmit} noValidate>
                 {/* name */}
                 <label className='contact-form-label' htmlFor="name">{strings.ContactForm.nameLabel}</label>
