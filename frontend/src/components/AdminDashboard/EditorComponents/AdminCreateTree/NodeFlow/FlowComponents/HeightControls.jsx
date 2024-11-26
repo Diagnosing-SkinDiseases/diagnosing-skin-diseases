@@ -34,6 +34,7 @@ const HeightControls = ({
     }
   }, [selectedNode, rootNode]);
 
+  // Handle input controls
   const handleInputChange = (event) => {
     setHeightInput(event.target.value);
   };

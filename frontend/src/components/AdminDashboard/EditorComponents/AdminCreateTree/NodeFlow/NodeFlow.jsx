@@ -709,6 +709,8 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
             selectedNode={selectedNode}
             rootNode={rootNode}
             findTreeNodeById={findTreeNodeById}
+            setRootNode={setRootNode}
+            setNodes={setNodes}
           ></LengthControls>
 
           {/* Arrow Angle Controls */}
