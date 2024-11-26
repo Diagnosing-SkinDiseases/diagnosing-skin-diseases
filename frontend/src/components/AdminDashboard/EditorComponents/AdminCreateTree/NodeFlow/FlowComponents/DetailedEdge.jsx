@@ -1,6 +1,7 @@
 // DetailedEdge.js
 import React from "react";
 import { getBezierPath, getEdgeCenter } from "react-flow-renderer";
+import { BaseEdge, getStraightPath } from "@xyflow/react";
 
 const DetailedEdge = ({
   id,
@@ -23,7 +24,13 @@ const DetailedEdge = ({
   ).toFixed(2);
 
   // Get the edge path and center position
-  const edgePath = getBezierPath({ sourceX, sourceY, targetX, targetY });
+  const [edgePath] = getStraightPath({
+    sourceX,
+    sourceY,
+    targetX,
+    targetY,
+  });
+
   const [edgeCenterX, edgeCenterY] = getEdgeCenter({
     sourceX,
     sourceY,
