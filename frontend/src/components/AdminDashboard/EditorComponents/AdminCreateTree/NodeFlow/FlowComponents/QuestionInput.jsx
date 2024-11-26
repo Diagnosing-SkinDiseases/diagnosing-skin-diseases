@@ -5,8 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 // Style for handles
-// Center of Node: 115
-const handleStyle = { no: { left: 100 }, yes: { left: 130 } };
+// Center of Node: 120
+const handleStyle = { no: { left: 120 }, yes: { left: 120 } };
 
 function QuestionInput({
   data: {
