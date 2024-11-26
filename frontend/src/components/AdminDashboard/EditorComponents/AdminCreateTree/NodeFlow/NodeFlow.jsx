@@ -15,9 +15,11 @@ import "@xyflow/react/dist/style.css";
 
 import "../../../../CSS/Admin/TreeEditorNodeFlow.css";
 
+// Custom components
 import QuestionInput from "./FlowComponents/QuestionInput";
 import DetailedEdge from "./FlowComponents/DetailedEdge";
 import HeightControls from "./FlowComponents/HeightControls";
+import LengthControls from "./FlowComponents/LengthControls";
 
 const nodeTypes = { questionInput: QuestionInput };
 
@@ -603,10 +605,11 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
   };
 
   /**
-   * Node movement modifiers
+   *
+   * Height modifiers
+   *
    */
 
-  // Lock the y coordinate of the node
   // Lock the y coordinate of the node
   const [initialY, setInitialY] = useState(null);
   const [lockedY, setLockedY] = useState(false);
@@ -723,6 +726,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
           >
             Delete
           </button>
+          {/* Arrow Height Controls */}
           <HeightControls
             initialY={initialY}
             setInitialY={setInitialY}
@@ -735,6 +739,9 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
             nodes={nodes}
             setNodes={setNodes}
           ></HeightControls>
+
+          {/* Arrow Length Controls */}
+          <LengthControls></LengthControls>
         </div>
       </Panel>
       <Controls />
