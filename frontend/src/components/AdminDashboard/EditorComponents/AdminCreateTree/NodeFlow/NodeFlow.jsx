@@ -24,6 +24,10 @@ const getNodeId = () => `randomnode_${+new Date()}`;
 
 const flowKey = "example-flow";
 
+const DEFAULT_NEW_NODE_HEIGHT = 350;
+
+const DEFAULT_NEW_NODE_X_OFFSET = 200;
+
 /**
  * Finds a node in a decision tree by its ID.
  * @param {Object} rootNode - The root node of the decision tree.
@@ -111,6 +115,50 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
     }
   }, [rootNode, dataLoaded]);
 
+  // // Changes to the root node will update the selected node
+  // useEffect(() => {
+  //   setSelectedNode(findTreeNodeById(rootNode, "node0"));
+  //   console.log("ok");
+  // }, [rootNode]);
+
+  // Logging
+  useEffect(() => {
+    console.log("Layer 1 Selected Node", selectedNode);
+    console.log("edge");
+  }, [selectedNode]);
+
+  useEffect(() => {
+    if (selectedNode) {
+      console.log("edg", edges);
+      console.log(
+        "findEdge",
+        findEdgeByNodes(edges, selectedNode.currentId, selectedNode.parentId)
+      );
+      if (selectedNode && selectedNode.parentId) {
+        console.log(
+          "Find height:",
+          findTreeNodeById(rootNode, selectedNode.currentId).yPos -
+            findTreeNodeById(rootNode, selectedNode.parentId).yPos
+        );
+      }
+    }
+  }, [edges, selectedNode, rootNode]);
+
+  /**
+   * Finds an edge based on the current node's ID (target) and the parent node's ID (source).
+   * @param {Array} edges - The array of edge objects.
+   * @param {string} currentNodeId - The ID of the current node (target).
+   * @param {string} parentNodeId - The ID of the parent node (source).
+   * @returns {Object | null} - Returns the matching edge object or null if not found.
+   */
+  function findEdgeByNodes(edges, currentNodeId, parentNodeId) {
+    return (
+      edges.find(
+        (edge) => edge.source === parentNodeId && edge.target === currentNodeId
+      ) || null
+    );
+  }
+
   // Function to trigger re-render of all nodes
   const forceNodesReRender = () => {
     console.log("ForceNodesReRender");
@@ -126,10 +174,12 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
 
   // Act on changes to the selected node
   useEffect(() => {
-    console.log("Selected(Canvas)", selectedNode);
-    console.log("TEST", selectedNode.currentId);
-    forceReRender();
-    forceNodesReRender();
+    if (selectedNode) {
+      console.log("Selected(Canvas)", selectedNode);
+      console.log("TEST", selectedNode.currentId);
+      forceReRender();
+      forceNodesReRender();
+    }
   }, [selectedNode]);
 
   /**
@@ -338,6 +388,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
     // Create a new root node with updated structure
     let newRootNode = addYesChildToTarget(rootNode);
     setRootNode(newRootNode); // This should trigger a re-render
+    setSelectedNode(findTreeNodeById(newRootNode, selectedNode.currentId));
   };
 
   /**
@@ -365,6 +416,11 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
     };
     const updatedRootNode = addNoChildToTarget(rootNode);
     setRootNode(updatedRootNode);
+    console.log(
+      "new selected after no?",
+      findTreeNodeById(updatedRootNode, selectedNode.currentId)
+    );
+    setSelectedNode(findTreeNodeById(updatedRootNode, selectedNode.currentId));
   };
 
   const onConnect = useCallback(
@@ -394,6 +450,197 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
   );
 
   /**
+   *
+   * Panel Controls
+   *
+   */
+
+  /**
+   * Deletes the current node from the tree by filtering it out of the
+   * `allNodes` state.
+   */
+  const deleteFlowNode = () => {
+    setNodes((nds) => nds.filter((node) => node.id !== selectedNode.currentId));
+  };
+
+  /**
+   * Deletes a node from the decision tree by its ID.
+   * @param {string} nodeIdToDelete - The ID of the node to delete.
+   * @returns {undefined} - Does not return anything, instead updates the tree data structure and triggers a re-render.
+   */
+  const deleteChild = () => {
+    const deleteNodeRecursively = (node) => {
+      if (node.currentId === selectedNode.currentId) {
+        return null;
+      }
+      const updatedNoChild = node.noChild.map(deleteNodeRecursively);
+      const updatedYesChild = node.yesChild.map(deleteNodeRecursively);
+      return {
+        ...node,
+        noChild: updatedNoChild.filter(Boolean),
+        yesChild: updatedYesChild.filter(Boolean),
+      };
+    };
+
+    const updatedRootNode = deleteNodeRecursively(rootNode);
+    setRootNode(updatedRootNode);
+  };
+
+  /**
+   * Deletes a node from the tree.
+   * @param {Event} event - The event object triggered by the click event.
+   * @returns {void}
+   */
+  const onDeleteNode = (event) => {
+    deleteFlowNode();
+    deleteChild();
+    setSelectedNode(null);
+  };
+
+  /**
+   * Adds a new node to the tree.
+   *
+   * @param {string} newNodeType - The type of the new node, either "yes" or "no".
+   */
+  const addNewNode = (newNodeType) => {
+    const newNode = {
+      id: generateNodeId(),
+      data: {
+        getNodeId,
+        setAllNodes: setNodes,
+        savedXOffset,
+        setSavedXOffset,
+        rootNode,
+        generateNodeId,
+        updateNodeContent,
+        setRootNode,
+        generateNode,
+        nodeType: newNodeType === "no" ? "no" : "yes",
+      },
+      type: "questionInput",
+      position: {
+        x:
+          newNodeType === "no"
+            ? selectedNode.xPos - (DEFAULT_NEW_NODE_X_OFFSET + savedXOffset)
+            : selectedNode.xPos + (DEFAULT_NEW_NODE_X_OFFSET + savedXOffset),
+        y: selectedNode.yPos + DEFAULT_NEW_NODE_HEIGHT,
+      },
+    };
+
+    setNodes((nds) => nds.concat(newNode));
+
+    const newEdge = {
+      id: `edge_${selectedNode.currentId}_${newNode.id}`,
+      source: selectedNode.currentId,
+      target: newNode.id,
+      sourceHandle: newNodeType,
+      className:
+        newNodeType === "no" ? "tree-flow-no-edge" : "tree-flow-yes-edge",
+      type: "detailed",
+    };
+
+    setEdges((eds) => eds.concat(newEdge));
+  };
+
+  /**
+   * Adds a new "yes" node to the tree by calling `addNewNode` with the
+   * argument `"yes"`.
+   */
+  const onAddYesNode = () => {
+    addNewNode("yes");
+  };
+
+  /**
+   * Adds a new "no" node to the tree by calling `addNewNode` with the
+   * argument `"no"`.
+   */
+  const onAddNoNode = () => {
+    addNewNode("no");
+  };
+
+  /**
+   * Handles the addition of a new node to the decision tree.
+   * @param {Event} event - The event that triggered the addition of the node.
+   * Updates the tree data structure and triggers a re-render.
+   */
+  const onAddNode = (nodeType) => {
+    let newNode = generateNode();
+    let targetNodeId = selectedNode.currentId;
+    let addType = nodeType;
+    newNode.parentId = targetNodeId;
+    newNode.yPos = selectedNode.yPos + DEFAULT_NEW_NODE_HEIGHT;
+
+    if (addType === "yes") {
+      newNode.xPos =
+        selectedNode.xPos + (DEFAULT_NEW_NODE_X_OFFSET + savedXOffset);
+      addYesChild(targetNodeId, newNode);
+      // Update UI
+      onAddYesNode();
+    } else {
+      // Update data
+      newNode.xPos =
+        selectedNode.xPos - (DEFAULT_NEW_NODE_X_OFFSET + savedXOffset);
+      addNoChild(targetNodeId, newNode);
+      // Update UI
+      onAddNoNode();
+    }
+  };
+
+  const addYesChildToSelectedNode = () => {
+    onAddNode("yes", () => {
+      // Callback to re-fetch the updated selectedNode
+      console.log("\n\nYES CHILD ADDED\n\n");
+      console.log("PYN", selectedNode);
+    });
+  };
+
+  const AddNoChildToSelectedNode = () => {
+    onAddNode("no");
+    console.log("\n\nNO CHILD ADDED\n\n");
+    console.log("PNN", selectedNode);
+  };
+
+  /**
+   * Node movement modifiers
+   */
+
+  // Lock the y coordinate of the node
+  // Lock the y coordinate of the node
+  const [initialY, setInitialY] = useState(null);
+  const [lockedY, setLockedY] = useState(false);
+
+  // Toggle y lock
+  const toggleYLock = () => {
+    setLockedY((prevState) => !prevState);
+  };
+
+  // Capture the initial Y position when dragging starts
+  const handleNodeDragStart = (event, node) => {
+    setInitialY(node.position.y);
+  };
+
+  // Lock the Y position to the initial value if toggled
+  const handleNodeDrag = (event, node) => {
+    if (lockedY) {
+      setNodes((nds) =>
+        nds.map((n) =>
+          n.id === node.id
+            ? { ...n, position: { x: node.position.x, y: initialY } }
+            : n
+        )
+      );
+    } else {
+      setNodes((nds) =>
+        nds.map((n) =>
+          n.id === node.id
+            ? { ...n, position: { x: node.position.x, y: node.position.y } }
+            : n
+        )
+      );
+    }
+  };
+
+  /**
    * Updates the position of a node in the decision tree.
    * @param {string} nodeIdToUpdate - The ID of the node to update.
    * @param {Object} newPos - The new position of the node with x and y coordinates.
@@ -401,6 +648,9 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
   const updateNodePosition = (nodeIdToUpdate, newPos) => {
     const updatePositionRecursively = (node) => {
       if (node.currentId === nodeIdToUpdate) {
+        if (lockedY) {
+          newPos.y = initialY;
+        }
         return { ...node, xPos: newPos.x, yPos: newPos.y };
       }
 
@@ -428,6 +678,58 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
     updateNodePosition(node.id, node.position);
   };
 
+  /**
+   * Custom Height Handling
+   */
+
+  const [heightInput, setHeightInput] = useState(0);
+
+  useEffect(() => {
+    if (selectedNode && selectedNode.parentId) {
+      const parentNode = findTreeNodeById(rootNode, selectedNode.parentId);
+      const currentNode = findTreeNodeById(rootNode, selectedNode.currentId);
+      if (parentNode && currentNode) {
+        setHeightInput(Math.round(currentNode.yPos - parentNode.yPos));
+      }
+    }
+  }, [selectedNode, rootNode]);
+
+  const handleInputChange = (event) => {
+    setHeightInput(event.target.value);
+  };
+
+  /**
+   * Manually change the "height" of a node relative to its parent.
+   */
+  const changeSelectedNodeHeight = (newHeight) => {
+    const updatePositionRecursively = (node) => {
+      if (node.currentId === selectedNode.currentId) {
+        const newYPos =
+          findTreeNodeById(rootNode, selectedNode.parentId).yPos + newHeight;
+        return { ...node, xPos: node.xPos, yPos: newYPos };
+      }
+
+      // Recursively process both noChild and yesChild arrays
+      const updatedNoChild = node.noChild.map(updatePositionRecursively);
+      const updatedYesChild = node.yesChild.map(updatePositionRecursively);
+
+      return {
+        ...node,
+        noChild: updatedNoChild,
+        yesChild: updatedYesChild,
+      };
+    };
+
+    setRootNode((prevRootNode) => updatePositionRecursively(prevRootNode));
+  };
+
+  const handleSubmitNewHeight = (event) => {
+    if (event.key === "Enter") {
+      const newHeight = parseInt(heightInput, 10);
+      changeSelectedNodeHeight(newHeight);
+    }
+  };
+
   return (
     <ReactFlow
       nodes={nodes}
@@ -443,6 +745,8 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
       minZoom={0.081} // Set the minimum zoom level (zoom out)
       deleteKeyCode={"Disabled"}
       onNodeDragStop={handleNodeDragStop}
+      onNodeDragStart={handleNodeDragStart}
+      onNodeDrag={handleNodeDrag}
     >
       <Panel position="top-right">
         <div
@@ -453,10 +757,42 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
             borderRadius: "8px", // Optional: Rounded corners
           }}
         >
-          <button style={{ margin: "5px" }}>Add Yes</button>
-          <button style={{ margin: "5px" }}>Add No</button>
-          <button style={{ margin: "5px" }}>Delete</button>
-          <button style={{ margin: "5px" }}>Lock Angle</button>
+          <button
+            style={{ margin: "5px" }}
+            onClick={AddNoChildToSelectedNode}
+            disabled={selectedNode && selectedNode.noChild.length !== 0}
+          >
+            Add No
+          </button>
+          <button
+            style={{ margin: "5px" }}
+            onClick={addYesChildToSelectedNode}
+            disabled={selectedNode && selectedNode.yesChild.length !== 0}
+          >
+            Add Yes
+          </button>
+          <button
+            style={{ margin: "5px" }}
+            onClick={onDeleteNode}
+            disabled={selectedNode && selectedNode.currentId === "node0"}
+          >
+            Delete
+          </button>
+          <button
+            style={{ margin: "5px" }}
+            onClick={toggleYLock}
+            className={lockedY ? "tree-flow-panel-button-locked" : ""}
+          >
+            Lock Height
+          </button>
+          <span>Height: </span>
+          <input
+            type={"text"}
+            value={heightInput}
+            onChange={handleInputChange}
+            onKeyDown={handleSubmitNewHeight}
+            className="tree-flow-panel-height-input"
+          />
         </div>
       </Panel>
       <Controls />

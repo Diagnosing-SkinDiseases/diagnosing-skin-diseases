@@ -10,8 +10,6 @@ function QuestionInput({
   data: {
     getNodeId,
     setAllNodes,
-    maxTreeHeight,
-    setMaxTreeHeight,
     nodeHeight,
     nodeType,
     savedXOffset,
@@ -42,7 +40,8 @@ function QuestionInput({
   // Logging
   useEffect(() => {
     if (selectedNode !== undefined) {
-      console.log("inNode", selectedNode.currentId);
+      // console.log("inNode", selectedNode.currentId);
+      // console.log("detailedSelected", selectedNode);
     }
   }, [selectedNode]);
 
@@ -88,8 +87,6 @@ function QuestionInput({
       data: {
         getNodeId,
         setAllNodes,
-        maxTreeHeight,
-        setMaxTreeHeight,
         savedXOffset,
         setSavedXOffset,
         rootNode,
@@ -359,11 +356,11 @@ function QuestionInput({
             {toTitleCase(nodeType)} Question:
           </span>
 
-          {nodeType !== "root" && (
+          {/* {nodeType !== "root" && (
             <button className="tree-flow-delete" onClick={onDeleteNode}>
               <FontAwesomeIcon icon={faTrashAlt} />
             </button>
-          )}
+          )} */}
         </div>
 
         {/* Text */}

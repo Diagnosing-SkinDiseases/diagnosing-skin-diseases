@@ -90,3 +90,22 @@
     border-radius: 50%;
     /* Ensure it's still a circle */
 }
+
+/* Panel styling */
+
+.tree-flow-panel-button-locked {
+    background-color: #d0d0d0;
+    color: #333;
+    border: 0.125em solid #888;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.tree-flow-panel-button-locked:hover {
+    background-color: #c0c0c0;
+    box-shadow: 0 0.375em 0.625em rgba(0, 0, 0, 0.3);
+}
+
+.tree-flow-panel-height-input {
+    width: 3em;
+}
