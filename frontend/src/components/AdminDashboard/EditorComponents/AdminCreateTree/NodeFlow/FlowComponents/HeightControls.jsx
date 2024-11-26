@@ -92,7 +92,7 @@ const HeightControls = ({
       >
         Lock Height
       </button>
-      <span>Height: </span>
+      <span className="tree-flow-panel-label">Height: </span>
       <input
         type={"text"}
         value={heightInput}
