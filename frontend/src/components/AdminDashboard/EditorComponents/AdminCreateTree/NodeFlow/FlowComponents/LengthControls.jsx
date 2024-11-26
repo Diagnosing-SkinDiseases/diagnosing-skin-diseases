@@ -30,6 +30,9 @@ const LengthControls = ({
   // Logging
   useEffect(() => {
     console.log("Length controls selected node", selectedNode);
+    if (!selectedNode) {
+      return;
+    }
     console.log(
       "Selected parent:",
       findTreeNodeById(rootNode, selectedNode.parentId)
