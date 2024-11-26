@@ -714,7 +714,13 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
           ></LengthControls>
 
           {/* Arrow Angle Controls */}
-          <AngleControls></AngleControls>
+          <AngleControls
+            selectedNode={selectedNode}
+            rootNode={rootNode}
+            findTreeNodeById={findTreeNodeById}
+            setRootNode={setRootNode}
+            setNodes={setNodes}
+          ></AngleControls>
         </div>
       </Panel>
       <Controls />
