@@ -1,10 +1,12 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import { Handle, Position } from "@xyflow/react";
 import "../../../../../CSS/Admin/TreeEditorNodeFlow.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
-const handleStyle = { no: { left: 50 }, yes: { left: 175 } };
+// Style for handles
+// Center of Node: 115
+const handleStyle = { no: { left: 100 }, yes: { left: 130 } };
 
 function QuestionInput({
   data: {
@@ -36,6 +38,7 @@ function QuestionInput({
   const [currentNodeHeight, setCurrentNodeHeight] = useState(nodeHeight ?? 0);
   const [nodeColorClass, setNodeColorClass] = useState("tree-flow-root-color");
   const [textValue, setTextValue] = useState(content);
+  const nodeRef = useRef(null);
 
   // Assign color based on type
   useEffect(() => {
@@ -50,6 +53,12 @@ function QuestionInput({
         break;
     }
   }, [nodeHeight, currentNodeHeight, rootNode]);
+
+  // Logging
+  useEffect(() => {
+    // console.log("OK");
+    // console.log(nodeRef.current.getBoundingClientRect());
+  });
 
   /**
    * Handles text input change.
@@ -323,6 +332,7 @@ function QuestionInput({
 
   return (
     <div
+      ref={nodeRef}
       className={`tree-flow-question-node ${
         selectedNode && selectedNode.currentId === id
           ? "tree-flow-selected-color"

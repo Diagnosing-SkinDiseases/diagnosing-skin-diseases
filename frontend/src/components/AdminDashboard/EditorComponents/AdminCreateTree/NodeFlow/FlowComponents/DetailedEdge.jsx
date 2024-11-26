@@ -58,9 +58,7 @@ const DetailedEdge = ({
         textAnchor="middle"
         dominantBaseline="middle"
         style={{ fontSize: 12, fill: "#222" }}
-      >
-        {`Length: ${length}, Angle: ${angle}°`}
-      </text>
+      ></text>
     </>
   );
 };
