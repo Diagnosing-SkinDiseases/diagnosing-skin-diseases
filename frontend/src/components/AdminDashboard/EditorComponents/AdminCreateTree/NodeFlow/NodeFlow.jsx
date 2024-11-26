@@ -125,7 +125,8 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
   useEffect(() => {
     console.log("Layer 1 Selected Node", selectedNode);
     console.log("edge");
-  }, [selectedNode]);
+    console.log("Visual nodes:", nodes);
+  }, [selectedNode, nodes]);
 
   useEffect(() => {
     if (selectedNode) {
@@ -706,6 +707,19 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
       if (node.currentId === selectedNode.currentId) {
         const newYPos =
           findTreeNodeById(rootNode, selectedNode.parentId).yPos + newHeight;
+
+        // Update the visual position of the node
+        setNodes((nds) => {
+          let newVisualNodes = nds.map((nd) => {
+            if (nd.id === selectedNode.currentId) {
+              console.log("POST INPUT VISUAL", nd);
+              return { ...nd, position: { x: nd.position.x, y: newYPos } };
+            }
+            return nd;
+          });
+          return newVisualNodes;
+        });
+
         return { ...node, xPos: node.xPos, yPos: newYPos };
       }
 
