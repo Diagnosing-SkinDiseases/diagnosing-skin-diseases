@@ -14,10 +14,8 @@ const UserTreeV2 = ({ existingId, setTreePayload }) => {
     const url = new URL(window.location.href);
     const isPreviewMode = url.pathname.includes("/admin/trees/preview");
     if (isPreviewMode) {
-      console.log("TRUE");
       const data = sessionStorage.getItem("previewData");
       const parsed = JSON.parse(data);
-      console.log("parsed", parsed);
       setExistingTree(toListAllChildren(parsed.nodeTree));
       setExistingTitle(parsed.name);
       setExistingAboutLink(parsed.aboutLink);

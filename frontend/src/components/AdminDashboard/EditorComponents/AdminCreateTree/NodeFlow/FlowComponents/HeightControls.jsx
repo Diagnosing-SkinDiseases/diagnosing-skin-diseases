@@ -51,7 +51,6 @@ const HeightControls = ({
         setNodes((nds) => {
           let newVisualNodes = nds.map((nd) => {
             if (nd.id === selectedNode.currentId) {
-              console.log("POST INPUT VISUAL", nd);
               return { ...nd, position: { x: nd.position.x, y: newYPos } };
             }
             return nd;

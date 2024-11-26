@@ -345,7 +345,6 @@ const GlossaryListPage = () => {
         );
 
         // Group glossaryItems by the first letter of their term
-        console.log("pibroken", publishedItems);
         const groupedGlossaryItems = publishedItems.reduce(
           (acc, glossaryItem) => {
             const firstLetter = glossaryItem.term[0].toUpperCase();
@@ -379,21 +378,14 @@ const GlossaryListPage = () => {
           }
         }
 
-        console.log("pb:", publishedItems);
-
         setGlossaryItems(dummyData);
         // setGlossaryItems(publishedItems);
         setIsLoading(false);
-        console.log(groupedGlossaryItems);
       })
       .catch((error) =>
         console.error("Error fetching glossary items: ", error)
       );
   }, []);
-
-  useEffect(() => {
-    console.log("gi", glossaryItems);
-  });
 
   // Toggle selection state of an item
   function handleSelectItem(item) {

@@ -2,7 +2,16 @@ import React from "react";
 
 import { useState, useEffect } from "react";
 
-const LengthControls = (props) => {
+const LengthControls = ({ selectedNode, rootNode, findTreeNodeById }) => {
+  // Logging
+  useEffect(() => {
+    console.log("Length controls selected node", selectedNode);
+    console.log(
+      "Selected parent:",
+      findTreeNodeById(rootNode, selectedNode.parentId)
+    );
+  }, [selectedNode]);
+
   return (
     <>
       <span className="tree-flow-panel-label">Length: </span>

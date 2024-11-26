@@ -175,7 +175,6 @@ const ArticleListPage = () => {
         // setArticles(groupedArticles);
         setArticles(dummyData);
         setIsLoading(false);
-        console.log(groupedArticles);
       })
       .catch((error) => console.error("Error fetching articles: ", error));
   }, []);
@@ -256,7 +255,6 @@ const ArticleListPage = () => {
                 <h3>{letter}</h3>
                 <ul>
                   {items.map((item, index) => {
-                    console.log("item:", item.title.toLowerCase());
                     return (
                       <li key={index}>
                         <Link

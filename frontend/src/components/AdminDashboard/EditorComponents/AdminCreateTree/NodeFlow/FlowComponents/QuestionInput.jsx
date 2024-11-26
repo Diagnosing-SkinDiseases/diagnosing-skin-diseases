@@ -37,14 +37,6 @@ function QuestionInput({
   const [nodeColorClass, setNodeColorClass] = useState("tree-flow-root-color");
   const [textValue, setTextValue] = useState(content);
 
-  // Logging
-  useEffect(() => {
-    if (selectedNode !== undefined) {
-      // console.log("inNode", selectedNode.currentId);
-      // console.log("detailedSelected", selectedNode);
-    }
-  }, [selectedNode]);
-
   // Assign color based on type
   useEffect(() => {
     switch (nodeType) {
@@ -326,7 +318,6 @@ function QuestionInput({
    * Changes selectedNode
    */
   const clickSelectNode = () => {
-    console.log("Selected(inNode)", id, findNodeById(id));
     setSelectedNode(findNodeById(id));
   };
 

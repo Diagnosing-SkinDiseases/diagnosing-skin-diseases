@@ -109,3 +109,15 @@
 .tree-flow-panel-height-input {
     width: 3em;
 }
+
+.tree-flow-panel-label {
+    margin-left: 0.25em
+}
+
+.tree-flow-panel-length-input {
+    width: 3em
+}
+
+.tree-flow-panel-angle-input {
+    width: 3em
+}

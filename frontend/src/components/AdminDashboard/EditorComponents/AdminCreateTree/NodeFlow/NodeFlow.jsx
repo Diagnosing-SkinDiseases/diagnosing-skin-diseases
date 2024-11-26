@@ -20,6 +20,7 @@ import QuestionInput from "./FlowComponents/QuestionInput";
 import DetailedEdge from "./FlowComponents/DetailedEdge";
 import HeightControls from "./FlowComponents/HeightControls";
 import LengthControls from "./FlowComponents/LengthControls";
+import AngleControls from "./FlowComponents/AngleControls";
 
 const nodeTypes = { questionInput: QuestionInput };
 
@@ -118,35 +119,12 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
     }
   }, [rootNode, dataLoaded]);
 
-  // // Changes to the root node will update the selected node
-  // useEffect(() => {
-  //   setSelectedNode(findTreeNodeById(rootNode, "node0"));
-  //   console.log("ok");
-  // }, [rootNode]);
-
   // Logging
   useEffect(() => {
-    console.log("Layer 1 Selected Node", selectedNode);
-    console.log("edge");
-    console.log("Visual nodes:", nodes);
+    // console.log("Layer 1 Selected Node", selectedNode);
+    // console.log("edge");
+    // console.log("Visual nodes:", nodes);
   }, [selectedNode, nodes]);
-
-  useEffect(() => {
-    if (selectedNode) {
-      console.log("edg", edges);
-      console.log(
-        "findEdge",
-        findEdgeByNodes(edges, selectedNode.currentId, selectedNode.parentId)
-      );
-      if (selectedNode && selectedNode.parentId) {
-        console.log(
-          "Find height:",
-          findTreeNodeById(rootNode, selectedNode.currentId).yPos -
-            findTreeNodeById(rootNode, selectedNode.parentId).yPos
-        );
-      }
-    }
-  }, [edges, selectedNode, rootNode]);
 
   /**
    * Finds an edge based on the current node's ID (target) and the parent node's ID (source).
@@ -165,7 +143,6 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
 
   // Function to trigger re-render of all nodes
   const forceNodesReRender = () => {
-    console.log("ForceNodesReRender");
     setRootNode((prevRootNode) => ({
       ...prevRootNode,
       data: {
@@ -173,14 +150,11 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
         _forceUpdate: Math.random(), // Harmless, random change
       },
     }));
-    console.log(rootNode);
   };
 
   // Act on changes to the selected node
   useEffect(() => {
     if (selectedNode) {
-      console.log("Selected(Canvas)", selectedNode);
-      console.log("TEST", selectedNode.currentId);
       forceReRender();
       forceNodesReRender();
     }
@@ -420,10 +394,6 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
     };
     const updatedRootNode = addNoChildToTarget(rootNode);
     setRootNode(updatedRootNode);
-    console.log(
-      "new selected after no?",
-      findTreeNodeById(updatedRootNode, selectedNode.currentId)
-    );
     setSelectedNode(findTreeNodeById(updatedRootNode, selectedNode.currentId));
   };
 
@@ -591,17 +561,11 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
   };
 
   const addYesChildToSelectedNode = () => {
-    onAddNode("yes", () => {
-      // Callback to re-fetch the updated selectedNode
-      console.log("\n\nYES CHILD ADDED\n\n");
-      console.log("PYN", selectedNode);
-    });
+    onAddNode("yes");
   };
 
   const AddNoChildToSelectedNode = () => {
     onAddNode("no");
-    console.log("\n\nNO CHILD ADDED\n\n");
-    console.log("PNN", selectedNode);
   };
 
   /**
@@ -741,7 +705,14 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
           ></HeightControls>
 
           {/* Arrow Length Controls */}
-          <LengthControls></LengthControls>
+          <LengthControls
+            selectedNode={selectedNode}
+            rootNode={rootNode}
+            findTreeNodeById={findTreeNodeById}
+          ></LengthControls>
+
+          {/* Arrow Angle Controls */}
+          <AngleControls></AngleControls>
         </div>
       </Panel>
       <Controls />
