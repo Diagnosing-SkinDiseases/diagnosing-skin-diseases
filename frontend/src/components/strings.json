@@ -1,0 +1,18 @@
+{
+    "ContactForm" : {
+        "contactUs": "Contact Us",
+        "thankYouMessage": "Thank you for reaching out! We will get back to you soon.",
+        "nameLabel": "Name:",
+        "emailLabel": "Email:",
+        "messageLabel": "Message:",
+        "nameError": "Please provide your name.",
+        "emailRequiredError": "Please provide an email.",
+        "emailInvalidError": "Please enter a valid email address.",
+        "messageError": "Please write a message.",
+        "captchaError": "Please complete the reCAPTCHA.",
+        "submissionError": "Failed to submit contact form. Please try again.",
+        "genericError": "An error occurred while submitting the form. Please try again later.",
+        "submitText": "Send",
+        "loadingText": "Submitting..."
+    }
+}

@@ -15,7 +15,7 @@ const Sidebar = ({ setArticleId, selectedArticleId }) => {
       case "660e303f2dc5942805a13854":
         setSelectedItem("Acknowledgements");
         break;
-      case "660e30442dc5942805a138e9":
+      case "contact":
         setSelectedItem("Contact");
         break;
       default:
@@ -28,7 +28,7 @@ const Sidebar = ({ setArticleId, selectedArticleId }) => {
       "About DSD": "660e30352dc5942805a1372d",
       "Using This Website": "660e303a2dc5942805a137c0",
       "Acknowledgements": "660e303f2dc5942805a13854",
-      "Contact": "660e30442dc5942805a138e9",
+      "Contact": "contact",
     };
     setArticleId(articleIdMap[itemName]);
     setSelectedItem(itemName);

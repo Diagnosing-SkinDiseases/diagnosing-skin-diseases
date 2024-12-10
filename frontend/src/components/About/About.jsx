@@ -15,7 +15,7 @@ const About = () => {
     // Map selected item to articleId
     switch (selectedItem) {
       case "Contact":
-        setArticleId("660e30442dc5942805a138e9");
+        setArticleId("contact"); // Using "contact" to represent contact form
         break;
       case "Using This Website":
         setArticleId("660e303a2dc5942805a137c0");

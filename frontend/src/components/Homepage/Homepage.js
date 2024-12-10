@@ -179,7 +179,7 @@ function Homepage() {
                 key={index}
                 title={tree.name}
                 image={tree.coverImage}
-                aboutLink={tree.aboutLink + `?treeId=${tree._id}`}
+                aboutLink={tree.aboutLink + "?treeId=" + tree._id}
                 previewText={tree.previewText}
                 treeId={tree._id}
               />

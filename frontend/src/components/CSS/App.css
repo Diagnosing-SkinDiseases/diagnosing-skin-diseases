@@ -45,6 +45,11 @@
   --login-container: #f5f5f5;
 
   --about-hover: #715529;
+
+  /* Contact FOrm */
+  --bg-disabled-fields: #e4ddd0;
+  --bg-disabled-btn: #e4ddd0;
+  --color-disabled-btn: #715529;
 }
 
 .App {
