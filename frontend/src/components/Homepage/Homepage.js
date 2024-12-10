@@ -170,6 +170,12 @@ function Homepage() {
     <div className="Homepage">
       <div className="container-fluid">
         <h2 className="homepage-text my-4">Diagnose by Primary Lesion</h2>
+        <p className="homepage-intro-text">
+          This website is designed to help diagnose common skin diseases
+          frequently seen in children and adults. Select the primary lesion that
+          best matches your patient, then click Start Diagnosis for the
+          diagnostic tree Q&A or click Info for an overview of that section.
+        </p>
         {isLoading ? (
           <LoadingPage />
         ) : (

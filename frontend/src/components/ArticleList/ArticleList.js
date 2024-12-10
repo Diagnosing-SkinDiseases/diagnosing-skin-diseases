@@ -217,7 +217,17 @@ const ArticleListPage = () => {
     <div className="article-list-page">
       <div className="article-list-banner">
         {/* Title */}
-        <h1 className="article-list-title">Articles</h1>
+        <div>
+          <h1 className="article-list-title">Articles</h1>
+          {/* Introduction */}
+          <p className="homepage-intro-text">
+            The articles in this program describe the common skin diseases that
+            you see in family practice. The articles are in alphabetical order
+            and give you information to help you diagnose and treat your
+            patients with skin problems.
+          </p>
+        </div>
+
         {/* Search bar */}
         <form className="search-bar">
           <input

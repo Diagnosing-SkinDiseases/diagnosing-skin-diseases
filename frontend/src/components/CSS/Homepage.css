@@ -148,6 +148,10 @@
   color: black;
 }
 
+.homepage-intro-text {
+  color: var(--card-title);
+}
+
 @media (max-width: 1024px) {
   .card-custom {
     flex: 1 0 calc(50% - 20px);
