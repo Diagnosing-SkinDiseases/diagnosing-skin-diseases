@@ -94,7 +94,6 @@ function Homepage() {
 
   // Function to adjust card preview description heights
   const adjustCardPreviews = () => {
-    // const cardDescriptions = document.querySelectorAll(".card-description");
     const cardDescriptions = document.querySelectorAll(".card-text");
     let maxDescriptionHeight = 0;
 
