@@ -317,6 +317,11 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
   const [multiSelectOn, setMultiSelectOn] = useState(false);
   const [multiSelectList, setMultiSelectList] = useState([]);
 
+  // logging
+  useEffect(() => {
+    console.log("ROOT MultiSelect on:", multiSelectOn);
+  }, [multiSelectOn]);
+
   const toggleMultiSelect = () => {
     setMultiSelectOn((prevState) => {
       if (!multiSelectOn) {
@@ -734,6 +739,8 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
             setRootNode={setRootNode}
             nodes={nodes}
             setNodes={setNodes}
+            multiSelectOn={multiSelectOn}
+            multiSelectList={multiSelectList}
           ></HeightControls>
 
           {/* Arrow Length Controls */}

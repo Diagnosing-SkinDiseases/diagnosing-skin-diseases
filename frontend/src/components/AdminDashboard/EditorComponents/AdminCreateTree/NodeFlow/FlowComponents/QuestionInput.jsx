@@ -371,7 +371,7 @@ function QuestionInput({
       ref={nodeRef}
       className={`tree-flow-question-node ${
         (selectedNode && selectedNode.currentId === id) ||
-        (multiSelectOn && multiSelectList.includes(findNodeById(id)))
+        (multiSelectOn && multiSelectList.some((node) => node.currentId === id))
           ? "tree-flow-selected-color"
           : nodeColorClass
       }`}

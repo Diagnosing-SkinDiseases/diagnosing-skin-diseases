@@ -12,6 +12,8 @@ const HeightControls = ({
   setRootNode,
   nodes,
   setNodes,
+  multiSelectOn,
+  multiSelectList,
 }) => {
   // Toggle y lock
   const toggleYLock = () => {
@@ -39,38 +41,83 @@ const HeightControls = ({
     setHeightInput(event.target.value);
   };
 
+  // Logging
+  useEffect(() => {
+    console.log("\n\nCHILD MultiSelect on", multiSelectOn);
+  }, [multiSelectOn]);
   /**
    * Manually change the "height" of a node relative to its parent.
    */
   const changeSelectedNodeHeight = (newHeight) => {
+    console.log("\n\nmulti select on", multiSelectOn + "\n\n");
+
     const updatePositionRecursively = (node) => {
-      if (node.currentId === selectedNode.currentId) {
-        const newYPos =
-          findTreeNodeById(rootNode, selectedNode.parentId).yPos + newHeight;
+      if (!multiSelectOn) {
+        // Single node logic
+        if (node.currentId === selectedNode.currentId) {
+          const newYPos =
+            findTreeNodeById(rootNode, selectedNode.parentId).yPos + newHeight;
 
-        // Update the visual position of the node
-        setNodes((nds) => {
-          let newVisualNodes = nds.map((nd) => {
-            if (nd.id === selectedNode.currentId) {
-              return { ...nd, position: { x: nd.position.x, y: newYPos } };
-            }
-            return nd;
+          // Update the visual position of the node
+          setNodes((nds) => {
+            let newVisualNodes = nds.map((nd) => {
+              if (nd.id === selectedNode.currentId) {
+                return { ...nd, position: { x: nd.position.x, y: newYPos } };
+              }
+              return nd;
+            });
+            return newVisualNodes;
           });
-          return newVisualNodes;
-        });
 
-        return { ...node, xPos: node.xPos, yPos: newYPos };
+          return { ...node, xPos: node.xPos, yPos: newYPos };
+        }
+
+        // Recursively process both noChild and yesChild arrays
+        const updatedNoChild = node.noChild.map(updatePositionRecursively);
+        const updatedYesChild = node.yesChild.map(updatePositionRecursively);
+
+        return {
+          ...node,
+          noChild: updatedNoChild,
+          yesChild: updatedYesChild,
+        };
+      } else {
+        // Multi-select logic
+        const isInMultiSelectList = multiSelectList.some(
+          (multiNode) => multiNode.currentId === node.currentId
+        );
+
+        if (isInMultiSelectList) {
+          const parentNode = findTreeNodeById(rootNode, node.parentId);
+
+          if (parentNode) {
+            const newYPos = parentNode.yPos + newHeight;
+
+            // Update the visual position of the node
+            setNodes((nds) => {
+              let newVisualNodes = nds.map((nd) => {
+                if (nd.id === node.currentId) {
+                  return { ...nd, position: { x: nd.position.x, y: newYPos } };
+                }
+                return nd;
+              });
+              return newVisualNodes;
+            });
+
+            return { ...node, xPos: node.xPos, yPos: newYPos };
+          }
+        }
+
+        // Recursively process both noChild and yesChild arrays
+        const updatedNoChild = node.noChild.map(updatePositionRecursively);
+        const updatedYesChild = node.yesChild.map(updatePositionRecursively);
+
+        return {
+          ...node,
+          noChild: updatedNoChild,
+          yesChild: updatedYesChild,
+        };
       }
-
-      // Recursively process both noChild and yesChild arrays
-      const updatedNoChild = node.noChild.map(updatePositionRecursively);
-      const updatedYesChild = node.yesChild.map(updatePositionRecursively);
-
-      return {
-        ...node,
-        noChild: updatedNoChild,
-        yesChild: updatedYesChild,
-      };
     };
 
     setRootNode((prevRootNode) => updatePositionRecursively(prevRootNode));
