@@ -10,6 +10,7 @@
   position: -webkit-sticky;
   position: sticky;
   top: 0;
+  height: 100px;
 }
 
 .nav-item {
@@ -19,12 +20,13 @@
   list-style-type: none;
   font-weight: 500;
   background-color: var(--nav-back_ground);
-  border-radius: 10px;
+  /* border-radius: 10px; */
   /* margin-inline: 10px; */
   width: 80px;
   cursor: pointer;
   height: 100%;
 }
+
 
 /* Apply a subtle highlight and lift effect to nav items on hover */
 .nav-item:hover {
@@ -42,7 +44,9 @@
 
 .nav-link {
   display: block;
-  padding: 14px;
+  /* padding: 14px; */
+  /* padding: auto; */
+  height: 100%;
   text-decoration: none;
   color: var(--nav-text);
   border-radius: 10px;
@@ -138,5 +142,24 @@ a.nav-link.active {
 .nav-item.active .nav-link,
 .nav-item.active:hover .nav-link {
   background-color: var(--nav-hover);
+  height: 100%; 
+  border-radius: 0;
   /* Slightly darker than the hover color to indicate active state */
+}
+
+
+@media (max-height: 1100px) {
+  .navbar {
+    font-size: 1.1em;
+    height: 80px;
+  }
+
+  .nav-link {
+    height: 100%;
+  }
+
+  .nav-logo {
+    height: 80px;
+    width: 160px;
+  }
 }
