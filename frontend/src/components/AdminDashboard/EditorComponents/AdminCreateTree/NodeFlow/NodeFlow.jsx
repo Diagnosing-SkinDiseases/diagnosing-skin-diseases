@@ -750,6 +750,8 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
             findTreeNodeById={findTreeNodeById}
             setRootNode={setRootNode}
             setNodes={setNodes}
+            multiSelectOn={multiSelectOn}
+            multiSelectList={multiSelectList}
           ></LengthControls>
 
           {/* Arrow Angle Controls */}

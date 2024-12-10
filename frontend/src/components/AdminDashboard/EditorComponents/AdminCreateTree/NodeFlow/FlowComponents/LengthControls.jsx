@@ -11,6 +11,8 @@ const LengthControls = ({
   findTreeNodeById,
   setRootNode,
   setNodes,
+  multiSelectOn,
+  multiSelectList,
 }) => {
   /**
    * Calculates and prints the arrow length between two nodes.
@@ -80,35 +82,75 @@ const LengthControls = ({
   /**
    * Manually change the "length" of a node's arrow relative to its parent.
    */
-  const changeSelectedNodeLength = (newLength) => {
+  const changeSelectedNodeLength = () => {
     const updatePositionRecursively = (node) => {
-      if (node.currentId === selectedNode.currentId) {
-        const parentNode = findTreeNodeById(rootNode, selectedNode.parentId);
+      if (!multiSelectOn) {
+        // Single node logic
+        if (node.currentId === selectedNode.currentId) {
+          const parentNode = findTreeNodeById(rootNode, selectedNode.parentId);
 
-        if (!parentNode) {
-          console.error("Parent node not found");
-          return node;
+          if (!parentNode) {
+            console.error("Parent node not found");
+            return node;
+          }
+
+          // Calculate new X and Y based on the arrow length
+          const angle = Math.atan2(
+            node.yPos - parentNode.yPos,
+            node.xPos - parentNode.xPos
+          ); // Calculate the angle between parent and current node
+
+          const newXPos = parentNode.xPos + lengthInput * Math.cos(angle);
+          const newYPos = parentNode.yPos + lengthInput * Math.sin(angle);
+
+          // Update the visual position of the node
+          setNodes((nds) =>
+            nds.map((nd) =>
+              nd.id === selectedNode.currentId
+                ? { ...nd, position: { x: newXPos, y: newYPos } }
+                : nd
+            )
+          );
+
+          return { ...node, xPos: newXPos, yPos: newYPos };
         }
-
-        // Calculate new X and Y based on the arrow length
-        const angle = Math.atan2(
-          node.yPos - parentNode.yPos,
-          node.xPos - parentNode.xPos
-        ); // Calculate the angle between parent and current node
-
-        const newXPos = parentNode.xPos + lengthInput * Math.cos(angle);
-        const newYPos = parentNode.yPos + lengthInput * Math.sin(angle);
-
-        // Update the visual position of the node
-        setNodes((nds) =>
-          nds.map((nd) =>
-            nd.id === selectedNode.currentId
-              ? { ...nd, position: { x: newXPos, y: newYPos } }
-              : nd
-          )
+      } else {
+        // Multi-select logic
+        const isInMultiSelectList = multiSelectList.some(
+          (multiNode) => multiNode.currentId === node.currentId
         );
 
-        return { ...node, xPos: newXPos, yPos: newYPos };
+        if (isInMultiSelectList) {
+          const parentNode = findTreeNodeById(rootNode, node.parentId);
+
+          if (!parentNode) {
+            console.error(
+              "Parent node not found for multi-select node",
+              node.currentId
+            );
+            return node;
+          }
+
+          // Calculate new X and Y based on the arrow length
+          const angle = Math.atan2(
+            node.yPos - parentNode.yPos,
+            node.xPos - parentNode.xPos
+          ); // Calculate the angle between parent and current node
+
+          const newXPos = parentNode.xPos + lengthInput * Math.cos(angle);
+          const newYPos = parentNode.yPos + lengthInput * Math.sin(angle);
+
+          // Update the visual position of the node
+          setNodes((nds) =>
+            nds.map((nd) =>
+              nd.id === node.currentId
+                ? { ...nd, position: { x: newXPos, y: newYPos } }
+                : nd
+            )
+          );
+
+          return { ...node, xPos: newXPos, yPos: newYPos };
+        }
       }
 
       // Recursively process both noChild and yesChild arrays
