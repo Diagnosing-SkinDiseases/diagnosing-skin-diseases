@@ -28,6 +28,10 @@ function QuestionInput({
     setSelectedNode,
     selectedNode,
     forceReRender,
+    multiSelectOn,
+    setMultiSelectOn,
+    multiSelectList,
+    setMultiSelectList,
     ...restData
   },
   id,
@@ -327,14 +331,47 @@ function QuestionInput({
    * Changes selectedNode
    */
   const clickSelectNode = () => {
-    setSelectedNode(findNodeById(id));
+    console.log("\n\n\n");
+    if (!multiSelectOn) {
+      setSelectedNode(findNodeById(id));
+    } else {
+      setMultiSelectList((prevState) => {
+        const node = findNodeById(id);
+        const nodeExists = prevState.some(
+          (n) => n.currentId === node.currentId
+        );
+
+        console.log("CLICKING", id);
+        console.log("NODE", node);
+
+        if (nodeExists) {
+          console.log("Removing from multi", node.id);
+          // Remove the node if it exists
+          return prevState.filter((n) => n.currentId !== node.currentId);
+        } else {
+          console.log("Adding to multi", node.id);
+          console.log("To be:", [...prevState, node]);
+          // Add the node if it does not exist
+          return [...prevState, node];
+        }
+      });
+    }
+    console.log("\n\n\n");
   };
+
+  // logging
+  useEffect(() => {
+    console.log("from", id);
+    console.log("node selected", selectedNode);
+    console.log("node multi selected", multiSelectList);
+  }, [selectedNode, multiSelectList]);
 
   return (
     <div
       ref={nodeRef}
       className={`tree-flow-question-node ${
-        selectedNode && selectedNode.currentId === id
+        (selectedNode && selectedNode.currentId === id) ||
+        (multiSelectOn && multiSelectList.includes(findNodeById(id)))
           ? "tree-flow-selected-color"
           : nodeColorClass
       }`}

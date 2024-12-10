@@ -86,9 +86,10 @@ const HeightControls = ({
   return (
     <>
       <button
-        style={{ margin: "5px" }}
         onClick={toggleYLock}
-        className={lockedY ? "tree-flow-panel-button-locked" : ""}
+        className={
+          lockedY ? "tree-flow-panel-btn-locked" : "tree-flow-panel-btn"
+        }
       >
         Lock Height
       </button>

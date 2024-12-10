@@ -313,6 +313,34 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
     setRootNode((prevRootNode) => updateContentRecursively(prevRootNode));
   };
 
+  // Multi select controls
+  const [multiSelectOn, setMultiSelectOn] = useState(false);
+  const [multiSelectList, setMultiSelectList] = useState([]);
+
+  const toggleMultiSelect = () => {
+    setMultiSelectOn((prevState) => {
+      if (!multiSelectOn) {
+        setSelectedNode(null);
+      } else {
+        setSelectedNode(findTreeNodeById(rootNode, "node0"));
+        setMultiSelectList([]);
+        // setMultiSelectList((prevState) => {
+        //   console.log("Adding to multi", multiSelectList);
+        //   return [...prevState, "a"];
+        // });
+      }
+
+      return !prevState;
+    });
+  };
+
+  // Logging
+  useEffect(() => {
+    console.log("MultiSelect selected node:", selectedNode);
+    console.log("multiselect multi", multiSelectList);
+    forceNodesReRender();
+  }, [selectedNode, multiSelectList]);
+
   // Pass down node data for use in initial + other nodes
   const loadedNodes = nodes.map((node) => ({
     ...node,
@@ -335,6 +363,10 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
       selectedNode,
       setSelectedNode,
       forceReRender,
+      multiSelectOn,
+      setMultiSelectOn,
+      multiSelectList,
+      setMultiSelectList,
     },
   }));
 
@@ -670,21 +702,21 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
           }}
         >
           <button
-            style={{ margin: "5px" }}
+            className="tree-flow-panel-btn"
             onClick={AddNoChildToSelectedNode}
             disabled={selectedNode && selectedNode.noChild.length !== 0}
           >
             Add No
           </button>
           <button
-            style={{ margin: "5px" }}
+            className="tree-flow-panel-btn"
             onClick={addYesChildToSelectedNode}
             disabled={selectedNode && selectedNode.yesChild.length !== 0}
           >
             Add Yes
           </button>
           <button
-            style={{ margin: "5px" }}
+            className="tree-flow-panel-btn"
             onClick={onDeleteNode}
             disabled={selectedNode && selectedNode.currentId === "node0"}
           >
@@ -721,6 +753,18 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
             setRootNode={setRootNode}
             setNodes={setNodes}
           ></AngleControls>
+
+          {/* Toggle multi select */}
+          <button
+            className={
+              multiSelectOn
+                ? "tree-flow-panel-btn-locked"
+                : "tree-flow-panel-btn"
+            }
+            onClick={toggleMultiSelect}
+          >
+            Multi Select
+          </button>
         </div>
       </Panel>
       <Controls />
