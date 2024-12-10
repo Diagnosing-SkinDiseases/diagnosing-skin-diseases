@@ -85,8 +85,8 @@
 }
 
 .card {
-  margin-left: 0.5em;
-  margin-bottom: 0.5em;
+  margin-left: 1em;
+  margin-bottom: 1em;
   border: 1px solid var(--card-border);
 }
 
@@ -120,4 +120,9 @@
   .card-body {
     padding: 0.4em;
   }
+
+  /* .card {
+    margin-left: 0.5em;
+    margin-bottom: 0.5em;
+  } */
 }
