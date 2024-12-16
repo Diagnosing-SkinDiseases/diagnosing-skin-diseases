@@ -18,7 +18,7 @@ import LoadingPage from "../Loading/LoadingPage";
  */
 const Card = ({ title, image, aboutLink, previewText, treeId }) => {
   const navigate = useNavigate();
-  
+
   return (
     <div className="card-wrapper col-lg-3 col-sm-6">
       <div className="card">
@@ -37,14 +37,17 @@ const Card = ({ title, image, aboutLink, previewText, treeId }) => {
               Read more
             </a>
           </p>
-          <button className="btn homepage-button" onClick={() => navigate(`/trees/${treeId}`)}>
+          <button
+            className="btn homepage-button"
+            onClick={() => navigate(`/trees/${treeId}`)}
+          >
             Start Diagnosis
           </button>
         </div>
       </div>
     </div>
   );
-  };
+};
 
 /**
  * Homepage Component
@@ -109,17 +112,41 @@ function Homepage() {
     });
   };
 
+  // Function to set the image height to 50% of the card's height
+  const adjustCardImages = () => {
+    const cards = document.querySelectorAll(".card");
+    cards.forEach((card) => {
+      const img = card.querySelector(".card-img-top");
+      if (img) {
+        img.style.height = `${card.offsetHeight * 0.5}px`;
+      }
+    });
+  };
+
   useEffect(() => {
-    // Call both adjustCardTitles and adjustCardPreviews
-    adjustCardTitles();
-    adjustCardPreviews();
+    const adjustCardElements = () => {
+      adjustCardTitles();
+      adjustCardPreviews();
+    };
 
-    window.addEventListener("resize", adjustCardTitles);
-    window.addEventListener("resize", adjustCardPreviews);
+    const adjustCardImagesIfNeeded = () => {
+      if (window.innerWidth >= 900) {
+        adjustCardImages();
+      }
+    };
 
+    // Adjust card elements and images on load
+    adjustCardElements();
+    adjustCardImagesIfNeeded();
+
+    // Attach resize event listeners
+    window.addEventListener("resize", adjustCardElements);
+    window.addEventListener("resize", adjustCardImagesIfNeeded);
+
+    // Cleanup event listeners
     return () => {
-      window.removeEventListener("resize", adjustCardTitles);
-      window.removeEventListener("resize", adjustCardPreviews);
+      window.removeEventListener("resize", adjustCardElements);
+      window.removeEventListener("resize", adjustCardImagesIfNeeded);
     };
   }, [trees]);
 
@@ -127,6 +154,12 @@ function Homepage() {
     <div className="Homepage">
       <div className="container-fluid">
         <h2 className="homepage-text my-4">Diagnose by Primary Lesion</h2>
+        <div className="intro-text">
+          This website is designed to help diagnose common skin diseases
+          frequently seen in children and adults. Select the primary lesion that
+          best matches your patient, then click Start Diagnosis for the
+          diagnostic tree Q&A or click Info for an overview of that section.
+        </div>
         {isLoading ? (
           <LoadingPage />
         ) : (
