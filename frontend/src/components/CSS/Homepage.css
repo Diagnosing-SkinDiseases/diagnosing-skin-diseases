@@ -4,6 +4,7 @@
   background-size: cover;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .homepage-text {
@@ -23,6 +24,11 @@
   margin-left: auto;
   overflow: auto;
   max-width: 2500px;
+  height: 100%;
+}
+
+.row {
+  height: 100%;
 }
 
 .card-img-top {
@@ -92,13 +98,14 @@
 
 .card-wrapper {
   padding: 0;
+  height: 50%;
 }
 
 .card-text {
   padding-bottom: 0.5em;
 }
 
-@media (max-height: 1100px) {
+@media (max-height: 900px) {
   .card-img-top {
     height: 8em;
   }
@@ -120,9 +127,12 @@
   .card-body {
     padding: 0.4em;
   }
+}
 
-  /* .card {
-    margin-left: 0.5em;
-    margin-bottom: 0.5em;
-  } */
+.intro-text {
+  margin-left: 0.2em;
+  margin-right: 0.2em;
+  margin-top: 0.5em;
+  margin-bottom: 1em;
+  font-size: 1em;
 }
