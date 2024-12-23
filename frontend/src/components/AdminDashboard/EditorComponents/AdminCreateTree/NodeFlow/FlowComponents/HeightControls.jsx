@@ -41,16 +41,10 @@ const HeightControls = ({
     setHeightInput(event.target.value);
   };
 
-  // Logging
-  useEffect(() => {
-    console.log("\n\nCHILD MultiSelect on", multiSelectOn);
-  }, [multiSelectOn]);
   /**
    * Manually change the "height" of a node relative to its parent.
    */
   const changeSelectedNodeHeight = (newHeight) => {
-    console.log("\n\nmulti select on", multiSelectOn + "\n\n");
-
     const updatePositionRecursively = (node) => {
       if (!multiSelectOn) {
         // Single node logic

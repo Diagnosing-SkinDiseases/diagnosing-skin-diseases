@@ -9,6 +9,8 @@ const AngleControls = ({
   findTreeNodeById,
   setRootNode,
   setNodes,
+  multiSelectOn,
+  multiSelectList,
 }) => {
   /**
    * Calculates the angle between two nodes.
@@ -21,6 +23,8 @@ const AngleControls = ({
     // Standard angle calculation using atan2
     let angle =
       (Math.atan2(currentY - parentY, currentX - parentX) * 180) / Math.PI;
+
+    console.log("PRIMARY CALCULATION", angle);
 
     // Adjust angle so that directly below is 0° and directly to the right is 90°
     angle = (angle + 360) % 360; // Normalize to [0, 360)
@@ -38,24 +42,11 @@ const AngleControls = ({
     }
     let parentNode = findTreeNodeById(rootNode, selectedNode.parentId);
     console.log("Selected Parent:", parentNode);
+  }, [selectedNode]);
 
-    if (parentNode) {
-      console.log(
-        "Selected Node Type:",
-        parentNode.yesChild[0].currentId === selectedNode.currentId
-          ? "Yes"
-          : "No"
-      );
-    }
-
-    if (parentNode) {
-      calculateAngle(
-        parentNode.xPos,
-        parentNode.yPos,
-        selectedNode.xPos,
-        selectedNode.yPos
-      );
-    }
+  // Logging 2
+  useEffect(() => {
+    console.log("Angle controls selected node 2", selectedNode);
   }, [selectedNode]);
 
   /**
@@ -68,15 +59,30 @@ const AngleControls = ({
       console.log("Recalculating angle...");
       const parentNode = findTreeNodeById(rootNode, selectedNode.parentId);
       const currentNode = findTreeNodeById(rootNode, selectedNode.currentId);
+      console.log(
+        "ADJUSTING ANGLE",
+        currentNode,
+        parentNode,
+        selectedNode.parentId
+      );
+      let isNoNode = false;
+      if (parentNode.noChild[0] !== undefined) {
+        isNoNode = parentNode.noChild[0].currentId === selectedNode.currentId;
+      }
+
+      console.log("NO?", isNoNode);
       if (parentNode && currentNode) {
-        setAngleInput(
-          calculateAngle(
-            parentNode.xPos,
-            parentNode.yPos,
-            currentNode.xPos,
-            currentNode.yPos
-          )
+        let displayAngle = calculateAngle(
+          parentNode.xPos,
+          parentNode.yPos,
+          currentNode.xPos,
+          currentNode.yPos
         );
+        if (!isNoNode) {
+          setAngleInput(displayAngle);
+        } else {
+          setAngleInput(360 - displayAngle);
+        }
       }
     }
   }, [selectedNode, rootNode]);
@@ -91,49 +97,127 @@ const AngleControls = ({
    */
   const changeSelectedNodeAngle = (newAngle) => {
     const updatePositionRecursively = (node) => {
-      if (node.currentId === selectedNode.currentId) {
-        const parentNode = findTreeNodeById(rootNode, selectedNode.parentId);
+      if (!multiSelectOn) {
+        // Single node logic
+        if (node.currentId === selectedNode.currentId) {
+          const parentNode = findTreeNodeById(rootNode, selectedNode.parentId);
 
-        if (!parentNode) {
-          console.error("Parent node not found");
-          return node;
+          if (!parentNode) {
+            console.error("Parent node not found");
+            return node;
+          }
+
+          let isNoNode = false;
+          if (parentNode.noChild[0] !== undefined) {
+            isNoNode = parentNode.noChild[0].currentId === node.currentId;
+          }
+
+          // Adjust the angle to use the positive x-axis as 90°, normalize to [0, 360)
+          let adjustedAngle = (((450 - newAngle) % 360) + 360) % 360;
+
+          // Mirror the angle if the node is a "No" node
+          if (isNoNode) {
+            adjustedAngle = (360 - adjustedAngle) % 360;
+          }
+
+          const radians = (adjustedAngle * Math.PI) / 180; // Convert adjusted angle to radians
+
+          // Calculate distance between parent and current node
+          const distance = Math.sqrt(
+            Math.pow(node.xPos - parentNode.xPos, 2) +
+              Math.pow(node.yPos - parentNode.yPos, 2)
+          );
+
+          // Calculate new X and Y positions based on adjusted angle
+          const newXPos = isNoNode
+            ? parentNode.xPos - distance * Math.cos(radians)
+            : parentNode.xPos + distance * Math.cos(radians);
+
+          const newYPos = isNoNode
+            ? parentNode.yPos - distance * Math.sin(radians) // "No" node: add Y component
+            : parentNode.yPos + distance * Math.sin(radians); // "Yes" node: subtract Y component
+
+          // Update the visual position of the node
+          setNodes((nds) =>
+            nds.map((nd) =>
+              nd.id === selectedNode.currentId
+                ? { ...nd, position: { x: newXPos, y: newYPos } }
+                : nd
+            )
+          );
+
+          return { ...node, xPos: newXPos, yPos: newYPos };
         }
 
-        // Adjust the angle to use the positive x-axis as 90°
-        const adjustedAngle = 450 - newAngle; // Shift reference by adding 90° clockwise
-        const radians = (adjustedAngle * Math.PI) / 180; // Convert adjusted angle to radians
+        // Recursively process both noChild and yesChild arrays
+        const updatedNoChild = node.noChild.map(updatePositionRecursively);
+        const updatedYesChild = node.yesChild.map(updatePositionRecursively);
 
-        // Calculate distance between parent and current node
-        const distance = Math.sqrt(
-          Math.pow(node.xPos - parentNode.xPos, 2) +
-            Math.pow(node.yPos - parentNode.yPos, 2)
+        return {
+          ...node,
+          noChild: updatedNoChild,
+          yesChild: updatedYesChild,
+        };
+      } else {
+        // Multi-select logic
+        const isInMultiSelectList = multiSelectList.some(
+          (multiNode) => multiNode.currentId === node.currentId
         );
 
-        // Calculate new X and Y positions based on adjusted angle
-        const newXPos = parentNode.xPos + distance * Math.cos(radians);
-        const newYPos = parentNode.yPos + distance * Math.sin(radians);
+        if (isInMultiSelectList) {
+          const parentNode = findTreeNodeById(rootNode, node.parentId);
 
-        // Update the visual position of the node
-        setNodes((nds) =>
-          nds.map((nd) =>
-            nd.id === selectedNode.currentId
-              ? { ...nd, position: { x: newXPos, y: newYPos } }
-              : nd
-          )
-        );
+          if (parentNode) {
+            const isNoNode = parentNode.noChild[0].currentId === node.currentId;
 
-        return { ...node, xPos: newXPos, yPos: newYPos };
+            // Adjust the angle to use the positive x-axis as 90°, normalize to [0, 360)
+            let adjustedAngle = (((450 - newAngle) % 360) + 360) % 360;
+
+            // Mirror the angle if the node is a "No" node
+            if (isNoNode) {
+              adjustedAngle = (360 - adjustedAngle) % 360;
+            }
+
+            const radians = (adjustedAngle * Math.PI) / 180; // Convert adjusted angle to radians
+
+            // Calculate distance between parent and current node
+            const distance = Math.sqrt(
+              Math.pow(node.xPos - parentNode.xPos, 2) +
+                Math.pow(node.yPos - parentNode.yPos, 2)
+            );
+
+            // Calculate new X and Y positions based on adjusted angle
+            const newXPos = isNoNode
+              ? parentNode.xPos - distance * Math.cos(radians)
+              : parentNode.xPos + distance * Math.cos(radians);
+
+            const newYPos = isNoNode
+              ? parentNode.yPos - distance * Math.sin(radians) // "No" node: add Y component
+              : parentNode.yPos + distance * Math.sin(radians); // "Yes" node: subtract Y component
+
+            // Update the visual position of the node
+            setNodes((nds) =>
+              nds.map((nd) =>
+                nd.id === node.currentId
+                  ? { ...nd, position: { x: newXPos, y: newYPos } }
+                  : nd
+              )
+            );
+
+            return { ...node, xPos: newXPos, yPos: newYPos };
+          }
+        }
+
+        // Recursively process both noChild and yesChild arrays
+        const updatedNoChild = node.noChild.map(updatePositionRecursively);
+        const updatedYesChild = node.yesChild.map(updatePositionRecursively);
+
+        return {
+          ...node,
+          noChild: updatedNoChild,
+          yesChild: updatedYesChild,
+        };
       }
-
-      // Recursively process both noChild and yesChild arrays
-      const updatedNoChild = node.noChild.map(updatePositionRecursively);
-      const updatedYesChild = node.yesChild.map(updatePositionRecursively);
-
-      return {
-        ...node,
-        noChild: updatedNoChild,
-        yesChild: updatedYesChild,
-      };
     };
 
     setRootNode((prevRootNode) => updatePositionRecursively(prevRootNode));
