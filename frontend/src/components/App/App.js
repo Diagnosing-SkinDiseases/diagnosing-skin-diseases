@@ -213,7 +213,7 @@ function App() {
           {/* 404 */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
-        <div className="footer-placeholder"></div>
+        {/* <div className="footer-placeholder"></div> */}
         <footer className="footer">
           © 2024 Diagnosing Skin Diseases and Dr. Eileen Murray.
           Questions?&nbsp;
