@@ -15,6 +15,7 @@ import "@xyflow/react/dist/style.css";
 import "../CSS/Admin/TreeEditorNodeFlow.css";
 
 import QuestionInput from "./FlowComponents/QuestionInput";
+import DetailedEdge from "../AdminDashboard/EditorComponents/AdminCreateTree/NodeFlow/FlowComponents/DetailedEdge";
 
 const nodeTypes = { questionInput: QuestionInput };
 
@@ -109,6 +110,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
           target: node.yesChild[0].currentId,
           sourceHandle: "yes",
           className: "ut-tree-flow-yes-edge",
+          type: "detailed",
         };
         setEdges((eds) => eds.concat(formattedEdge));
       }
@@ -120,6 +122,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
           target: node.noChild[0].currentId,
           sourceHandle: "no",
           className: "ut-tree-flow-no-edge",
+          type: "detailed",
         };
         setEdges((eds) => eds.concat(formattedEdge));
       }
@@ -387,6 +390,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
     <ReactFlow
       nodes={nodes}
       edges={edges}
+      edgeTypes={{ detailed: DetailedEdge }}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}

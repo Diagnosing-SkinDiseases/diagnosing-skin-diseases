@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Handle, Position } from "@xyflow/react";
 
-const handleStyle = { no: { left: 50 }, yes: { left: 175 } };
+const handleStyle = { no: { left: 110 }, yes: { left: 130 } };
 
 function QuestionInput({
   data: {
