@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { apiGetTree } from "../../apiControllers/treeApiController";
 import UTContent from "./UTContent";
+import { useParams } from "react-router-dom";
 
 const UserTreeV2 = ({ existingId, setTreePayload }) => {
   const [existingTree, setExistingTree] = useState(null);
@@ -10,19 +11,48 @@ const UserTreeV2 = ({ existingId, setTreePayload }) => {
   const [existingCoverImage, setExistingCoverImage] = useState("");
   const [dataLoaded, setDataLoaded] = useState(false);
 
+  const { id } = useParams();
+
   useEffect(() => {
     const url = new URL(window.location.href);
     const isPreviewMode = url.pathname.includes("/admin/trees/preview");
     if (isPreviewMode) {
       const data = sessionStorage.getItem("previewData");
       const parsed = JSON.parse(data);
+
+      console.log("nodes", parsed.nodeTree);
       setExistingTree(toListAllChildren(parsed.nodeTree));
+
+      console.log("list", toListAllChildren(parsed.nodeTree));
+
       setExistingTitle(parsed.name);
       setExistingAboutLink(parsed.aboutLink);
       setExistingCoverImage(parsed.coverImage);
       setDataLoaded(true);
+    } else {
+      console.log(id); // Outputs: 677d769e5c6ce7fc9a2a3e39
+      fetchTreeData();
     }
   }, []);
+
+  const fetchTreeData = async () => {
+    try {
+      const response = await apiGetTree(id);
+      // setTreeData(response.data);
+      const data = response.data;
+      console.log(toListAllChildren(data));
+      console.log("nodes", data.nodes);
+      console.log("nodes2", wrapTreeChildrenWithList(fromList(data.nodes))[0]);
+
+      setExistingTree(wrapTreeChildrenWithList(fromList(data.nodes))[0]);
+      setExistingTitle(data.name);
+      setExistingAboutLink(data.aboutLink);
+      setExistingCoverImage(data.coverImage);
+      setDataLoaded(true);
+    } catch (error) {
+      console.error("Error fetching tree:", error);
+    }
+  };
 
   /**
    * Finds a node in the tree by its ID.
@@ -54,54 +84,6 @@ const UserTreeV2 = ({ existingId, setTreePayload }) => {
       }
     }
     return null;
-  }
-
-  /**
-   * Replaces child IDs with corresponding child node objects.
-   * @param {Array} nodes - The array of nodes in the tree.
-   * @returns {Array} - Returns the array of nodes with child IDs replaced with child node objects.
-   */
-  function replaceChildIds(nodes) {
-    nodes.forEach((node) => {
-      if (node.yesChildId) {
-        node.yesChild = { currentId: node.yesChildId };
-        delete node.yesChildId;
-      }
-      if (node.noChildId) {
-        node.noChild = { currentId: node.noChildId };
-        delete node.noChildId;
-      }
-    });
-    return nodes;
-  }
-
-  /**
-   * Inserts a node into the tree.
-   * @param {Object} root - The root node of the tree.
-   * @param {Object} newNode - The node to insert into the tree.
-   */
-  function insertNode(root, newNode) {
-    if (!root) {
-      return newNode;
-    }
-    if (root.yesChild) {
-      if (root.yesChild.currentId === newNode.currentId) {
-        root.yesChild = newNode;
-      }
-    }
-
-    if (root.noChild) {
-      if (root.noChild.currentId === newNode.currentId) {
-        root.noChild = newNode;
-      }
-    }
-
-    if (root.yesChild) {
-      insertNode(root.yesChild, newNode);
-    }
-    if (root.noChild) {
-      insertNode(root.noChild, newNode);
-    }
   }
 
   /**
@@ -168,6 +150,68 @@ const UserTreeV2 = ({ existingId, setTreePayload }) => {
     insertNested(root, nodes);
     return root;
   }
+
+  /**
+   * Replaces child IDs with corresponding child node objects.
+   * @param {Array} nodes - The array of nodes in the tree.
+   * @returns {Array} - Returns the array of nodes with child IDs replaced with child node objects.
+   */
+  function replaceChildIds(nodes) {
+    nodes.forEach((node) => {
+      if (node.yesChildId) {
+        node.yesChild = { currentId: node.yesChildId };
+        delete node.yesChildId;
+      }
+      if (node.noChildId) {
+        node.noChild = { currentId: node.noChildId };
+        delete node.noChildId;
+      }
+    });
+    return nodes;
+  }
+
+  /**
+   * Inserts a node into the tree.
+   * @param {Object} root - The root node of the tree.
+   * @param {Object} newNode - The node to insert into the tree.
+   */
+  function insertNode(root, newNode) {
+    if (!root) {
+      return newNode;
+    }
+    if (root.yesChild) {
+      if (root.yesChild.currentId === newNode.currentId) {
+        root.yesChild = newNode;
+      }
+    }
+
+    if (root.noChild) {
+      if (root.noChild.currentId === newNode.currentId) {
+        root.noChild = newNode;
+      }
+    }
+
+    if (root.yesChild) {
+      insertNode(root.yesChild, newNode);
+    }
+    if (root.noChild) {
+      insertNode(root.noChild, newNode);
+    }
+  }
+
+  const wrapTreeChildrenWithList = (node) => {
+    if (!node) {
+      return null; // Handle empty or null nodes
+    }
+
+    return [
+      {
+        ...node,
+        yesChild: node.yesChild ? wrapTreeChildrenWithList(node.yesChild) : [],
+        noChild: node.noChild ? wrapTreeChildrenWithList(node.noChild) : [],
+      },
+    ];
+  };
 
   /**
    * Converts a nested tree structure into a flat list of nodes.

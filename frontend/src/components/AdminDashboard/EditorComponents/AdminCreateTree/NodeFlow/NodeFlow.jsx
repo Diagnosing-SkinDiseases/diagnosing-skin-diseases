@@ -310,11 +310,6 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
   const [multiSelectOn, setMultiSelectOn] = useState(false);
   const [multiSelectList, setMultiSelectList] = useState([]);
 
-  // logging
-  useEffect(() => {
-    console.log("mssssssssss", multiSelectList, selectedNode);
-  }, [multiSelectList]);
-
   // Logging
   useEffect(() => {
     console.log("ROOT NODE", rootNode);
