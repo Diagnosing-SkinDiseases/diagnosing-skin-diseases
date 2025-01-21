@@ -33,7 +33,7 @@ const createTree = async (req, res) => {
 // Read all trees
 const getAllTrees = async (req, res) => {
   try {
-    const trees = await Tree.find({}).sort({ name: 1 });
+    const trees = await Tree.find({});
     res.status(200).json(trees);
   } catch (error) {
     res.status(400).json({ error: error.message });
