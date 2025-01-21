@@ -119,13 +119,6 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
     }
   }, [rootNode, dataLoaded]);
 
-  // Logging
-  useEffect(() => {
-    // console.log("Layer 1 Selected Node", selectedNode);
-    // console.log("edge");
-    // console.log("Visual nodes:", nodes);
-  }, [selectedNode, nodes]);
-
   /**
    * Finds an edge based on the current node's ID (target) and the parent node's ID (source).
    * @param {Array} edges - The array of edge objects.
@@ -317,34 +310,27 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
   const [multiSelectOn, setMultiSelectOn] = useState(false);
   const [multiSelectList, setMultiSelectList] = useState([]);
 
-  // logging
+  // Logging
   useEffect(() => {
-    console.log("ROOT MultiSelect on:", multiSelectOn);
-  }, [multiSelectOn]);
+    console.log("ROOT NODE", rootNode);
+  }, [rootNode]);
 
   const toggleMultiSelect = () => {
+    console.log("toggling");
     setMultiSelectOn((prevState) => {
       if (!multiSelectOn) {
         setSelectedNode(null);
       } else {
         setSelectedNode(findTreeNodeById(rootNode, "node0"));
         setMultiSelectList([]);
-        // setMultiSelectList((prevState) => {
-        //   console.log("Adding to multi", multiSelectList);
-        //   return [...prevState, "a"];
-        // });
       }
 
       return !prevState;
     });
-  };
 
-  // Logging
-  useEffect(() => {
-    console.log("MultiSelect selected node:", selectedNode);
-    console.log("multiselect multi", multiSelectList);
+    forceReRender();
     forceNodesReRender();
-  }, [selectedNode, multiSelectList]);
+  };
 
   // Pass down node data for use in initial + other nodes
   const loadedNodes = nodes.map((node) => ({
@@ -368,6 +354,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
       selectedNode,
       setSelectedNode,
       forceReRender,
+      forceNodesReRender,
       multiSelectOn,
       setMultiSelectOn,
       multiSelectList,
@@ -761,6 +748,8 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
             findTreeNodeById={findTreeNodeById}
             setRootNode={setRootNode}
             setNodes={setNodes}
+            multiSelectOn={multiSelectOn}
+            multiSelectList={multiSelectList}
           ></AngleControls>
 
           {/* Toggle multi select */}

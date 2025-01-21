@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { Handle, Position } from "@xyflow/react";
+import { use } from "react";
 
-const handleStyle = { no: { left: 50 }, yes: { left: 175 } };
+const handleStyle = { no: { left: 110 }, yes: { left: 130 } };
 
 function QuestionInput({
   data: {
@@ -22,6 +23,9 @@ function QuestionInput({
     edges,
     flattenTree,
     content,
+    selectedNode,
+    setSelectedNode,
+    forceNodesReRender,
     ...restData
   },
   id,
@@ -34,24 +38,31 @@ function QuestionInput({
     "ut-tree-flow-root-color"
   );
 
-  useEffect(() => {
+  const manageNodeColor = () => {
+    if (selectedNode?.currentId === id) {
+      setNodeColorClass("ut-tree-flow-selected-color");
+      return;
+    }
+
     const thisNode = findNodeById(id);
     if (thisNode) {
-      if (!thisNode.yesChild.length > 0 || !thisNode.noChild.length > 0) {
+      if (!thisNode.yesChild.length > 0 && !thisNode.noChild.length > 0) {
         setNodeColorClass("ut-tree-flow-leaf-color");
-      }
-    } else {
-      switch (nodeType) {
-        case "no":
-          setNodeColorClass("ut-tree-flow-no-color");
-          break;
-        case "yes":
-          setNodeColorClass("ut-tree-flow-yes-color");
-          break;
-        default:
-          break;
+        return;
       }
     }
+
+    if (nodeType === "yes") {
+      setNodeColorClass("ut-tree-flow-yes-color");
+    } else if (nodeType === "no") {
+      setNodeColorClass("ut-tree-flow-no-color");
+    } else if (nodeType === "root") {
+      setNodeColorClass("ut-tree-flow-root-color");
+    }
+  };
+
+  useEffect(() => {
+    manageNodeColor();
   }, [nodeHeight, currentNodeHeight, rootNode]);
 
   /**
@@ -303,8 +314,44 @@ function QuestionInput({
       .join(" "); // Join the words back together
   }
 
+  const checkIsSelected = () => {
+    if (selectedNode.currentId === id) {
+      return true;
+    }
+    return false;
+  };
+
+  const onNodeClick = (event) => {
+    console.log("ok");
+    // console.log(event.target);
+
+    let clickedNode = findNodeById(id);
+    let clickedContent = clickedNode.content;
+
+    // console.log(clickedNode);
+    // console.log(clickedContent);
+    console.log("clicked node:", clickedNode);
+    setSelectedNode(clickedNode);
+  };
+
+  // log selected node
+  useEffect(() => {
+    if (selectedNode === undefined) return;
+    // manageNodeColor();
+    if (selectedNode.currentId === id) {
+      console.log("NODE selected node: ", selectedNode);
+      console.log("IsSelected:", checkIsSelected());
+    }
+    // console.log("IsSelected:", checkIsSelected());
+    // console.log("id", id, "selected node: ", selectedNode.currentId);
+    // forceNodesReRender();
+  }, [selectedNode]);
+
   return (
-    <div className={`nodrag ut-tree-flow-question-node ${nodeColorClass}`}>
+    <div
+      className={`nodrag ut-tree-flow-question-node ${nodeColorClass}`}
+      onClick={onNodeClick}
+    >
       {nodeType !== "root" && (
         <Handle
           type="target"

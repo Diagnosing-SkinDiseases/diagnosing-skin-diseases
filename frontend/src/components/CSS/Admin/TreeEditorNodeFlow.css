@@ -33,6 +33,7 @@
 
 .tree-flow-selected-color {
     background-color: rgb(233, 233, 129);
+    /* background-color: black; */
 }
 
 .tree-flow-no-edge > path {
@@ -83,11 +84,11 @@
 }
 
 .tree-flow-handle {
-    width: 0.75em;
+    width: 4em;
     /* Change width */
-    height: 0.75em;
+    height: 4em;
     /* Change height */
-    border-radius: 50%;
+    /* border-radius: 50%; */
     /* Ensure it's still a circle */
 }
 

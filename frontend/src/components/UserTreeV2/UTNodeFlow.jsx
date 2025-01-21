@@ -15,6 +15,10 @@ import "@xyflow/react/dist/style.css";
 import "../CSS/Admin/TreeEditorNodeFlow.css";
 
 import QuestionInput from "./FlowComponents/QuestionInput";
+import DetailedEdge from "../AdminDashboard/EditorComponents/AdminCreateTree/NodeFlow/FlowComponents/DetailedEdge";
+
+import NodeContentBox from "./FlowComponents/NodeContentBox";
+import NodeLegend from "./FlowComponents/NodeLegend";
 
 const nodeTypes = { questionInput: QuestionInput };
 
@@ -42,6 +46,59 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
   const { setViewport } = useReactFlow();
   // Node ID state
   const [idCounter, setIdCounter] = useState(0);
+
+  console.log("ROOOOOTTT!!!!", rootNode);
+
+  /**
+   * Finds a node in a decision tree by its ID.
+   * @param {Object} rootNode - The root node of the decision tree.
+   * @param {string} targetNodeId - The ID of the node to find.
+   * @returns {Object|undefined} - Returns the node object if found, otherwise returns undefined.
+   */
+  const findTreeNodeById = (rootNode, targetNodeId) => {
+    const _findTreeNodeById = (node) => {
+      if (node === undefined) {
+        return undefined;
+      }
+      if (node.currentId === targetNodeId) {
+        return node;
+      }
+      const noResult = _findTreeNodeById(node.noChild[0]);
+      const yesResult = _findTreeNodeById(node.yesChild[0]);
+
+      return noResult || yesResult;
+    };
+
+    return _findTreeNodeById(rootNode);
+  };
+
+  // Selected Node State
+  const [selectedNode, setSelectedNode] = useState(
+    findTreeNodeById(rootNode, "node0")
+  );
+
+  // Logging selected node
+  useEffect(() => {
+    console.log("ROOT Selected Node:", selectedNode);
+  }, [selectedNode]);
+
+  // Function to trigger re-render of all nodes
+  const forceNodesReRender = () => {
+    setRootNode((prevRootNode) => ({
+      ...prevRootNode,
+      data: {
+        ...prevRootNode?.data,
+        _forceUpdate: Math.random(), // Harmless, random change
+      },
+    }));
+  };
+
+  // Act on changes to the selected node
+  useEffect(() => {
+    if (selectedNode) {
+      forceNodesReRender();
+    }
+  }, [selectedNode]);
 
   // Load existing nodes once on page load
   useEffect(() => {
@@ -102,6 +159,8 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
         },
       };
 
+      console.log("ERROR HERE", node);
+
       if (node.yesChild[0]) {
         let formattedEdge = {
           id: `edge_${node.currentId}_${node.yesChild[0].currentId}`,
@@ -109,6 +168,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
           target: node.yesChild[0].currentId,
           sourceHandle: "yes",
           className: "ut-tree-flow-yes-edge",
+          type: "detailed",
         };
         setEdges((eds) => eds.concat(formattedEdge));
       }
@@ -120,6 +180,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
           target: node.noChild[0].currentId,
           sourceHandle: "no",
           className: "ut-tree-flow-no-edge",
+          type: "detailed",
         };
         setEdges((eds) => eds.concat(formattedEdge));
       }
@@ -240,6 +301,9 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
       setEdges,
       edges,
       flattenTree,
+      selectedNode,
+      setSelectedNode,
+      forceNodesReRender,
     },
   }));
 
@@ -326,29 +390,6 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
   );
 
   /**
-   * Finds a node in a decision tree by its ID.
-   * @param {Object} rootNode - The root node of the decision tree.
-   * @param {string} targetNodeId - The ID of the node to find.
-   * @returns {Object|undefined} - Returns the node object if found, otherwise returns undefined.
-   */
-  const findTreeNodeById = (rootNode, targetNodeId) => {
-    const _findTreeNodeById = (node) => {
-      if (node === undefined) {
-        return undefined;
-      }
-      if (node.currentId === targetNodeId) {
-        return node;
-      }
-      const noResult = _findTreeNodeById(node.noChild[0]);
-      const yesResult = _findTreeNodeById(node.yesChild[0]);
-
-      return noResult || yesResult;
-    };
-
-    return _findTreeNodeById(rootNode);
-  };
-
-  /**
    * Updates the position of a node in the decision tree.
    * @param {string} nodeIdToUpdate - The ID of the node to update.
    * @param {Object} newPos - The new position of the node with x and y coordinates.
@@ -383,10 +424,36 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
     updateNodePosition(node.id, node.position);
   };
 
+  /**
+   * Content Box
+   */
+  const toYesNode = () => {
+    if (selectedNode.yesChild.length > 0) {
+      setSelectedNode(
+        findTreeNodeById(rootNode, selectedNode.yesChild[0].currentId)
+      );
+    }
+  };
+
+  const toNoNode = () => {
+    if (selectedNode.noChild.length > 0) {
+      setSelectedNode(
+        findTreeNodeById(rootNode, selectedNode.noChild[0].currentId)
+      );
+    }
+  };
+
+  const toBackNode = () => {
+    if (selectedNode.parentId) {
+      setSelectedNode(findTreeNodeById(rootNode, selectedNode.parentId));
+    }
+  };
+
   return (
     <ReactFlow
       nodes={nodes}
       edges={edges}
+      edgeTypes={{ detailed: DetailedEdge }}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}
@@ -401,6 +468,15 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
       <Controls />
       <MiniMap />
       <Background variant="dots" gap={12} size={1} />
+
+      <NodeContentBox
+        content={selectedNode.content}
+        selectedNode={selectedNode}
+        onNo={toNoNode}
+        onYes={toYesNode}
+        onBack={toBackNode}
+      />
+      <NodeLegend></NodeLegend>
     </ReactFlow>
   );
 };

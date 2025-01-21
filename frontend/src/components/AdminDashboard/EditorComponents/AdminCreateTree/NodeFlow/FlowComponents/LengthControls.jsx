@@ -25,20 +25,14 @@ const LengthControls = ({
     const length = Math.sqrt(
       Math.pow(currentX - parentX, 2) + Math.pow(currentY - parentY, 2)
     );
-    console.log(`Arrow Length: ${length.toFixed(2)}`);
     return Math.round(length); // Return the rounded length
   }
 
   // Logging
   useEffect(() => {
-    console.log("Length controls selected node", selectedNode);
     if (!selectedNode) {
       return;
     }
-    console.log(
-      "Selected parent:",
-      findTreeNodeById(rootNode, selectedNode.parentId)
-    );
     let parentNode = findTreeNodeById(rootNode, selectedNode.parentId);
 
     if (parentNode) {
@@ -58,7 +52,6 @@ const LengthControls = ({
 
   useEffect(() => {
     if (selectedNode && selectedNode.parentId) {
-      console.log("Recalculating length...");
       const parentNode = findTreeNodeById(rootNode, selectedNode.parentId);
       const currentNode = findTreeNodeById(rootNode, selectedNode.currentId);
       if (parentNode && currentNode) {

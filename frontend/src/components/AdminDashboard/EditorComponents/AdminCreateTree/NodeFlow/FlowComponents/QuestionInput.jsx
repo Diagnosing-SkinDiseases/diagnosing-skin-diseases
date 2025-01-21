@@ -6,7 +6,24 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 // Style for handles
 // Center of Node: 120
-const handleStyle = { no: { left: 120 }, yes: { left: 120 } };
+const handleStyle = {
+  no: {
+    left: 110,
+    width: "0.75em",
+    height: "0.75em",
+    borderRadius: "50%",
+    backgroundColor: "black",
+    bottom: "-0.5em",
+  },
+  yes: {
+    left: 130,
+    width: "0.75em",
+    height: "0.75em",
+    borderRadius: "50%",
+    backgroundColor: "black",
+    bottom: "-0.5em",
+  },
+};
 
 function QuestionInput({
   data: {
@@ -28,6 +45,7 @@ function QuestionInput({
     setSelectedNode,
     selectedNode,
     forceReRender,
+    forceNodesReRender,
     multiSelectOn,
     setMultiSelectOn,
     multiSelectList,
@@ -57,12 +75,6 @@ function QuestionInput({
         break;
     }
   }, [nodeHeight, currentNodeHeight, rootNode]);
-
-  // Logging
-  useEffect(() => {
-    // console.log("OK");
-    // console.log(nodeRef.current.getBoundingClientRect());
-  });
 
   /**
    * Handles text input change.
@@ -331,7 +343,6 @@ function QuestionInput({
    * Changes selectedNode
    */
   const clickSelectNode = () => {
-    console.log("\n\n\n");
     if (!multiSelectOn) {
       setSelectedNode(findNodeById(id));
     } else {
@@ -341,30 +352,17 @@ function QuestionInput({
           (n) => n.currentId === node.currentId
         );
 
-        console.log("CLICKING", id);
-        console.log("NODE", node);
-
         if (nodeExists) {
-          console.log("Removing from multi", node.id);
           // Remove the node if it exists
           return prevState.filter((n) => n.currentId !== node.currentId);
         } else {
-          console.log("Adding to multi", node.id);
-          console.log("To be:", [...prevState, node]);
           // Add the node if it does not exist
           return [...prevState, node];
         }
       });
     }
-    console.log("\n\n\n");
+    forceNodesReRender();
   };
-
-  // logging
-  useEffect(() => {
-    console.log("from", id);
-    console.log("node selected", selectedNode);
-    console.log("node multi selected", multiSelectList);
-  }, [selectedNode, multiSelectList]);
 
   return (
     <div

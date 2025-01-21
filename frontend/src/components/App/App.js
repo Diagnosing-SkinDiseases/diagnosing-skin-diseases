@@ -170,7 +170,13 @@ function App() {
           <Route path="/trees" element={<UserTree></UserTree>}></Route>
 
           {/* User - Trees - White Macules */}
-          <Route path="/trees/:id" element={<BuildUserTree />}></Route>
+          <Route
+            path="/trees/:id"
+            element={
+              // <BuildUserTree />
+              <UserTreeV2 />
+            }
+          ></Route>
 
           {/* Article List */}
           <Route path="/treatment" element={<ArticlePage />}></Route>
