@@ -92,3 +92,44 @@
       onAddNoNode();
     }
   };
+
+
+
+01/07
+
+Are there irregularly shaped arcuate, depigmented areas with hyperpigmented borders, white hairs and/ or perifollicular pigmentation within the areas?
+
+
+DIAGNOSIS: Post-inflammatory hypopigmentation. <br> <a href="https://diagnosing-skin-diseases.vercel.app/treatment/post-inflammatory-hypopigmentation/66165f725c08cbdd04ac9ca5" target="_self">Click here to view article.</a>
+
+- make it pop more, change color (blue)
+- circle 
+- little stronger borders
+
+- navbar graphic
+
+tree ui feedback
+- legend is fine
+- font size bigger for content box
+- possibly bold
+- stronger border of the box
+- punch in the face, stronger box content hierarchy
+- back, yes on the bottom
+- make the yes/no pop more
+- arrow heads
+- equal back and forth? no unidirectional
+- lets go for same color scheme, with cleaner version
+
+- bring it up to 30% width
+
+- keep original positions for buttons on shifting visiblity
+
+- button pop with white text
+
+- no outgoing, get rid of arrow
+- the builtin mini control borders
+
+- move mini controls beside legend
+- get rid of lock button
+
+
