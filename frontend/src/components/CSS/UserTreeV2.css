@@ -27,6 +27,7 @@
 
 .ut-tree-flow-question-node:hover {
     cursor: pointer;
+    border: black 1em solid
 }
 
 .ut-tree-flow-node-content {
@@ -45,27 +46,36 @@
 }
 
 .ut-tree-flow-root-color {
-    background-color: #D2B48C;
+    background-color: rgb(30, 144, 255);;
 }
 
 .ut-tree-flow-no-color {
-    background-color: #D2B48C;
+    background-color: rgb(30, 144, 255);;
 }
 
 .ut-tree-flow-yes-color {
-    background-color: #D2B48C;
+    background-color: rgb(30, 144, 255);
 }
 
 .ut-tree-flow-leaf-color {
-    background-color: #F2EBE2;
-    border: 10px solid #D2B48C;
+    background-color: rgb(255, 151, 0);;
 }
 
 .ut-tree-flow-selected-color {
-    background-color: #E6C28C;
-    /* Muted gold */
-    border: 15px solid #8B3E2F;
-    /* Slightly darker sienna for a stronger contrast */
+    background-color: rgb(106, 214, 105);;
+    border: 1em solid black;
+}
+
+.ut-tree-flow-selected-color::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 8em;
+    height: 8em;
+    background-color: white;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .ut-tree-flow-no-edge>path {
@@ -129,6 +139,19 @@
 }
 
 /* Legend */
+.ut-tree-legend-box {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #fff;
+    border: 1px solid var(--title-text);
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    width: 150px;
+}
+
 .ut-tree-legend-node {
     width: 1.5em;
     height: 1.5em;
@@ -143,17 +166,29 @@
 }
 
 .ut-tree-legend-selected {
-    background-color: #E6C28C;
-    border: solid #8B3E2F;
+    background-color: rgb(106, 214, 105);
+    border: 0.1em solid black
+}
+
+.ut-tree-legend-selected::after {
+    content: '';
+    position: absolute;
+    left: 15%;
+    top: 41%;
+    width: 0.8em;
+    height: 0.8em;
+    border: black;
+    background-color: white;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .ut-tree-legend-question {
-    background-color: #D2B48C;
+    background-color: rgb(30, 144, 255);;
 }
 
 .ut-tree-legend-result {
-    background-color: #F2EBE2;
-    border: solid #D2B48C;
+    background-color: rgb(255, 151, 0);;
 }
 
 .ut-tree-legend-item {
@@ -169,15 +204,29 @@
 }
 
 /* Content Box */
+.ut-tree-content-box {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #fff;
+    border: 3px solid var(--title-text);
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    width: 30%;
+    text-align: center;
+}
 
 .ut-tree-content-button {
-    width: 3.5em;
+    width: 25%;
     border: 0;
     font-size: 1em;
     color: var(--title-text);
     font-weight: 500;
     border-radius: 0.3em;
     transition: all 0.2s ease-in-out;  
+    color: #fff
 }
 
 .ut-tree-content-button:hover {
@@ -190,20 +239,77 @@
     justify-content: space-evenly;
     gap: 0.4em;
     margin-bottom: 0.5em;
+
 }
 
 .ut-tree-content-back {
-    background-color: #D2B48C;
+    background-color: #0d6efd;
+    font-weight: 600;
 }
 
 .ut-tree-content-no {
-    background-color: rgb(255, 160, 160);
+    background-color: #dc3545;
+    font-weight: 600;
 }
 
 .ut-tree-content-yes {
-    background-color: rgb(150, 252, 150);
+    background-color: #198754;
+    font-weight: 600;
 }
 
 .ut-tree-content-text {
-    color: var(--card-title)
+    color: var(--card-title);
+    font-size: 1.25em;
+    font-weight: 600;
 }
+
+.ut-hidden {
+    visibility: hidden;
+    transition: none;
+}
+
+/* <div class="react-flow__panel react-flow__controls vertical ut-tree-flow-custom-controls bottom left" data-testid="rf__controls" aria-label="React Flow controls" style="pointer-events: all;"><button type="button" class="react-flow__controls-button react-flow__controls-zoomin" title="zoom in" aria-label="zoom in"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M32 18.133H18.133V32h-4.266V18.133H0v-4.266h13.867V0h4.266v13.867H32z"></path></svg></button><button type="button" class="react-flow__controls-button react-flow__controls-zoomout" title="zoom out" aria-label="zoom out"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 5"><path d="M0 0h32v4.2H0z"></path></svg></button><button type="button" class="react-flow__controls-button react-flow__controls-fitview" title="fit view" aria-label="fit view"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 30"><path d="M3.692 4.63c0-.53.4-.938.939-.938h5.215V0H4.708C2.13 0 0 2.054 0 4.63v5.216h3.692V4.631zM27.354 0h-5.2v3.692h5.17c.53 0 .984.4.984.939v5.215H32V4.631A4.624 4.624 0 0027.354 0zm.954 24.83c0 .532-.4.94-.939.94h-5.215v3.768h5.215c2.577 0 4.631-2.13 4.631-4.707v-5.139h-3.692v5.139zm-23.677.94c-.531 0-.939-.4-.939-.94v-5.138H0v5.139c0 2.577 2.13 4.707 4.708 4.707h5.138V25.77H4.631z"></path></svg></button></div> */
+
+/* Controls */
+.ut-tree-flow-custom-controls {
+    bottom: auto !important;
+
+    position: absolute !important;
+    /* Ensure absolute positioning overrides defaults */
+    top: -4px;
+    left: 175px !important;; 
+    z-index: 10;
+    /* Keep it above other elements */
+    background-color: #fff;
+    border: 1px solid var(--title-text);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    width: 3em;
+    height: 9em;
+    overflow: hidden;
+
+    display: flex;
+    /* Enable flexbox */
+    flex-direction: column;
+    /* Stack buttons vertically */
+    justify-content: center;
+    /* Center buttons vertically */
+    align-items: center;
+    /* Center buttons horizontally */
+}
+
+.ut-tree-flow-custom-controls .react-flow__controls-button {
+    /* background-color: blue !important; */
+    /* Apply custom styles */
+    /* color: white; */
+    width: 2.5em;
+    height: 2.5em;
+    border: 1px solid var(--title-text);
+    overflow: hidden;
+}
+
+/* Minimap */
+/* .react-flow__minimap {
+    border: 1px solid var(--title-text);
+} */

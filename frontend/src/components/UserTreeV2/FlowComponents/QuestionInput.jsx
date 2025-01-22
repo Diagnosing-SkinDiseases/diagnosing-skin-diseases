@@ -347,6 +347,16 @@ function QuestionInput({
     // forceNodesReRender();
   }, [selectedNode]);
 
+  // Logging
+  useEffect(() => {
+    const node = findNodeById(id);
+    if (node) {
+      console.log("node id: ", node.yesChild.length);
+    } else {
+      console.log("Node not found yet.");
+    }
+  }, [id, findNodeById]);
+
   return (
     <div
       className={`nodrag ut-tree-flow-question-node ${nodeColorClass}`}
@@ -362,21 +372,27 @@ function QuestionInput({
       )}
 
       <div className="ut-tree-flow-node-content"></div>
+
       <Handle
         type="source"
         position={Position.Bottom}
         id="no"
         style={handleStyle.no}
         isConnectable={false}
-        className="ut-tree-flow-handle"
+        className={`ut-tree-flow-handle ${
+          findNodeById(id)?.noChild?.length > 0 ? "" : "ut-hidden"
+        }`}
       />
+
       <Handle
         type="source"
         position={Position.Bottom}
         id="yes"
         style={handleStyle.yes}
         isConnectable={false}
-        className="ut-tree-flow-handle"
+        className={`ut-tree-flow-handle ${
+          findNodeById(id)?.yesChild?.length > 0 ? "" : "ut-hidden"
+        }`}
       />
     </div>
   );

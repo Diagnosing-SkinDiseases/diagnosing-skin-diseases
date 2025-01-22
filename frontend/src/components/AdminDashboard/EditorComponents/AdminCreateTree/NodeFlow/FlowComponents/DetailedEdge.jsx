@@ -9,19 +9,19 @@ const DetailedEdge = ({
   sourceY,
   targetX,
   targetY,
-  style = {},
   markerEnd,
+  style = {},
 }) => {
-  // Calculate the length of the edge
-  const length = Math.sqrt(
-    Math.pow(targetX - sourceX, 2) + Math.pow(targetY - sourceY, 2)
-  ).toFixed(2);
+  // Archive Calculate the length of the edge
+  // const length = Math.sqrt(
+  //   Math.pow(targetX - sourceX, 2) + Math.pow(targetY - sourceY, 2)
+  // ).toFixed(2);
 
-  // Calculate the angle of the edge
-  const angle = (
-    (Math.atan2(targetY - sourceY, targetX - sourceX) * 180) /
-    Math.PI
-  ).toFixed(2);
+  // Archive Calculate the angle of the edge
+  // const angle = (
+  //   (Math.atan2(targetY - sourceY, targetX - sourceX) * 180) /
+  //   Math.PI
+  // ).toFixed(2);
 
   // Get the edge path and center position
   const [edgePath] = getStraightPath({
@@ -38,13 +38,9 @@ const DetailedEdge = ({
     targetY,
   });
 
-  // Try to give access to height instead of length and angles
-  // 6 nodes, 6 nodes, set angle and legth to same values
-  // 10 nodes on one level, wider tree, to fit all 10 nodes must have different angles
-  // first set height, then calculate angle based on that row
-
   return (
     <>
+      {/* Path with markerEnd */}
       <path
         id={id}
         style={style}
@@ -52,13 +48,6 @@ const DetailedEdge = ({
         d={edgePath}
         markerEnd={markerEnd}
       />
-      <text
-        x={edgeCenterX}
-        y={edgeCenterY}
-        textAnchor="middle"
-        dominantBaseline="middle"
-        style={{ fontSize: 12, fill: "#222" }}
-      ></text>
     </>
   );
 };

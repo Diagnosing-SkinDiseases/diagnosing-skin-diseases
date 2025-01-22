@@ -20,10 +20,7 @@ const UserTreeV2 = ({ existingId, setTreePayload }) => {
       const data = sessionStorage.getItem("previewData");
       const parsed = JSON.parse(data);
 
-      console.log("nodes", parsed.nodeTree);
       setExistingTree(toListAllChildren(parsed.nodeTree));
-
-      console.log("list", toListAllChildren(parsed.nodeTree));
 
       setExistingTitle(parsed.name);
       setExistingAboutLink(parsed.aboutLink);

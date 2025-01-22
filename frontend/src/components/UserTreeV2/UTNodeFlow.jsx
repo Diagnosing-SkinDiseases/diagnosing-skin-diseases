@@ -8,6 +8,7 @@ import {
   useEdgesState,
   useReactFlow,
   ReactFlowProvider,
+  MarkerType,
 } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
@@ -47,8 +48,6 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
   // Node ID state
   const [idCounter, setIdCounter] = useState(0);
 
-  console.log("ROOOOOTTT!!!!", rootNode);
-
   /**
    * Finds a node in a decision tree by its ID.
    * @param {Object} rootNode - The root node of the decision tree.
@@ -76,11 +75,6 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
   const [selectedNode, setSelectedNode] = useState(
     findTreeNodeById(rootNode, "node0")
   );
-
-  // Logging selected node
-  useEffect(() => {
-    console.log("ROOT Selected Node:", selectedNode);
-  }, [selectedNode]);
 
   // Function to trigger re-render of all nodes
   const forceNodesReRender = () => {
@@ -159,8 +153,6 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
         },
       };
 
-      console.log("ERROR HERE", node);
-
       if (node.yesChild[0]) {
         let formattedEdge = {
           id: `edge_${node.currentId}_${node.yesChild[0].currentId}`,
@@ -169,6 +161,10 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
           sourceHandle: "yes",
           className: "ut-tree-flow-yes-edge",
           type: "detailed",
+          markerEnd: {
+            type: MarkerType.ArrowClosed,
+            color: "green",
+          },
         };
         setEdges((eds) => eds.concat(formattedEdge));
       }
@@ -181,6 +177,10 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
           sourceHandle: "no",
           className: "ut-tree-flow-no-edge",
           type: "detailed",
+          markerEnd: {
+            type: MarkerType.ArrowClosed,
+            color: "red",
+          },
         };
         setEdges((eds) => eds.concat(formattedEdge));
       }
@@ -465,7 +465,11 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
       deleteKeyCode={"Disabled"}
       onNodeDragStop={handleNodeDragStop}
     >
-      <Controls />
+      <Controls
+        className="ut-tree-flow-custom-controls"
+        showInteractive={false}
+      />
+
       <MiniMap />
       <Background variant="dots" gap={12} size={1} />
 

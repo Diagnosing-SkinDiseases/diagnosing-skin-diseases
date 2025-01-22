@@ -178,6 +178,15 @@ function App() {
             }
           ></Route>
 
+          {/* User - Trees - OldVer */}
+          <Route
+            path="v1/trees/:id"
+            element={
+              <BuildUserTree />
+              // <UserTreeV2 />
+            }
+          ></Route>
+
           {/* Article List */}
           <Route path="/treatment" element={<ArticlePage />}></Route>
 
