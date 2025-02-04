@@ -1,0 +1,209 @@
+.ut-content-bg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.ut-content-title {
+    margin-top: 0.2em;
+}
+
+.ut-content-main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+}
+
+.ut-tree-flow-question-node {
+    padding: 1em;
+    background: white;
+    width: 15em;
+    height: 15em;
+}
+
+.ut-tree-flow-question-node:hover {
+    cursor: pointer;
+}
+
+.ut-tree-flow-node-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.text-updater-node label {
+    display: block;
+    color: #777;
+    font-size: 12px;
+}
+
+.ut-tree-flow-root-color {
+    background-color: #D2B48C;
+}
+
+.ut-tree-flow-no-color {
+    background-color: #D2B48C;
+}
+
+.ut-tree-flow-yes-color {
+    background-color: #D2B48C;
+}
+
+.ut-tree-flow-leaf-color {
+    background-color: #F2EBE2;
+    border: 10px solid #D2B48C;
+}
+
+.ut-tree-flow-selected-color {
+    background-color: #E6C28C;
+    /* Muted gold */
+    border: 15px solid #8B3E2F;
+    /* Slightly darker sienna for a stronger contrast */
+}
+
+.ut-tree-flow-no-edge>path {
+    stroke: red;
+    stroke-width: 0.6em;
+}
+
+.ut-tree-flow-yes-edge>path {
+    stroke: green;
+    stroke-width: 0.6em;
+}
+
+.ut-tree-flow-child-buttons {
+    display: none;
+    margin-top: 1em;
+}
+
+
+.ut-tree-flow-add-yes-child {
+    margin-left: auto;
+}
+
+.ut-tree-flow-header {
+    display: none;
+    width: 100%
+}
+
+.ut-tree-flow-delete {
+    margin-left: auto
+}
+
+.ut-tree-flow-text {
+    margin-top: 0.25em;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    display: none
+}
+
+.ut-tree-flow-textarea {
+    width: 100%;
+    height: 100%;
+    font-size: 0.925em;
+}
+
+.ut-tree-flow-question {
+    font-size: 1.25em;
+    font-weight: 500;
+    width: 100%;
+    text-align: center;
+}
+
+.ut-tree-flow-handle {
+    width: 0.75em;
+    /* Change width */
+    height: 0.75em;
+    /* Change height */
+    border-radius: 50%;
+    /* Ensure it's still a circle */
+}
+
+/* Legend */
+.ut-tree-legend-node {
+    width: 1.5em;
+    height: 1.5em;
+    border-width: 0.25em;
+    margin-right: 0.25em;
+}
+
+.ut-tree-legend-title {
+    color: var(--title-text);
+    font-weight: 500;
+    text-align: center;
+}
+
+.ut-tree-legend-selected {
+    background-color: #E6C28C;
+    border: solid #8B3E2F;
+}
+
+.ut-tree-legend-question {
+    background-color: #D2B48C;
+}
+
+.ut-tree-legend-result {
+    background-color: #F2EBE2;
+    border: solid #D2B48C;
+}
+
+.ut-tree-legend-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 0.3em
+}
+
+.ut-tree-legend-label {
+    font-size: 0.75em;
+    color: var(--card-title)
+}
+
+/* Content Box */
+
+.ut-tree-content-button {
+    width: 3.5em;
+    border: 0;
+    font-size: 1em;
+    color: var(--title-text);
+    font-weight: 500;
+    border-radius: 0.3em;
+    transition: all 0.2s ease-in-out;  
+}
+
+.ut-tree-content-button:hover {
+    filter: brightness(0.9);
+}
+
+.ut-tree-content-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    gap: 0.4em;
+    margin-bottom: 0.5em;
+}
+
+.ut-tree-content-back {
+    background-color: #D2B48C;
+}
+
+.ut-tree-content-no {
+    background-color: rgb(255, 160, 160);
+}
+
+.ut-tree-content-yes {
+    background-color: rgb(150, 252, 150);
+}
+
+.ut-tree-content-text {
+    color: var(--card-title)
+}

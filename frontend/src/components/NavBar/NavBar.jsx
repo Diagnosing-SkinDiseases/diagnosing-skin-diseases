@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../App/AuthContext";
 import DSD from "../NavBar/DSD.png";
@@ -73,7 +73,20 @@ const NavBarComponent = () => {
   const [activeLink, setActiveLink] = useState("");
 
   // Determine if a link is active based on the current path
-  const isActiveLink = (linkPath) => location.pathname === linkPath;
+  const isActiveLink = (linkPath) => {
+    // For homepage and when on a diagnostic tree
+    if (location.pathname.includes("/trees")) {
+      if (linkPath === "/") {
+        return true;
+      }
+    }
+
+    if (linkPath === "/") {
+      return location.pathname === linkPath;
+    }
+
+    return location.pathname.includes(linkPath) && linkPath !== "/";
+  };
 
   // Handle link click: navigate to the path, and for non-subtab links, force a page reload
   const handleClick = (path, hasSubTabs) => {
@@ -93,7 +106,9 @@ const NavBarComponent = () => {
 
   // Links definition for guests
   const guestLinks = [
+    // For homepage
     { name: "Diagnostic Trees", path: "/", subTabs: [] },
+    // For when on the diagnostic tree itself
     {
       name: "How To...",
       subTabs: [
@@ -187,7 +202,9 @@ const NavBarComponent = () => {
 
   return (
     <div className="navbar">
-      <img className="nav-logo" src={DSD} alt="DSD Logo" />
+      <Link to="/">
+        <img className="nav-logo" src={DSD} alt="DSD Logo" />
+      </Link>
       {links.map((link, index) => (
         <div
           key={index}

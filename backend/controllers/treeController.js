@@ -5,14 +5,14 @@ const ObjectId = mongoose.Types.ObjectId;
 
 // Create Tree
 const createTree = async (req, res) => {
-
+  console.log("/n/n/n/nHELLO WORLD/n/n/n/n");
   let { name, nodeTree, aboutLink, status, coverImage } = req.body;
   if (status) {
     status = status.toUpperCase();
   }
   nodeTree = inOrderToList(nodeTree, []);
   const articleId = extractArticleId(aboutLink);
-  
+
   try {
     const previewText = await extractPreviewText(articleId);
 
@@ -22,7 +22,7 @@ const createTree = async (req, res) => {
       aboutLink,
       status,
       coverImage,
-      previewText, 
+      previewText,
     });
     res.status(200).json(tree);
   } catch (error) {
@@ -93,7 +93,6 @@ const updateTree = async (req, res) => {
   }
 };
 
-
 // Delete tree
 const deleteTree = async (req, res) => {
   const { id } = req.query;
@@ -113,8 +112,8 @@ const deleteTree = async (req, res) => {
 // Helper functions
 const inOrderToList = (node, acc) => {
   if (node) {
-    let { parentId, content, currentId, yesChild, noChild } = node;
-    let parsedNode = { currentId, content, parentId };
+    let { parentId, content, currentId, yesChild, noChild, xPos, yPos } = node;
+    let parsedNode = { currentId, content, parentId, xPos, yPos };
     parsedNode.noChildId = noChild ? noChild.currentId : null;
     parsedNode.yesChildId = yesChild ? yesChild.currentId : null;
     acc.push(parsedNode);
@@ -132,19 +131,19 @@ const inOrderToList = (node, acc) => {
 const extractArticleId = (url) => {
   const parts = url.split("/");
   return parts.pop();
-}
+};
 
-  /**
-   * Extracts a preview text from an article with the given ID.
-   * It takes the first content block of type 'PARAGRAPH' and extracts up to
-   * 100 characters of its content. If the content is longer than 100 characters,
-   * it ensures the preview text ends on a full word by finding the last space and
-   * truncating there. If the content is shorter than 100 characters, the full
-   * content is returned.
-   * @param {string} articleId - The ID of the article to extract the preview
-   * text from.
-   * @returns {string} The preview text.
-   */
+/**
+ * Extracts a preview text from an article with the given ID.
+ * It takes the first content block of type 'PARAGRAPH' and extracts up to
+ * 100 characters of its content. If the content is longer than 100 characters,
+ * it ensures the preview text ends on a full word by finding the last space and
+ * truncating there. If the content is shorter than 100 characters, the full
+ * content is returned.
+ * @param {string} articleId - The ID of the article to extract the preview
+ * text from.
+ * @returns {string} The preview text.
+ */
 const extractPreviewText = async (articleId) => {
   try {
     const article = await Article.findById(articleId);
@@ -178,7 +177,6 @@ const extractPreviewText = async (articleId) => {
     return "";
   }
 };
-
 
 module.exports = {
   createTree,

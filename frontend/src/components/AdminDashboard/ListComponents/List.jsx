@@ -18,10 +18,11 @@ import {
   apiDeleteTree,
   apiUpdateTree,
 } from "../../../apiControllers/treeApiController";
+import ConfirmModal from "./ConfirmModal";
 
 /**
  * Item component displays a single item with its title, publication state, and action buttons.
- * 
+ *
  * @param {string} props.title The title of the item.
  * @param {boolean} props.published The publication state of the item, true for published.
  * @param {Function} props.onPublish The function to call when the publish/unpublish button is clicked.
@@ -54,8 +55,8 @@ const Item = ({ title, published, onPublish, onEdit, onDelete }) => (
 );
 
 /**
- * List component manages and displays a list of items. 
- * 
+ * List component manages and displays a list of items.
+ *
  * @param {Array} props.initialItems The initial list of items to be displayed.
  * @param {string} props.contentType The type of content being managed, based on ContentTypeEnum.
  * @param {string} [props.searchQuery] The query used to filter the list of items. Optional.
@@ -64,6 +65,13 @@ const Item = ({ title, published, onPublish, onEdit, onDelete }) => (
 const List = ({ initialItems = [], contentType, searchQuery }) => {
   const [items, setItems] = useState(initialItems);
   const navigate = useNavigate();
+
+  // Modal Controls for delete confirmation
+  const [showModal, setShowModal] = useState(false);
+  const [deleteIndex, setDeleteIndex] = useState(null);
+  const [deleteId, setDeleteId] = useState(null);
+  const handleClose = () => setShowModal(false);
+  const handleShow = () => setShowModal(true);
 
   /**
    * Effect hook to set the initial list of items.
@@ -137,6 +145,7 @@ const List = ({ initialItems = [], contentType, searchQuery }) => {
    */
   const handleDeleteBtn = (index, id) => {
     let deletePromise;
+
     const newItems = items.filter((_, i) => i !== index);
 
     switch (contentType) {
@@ -153,6 +162,7 @@ const List = ({ initialItems = [], contentType, searchQuery }) => {
         console.error("Unknown content type for processing");
         return;
     }
+
     // Delete the item from the database
     deletePromise
       .then((response) => {
@@ -161,6 +171,8 @@ const List = ({ initialItems = [], contentType, searchQuery }) => {
       .catch((error) => {
         console.error("Error:", error);
       });
+
+    handleClose();
   };
 
   /**
@@ -169,24 +181,48 @@ const List = ({ initialItems = [], contentType, searchQuery }) => {
    * @returns {JSX.Element} The list of items with their actions or a message indicating no items.
    */
   return (
-    <div className="list">
-      {items.length > 0 ? (
-        items.map((item, index) => (
-          <Item
-            key={index}
-            title={item.title}
-            published={item.published}
-            onPublish={() => handlePublishToggle(index, item, contentType)}
-            onEdit={() => handleEditBtn(item.id, contentType)}
-            onDelete={() => handleDeleteBtn(index, item.id)}
-          />
-        ))
-      ) : (
-        <div className="item">
-          <span className="title">No search results found.</span>
+    <>
+      <ConfirmModal show={showModal} handleClose={handleClose}>
+        <p className="delete-modal-text">
+          Deletion is permanent and cannot be undone. <br></br>Do you want to
+          proceed?
+        </p>
+        <div className="delete-modal-buttons">
+          <button className="delete-modal-cancel" onClick={handleClose}>
+            Cancel
+          </button>
+          <button
+            className="delete-modal-confirm"
+            onClick={() => handleDeleteBtn(deleteIndex, deleteId)}
+          >
+            Confirm
+          </button>
         </div>
-      )}
-    </div>
+      </ConfirmModal>
+      <div className="list">
+        {items.length > 0 ? (
+          items.map((item, index) => (
+            <Item
+              key={index}
+              title={item.title}
+              published={item.published}
+              onPublish={() => handlePublishToggle(index, item, contentType)}
+              onEdit={() => handleEditBtn(item.id, contentType)}
+              // onDelete={() => handleDeleteBtn(index, item.id)}
+              onDelete={() => {
+                handleShow();
+                setDeleteId(item.id);
+                setDeleteIndex(index);
+              }}
+            />
+          ))
+        ) : (
+          <div className="item">
+            <span className="title">No search results found.</span>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

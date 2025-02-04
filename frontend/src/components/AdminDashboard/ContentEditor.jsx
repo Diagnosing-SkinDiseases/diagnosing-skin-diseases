@@ -23,7 +23,7 @@ import {
 
 /**
  * ContentEditor is a component for creating and editing different types of content
- * such as definitions, articles, and trees. 
+ * such as definitions, articles, and trees.
  *
  * @param {string} contentType - The type of content being edited, which determines the form and API calls.
  */
@@ -50,10 +50,12 @@ const ContentEditor = ({ contentType }) => {
   const parseArticleContent = (articleContent) => {
     return {
       title: articleContent[0]?.value || "", // Ensure there is a default value
-      content: articleContent.slice(1).map((item) => ({
-        type: item.type.toUpperCase(),
-        content: item.value,
-      })),
+      content: articleContent.slice(1).map((item) => {
+        return {
+          type: item.type.toUpperCase(),
+          content: item.value,
+        };
+      }),
     };
   };
 
@@ -89,22 +91,20 @@ const ContentEditor = ({ contentType }) => {
           paragraph: trimmedParagraph,
         };
       } else if (contentType === ContentTypeEnum.ARTICLE) {
-
         const trimmedBlocks = articleContent.map((block) => {
-        if (block && block.value !== undefined) {
-          return {
-            ...block,
-            value: block.value.trim(),
-          };
-        }
-        // Handle undefined blocks or blocks without value
-        return block;
-      });
+          if (block && block.value !== undefined) {
+            return {
+              ...block,
+              value: block.value.trim(),
+            };
+          }
+          // Handle undefined blocks or blocks without value
+          return block;
+        });
         // Remove empty blocks that are not titles
-        const sanitizedContent = 
-          trimmedBlocks
-            .filter((block) => block.type === 'Title' || block.value !== "") // Keep title blocks and non-empty blocks
-        ;
+        const sanitizedContent = trimmedBlocks.filter(
+          (block) => block.type === "Title" || block.value !== ""
+        ); // Keep title blocks and non-empty blocks
         setArticleContent(sanitizedContent);
         updatedContent = sanitizedContent;
       } else if (contentType === ContentTypeEnum.TREE) {
@@ -132,7 +132,6 @@ const ContentEditor = ({ contentType }) => {
       resolve(updatedContent); // Resolve the promise with sanitized content
     });
   };
-
 
   /**
    * Checks if the form is ready to be saved based on the sanitized content.
@@ -165,7 +164,8 @@ const ContentEditor = ({ contentType }) => {
           !sanitizedContent.coverImage ||
           !sanitizedContent.aboutLink
         ) {
-          message = "Please provide tree title, about link, cover image and at least the root node filled.";
+          message =
+            "Please provide tree title, about link, cover image and at least the root node filled.";
         }
         break;
       default:
@@ -175,7 +175,7 @@ const ContentEditor = ({ contentType }) => {
     setErrorMessage(message);
     return !message; // Returns true if the message is empty, meaning the form is ready to save
   };
-  
+
   /**
    * Updates the definition with the given title, paragraph, and status.
    *
@@ -200,7 +200,6 @@ const ContentEditor = ({ contentType }) => {
     setArticleContent(updatedBlocks);
   };
 
-  
   /**
    * Renders the content based on the content type.
    *
@@ -223,7 +222,7 @@ const ContentEditor = ({ contentType }) => {
    * Update an item with a new status and optional title or paragraph.
    *
    * @param {string} newStatus - the new status for the item
-   * @return {void} 
+   * @return {void}
    */
   const updateItem = (newStatus, sanitizedContent) => {
     let updatedItem = {
@@ -248,7 +247,7 @@ const ContentEditor = ({ contentType }) => {
         let parsedArticle = parseArticleContent(sanitizedContent);
         parsedArticle.id = id;
         parsedArticle.status = newStatus;
-        
+
         updatePromise = apiUpdateArticle(parsedArticle);
         break;
       case ContentTypeEnum.TREE:
@@ -279,7 +278,7 @@ const ContentEditor = ({ contentType }) => {
    * Creates an item based on the given status.
    *
    * @param {string} status - the status of the item to be created
-   * @return {void} 
+   * @return {void}
    */
   const createItem = (status, sanitizedContent) => {
     let createPromise;
@@ -294,8 +293,10 @@ const ContentEditor = ({ contentType }) => {
         parsedArticle.status = status;
 
         // Filter out empty content blocks
-        parsedArticle.content = parsedArticle.content.filter(block => block.content.trim() !== "");
-        
+        parsedArticle.content = parsedArticle.content.filter(
+          (block) => block.content.trim() !== ""
+        );
+
         createPromise = apiCreateArticle(parsedArticle);
         break;
       case ContentTypeEnum.TREE:
@@ -327,7 +328,8 @@ const ContentEditor = ({ contentType }) => {
    */
   const handleSaveOrUpdateBtn = async () => {
     const sanitizedContent = await sanitizeContentBlocks();
-    if (await isReadyToSave(sanitizedContent)) { // Check readiness after content is sanitized
+    if (await isReadyToSave(sanitizedContent)) {
+      // Check readiness after content is sanitized
       const status = "UNPUBLISHED";
       if (isEditMode) {
         updateItem(status, sanitizedContent);
@@ -342,7 +344,8 @@ const ContentEditor = ({ contentType }) => {
    */
   const handlePublishBtn = async () => {
     const sanitizedContent = await sanitizeContentBlocks();
-    if (await isReadyToSave(sanitizedContent)) { // Check readiness after content is sanitized
+    if (await isReadyToSave(sanitizedContent)) {
+      // Check readiness after content is sanitized
       const publishStatus = "PUBLISHED";
       if (isEditMode) {
         updateItem(publishStatus, sanitizedContent);
@@ -353,11 +356,12 @@ const ContentEditor = ({ contentType }) => {
   };
 
   /**
-   * Handling the preview button click event. 
+   * Handling the preview button click event.
    */
   const handlePreviewBtn = async () => {
     const sanitizedContent = await sanitizeContentBlocks();
-    if (await isReadyToSave(sanitizedContent)) { // Check readiness after content is sanitized
+    if (await isReadyToSave(sanitizedContent)) {
+      // Check readiness after content is sanitized
       let previewPath = "";
       let previewData = {};
 
@@ -408,13 +412,13 @@ const ContentEditor = ({ contentType }) => {
         {errorMessage && <div className="error-message">{errorMessage}</div>}
         <EditorButtons
           onPreview={() => {
-              handlePreviewBtn();
+            handlePreviewBtn();
           }}
           onSave={() => {
-              handleSaveOrUpdateBtn();
+            handleSaveOrUpdateBtn();
           }}
           onPublish={() => {
-              handlePublishBtn();
+            handlePublishBtn();
           }}
         />
       </div>

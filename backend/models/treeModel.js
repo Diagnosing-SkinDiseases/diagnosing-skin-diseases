@@ -25,6 +25,14 @@ const nodeSchema = new Schema({
     type: String,
     required: false,
   },
+  xPos: {
+    type: Number,
+    required: true,
+  },
+  yPos: {
+    type: Number,
+    required: true,
+  },
 });
 
 // define schema for tree

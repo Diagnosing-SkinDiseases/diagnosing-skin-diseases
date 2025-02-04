@@ -154,3 +154,20 @@ input:focus {
     flex: 0 0 calc(10% - 10px);
   }
 }
+
+/* v2 */
+.glossary-item-expanded {
+  background-color: var(--banner);
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  color: var(--nav-text-hover);
+}
+
+.glossary-item {
+  color: var(--card-title);
+}
+
+.glossary-item-definition {
+  color: var(--nav-text-hover);
+} 

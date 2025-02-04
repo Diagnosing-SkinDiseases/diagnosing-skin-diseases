@@ -3,7 +3,7 @@ import React from "react";
 import "./styles/AdminCreateTrees.css";
 import { useState, useEffect } from "react";
 import EditTreeTitle from "./EditTreeTitle";
-import NodeArea from "./NodeArea";
+import NodeFlow from "./NodeFlow/NodeFlow";
 import ArticleCover from "./ArticleCover";
 import AboutLink from "./AboutLink";
 
@@ -37,6 +37,8 @@ const AdminCreateTree = ({
           parentId: null,
           noChild: [],
           yesChild: [],
+          xPos: 0,
+          yPos: 0,
         }
   );
 
@@ -51,7 +53,6 @@ const AdminCreateTree = ({
   );
 
   useEffect(() => {
-
     /**
      * Recursively flattens the tree structure.
      * @param {Object} node - The current node being processed.
@@ -105,8 +106,12 @@ const AdminCreateTree = ({
             coverImage={coverImage}
             setCoverImage={setCoverImage}
           ></ArticleCover>
-          {/* NodeArea component */}
-          <NodeArea rootNode={rootNode} setRootNode={setRootNode}></NodeArea>
+
+          {/* NodeArea component - ARCHIVED FOR REFERENCE*/}
+          {/* <NodeArea rootNode={rootNode} setRootNode={setRootNode}></NodeArea> */}
+
+          {/* NodeFlow component - CURRENT VERSION*/}
+          <NodeFlow rootNode={rootNode} setRootNode={setRootNode}></NodeFlow>
         </div>
       </div>
     </>

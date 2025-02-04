@@ -21,6 +21,7 @@ import NotFoundPage from "../Error/NotFound";
 import AdminDashboard from "../AdminDashboard/AdminDashboard";
 import ContentEditor from "../AdminDashboard/ContentEditor";
 import ContentTypeEnum from "../AdminDashboard/enums/ContentTypeEnum";
+import UserTreeV2 from "../UserTreeV2/UserTreeV2";
 
 // This function wraps your Routes and uses useAuth to access the auth state
 function ProtectedRoute({ children }) {
@@ -75,7 +76,8 @@ function App() {
             path="/admin/trees/preview"
             element={
               <ProtectedRoute>
-                <BuildUserTree></BuildUserTree>
+                {/* <BuildUserTree></BuildUserTree> */}
+                <UserTreeV2></UserTreeV2>
               </ProtectedRoute>
             }
           ></Route>
@@ -168,7 +170,13 @@ function App() {
           <Route path="/trees" element={<UserTree></UserTree>}></Route>
 
           {/* User - Trees - White Macules */}
-          <Route path="/trees/:id" element={<BuildUserTree />}></Route>
+          <Route
+            path="/trees/:id"
+            element={
+              // <BuildUserTree />
+              <UserTreeV2 />
+            }
+          ></Route>
 
           {/* Article List */}
           <Route path="/treatment" element={<ArticlePage />}></Route>
