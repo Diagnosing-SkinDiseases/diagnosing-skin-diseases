@@ -8,191 +8,9 @@ import GlossaryContent from "./GlossaryContent";
 import LoadingPage from "../Loading/LoadingPage";
 import ErrorMessage from "../Error/ErrorMessage";
 import messages from "../App/messages";
+import dData from "./glossaryListDummyData.json";
 
-const dummyData = {
-  A: [
-    {
-      term: "Automated Customer Service",
-      definition: "Definition for Automated Customer Service",
-      _id: "1",
-    },
-  ],
-  B: [{ term: "Blazops", definition: "Definition for Blazops", _id: "2" }],
-  C: [
-    { term: "Call Center", definition: "Definition for Call Center", _id: "3" },
-    {
-      term: "Chatbot Marketing",
-      definition: "Definition for Chatbot Marketing",
-      _id: "4",
-    },
-    {
-      term: "Conversational AI",
-      definition: "Definition for Conversational AI",
-      _id: "5",
-    },
-    { term: "CSAT", definition: "Definition for CSAT", _id: "6" },
-    {
-      term: "Customer Activation",
-      definition: "Definition for Customer Activation",
-      _id: "7",
-    },
-    {
-      term: "Customer Acquisition Cost",
-      definition: "Definition for Customer Acquisition Cost",
-      _id: "8",
-    },
-    {
-      term: "Customer Cohort Analysis",
-      definition: "Definition for Customer Cohort Analysis",
-      _id: "9",
-    },
-    {
-      term: "Customer Feedback Strategy",
-      definition: "Definition for Customer Feedback Strategy",
-      _id: "10",
-    },
-    {
-      term: "Customer Follow Up",
-      definition: "Definition for Customer Follow Up",
-      _id: "11",
-    },
-    {
-      term: "Customer Journey",
-      definition: "Definition for Customer Journey",
-      _id: "12",
-    },
-    {
-      term: "Customer Lifetime Value",
-      definition: "Definition for Customer Lifetime Value",
-      _id: "13",
-    },
-    {
-      term: "Customer Onboarding",
-      definition: "Definition for Customer Onboarding",
-      _id: "14",
-    },
-    {
-      term: "Customer Relationship Management",
-      definition: "Definition for Customer Relationship Management",
-      _id: "15",
-    },
-    {
-      term: "Customer Segmentation",
-      definition: "Definition for Customer Segmentation",
-      _id: "16",
-    },
-    {
-      term: "Customer Service",
-      definition: "Definition for Customer Service",
-      _id: "17",
-    },
-    {
-      term: "Customer Support",
-      definition: "Definition for Customer Support",
-      _id: "18",
-    },
-  ],
-  F: [
-    {
-      term: "First Contact Resolution",
-      definition: "Definition for First Contact Resolution",
-      _id: "19",
-    },
-    {
-      term: "First Party Data",
-      definition: "Definition for First Party Data",
-      _id: "20",
-    },
-  ],
-  H: [{ term: "Help Desk", definition: "Definition for Help Desk", _id: "21" }],
-  I: [
-    {
-      term: "IVR Deflection",
-      definition: "Definition for IVR Deflection",
-      _id: "22",
-    },
-  ],
-  L: [
-    {
-      term: "Lead Generation",
-      definition: "Definition for Lead Generation",
-      _id: "23",
-    },
-    {
-      term: "Lifecycle Marketing",
-      definition: "Definition for Lifecycle Marketing",
-      _id: "24",
-    },
-  ],
-  M: [
-    {
-      term: "Marketing Campaigns",
-      definition: "Definition for Marketing Campaigns",
-      _id: "25",
-    },
-    {
-      term: "Marketing Funnel",
-      definition: "Definition for Marketing Funnel",
-      _id: "26",
-    },
-    {
-      term: "Marketing Qualified Lead",
-      definition: "Definition for Marketing Qualified Lead",
-      _id: "27",
-    },
-  ],
-  N: [{ term: "NPS Score", definition: "Definition for NPS Score", _id: "28" }],
-  P: [
-    {
-      term: "Proactive Support",
-      definition: "Definition for Proactive Support",
-      _id: "29",
-    },
-    {
-      term: "Product Adoption",
-      definition: "Definition for Product Adoption",
-      _id: "30",
-    },
-    {
-      term: "Push Notification",
-      definition: "Definition for Push Notification",
-      _id: "31",
-    },
-  ],
-  S: [
-    {
-      term: "Sales Qualified Lead",
-      definition: "Definition for Sales Qualified Lead",
-      _id: "32",
-    },
-  ],
-  T: [
-    {
-      term: "Tiered Support",
-      definition: "Definition for Tiered Support",
-      _id: "33",
-    },
-  ],
-  U: [
-    {
-      term: "User Onboarding",
-      definition: "Definition for User Onboarding",
-      _id: "34",
-    },
-  ],
-  W: [
-    {
-      term: "Welcome Page",
-      definition: "Definition for Welcome Page",
-      _id: "35",
-    },
-    {
-      term: "Workforce Engagement Management",
-      definition: "Definition for Workforce Engagement Management",
-      _id: "36",
-    },
-  ],
-};
+const dummyData = dData;
 
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
@@ -201,6 +19,7 @@ const GlossaryListPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedItems, setSelectedItems] = useState([]);
   const [glossaryItems, setGlossaryItems] = useState([]);
+  const [originalGlossaryItems, setOriginalGlossaryItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const [expandedItems, setExpandedItems] = useState([]); // Track expanded items
@@ -259,8 +78,13 @@ const GlossaryListPage = () => {
           }
         }
 
-        setGlossaryItems(dummyData);
-        // setGlossaryItems(publishedItems);
+        // Use dummy or fetched data
+        console.log("dummyData", dummyData);
+        console.log("groupedGlossaryItems", groupedGlossaryItems);
+
+        // setGlossaryItems(dummyData);
+        setGlossaryItems(groupedGlossaryItems);
+        setOriginalGlossaryItems(groupedGlossaryItems);
         setIsLoading(false);
       })
       .catch((error) =>
@@ -316,6 +140,43 @@ const GlossaryListPage = () => {
     }
   });
 
+  // Search bar input handler
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  // Function to handle search on form submission (Enter key)
+  const handleSearchSubmit = (event) => {
+    event.preventDefault(); // Prevent page refresh
+
+    if (searchTerm.trim() === "") {
+      setGlossaryItems(originalGlossaryItems); // Reset to all items if search is cleared
+      return;
+    }
+
+    // Convert search term to lowercase for case-insensitive search
+    const lowerCaseSearchTerm = searchTerm.toLowerCase();
+
+    // Filter glossary items that contain the search term (case-insensitive)
+    const filteredGlossaryItems = Object.keys(originalGlossaryItems).reduce(
+      (acc, letter) => {
+        const matchingItems = originalGlossaryItems[letter].filter(
+          (item) => item.term.toLowerCase().includes(lowerCaseSearchTerm) // Case-insensitive match
+        );
+
+        if (matchingItems.length > 0) {
+          acc[letter] = matchingItems; // Add only sections that have matches
+        }
+
+        return acc;
+      },
+      {}
+    );
+
+    console.log("Filtered Glossary Items:", filteredGlossaryItems);
+    setGlossaryItems(filteredGlossaryItems);
+  };
+
   return (
     <div className="article-list-page">
       <div className="article-list-banner">
@@ -331,12 +192,13 @@ const GlossaryListPage = () => {
         </div>
 
         {/* Search bar */}
-        <form className="search-bar">
+        <form className="search-bar" onSubmit={handleSearchSubmit}>
           <input
             type="text"
             value={searchTerm}
             placeholder="  Search..."
             aria-label="Search"
+            onChange={handleSearchChange}
           />
           <button type="submit">Search</button>
         </form>
