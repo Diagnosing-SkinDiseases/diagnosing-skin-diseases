@@ -15,7 +15,7 @@ const DetailedEdge = ({
 }) => {
   // Shift the target end of the edge upwards for visuals
   const edgeType = data.sourceHandle;
-  const adjustmentValue = 2;
+  const adjustmentValue = 1.5;
   const adjustTargetX =
     targetX -
     (data.sourceHandle === "yes" ? adjustmentValue : -adjustmentValue) * 2;

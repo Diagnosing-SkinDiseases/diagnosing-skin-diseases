@@ -83,6 +83,7 @@ const GlossaryListPage = () => {
         console.log("groupedGlossaryItems", groupedGlossaryItems);
 
         // setGlossaryItems(dummyData);
+        // setOriginalGlossaryItems(dummyData);
         setGlossaryItems(groupedGlossaryItems);
         setOriginalGlossaryItems(groupedGlossaryItems);
         setIsLoading(false);

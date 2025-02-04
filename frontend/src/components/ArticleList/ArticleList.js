@@ -46,6 +46,7 @@ const ArticleListPage = () => {
 
         // Use dummy or fetched data
         // setArticles(dummyData);
+        // setOrginalArticles(dummyData);
         setArticles(groupedArticles);
         setOrginalArticles(groupedArticles);
         setIsLoading(false);
