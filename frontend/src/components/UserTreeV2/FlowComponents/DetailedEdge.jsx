@@ -11,17 +11,25 @@ const DetailedEdge = ({
   targetY,
   markerEnd,
   style = {},
+  data,
 }) => {
-  // Adjust target and source positioning if necessary
-  targetY = targetY + 2;
-  sourceY = sourceY - 2;
+  // Shift the target end of the edge upwards for visuals
+  const edgeType = data.sourceHandle;
+  const adjustmentValue = 2;
+  const adjustTargetX =
+    targetX -
+    (data.sourceHandle === "yes" ? adjustmentValue : -adjustmentValue) * 2;
+  // const adjustTargetX = targetX;
+  const adjustTargetY = targetY - adjustmentValue;
+
+  console.log("SOURCE", edgeType);
 
   // Get the edge path and center position
   const [edgePath] = getStraightPath({
     sourceX,
     sourceY,
-    targetX,
-    targetY,
+    targetX: adjustTargetX,
+    targetY: adjustTargetY,
   });
 
   return (

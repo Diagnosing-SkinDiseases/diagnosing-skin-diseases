@@ -16,7 +16,7 @@ import "@xyflow/react/dist/style.css";
 import "../CSS/Admin/TreeEditorNodeFlow.css";
 
 import QuestionInput from "./FlowComponents/QuestionInput";
-import DetailedEdge from "../AdminDashboard/EditorComponents/AdminCreateTree/NodeFlow/FlowComponents/DetailedEdge";
+import DetailedEdge from "./FlowComponents/DetailedEdge";
 
 import NodeContentBox from "./FlowComponents/NodeContentBox";
 import NodeLegend from "./FlowComponents/NodeLegend";
@@ -165,8 +165,10 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
             type: MarkerType.ArrowClosed,
             color: "green",
           },
+          data: { sourceHandle: "yes" },
         };
         setEdges((eds) => eds.concat(formattedEdge));
+        console.log("FE", formattedEdge);
       }
 
       if (node.noChild[0]) {
@@ -181,6 +183,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
             type: MarkerType.ArrowClosed,
             color: "red",
           },
+          data: { sourceHandle: "no" },
         };
         setEdges((eds) => eds.concat(formattedEdge));
       }

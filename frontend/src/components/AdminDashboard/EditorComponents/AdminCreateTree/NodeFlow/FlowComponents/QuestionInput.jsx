@@ -13,7 +13,6 @@ const handleStyle = {
     height: "0.75em",
     borderRadius: "50%",
     backgroundColor: "black",
-    bottom: "-0.5em",
   },
   yes: {
     left: 130,
@@ -21,7 +20,6 @@ const handleStyle = {
     height: "0.75em",
     borderRadius: "50%",
     backgroundColor: "black",
-    bottom: "-0.5em",
   },
 };
 
@@ -381,6 +379,7 @@ function QuestionInput({
           position={Position.Top}
           isConnectable={isConnectable}
           className="tree-flow-handle"
+          style={handleStyle.yes}
         />
       )}
 
