@@ -144,6 +144,35 @@ const GlossaryListPage = () => {
   // Search bar input handler
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
+
+    event.preventDefault(); // Prevent page refresh
+
+    if (event.target.value.trim() === "") {
+      setGlossaryItems(originalGlossaryItems); // Reset to all items if search is cleared
+      return;
+    }
+
+    // Convert search term to lowercase for case-insensitive search
+    const lowerCaseSearchTerm = event.target.value.toLowerCase();
+
+    // Filter glossary items that contain the search term (case-insensitive)
+    const filteredGlossaryItems = Object.keys(originalGlossaryItems).reduce(
+      (acc, letter) => {
+        const matchingItems = originalGlossaryItems[letter].filter(
+          (item) => item.term.toLowerCase().includes(lowerCaseSearchTerm) // Case-insensitive match
+        );
+
+        if (matchingItems.length > 0) {
+          acc[letter] = matchingItems; // Add only sections that have matches
+        }
+
+        return acc;
+      },
+      {}
+    );
+
+    console.log("Filtered Glossary Items:", filteredGlossaryItems);
+    setGlossaryItems(filteredGlossaryItems);
   };
 
   // Function to handle search on form submission (Enter key)
@@ -193,15 +222,18 @@ const GlossaryListPage = () => {
         </div>
 
         {/* Search bar */}
-        <form className="search-bar" onSubmit={handleSearchSubmit}>
+        <form className="glossary-search-container">
+          <div className="glossary-search-label-container">
+            <p className="glossary-search-label">Find a glossary term:</p>
+          </div>
           <input
             type="text"
             value={searchTerm}
             placeholder="  Search..."
             aria-label="Search"
             onChange={handleSearchChange}
+            className="glossary-search-input"
           />
-          <button type="submit">Search</button>
         </form>
       </div>
 

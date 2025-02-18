@@ -172,3 +172,56 @@ input:focus {
 .glossary-item-definition {
   color: var(--nav-text-hover);
 } 
+
+/* Search Bar */
+
+.glossary-search-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+  margin-left: 1em
+}
+
+.glossary-search-input {
+  margin-right: 0.5em;
+  padding: 0.25em;
+  padding-left: 1em;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  color: var(--header-text);
+}
+
+.glossary-search-input::placeholder {
+  color: var(--header-text);
+  transform: translateX(-0.25em)
+}
+
+.glossary-search-input:focus {
+  outline: none;
+  border: 1px solid #715529;
+}
+
+.glossary-search-container button {
+  padding: 5px 10px;
+  background-color: var(--btn-color);
+  border: none;
+  border-radius: 10px;
+  color: var(--btn-text-color);
+  cursor: pointer;
+  margin-inline: 5px;
+}
+
+.glossary-search-label-container {
+  margin-right: 1em;
+  width: 12em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.glossary-search-label {
+  margin-bottom: 0em;
+  font-weight: 500;
+  font-size: 1.25em;
+}
