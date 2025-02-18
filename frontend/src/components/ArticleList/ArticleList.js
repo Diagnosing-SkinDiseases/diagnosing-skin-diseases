@@ -91,6 +91,31 @@ const ArticleListPage = () => {
   // Search bar input handler
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
+
+    event.preventDefault(); // Prevent page refresh
+
+    if (event.target.value.trim() === "") {
+      setArticles(originalArticles); // Reset to all articles if search is cleared
+      return;
+    }
+
+    // Filter articles by search term (case-insensitive)
+    const filteredArticles = Object.keys(originalArticles).reduce(
+      (acc, letter) => {
+        const matchingItems = originalArticles[letter].filter((item) =>
+          item.title.toLowerCase().includes(event.target.value.toLowerCase())
+        );
+
+        if (matchingItems.length > 0) {
+          acc[letter] = matchingItems; // Add only sections that have matches
+        }
+
+        return acc;
+      },
+      {}
+    );
+
+    setArticles(filteredArticles);
   };
 
   // Function to handle search on form submission (Enter key)
@@ -103,17 +128,48 @@ const ArticleListPage = () => {
     }
 
     // Filter articles by search term (case-insensitive)
-    const filteredArticles = Object.keys(articles).reduce((acc, letter) => {
-      const matchingItems = articles[letter].filter((item) =>
-        item.title.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+    const filteredArticles = Object.keys(originalArticles).reduce(
+      (acc, letter) => {
+        const matchingItems = originalArticles[letter].filter((item) =>
+          item.title.toLowerCase().includes(searchTerm.toLowerCase())
+        );
 
-      if (matchingItems.length > 0) {
-        acc[letter] = matchingItems; // Add only sections that have matches
-      }
+        if (matchingItems.length > 0) {
+          acc[letter] = matchingItems; // Add only sections that have matches
+        }
 
-      return acc;
-    }, {});
+        return acc;
+      },
+      {}
+    );
+
+    setArticles(filteredArticles);
+  };
+
+  // Function to handle search on input change
+  const handleInputChange = (event) => {
+    event.preventDefault(); // Prevent page refresh
+
+    if (searchTerm.trim() === "") {
+      setArticles(originalArticles); // Reset to all articles if search is cleared
+      return;
+    }
+
+    // Filter articles by search term (case-insensitive)
+    const filteredArticles = Object.keys(originalArticles).reduce(
+      (acc, letter) => {
+        const matchingItems = originalArticles[letter].filter((item) =>
+          item.title.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        if (matchingItems.length > 0) {
+          acc[letter] = matchingItems; // Add only sections that have matches
+        }
+
+        return acc;
+      },
+      {}
+    );
 
     setArticles(filteredArticles);
   };
@@ -125,7 +181,7 @@ const ArticleListPage = () => {
         <div>
           <h1 className="article-list-title">Articles</h1>
           {/* Introduction */}
-          <p className="homepage-intro-text">
+          <p className="article-list-intro-text">
             The articles in this program describe the common skin diseases that
             you see in family practice. The articles are in alphabetical order
             and give you information to help you diagnose and treat your
@@ -134,15 +190,21 @@ const ArticleListPage = () => {
         </div>
 
         {/* Search bar */}
-        <form className="search-bar" onSubmit={handleSearchSubmit}>
+        <form
+          className="article-list-search-container"
+          onSubmit={handleSearchSubmit}
+        >
+          <div className="article-list-search-label-container">
+            <p className="article-list-search-label"> Find an article: </p>
+          </div>
           <input
             type="text"
             value={searchTerm}
             placeholder="  Search..."
             aria-label="Search"
             onChange={handleSearchChange}
+            className="article-list-search-input"
           />
-          <button type="submit">Search</button>
         </form>
       </div>
 
