@@ -367,7 +367,7 @@ function QuestionInput({
           type="target"
           position={Position.Top}
           isConnectable={isConnectable}
-          className="ut-tree-flow-handle"
+          className="ut-tree-flow-handle ut-hidden"
         />
       )}
 
@@ -380,7 +380,7 @@ function QuestionInput({
         style={handleStyle.no}
         isConnectable={false}
         className={`ut-tree-flow-handle ${
-          findNodeById(id)?.noChild?.length > 0 ? "" : "ut-hidden"
+          findNodeById(id)?.noChild?.length > 0 ? "ut-hidden" : "ut-hidden"
         }`}
       />
 
@@ -391,7 +391,7 @@ function QuestionInput({
         style={handleStyle.yes}
         isConnectable={false}
         className={`ut-tree-flow-handle ${
-          findNodeById(id)?.yesChild?.length > 0 ? "" : "ut-hidden"
+          findNodeById(id)?.yesChild?.length > 0 ? "ut-hidden" : "ut-hidden"
         }`}
       />
     </div>

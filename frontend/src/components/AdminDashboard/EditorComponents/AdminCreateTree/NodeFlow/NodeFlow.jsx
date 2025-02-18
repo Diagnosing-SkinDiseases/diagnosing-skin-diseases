@@ -13,14 +13,18 @@ import {
 
 import "@xyflow/react/dist/style.css";
 
-import "../../../../CSS/Admin/TreeEditorNodeFlow.css";
+// import "../../../../CSS/Admin/TreeEditorNodeFlow.css";
+import "../../../../CSS/UserTreeV2.css";
 
 // Custom components
 import QuestionInput from "./FlowComponents/QuestionInput";
-import DetailedEdge from "./FlowComponents/DetailedEdge";
+// import DetailedEdge from "./FlowComponents/DetailedEdge";
 import HeightControls from "./FlowComponents/HeightControls";
 import LengthControls from "./FlowComponents/LengthControls";
 import AngleControls from "./FlowComponents/AngleControls";
+
+// Testing
+import DetailedEdge from "../../../../UserTreeV2/FlowComponents/DetailedEdge";
 
 const nodeTypes = { questionInput: QuestionInput };
 
@@ -191,8 +195,9 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
           source: node.currentId,
           target: node.yesChild[0].currentId,
           sourceHandle: "yes",
-          className: "tree-flow-yes-edge",
+          className: "ut-tree-flow-yes-edge",
           type: "detailed",
+          data: { sourceHandle: "yes" },
         };
         setEdges((eds) => eds.concat(formattedEdge));
       }
@@ -203,8 +208,9 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
           source: node.currentId,
           target: node.noChild[0].currentId,
           sourceHandle: "no",
-          className: "tree-flow-no-edge",
+          className: "ut-tree-flow-no-edge",
           type: "detailed",
+          data: { sourceHandle: "no" },
         };
         setEdges((eds) => eds.concat(formattedEdge));
       }

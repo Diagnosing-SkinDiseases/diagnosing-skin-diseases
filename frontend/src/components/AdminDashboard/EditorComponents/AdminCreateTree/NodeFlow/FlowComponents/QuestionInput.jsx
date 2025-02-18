@@ -439,7 +439,9 @@ function QuestionInput({
         id="no"
         style={handleStyle.no}
         isConnectable={!noChildPresent()}
-        className="tree-flow-handle"
+        className={`tree-flow-handle ${
+          !findNodeById(id)?.noChild?.length > 0 ? "" : ""
+        }`}
       />
       <Handle
         type="source"
@@ -447,7 +449,9 @@ function QuestionInput({
         id="yes"
         style={handleStyle.yes}
         isConnectable={!yesChildPresent()}
-        className="tree-flow-handle"
+        className={`tree-flow-handle ${
+          !findNodeById(id)?.yesChild?.length > 0 ? "" : ""
+        }`}
       />
     </div>
   );
