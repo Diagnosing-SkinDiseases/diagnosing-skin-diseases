@@ -218,7 +218,7 @@ const NavBarComponent = () => {
             onClick={() => handleClick(link.path, link.subTabs.length > 0)}
             className={`nav-link ${activeLink === link.name ? "active" : ""}`}
           >
-            {link.name}
+            <p className="navbar-link-text">{link.name} </p>
           </div>
           {link.subTabs.length > 0 && (
             <NavSubtab show={activeLink === link.name} titles={link.subTabs} />

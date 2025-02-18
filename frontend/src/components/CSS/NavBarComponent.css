@@ -3,13 +3,21 @@
   color: var(--nav-text);
   display: flex;
   justify-content: space-around;
-  background-color: var(--nav-back_ground);
-  font-size: 1.5em;
+  background-color: white;
   z-index: 1000;
   padding: 0%;
   position: -webkit-sticky;
   position: sticky;
   top: 0;
+
+  background-image:
+      url("../../assets/DSD-line-top-1920.png"),
+      url("../../assets/DSD-line-bottom-1920.png");
+  
+    background-position: top center, bottom center;
+    background-repeat: repeat-x, repeat-x;
+
+    background-size: 124em auto, 123em auto;
 }
 
 .nav-item {
@@ -18,7 +26,7 @@
   position: relative;
   list-style-type: none;
   font-weight: 500;
-  background-color: var(--nav-back_ground);
+  background-color: white;
   border-radius: 10px;
   /* margin-inline: 10px; */
   width: 80px;
@@ -42,10 +50,15 @@
 
 .nav-link {
   display: block;
-  padding: 14px;
+  padding: 0.5em;
   text-decoration: none;
   color: var(--nav-text);
   border-radius: 10px;
+}
+
+.navbar-link-text {
+  margin: 0em;
+  font-size: 1.5em !important;
 }
 
 a.nav-link.active {
@@ -133,6 +146,7 @@ a.nav-link.active {
   width: 200px;
   height: 100px;
   margin-right: 60px;
+  /* margin-left: 1em; */
 }
 
 .nav-item.active .nav-link,

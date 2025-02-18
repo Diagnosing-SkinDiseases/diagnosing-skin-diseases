@@ -47,14 +47,14 @@ const DetailedEdge = ({
   console.log("ADJUSTED SOURCE Y", adjustedSourceY);
 
   // Adjust the target position slightly for better visuals
-  const targetAdjustmentValue = 0;
+  const targetAdjustmentValue = 2;
   const adjustTargetX =
     targetX -
     (data?.sourceHandle === "yes"
       ? targetAdjustmentValue
       : -targetAdjustmentValue) *
-      10;
-  const adjustTargetY = targetY - targetAdjustmentValue + 4;
+      8;
+  const adjustTargetY = targetY - targetAdjustmentValue * 1;
 
   // Get the edge path
   const [edgePath] = getStraightPath({

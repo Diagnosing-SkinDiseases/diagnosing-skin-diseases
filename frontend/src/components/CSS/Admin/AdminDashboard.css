@@ -19,10 +19,11 @@
 .list-title {
   margin: 2em auto;
   width: 85%;
+
 }
 
 .list-title h2 {
   width: 85%;
   color: var(--header-text);
-  font-weight: 200;
+  font-weight: 400;
 }
