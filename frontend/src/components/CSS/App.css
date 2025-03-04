@@ -9,7 +9,7 @@
   --nav-back_ground: #e4ddd0;
   --nav-hover: #d0be9f;
   --nav-text: #715529;
-  --nav-text-hover: #fefefe;
+  /* --nav-text-hover: #fefefe; */
 
   /* Footer */
   --footer: #715529;
@@ -61,9 +61,9 @@
   pointer-events: none;
 }
 
-.navbar a:hover {
+/* .navbar a:hover {
   color: var(--nav-text-hover);
-}
+} */
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../App/AuthContext";
-import DSD from "../NavBar/DSD.png";
+// import DSD from "../NavBar/DSD.png";
+import DSD from "../NavBar/DSD_Text_Only.png";
 import "../CSS/NavBarComponent.css";
 
 /**
