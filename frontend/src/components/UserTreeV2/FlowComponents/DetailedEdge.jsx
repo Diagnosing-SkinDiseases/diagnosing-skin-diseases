@@ -43,16 +43,14 @@ const DetailedEdge = ({
       1;
   const adjustedSourceY = sourceY - sourceAdjustmentValue * 6;
 
-  console.log("SOURCE Y", sourceY);
-  console.log("ADJUSTED SOURCE Y", adjustedSourceY);
+  // Adjust the target position for arrow head alignment
 
-  // Adjust the target position slightly for better visuals
+  const alignment = sourceX - targetX < 0 ? "right" : "left";
+
   const targetAdjustmentValue = 2;
   const adjustTargetX =
     targetX -
-    (data?.sourceHandle === "yes"
-      ? targetAdjustmentValue
-      : -targetAdjustmentValue) *
+    (alignment === "right" ? targetAdjustmentValue : -targetAdjustmentValue) *
       8;
   const adjustTargetY = targetY - targetAdjustmentValue * 1;
 

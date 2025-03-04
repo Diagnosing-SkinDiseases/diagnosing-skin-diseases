@@ -317,12 +317,9 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
   const [multiSelectList, setMultiSelectList] = useState([]);
 
   // Logging
-  useEffect(() => {
-    console.log("ROOT NODE", rootNode);
-  }, [rootNode]);
+  useEffect(() => {}, [rootNode]);
 
   const toggleMultiSelect = () => {
-    console.log("toggling");
     setMultiSelectOn((prevState) => {
       if (!multiSelectOn) {
         setSelectedNode(null);
@@ -437,9 +434,10 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
           sourceHandle: params.sourceHandle,
           className:
             params.sourceHandle === "no"
-              ? "tree-flow-no-edge"
-              : "tree-flow-yes-edge",
+              ? "ut-tree-flow-no-edge"
+              : "ut-tree-flow-yes-edge",
           type: "detailed",
+          data: { sourceHandle: params.sourceHandle },
         };
 
         if (params.sourceHandle === "no") {
@@ -539,8 +537,9 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
       target: newNode.id,
       sourceHandle: newNodeType,
       className:
-        newNodeType === "no" ? "tree-flow-no-edge" : "tree-flow-yes-edge",
+        newNodeType === "no" ? "ut-tree-flow-no-edge" : "ut-tree-flow-yes-edge",
       type: "detailed",
+      data: { sourceHandle: newNodeType },
     };
 
     setEdges((eds) => eds.concat(newEdge));

@@ -27,7 +27,6 @@ const UserTreeV2 = ({ existingId, setTreePayload }) => {
       setExistingCoverImage(parsed.coverImage);
       setDataLoaded(true);
     } else {
-      console.log(id); // Outputs: 677d769e5c6ce7fc9a2a3e39
       fetchTreeData();
     }
   }, []);
@@ -37,9 +36,6 @@ const UserTreeV2 = ({ existingId, setTreePayload }) => {
       const response = await apiGetTree(id);
       // setTreeData(response.data);
       const data = response.data;
-      console.log(toListAllChildren(data));
-      console.log("nodes", data.nodes);
-      console.log("nodes2", wrapTreeChildrenWithList(fromList(data.nodes))[0]);
 
       setExistingTree(wrapTreeChildrenWithList(fromList(data.nodes))[0]);
       setExistingTitle(data.name);

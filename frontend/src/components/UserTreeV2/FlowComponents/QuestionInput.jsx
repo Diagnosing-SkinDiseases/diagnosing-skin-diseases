@@ -322,15 +322,9 @@ function QuestionInput({
   };
 
   const onNodeClick = (event) => {
-    console.log("ok");
-    // console.log(event.target);
-
     let clickedNode = findNodeById(id);
     let clickedContent = clickedNode.content;
 
-    // console.log(clickedNode);
-    // console.log(clickedContent);
-    console.log("clicked node:", clickedNode);
     setSelectedNode(clickedNode);
   };
 
@@ -339,11 +333,7 @@ function QuestionInput({
     if (selectedNode === undefined) return;
     // manageNodeColor();
     if (selectedNode.currentId === id) {
-      console.log("NODE selected node: ", selectedNode);
-      console.log("IsSelected:", checkIsSelected());
     }
-    // console.log("IsSelected:", checkIsSelected());
-    // console.log("id", id, "selected node: ", selectedNode.currentId);
     // forceNodesReRender();
   }, [selectedNode]);
 
@@ -351,9 +341,7 @@ function QuestionInput({
   useEffect(() => {
     const node = findNodeById(id);
     if (node) {
-      console.log("node id: ", node.yesChild.length);
     } else {
-      console.log("Node not found yet.");
     }
   }, [id, findNodeById]);
 

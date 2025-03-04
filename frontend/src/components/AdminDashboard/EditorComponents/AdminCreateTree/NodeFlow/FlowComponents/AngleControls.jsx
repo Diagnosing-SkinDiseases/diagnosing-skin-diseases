@@ -24,30 +24,22 @@ const AngleControls = ({
     let angle =
       (Math.atan2(currentY - parentY, currentX - parentX) * 180) / Math.PI;
 
-    console.log("PRIMARY CALCULATION", angle);
-
     // Adjust angle so that directly below is 0° and directly to the right is 90°
     angle = (angle + 360) % 360; // Normalize to [0, 360)
     angle = (450 - angle) % 360; // Rotate 90° clockwise to make 0° directly below
-
-    console.log(`Arrow Angle (adjusted): ${angle.toFixed(2)}°`);
     return Math.round(angle);
   }
 
   // Logging
   useEffect(() => {
-    console.log("Angle controls selected node", selectedNode);
     if (!selectedNode) {
       return;
     }
     let parentNode = findTreeNodeById(rootNode, selectedNode.parentId);
-    console.log("Selected Parent:", parentNode);
   }, [selectedNode]);
 
   // Logging 2
-  useEffect(() => {
-    console.log("Angle controls selected node 2", selectedNode);
-  }, [selectedNode]);
+  useEffect(() => {}, [selectedNode]);
 
   /**
    * Custom angle handling
@@ -56,21 +48,13 @@ const AngleControls = ({
 
   useEffect(() => {
     if (selectedNode && selectedNode.parentId) {
-      console.log("Recalculating angle...");
       const parentNode = findTreeNodeById(rootNode, selectedNode.parentId);
       const currentNode = findTreeNodeById(rootNode, selectedNode.currentId);
-      console.log(
-        "ADJUSTING ANGLE",
-        currentNode,
-        parentNode,
-        selectedNode.parentId
-      );
       let isNoNode = false;
       if (parentNode.noChild[0] !== undefined) {
         isNoNode = parentNode.noChild[0].currentId === selectedNode.currentId;
       }
 
-      console.log("NO?", isNoNode);
       if (parentNode && currentNode) {
         let displayAngle = calculateAngle(
           parentNode.xPos,

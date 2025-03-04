@@ -41,9 +41,6 @@ const ArticleListPage = () => {
           return acc;
         }, {});
 
-        console.log("groupedArticles", groupedArticles);
-        console.log("dummyData", dummyData);
-
         // Use dummy or fetched data
         // setArticles(dummyData);
         // setOrginalArticles(dummyData);

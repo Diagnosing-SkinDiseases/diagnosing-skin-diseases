@@ -168,7 +168,6 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
           data: { sourceHandle: "yes" },
         };
         setEdges((eds) => eds.concat(formattedEdge));
-        console.log("FE", formattedEdge);
       }
 
       if (node.noChild[0]) {

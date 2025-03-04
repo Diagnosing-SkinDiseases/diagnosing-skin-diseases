@@ -79,8 +79,6 @@ const GlossaryListPage = () => {
         }
 
         // Use dummy or fetched data
-        console.log("dummyData", dummyData);
-        console.log("groupedGlossaryItems", groupedGlossaryItems);
 
         // setGlossaryItems(dummyData);
         // setOriginalGlossaryItems(dummyData);
@@ -171,7 +169,6 @@ const GlossaryListPage = () => {
       {}
     );
 
-    console.log("Filtered Glossary Items:", filteredGlossaryItems);
     setGlossaryItems(filteredGlossaryItems);
   };
 
@@ -203,7 +200,6 @@ const GlossaryListPage = () => {
       {}
     );
 
-    console.log("Filtered Glossary Items:", filteredGlossaryItems);
     setGlossaryItems(filteredGlossaryItems);
   };
 
