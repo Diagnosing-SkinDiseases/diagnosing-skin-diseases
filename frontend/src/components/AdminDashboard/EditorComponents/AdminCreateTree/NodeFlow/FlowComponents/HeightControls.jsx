@@ -25,7 +25,7 @@ const HeightControls = ({
    */
 
   const [heightInput, setHeightInput] = useState(0);
-
+  console.log("Test1", selectedNode);
   useEffect(() => {
     if (selectedNode && selectedNode.parentId) {
       const parentNode = findTreeNodeById(rootNode, selectedNode.parentId);
@@ -33,6 +33,13 @@ const HeightControls = ({
       if (parentNode && currentNode) {
         setHeightInput(Math.round(currentNode.yPos - parentNode.yPos));
       }
+    }
+
+    // Special root node controls
+    if (selectedNode.currentId === "node0") {
+      const currentNode = findTreeNodeById(rootNode, selectedNode.currentId);
+      console.log("CURRENT", currentNode);
+      setHeightInput(Math.round(currentNode.yPos));
     }
   }, [selectedNode, rootNode]);
 
@@ -47,6 +54,24 @@ const HeightControls = ({
   const changeSelectedNodeHeight = (newHeight) => {
     const updatePositionRecursively = (node) => {
       if (!multiSelectOn) {
+        // Unique Root node logic
+        if (selectedNode.currentId === "node0") {
+          const newYPos = newHeight;
+
+          // Update the visual position of the node
+          setNodes((nds) => {
+            let newVisualNodes = nds.map((nd) => {
+              if (nd.id === selectedNode.currentId) {
+                return { ...nd, position: { x: nd.position.x, y: newYPos } };
+              }
+              return nd;
+            });
+            return newVisualNodes;
+          });
+
+          return { ...node, xPos: node.xPos, yPos: newYPos };
+        }
+
         // Single node logic
         if (node.currentId === selectedNode.currentId) {
           const newYPos =

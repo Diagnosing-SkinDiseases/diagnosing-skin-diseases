@@ -42,6 +42,9 @@ const LengthControls = ({
         selectedNode.xPos,
         selectedNode.yPos
       );
+    } else {
+      if (multiSelectOn) return;
+      setLengthInput(0);
     }
   }, [selectedNode]);
 

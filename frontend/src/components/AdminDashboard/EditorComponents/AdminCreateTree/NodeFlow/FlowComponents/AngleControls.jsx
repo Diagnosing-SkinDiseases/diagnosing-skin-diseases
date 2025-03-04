@@ -68,6 +68,9 @@ const AngleControls = ({
           setAngleInput(360 - displayAngle);
         }
       }
+    } else {
+      if (multiSelectOn) return;
+      setAngleInput(0);
     }
   }, [selectedNode, rootNode]);
 
