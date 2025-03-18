@@ -144,10 +144,10 @@ a.nav-link.active {
 .nav-logo-container {
   display: flex;
   justify-content: center;
-  width: 178px;
-  height: 40px;
+  width: 222px;
+  height: 50px;
   margin-right: 1.5em;
-  margin-left: 1.5em;
+  margin-left: 1em;
 }
 
 .nav-logo {

@@ -1,4 +1,5 @@
-import { getStraightPath } from "@xyflow/react";
+import React, { useState, useRef, useEffect } from "react";
+import { getStraightPath, useReactFlow } from "@xyflow/react";
 
 const DetailedEdge = ({
   id,
@@ -9,68 +10,134 @@ const DetailedEdge = ({
   style = {},
   data,
 }) => {
-  // Custom arrowhead ID based on type
   const arrowId = `arrow-${id}`;
+  const { getViewport } = useReactFlow();
+  const svgRef = useRef(null);
 
-  // Define a sharper arrowhead
-  const markerSvg = (
-    <svg id="ut-test">
-      <defs>
-        <marker
-          id={arrowId}
-          markerWidth="10" // Keep a reasonable width
-          markerHeight="16" // Increase height to make it sharper
-          refX="8" // Keep tip aligned
-          refY="8" // Center vertically
-          orient="auto"
-        >
-          <polygon
-            points="3 6, 10 8, 3 10" // Increase height for a sharper look
-            fill={data?.sourceHandle === "yes" ? "green" : "red"}
-          />
-        </marker>
-      </defs>
-    </svg>
-  );
-
-  // Adjust source position
+  // Adjust source
   const sourceAdjustmentValue = 1;
   const adjustedSourceX =
     sourceX -
     (data?.sourceHandle === "yes"
       ? sourceAdjustmentValue
-      : -sourceAdjustmentValue) *
-      1;
+      : -sourceAdjustmentValue);
   const adjustedSourceY = sourceY - sourceAdjustmentValue * 6;
 
-  // Adjust the target position for arrow head alignment
-
+  // Adjust target
   const alignment = sourceX - targetX < 0 ? "right" : "left";
-
   const targetAdjustmentValue = 2;
-  const adjustTargetX =
+  const adjustedTargetX =
     targetX -
     (alignment === "right" ? targetAdjustmentValue : -targetAdjustmentValue) *
       8;
-  const adjustTargetY = targetY - targetAdjustmentValue * 1;
+  const adjustedTargetY = targetY - targetAdjustmentValue * 1;
 
-  // Get the edge path
-  const [edgePath] = getStraightPath({
-    sourceX: adjustedSourceX,
-    sourceY: adjustedSourceY,
-    targetX: adjustTargetX,
-    targetY: adjustTargetY,
-  });
+  // Midpoint
+  const initialMidX = (adjustedSourceX + adjustedTargetX) / 2;
+  const initialMidY = (adjustedSourceY + adjustedTargetY) / 2;
+
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const bendX = initialMidX + offset.x;
+  const bendY = initialMidY + offset.y;
+
+  const edgePath = `M ${adjustedSourceX},${adjustedSourceY} L ${bendX},${bendY} L ${adjustedTargetX},${adjustedTargetY}`;
+
+  // Drag logic
+  const isDragging = useRef(false);
+  const offsetStart = useRef({ x: 0, y: 0 });
+  const dragStart = useRef({ x: 0, y: 0 });
+
+  const convertClientToSvg = (clientX, clientY) => {
+    const svg = svgRef.current?.ownerSVGElement;
+    if (!svg) return { x: clientX, y: clientY };
+    const pt = svg.createSVGPoint();
+    pt.x = clientX;
+    pt.y = clientY;
+    const ctm = svg.getScreenCTM();
+    if (ctm) {
+      const transformed = pt.matrixTransform(ctm.inverse());
+      return { x: transformed.x, y: transformed.y };
+    }
+    return { x: clientX, y: clientY };
+  };
+
+  const onMouseDown = (event) => {
+    console.log("HELLO WORLD");
+    isDragging.current = true;
+    offsetStart.current = { ...offset };
+
+    const svgCoords = convertClientToSvg(event.clientX, event.clientY);
+    dragStart.current = svgCoords;
+
+    event.stopPropagation();
+    event.preventDefault();
+  };
+
+  const onMouseMove = (event) => {
+    if (!isDragging.current) return;
+
+    const svgCoords = convertClientToSvg(event.clientX, event.clientY);
+    const deltaX = svgCoords.x - dragStart.current.x;
+    const deltaY = svgCoords.y - dragStart.current.y;
+
+    setOffset({
+      x: offsetStart.current.x + deltaX,
+      y: offsetStart.current.y + deltaY,
+    });
+  };
+
+  const onMouseUp = () => {
+    isDragging.current = false;
+  };
+
+  useEffect(() => {
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+    };
+  }, []);
 
   return (
     <>
-      {markerSvg} {/* Include the custom arrowhead definition */}
+      <defs>
+        <marker
+          id={arrowId}
+          markerWidth="10"
+          markerHeight="16"
+          refX="8"
+          refY="8"
+          orient="auto"
+        >
+          <polygon
+            points="3 6, 10 8, 3 10"
+            fill={data?.sourceHandle === "yes" ? "green" : "red"}
+          />
+        </marker>
+      </defs>
       <path
+        ref={svgRef}
         id={id}
         style={style}
         className="react-flow__edge-path"
         d={edgePath}
-        markerEnd={`url(#${arrowId})`} // Apply the custom marker
+        markerEnd={`url(#${arrowId})`}
+        fill="none"
+        stroke="black"
+      />
+      <circle
+        cx={bendX}
+        cy={bendY}
+        r={6}
+        fill="black"
+        stroke="white"
+        strokeWidth={1.5}
+        onMouseDown={onMouseDown}
+        style={{
+          cursor: "grab",
+          pointerEvents: "all",
+        }}
       />
     </>
   );

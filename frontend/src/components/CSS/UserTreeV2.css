@@ -82,13 +82,15 @@
 }
 
 .ut-tree-flow-no-edge>path {
-    stroke: red;
+    stroke: red !important;
     stroke-width: 0.6em;
+    cursor: default;
 }
 
 .ut-tree-flow-yes-edge>path {
-    stroke: green;
+    stroke: green !important;
     stroke-width: 0.6em;
+    cursor: default;
 }
 
 .ut-tree-flow-child-buttons {

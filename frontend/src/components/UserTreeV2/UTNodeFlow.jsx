@@ -453,6 +453,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
 
   return (
     <ReactFlow
+      edgeOptions={{ selectable: false }} // Applies to all edges
       nodes={nodes}
       edges={edges}
       edgeTypes={{ detailed: DetailedEdge }}
