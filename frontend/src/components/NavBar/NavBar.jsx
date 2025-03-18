@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../App/AuthContext";
 // import DSD from "../NavBar/DSD.png";
-import DSD from "../NavBar/DSD_Text_Only.png";
+// import DSD from "../NavBar/DSD_Text_Only.png";
+import DSD from "./dsd-logo-2.png";
 import "../CSS/NavBarComponent.css";
 
 /**
@@ -203,7 +204,7 @@ const NavBarComponent = () => {
 
   return (
     <div className="navbar">
-      <Link to="/">
+      <Link className="nav-logo-container" to="/">
         <img className="nav-logo" src={DSD} alt="DSD Logo" />
       </Link>
       {links.map((link, index) => (

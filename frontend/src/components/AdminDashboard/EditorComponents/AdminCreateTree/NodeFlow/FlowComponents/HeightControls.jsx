@@ -36,10 +36,12 @@ const HeightControls = ({
     }
 
     // Special root node controls
-    if (selectedNode.currentId === "node0") {
-      const currentNode = findTreeNodeById(rootNode, selectedNode.currentId);
-      console.log("CURRENT", currentNode);
-      setHeightInput(Math.round(currentNode.yPos));
+    if (selectedNode) {
+      if (selectedNode.currentId === "node0") {
+        const currentNode = findTreeNodeById(rootNode, selectedNode.currentId);
+        console.log("CURRENT", currentNode);
+        setHeightInput(Math.round(currentNode.yPos));
+      }
     }
   }, [selectedNode, rootNode]);
 
