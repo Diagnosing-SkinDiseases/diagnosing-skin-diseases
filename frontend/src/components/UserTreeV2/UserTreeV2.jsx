@@ -10,6 +10,7 @@ const UserTreeV2 = ({ existingId, setTreePayload }) => {
   const [existingAboutLink, setExistingAboutLink] = useState("");
   const [existingCoverImage, setExistingCoverImage] = useState("");
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [existingMidOffsets, setExistingMidOffsets] = useState([]);
 
   const { id } = useParams();
 
@@ -21,10 +22,10 @@ const UserTreeV2 = ({ existingId, setTreePayload }) => {
       const parsed = JSON.parse(data);
 
       setExistingTree(toListAllChildren(parsed.nodeTree));
-
       setExistingTitle(parsed.name);
       setExistingAboutLink(parsed.aboutLink);
       setExistingCoverImage(parsed.coverImage);
+      setExistingMidOffsets(parsed.existingMidOffsets);
       setDataLoaded(true);
     } else {
       fetchTreeData();
@@ -36,12 +37,14 @@ const UserTreeV2 = ({ existingId, setTreePayload }) => {
       const response = await apiGetTree(id);
       // setTreeData(response.data);
       const data = response.data;
+      console.log("DATA", data.existingMidOffsets);
 
       setExistingTree(wrapTreeChildrenWithList(fromList(data.nodes))[0]);
       setExistingTitle(data.name);
       setExistingAboutLink(data.aboutLink);
       setExistingCoverImage(data.coverImage);
       setDataLoaded(true);
+      setExistingMidOffsets(data.existingMidOffsets);
     } catch (error) {
       console.error("Error fetching tree:", error);
     }
@@ -268,6 +271,7 @@ const UserTreeV2 = ({ existingId, setTreePayload }) => {
         existingTree={existingTree}
         existingAboutLink={existingAboutLink}
         existingCoverImage={existingCoverImage}
+        existingMidOffsets={existingMidOffsets}
         setTreePayload={setTreePayload}
       />
     )

@@ -139,19 +139,21 @@ const DetailedEdge = ({
         fill="none"
         stroke="black"
       />
-      <circle
-        cx={bendX}
-        cy={bendY}
-        r={6}
-        fill="black"
-        stroke="white"
-        strokeWidth={1.5}
-        onMouseDown={onMouseDown}
-        style={{
-          cursor: "grab",
-          pointerEvents: "all",
-        }}
-      />
+      {data.admin && (
+        <circle
+          cx={bendX}
+          cy={bendY}
+          r={6}
+          fill="black"
+          stroke="white"
+          strokeWidth={1.5}
+          onMouseDown={onMouseDown}
+          style={{
+            cursor: "grab",
+            pointerEvents: "all",
+          }}
+        />
+      )}
     </>
   );
 };

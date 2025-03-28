@@ -21,6 +21,27 @@ import DetailedEdge from "./FlowComponents/DetailedEdge";
 import NodeContentBox from "./FlowComponents/NodeContentBox";
 import NodeLegend from "./FlowComponents/NodeLegend";
 
+const UTNodeFlow = ({ rootNode, setRootNode, existingMidOffsets }) => {
+  return (
+    <div
+      style={{
+        width: "100%",
+        height: "70vh",
+        backgroundColor: "white",
+        border: "1px solid black",
+      }}
+    >
+      <ReactFlowProvider>
+        <NodeFlowInstance
+          rootNode={rootNode}
+          setRootNode={setRootNode}
+          existingMidOffsets={existingMidOffsets}
+        />
+      </ReactFlowProvider>
+    </div>
+  );
+};
+
 const nodeTypes = { questionInput: QuestionInput };
 
 const getNodeId = () => `randomnode_${+new Date()}`;
@@ -37,7 +58,7 @@ const flowKey = "example-flow";
  * @param {Function} setRootNode - A function to update the root node of the decision tree.
  * @returns {JSX.Element} - A JSX element representing the React Flow graph.
  */
-const NodeFlowInstance = ({ rootNode, setRootNode }) => {
+const NodeFlowInstance = ({ rootNode, setRootNode, existingMidOffsets }) => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -94,6 +115,13 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
     }
   }, [selectedNode]);
 
+  // Logging
+  useEffect(() => {
+    console.log("Nodes: ", nodes);
+    console.log("Edges: ", edges);
+    console.log("EXISTING MID OFFSETS", existingMidOffsets);
+  }, [nodes, edges, existingMidOffsets]);
+
   // Load existing nodes once on page load
   useEffect(() => {
     setNodes([]);
@@ -120,6 +148,11 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
       setNodes(filtered);
     }
   }, [rootNode, dataLoaded]);
+
+  const findMidOffset = (edgeId) => {
+    const match = existingMidOffsets?.find((e) => e.edgeId === edgeId);
+    return match?.midOffset || { x: 0, y: 0 };
+  };
 
   /**
    * Recursively loads the existing tree structure into the nodes and edges
@@ -154,6 +187,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
       };
 
       if (node.yesChild[0]) {
+        let edgeIdYes = `edge_${node.currentId}_${node.yesChild[0].currentId}`;
         let formattedEdge = {
           id: `edge_${node.currentId}_${node.yesChild[0].currentId}`,
           source: node.currentId,
@@ -161,17 +195,14 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
           sourceHandle: "yes",
           className: "ut-tree-flow-yes-edge",
           type: "detailed",
-          markerEnd: {
-            type: MarkerType.ArrowClosed,
-            color: "green",
-          },
-          data: { sourceHandle: "yes" },
+          data: { sourceHandle: "yes", midOffset: findMidOffset(edgeIdYes) },
           selectable: false,
         };
         setEdges((eds) => eds.concat(formattedEdge));
       }
 
       if (node.noChild[0]) {
+        let edgeIdNo = `edge_${node.currentId}_${node.noChild[0].currentId}`;
         let formattedEdge = {
           id: `edge_${node.currentId}_${node.noChild[0].currentId}`,
           source: node.currentId,
@@ -179,11 +210,10 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
           sourceHandle: "no",
           className: "ut-tree-flow-no-edge",
           type: "detailed",
-          markerEnd: {
-            type: MarkerType.ArrowClosed,
-            color: "red",
+          data: {
+            sourceHandle: "no",
+            midOffset: findMidOffset(edgeIdNo),
           },
-          data: { sourceHandle: "no" },
           selectable: false,
         };
         setEdges((eds) => eds.concat(formattedEdge));
@@ -486,23 +516,6 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
       />
       <NodeLegend></NodeLegend>
     </ReactFlow>
-  );
-};
-
-const UTNodeFlow = ({ rootNode, setRootNode }) => {
-  return (
-    <div
-      style={{
-        width: "100%",
-        height: "70vh",
-        backgroundColor: "white",
-        border: "1px solid black",
-      }}
-    >
-      <ReactFlowProvider>
-        <NodeFlowInstance rootNode={rootNode} setRootNode={setRootNode} />
-      </ReactFlowProvider>
-    </div>
   );
 };
 

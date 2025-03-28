@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import UTNodeFlow from "./UTNodeFlow";
 import "../CSS/UserTreeV2.css";
 
-const UTContent = ({ existingTitle, existingTree }) => {
+const UTContent = ({ existingTitle, existingTree, existingMidOffsets }) => {
   // Node State
   const [rootNode, setRootNode] = useState(
     existingTree !== null
@@ -31,6 +31,7 @@ const UTContent = ({ existingTitle, existingTree }) => {
           <UTNodeFlow
             rootNode={rootNode}
             setRootNode={setRootNode}
+            existingMidOffsets={existingMidOffsets}
           ></UTNodeFlow>
         </div>
       </div>
