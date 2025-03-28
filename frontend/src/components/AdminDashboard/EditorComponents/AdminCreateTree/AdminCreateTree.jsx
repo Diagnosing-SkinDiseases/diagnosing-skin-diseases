@@ -93,7 +93,6 @@ const AdminCreateTree = ({
     setTreePayload(payload);
 
     // Log payload
-    console.log("PAYLOAD", payload);
   }, [
     title,
     rootNode,

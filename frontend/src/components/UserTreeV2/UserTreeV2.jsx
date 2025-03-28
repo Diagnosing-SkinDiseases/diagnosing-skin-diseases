@@ -37,7 +37,6 @@ const UserTreeV2 = ({ existingId, setTreePayload }) => {
       const response = await apiGetTree(id);
       // setTreeData(response.data);
       const data = response.data;
-      console.log("DATA", data.existingMidOffsets);
 
       setExistingTree(wrapTreeChildrenWithList(fromList(data.nodes))[0]);
       setExistingTitle(data.name);

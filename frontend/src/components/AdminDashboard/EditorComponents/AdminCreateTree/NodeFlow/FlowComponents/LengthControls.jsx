@@ -28,7 +28,6 @@ const LengthControls = ({
     return Math.round(length); // Return the rounded length
   }
 
-  // Logging
   useEffect(() => {
     if (!selectedNode) {
       return;

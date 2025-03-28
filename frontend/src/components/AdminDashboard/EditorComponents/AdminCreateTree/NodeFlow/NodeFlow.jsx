@@ -289,19 +289,13 @@ const NodeFlowInstance = ({
 
   // Update existing mid offsets once loaded
   useEffect(() => {
-    console.log("EDGES FOR PARSING", edges);
-    console.log("EXTRACTED MID OFFSETS", extractMidOffsets(edges));
-    console.log("EXISTING MID OFFSETS", existingMidOffsets);
-
     if (typeof existingMidOffsets === "undefined") return;
 
     setExistingMidOffsets(extractMidOffsets(edges));
   }, [edges]);
 
   // Log changes to mig offsets
-  useEffect(() => {
-    console.log("EXISTING MID OFFSETS", existingMidOffsets);
-  }, [existingMidOffsets]);
+  useEffect(() => {}, [existingMidOffsets]);
 
   /**
    * Recursively flattens a tree structure into an array of nodes. The array
@@ -391,9 +385,6 @@ const NodeFlowInstance = ({
   // Multi select controls
   const [multiSelectOn, setMultiSelectOn] = useState(false);
   const [multiSelectList, setMultiSelectList] = useState([]);
-
-  // Logging
-  useEffect(() => {}, [rootNode]);
 
   const toggleMultiSelect = () => {
     setMultiSelectOn((prevState) => {

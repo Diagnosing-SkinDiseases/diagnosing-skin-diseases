@@ -44,9 +44,6 @@ const DetailedEdge = ({
 
   const edgePath = `M ${adjustedSourceX},${adjustedSourceY} L ${bendX},${bendY} L ${adjustedTargetX},${adjustedTargetY}`;
 
-  // Logging
-  useEffect(() => {});
-
   // Drag logic
   const isDragging = useRef(false);
   const midOffsetStart = useRef({ x: 0, y: 0 });

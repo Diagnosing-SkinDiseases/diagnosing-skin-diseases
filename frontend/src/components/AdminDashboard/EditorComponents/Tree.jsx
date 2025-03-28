@@ -219,8 +219,6 @@ const Tree = ({ existingId, setTreePayload }) => {
     return wrappedNode;
   }
 
-  // Logging
-
   /**
    * useEffect hook to fetch the tree data from the API.
    */
@@ -232,8 +230,6 @@ const Tree = ({ existingId, setTreePayload }) => {
       if (existingId) {
         apiGetTree(existingId)
           .then((res) => {
-            console.log("DATA", res.data.existingMidOffsets);
-
             setExistingTree(toListAllChildren(fromList(res.data.nodes)));
             setExistingTitle(res.data.name);
             setExistingAboutLink(res.data.aboutLink);

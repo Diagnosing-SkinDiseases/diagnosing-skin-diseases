@@ -115,13 +115,6 @@ const NodeFlowInstance = ({ rootNode, setRootNode, existingMidOffsets }) => {
     }
   }, [selectedNode]);
 
-  // Logging
-  useEffect(() => {
-    console.log("Nodes: ", nodes);
-    console.log("Edges: ", edges);
-    console.log("EXISTING MID OFFSETS", existingMidOffsets);
-  }, [nodes, edges, existingMidOffsets]);
-
   // Load existing nodes once on page load
   useEffect(() => {
     setNodes([]);

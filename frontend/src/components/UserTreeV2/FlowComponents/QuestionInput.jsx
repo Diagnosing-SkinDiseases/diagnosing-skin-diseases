@@ -337,14 +337,6 @@ function QuestionInput({
     // forceNodesReRender();
   }, [selectedNode]);
 
-  // Logging
-  useEffect(() => {
-    const node = findNodeById(id);
-    if (node) {
-    } else {
-    }
-  }, [id, findNodeById]);
-
   return (
     <div
       className={`nodrag ut-tree-flow-question-node ${nodeColorClass}`}

@@ -30,17 +30,6 @@ const AngleControls = ({
     return Math.round(angle);
   }
 
-  // Logging
-  useEffect(() => {
-    if (!selectedNode) {
-      return;
-    }
-    let parentNode = findTreeNodeById(rootNode, selectedNode.parentId);
-  }, [selectedNode]);
-
-  // Logging 2
-  useEffect(() => {}, [selectedNode]);
-
   /**
    * Custom angle handling
    */

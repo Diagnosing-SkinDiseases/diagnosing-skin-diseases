@@ -8,8 +8,6 @@ const createTree = async (req, res) => {
   let { name, nodeTree, aboutLink, status, coverImage, existingMidOffsets } =
     req.body;
 
-  console.log("REQ BODY", req.body);
-
   if (status) {
     status = status.toUpperCase();
   }
@@ -53,8 +51,6 @@ const getTree = async (req, res) => {
 
   const tree = await Tree.findById(id);
 
-  console.log("FOUND TREE", tree);
-
   if (!tree) {
     return res.status(404).json({ error: "Tree not found" });
   }
@@ -63,8 +59,6 @@ const getTree = async (req, res) => {
 
 // Update tree
 const updateTree = async (req, res) => {
-  console.log("REQ BODY", req.body);
-
   let { nodeTree, status, aboutLink } = req.body;
   if (status) {
     status = status.toUpperCase();
