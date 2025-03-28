@@ -151,11 +151,14 @@ const AngleControls = ({
           (multiNode) => multiNode.currentId === node.currentId
         );
 
+        let updatedNode = node;
+
         if (isInMultiSelectList) {
           const parentNode = findTreeNodeById(rootNode, node.parentId);
 
           if (parentNode) {
-            const isNoNode = parentNode.noChild[0].currentId === node.currentId;
+            const isNoNode =
+              parentNode.noChild[0]?.currentId === node.currentId;
 
             // Adjust the angle to use the positive x-axis as 90°, normalize to [0, 360)
             let adjustedAngle = (((450 - newAngle) % 360) + 360) % 360;
@@ -191,7 +194,8 @@ const AngleControls = ({
               )
             );
 
-            return { ...node, xPos: newXPos, yPos: newYPos };
+            updatedNode.xPos = newXPos;
+            updatedNode.yPos = newYPos;
           }
         }
 

@@ -197,7 +197,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
           sourceHandle: "yes",
           className: "ut-tree-flow-yes-edge",
           type: "detailed",
-          data: { sourceHandle: "yes" },
+          data: { sourceHandle: "yes", admin: true },
         };
         setEdges((eds) => eds.concat(formattedEdge));
       }
@@ -210,7 +210,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
           sourceHandle: "no",
           className: "ut-tree-flow-no-edge",
           type: "detailed",
-          data: { sourceHandle: "no" },
+          data: { sourceHandle: "no", admin: true },
         };
         setEdges((eds) => eds.concat(formattedEdge));
       }

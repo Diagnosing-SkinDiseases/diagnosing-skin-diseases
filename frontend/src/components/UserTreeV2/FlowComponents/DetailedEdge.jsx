@@ -62,7 +62,6 @@ const DetailedEdge = ({
   };
 
   const onMouseDown = (event) => {
-    console.log("HELLO WORLD");
     isDragging.current = true;
     offsetStart.current = { ...offset };
 

@@ -25,7 +25,6 @@ const HeightControls = ({
    */
 
   const [heightInput, setHeightInput] = useState(0);
-  console.log("Test1", selectedNode);
   useEffect(() => {
     if (selectedNode && selectedNode.parentId) {
       const parentNode = findTreeNodeById(rootNode, selectedNode.parentId);
@@ -39,7 +38,6 @@ const HeightControls = ({
     if (selectedNode) {
       if (selectedNode.currentId === "node0") {
         const currentNode = findTreeNodeById(rootNode, selectedNode.currentId);
-        console.log("CURRENT", currentNode);
         setHeightInput(Math.round(currentNode.yPos));
       }
     }
@@ -104,9 +102,11 @@ const HeightControls = ({
         };
       } else {
         // Multi-select logic
-        const isInMultiSelectList = multiSelectList.some(
-          (multiNode) => multiNode.currentId === node.currentId
-        );
+        const isInMultiSelectList = multiSelectList.some((multiNode) => {
+          return multiNode.currentId === node.currentId;
+        });
+
+        let updatedNode = node;
 
         if (isInMultiSelectList) {
           const parentNode = findTreeNodeById(rootNode, node.parentId);
@@ -125,16 +125,15 @@ const HeightControls = ({
               return newVisualNodes;
             });
 
-            return { ...node, xPos: node.xPos, yPos: newYPos };
+            updatedNode.yPos = newYPos;
           }
         }
-
         // Recursively process both noChild and yesChild arrays
         const updatedNoChild = node.noChild.map(updatePositionRecursively);
         const updatedYesChild = node.yesChild.map(updatePositionRecursively);
 
         return {
-          ...node,
+          ...updatedNode,
           noChild: updatedNoChild,
           yesChild: updatedYesChild,
         };
@@ -153,14 +152,6 @@ const HeightControls = ({
 
   return (
     <>
-      <button
-        onClick={toggleYLock}
-        className={
-          lockedY ? "tree-flow-panel-btn-locked" : "tree-flow-panel-btn"
-        }
-      >
-        Lock Height
-      </button>
       <span className="tree-flow-panel-label">Height: </span>
       <input
         type={"text"}

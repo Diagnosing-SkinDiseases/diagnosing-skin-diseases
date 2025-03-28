@@ -116,6 +116,8 @@ const LengthControls = ({
           (multiNode) => multiNode.currentId === node.currentId
         );
 
+        let updatedNode = node;
+
         if (isInMultiSelectList) {
           const parentNode = findTreeNodeById(rootNode, node.parentId);
 
@@ -145,7 +147,8 @@ const LengthControls = ({
             )
           );
 
-          return { ...node, xPos: newXPos, yPos: newYPos };
+          updatedNode.xPos = newXPos;
+          updatedNode.yPos = newYPos;
         }
       }
 
