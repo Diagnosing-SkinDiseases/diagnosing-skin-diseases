@@ -127,6 +127,8 @@ const ContentEditor = ({ contentType }) => {
           trimNodeTree(trimmedTreePayload.nodeTree);
           setTreePayload(trimmedTreePayload);
           updatedContent = trimmedTreePayload;
+
+          console.log("FINAL PAYLOAD", updatedContent);
         }
       }
       resolve(updatedContent); // Resolve the promise with sanitized content

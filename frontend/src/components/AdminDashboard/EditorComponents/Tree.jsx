@@ -232,12 +232,14 @@ const Tree = ({ existingId, setTreePayload }) => {
       if (existingId) {
         apiGetTree(existingId)
           .then((res) => {
+            console.log("DATA", res.data.existingMidOffsets);
+
             setExistingTree(toListAllChildren(fromList(res.data.nodes)));
             setExistingTitle(res.data.name);
             setExistingAboutLink(res.data.aboutLink);
             setExistingCoverImage(res.data.coverImage);
             setDataLoaded(true);
-            setExistingMidOffsets([]);
+            setExistingMidOffsets(res.data.existingMidOffsets);
           })
           .catch((err) => {
             console.error("err", err);

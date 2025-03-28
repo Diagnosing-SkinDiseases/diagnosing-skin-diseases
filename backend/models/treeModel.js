@@ -35,6 +35,21 @@ const nodeSchema = new Schema({
   },
 });
 
+// define schema for existingMidOffset
+const midOffsetSchema = new Schema(
+  {
+    edgeId: {
+      type: String,
+      required: true,
+    },
+    midOffset: {
+      x: { type: Number, required: true },
+      y: { type: Number, required: true },
+    },
+  },
+  { _id: false }
+);
+
 // define schema for tree
 const treeSchema = new Schema({
   name: {
@@ -61,8 +76,12 @@ const treeSchema = new Schema({
     enum: Object.values(Status),
   },
   previewText: {
-    type: String, 
-    required: false, 
+    type: String,
+    required: false,
+  },
+  existingMidOffsets: {
+    type: [midOffsetSchema],
+    required: false,
   },
 });
 
