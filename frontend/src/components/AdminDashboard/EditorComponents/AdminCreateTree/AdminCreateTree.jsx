@@ -22,6 +22,8 @@ const AdminCreateTree = ({
   existingTitle,
   existingCoverImage,
   existingAboutLink,
+  existingMidOffsets,
+  setExistingMidOffsets,
   setTreePayload,
 }) => {
   // Title state
@@ -85,10 +87,21 @@ const AdminCreateTree = ({
       nodeTree: treePayload,
       coverImage: coverImage,
       aboutLink: aboutLink,
+      existingMidOffsets: existingMidOffsets,
       status: "published",
     };
     setTreePayload(payload);
-  }, [title, rootNode, coverImage, aboutLink]);
+
+    // Log payload
+    console.log("PAYLOAD", payload);
+  }, [
+    title,
+    rootNode,
+    coverImage,
+    aboutLink,
+    existingMidOffsets,
+    setTreePayload,
+  ]);
 
   return (
     <>
@@ -111,7 +124,12 @@ const AdminCreateTree = ({
           {/* <NodeArea rootNode={rootNode} setRootNode={setRootNode}></NodeArea> */}
 
           {/* NodeFlow component - CURRENT VERSION*/}
-          <NodeFlow rootNode={rootNode} setRootNode={setRootNode}></NodeFlow>
+          <NodeFlow
+            rootNode={rootNode}
+            setRootNode={setRootNode}
+            existingMidOffsets={existingMidOffsets}
+            setExistingMidOffsets={setExistingMidOffsets}
+          ></NodeFlow>
         </div>
       </div>
     </>

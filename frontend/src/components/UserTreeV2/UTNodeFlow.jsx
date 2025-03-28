@@ -166,6 +166,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
             color: "green",
           },
           data: { sourceHandle: "yes" },
+          selectable: false,
         };
         setEdges((eds) => eds.concat(formattedEdge));
       }
@@ -183,6 +184,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
             color: "red",
           },
           data: { sourceHandle: "no" },
+          selectable: false,
         };
         setEdges((eds) => eds.concat(formattedEdge));
       }
@@ -453,7 +455,6 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
 
   return (
     <ReactFlow
-      edgeOptions={{ selectable: false }} // Applies to all edges
       nodes={nodes}
       edges={edges}
       edgeTypes={{ detailed: DetailedEdge }}

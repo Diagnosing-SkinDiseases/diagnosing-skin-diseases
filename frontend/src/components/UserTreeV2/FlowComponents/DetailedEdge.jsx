@@ -36,15 +36,20 @@ const DetailedEdge = ({
   const initialMidX = (adjustedSourceX + adjustedTargetX) / 2;
   const initialMidY = (adjustedSourceY + adjustedTargetY) / 2;
 
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const bendX = initialMidX + offset.x;
-  const bendY = initialMidY + offset.y;
+  const [midOffset, setMidOffset] = useState(
+    () => data?.midOffset || { x: 0, y: 0 }
+  );
+  const bendX = initialMidX + midOffset.x;
+  const bendY = initialMidY + midOffset.y;
 
   const edgePath = `M ${adjustedSourceX},${adjustedSourceY} L ${bendX},${bendY} L ${adjustedTargetX},${adjustedTargetY}`;
 
+  // Logging
+  useEffect(() => {});
+
   // Drag logic
   const isDragging = useRef(false);
-  const offsetStart = useRef({ x: 0, y: 0 });
+  const midOffsetStart = useRef({ x: 0, y: 0 });
   const dragStart = useRef({ x: 0, y: 0 });
 
   const convertClientToSvg = (clientX, clientY) => {
@@ -63,7 +68,7 @@ const DetailedEdge = ({
 
   const onMouseDown = (event) => {
     isDragging.current = true;
-    offsetStart.current = { ...offset };
+    midOffsetStart.current = { ...midOffset };
 
     const svgCoords = convertClientToSvg(event.clientX, event.clientY);
     dragStart.current = svgCoords;
@@ -79,11 +84,20 @@ const DetailedEdge = ({
     const deltaX = svgCoords.x - dragStart.current.x;
     const deltaY = svgCoords.y - dragStart.current.y;
 
-    setOffset({
-      x: offsetStart.current.x + deltaX,
-      y: offsetStart.current.y + deltaY,
+    setMidOffset({
+      x: midOffsetStart.current.x + deltaX,
+      y: midOffsetStart.current.y + deltaY,
     });
   };
+
+  // Update mid offset payload on change
+  useEffect(() => {
+    if (!data?.setExistingMidOffsets) return;
+
+    data.setExistingMidOffsets((items) =>
+      items.map((item) => (item.edgeId === id ? { ...item, midOffset } : item))
+    );
+  }, [midOffset]);
 
   const onMouseUp = () => {
     isDragging.current = false;

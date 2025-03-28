@@ -26,6 +26,33 @@ import AngleControls from "./FlowComponents/AngleControls";
 // Testing
 import DetailedEdge from "../../../../UserTreeV2/FlowComponents/DetailedEdge";
 
+const NodeFlow = ({
+  rootNode,
+  setRootNode,
+  existingMidOffsets,
+  setExistingMidOffsets,
+}) => {
+  return (
+    <div
+      style={{
+        width: "100%",
+        height: "80vh",
+        backgroundColor: "white",
+        border: "1px solid black",
+      }}
+    >
+      <ReactFlowProvider>
+        <NodeFlowInstance
+          rootNode={rootNode}
+          setRootNode={setRootNode}
+          existingMidOffsets={existingMidOffsets}
+          setExistingMidOffsets={setExistingMidOffsets}
+        />
+      </ReactFlowProvider>
+    </div>
+  );
+};
+
 const nodeTypes = { questionInput: QuestionInput };
 
 const getNodeId = () => `randomnode_${+new Date()}`;
@@ -69,7 +96,12 @@ const findTreeNodeById = (rootNode, targetNodeId) => {
  * @param {Function} setRootNode - A function to update the root node of the decision tree.
  * @returns {JSX.Element} - A JSX element representing the React Flow graph.
  */
-const NodeFlowInstance = ({ rootNode, setRootNode }) => {
+const NodeFlowInstance = ({
+  rootNode,
+  setRootNode,
+  existingMidOffsets,
+  setExistingMidOffsets,
+}) => {
   // Primary visual state
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
@@ -157,6 +189,11 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
     }
   }, [selectedNode]);
 
+  const findMidOffset = (edgeId) => {
+    const match = existingMidOffsets?.find((e) => e.edgeId === edgeId);
+    return match?.midOffset || { x: 0, y: 0 };
+  };
+
   /**
    * Recursively loads the existing tree structure into the nodes and edges
    * state variables.
@@ -190,27 +227,41 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
       };
 
       if (node.yesChild[0]) {
+        let edgeIdYes = `edge_${node.currentId}_${node.yesChild[0].currentId}`;
         let formattedEdge = {
-          id: `edge_${node.currentId}_${node.yesChild[0].currentId}`,
+          id: edgeIdYes,
           source: node.currentId,
           target: node.yesChild[0].currentId,
           sourceHandle: "yes",
           className: "ut-tree-flow-yes-edge",
           type: "detailed",
-          data: { sourceHandle: "yes", admin: true },
+          data: {
+            sourceHandle: "yes",
+            admin: true,
+            midOffset: findMidOffset(edgeIdYes),
+            setExistingMidOffsets: setExistingMidOffsets,
+          },
+          selectable: false,
         };
         setEdges((eds) => eds.concat(formattedEdge));
       }
 
       if (node.noChild[0]) {
+        let edgeIdNo = `edge_${node.currentId}_${node.noChild[0].currentId}`;
         let formattedEdge = {
-          id: `edge_${node.currentId}_${node.noChild[0].currentId}`,
+          id: edgeIdNo,
           source: node.currentId,
           target: node.noChild[0].currentId,
           sourceHandle: "no",
           className: "ut-tree-flow-no-edge",
           type: "detailed",
-          data: { sourceHandle: "no", admin: true },
+          data: {
+            sourceHandle: "no",
+            admin: true,
+            midOffset: findMidOffset(edgeIdNo),
+            setExistingMidOffsets: setExistingMidOffsets,
+          },
+          selectable: false,
         };
         setEdges((eds) => eds.concat(formattedEdge));
       }
@@ -226,6 +277,31 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
     let loadedCounter = _loadExistingTree(rootNode, "root", 0);
     return loadedCounter;
   };
+
+  const extractMidOffsets = (edges) => {
+    return edges
+      .filter((edge) => edge.data?.midOffset)
+      .map((edge) => ({
+        edgeId: edge.id,
+        midOffset: edge.data.midOffset,
+      }));
+  };
+
+  // Update existing mid offsets once loaded
+  useEffect(() => {
+    console.log("EDGES FOR PARSING", edges);
+    console.log("EXTRACTED MID OFFSETS", extractMidOffsets(edges));
+    console.log("EXISTING MID OFFSETS", existingMidOffsets);
+
+    if (typeof existingMidOffsets === "undefined") return;
+
+    setExistingMidOffsets(extractMidOffsets(edges));
+  }, [edges]);
+
+  // Log changes to mig offsets
+  useEffect(() => {
+    console.log("EXISTING MID OFFSETS", existingMidOffsets);
+  }, [existingMidOffsets]);
 
   /**
    * Recursively flattens a tree structure into an array of nodes. The array
@@ -427,8 +503,9 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
   const onConnect = useCallback(
     (params) =>
       setEdges((eds) => {
+        let edgeId = `edge_${params.source}_${params.target}`;
         const newEdge = {
-          id: `edge_${params.source}_${params.target}`,
+          id: edgeId,
           source: params.source,
           target: params.target,
           sourceHandle: params.sourceHandle,
@@ -437,7 +514,13 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
               ? "ut-tree-flow-no-edge"
               : "ut-tree-flow-yes-edge",
           type: "detailed",
-          data: { sourceHandle: params.sourceHandle },
+          data: {
+            sourceHandle: params.sourceHandle,
+            admin: true,
+            midOffset: findMidOffset(edgeId),
+            setExistingMidOffsets: setExistingMidOffsets,
+          },
+          selectable: false,
         };
 
         if (params.sourceHandle === "no") {
@@ -531,15 +614,23 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
 
     setNodes((nds) => nds.concat(newNode));
 
+    let edgeId = `edge_${selectedNode.currentId}_${newNode.id}`;
+
     const newEdge = {
-      id: `edge_${selectedNode.currentId}_${newNode.id}`,
+      id: edgeId,
       source: selectedNode.currentId,
       target: newNode.id,
       sourceHandle: newNodeType,
       className:
         newNodeType === "no" ? "ut-tree-flow-no-edge" : "ut-tree-flow-yes-edge",
       type: "detailed",
-      data: { sourceHandle: newNodeType },
+      data: {
+        sourceHandle: newNodeType,
+        admin: true,
+        midOffset: findMidOffset(edgeId),
+        setExistingMidOffsets: setExistingMidOffsets,
+      },
+      selectable: false,
     };
 
     setEdges((eds) => eds.concat(newEdge));
@@ -673,7 +764,6 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
 
   return (
     <ReactFlow
-      edgeOptions={{ selectable: false }} // Applies to all edges
       nodes={nodes}
       edges={edges}
       edgeTypes={{ detailed: DetailedEdge }}
@@ -775,23 +865,6 @@ const NodeFlowInstance = ({ rootNode, setRootNode }) => {
       <MiniMap />
       <Background variant="dots" gap={12} size={1} />
     </ReactFlow>
-  );
-};
-
-const NodeFlow = ({ rootNode, setRootNode }) => {
-  return (
-    <div
-      style={{
-        width: "100%",
-        height: "80vh",
-        backgroundColor: "white",
-        border: "1px solid black",
-      }}
-    >
-      <ReactFlowProvider>
-        <NodeFlowInstance rootNode={rootNode} setRootNode={setRootNode} />
-      </ReactFlowProvider>
-    </div>
   );
 };
 

@@ -15,6 +15,7 @@ const Tree = ({ existingId, setTreePayload }) => {
   const [existingTitle, setExistingTitle] = useState("");
   const [existingAboutLink, setExistingAboutLink] = useState("");
   const [existingCoverImage, setExistingCoverImage] = useState("");
+  const [existingMidOffsets, setExistingMidOffsets] = useState([]);
   const [dataLoaded, setDataLoaded] = useState(false);
 
   /**
@@ -31,6 +32,8 @@ const Tree = ({ existingId, setTreePayload }) => {
             existingAboutLink={existingAboutLink}
             existingCoverImage={existingCoverImage}
             setTreePayload={setTreePayload}
+            existingMidOffsets={existingMidOffsets}
+            setExistingMidOffsets={setExistingMidOffsets}
           />
         )
       );
@@ -42,6 +45,8 @@ const Tree = ({ existingId, setTreePayload }) => {
           existingAboutLink={existingAboutLink}
           existingCoverImage={existingCoverImage}
           setTreePayload={setTreePayload}
+          existingMidOffsets={existingMidOffsets}
+          setExistingMidOffsets={setExistingMidOffsets}
         ></AdminCreateTree>
       );
     }
@@ -214,6 +219,8 @@ const Tree = ({ existingId, setTreePayload }) => {
     return wrappedNode;
   }
 
+  // Logging
+
   /**
    * useEffect hook to fetch the tree data from the API.
    */
@@ -230,6 +237,7 @@ const Tree = ({ existingId, setTreePayload }) => {
             setExistingAboutLink(res.data.aboutLink);
             setExistingCoverImage(res.data.coverImage);
             setDataLoaded(true);
+            setExistingMidOffsets([]);
           })
           .catch((err) => {
             console.error("err", err);
