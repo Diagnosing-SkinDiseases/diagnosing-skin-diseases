@@ -753,6 +753,40 @@ const NodeFlowInstance = ({
     updateNodePosition(node.id, node.position);
   };
 
+  // Dedup mechanics
+  const deduplicateNodes = (nodes) => {
+    const seen = new Set();
+    return nodes.filter((node) => {
+      if (seen.has(node.id)) {
+        return false;
+      }
+      seen.add(node.id);
+      return true;
+    });
+  };
+
+  const deduplicateEdges = (edges) => {
+    const seen = new Set();
+    return edges.filter((edge) => {
+      if (seen.has(edge.id)) {
+        return false;
+      }
+      seen.add(edge.id);
+      return true;
+    });
+  };
+
+  useEffect(() => {
+    setEdges((prevEdges) => deduplicateEdges(prevEdges));
+
+    setNodes((prevNodes) => deduplicateNodes(prevNodes));
+
+    console.log(
+      "All node IDs:",
+      nodes.map((n) => n.id)
+    );
+  }, []);
+
   return (
     <ReactFlow
       nodes={nodes}

@@ -91,8 +91,6 @@ const AdminCreateTree = ({
       status: "published",
     };
     setTreePayload(payload);
-
-    // Log payload
   }, [
     title,
     rootNode,
