@@ -13,13 +13,13 @@
   height: 100px;
 
   background-image:
-      url("../../assets/DSD-line-top-1920.png"),
-      url("../../assets/DSD-line-bottom-1920.png");
-  
-    background-position: top center, bottom center;
-    background-repeat: repeat-x, repeat-x;
+    url("../../assets/DSD-line-top-1920.png"),
+    url("../../assets/DSD-line-bottom-1920.png");
 
-    background-size: 124em auto, 123em auto;
+  background-position: top center, bottom center;
+  background-repeat: repeat-x, repeat-x;
+
+  background-size: 124em auto, 123em auto;
 }
 
 .nav-item {
@@ -35,7 +35,6 @@
   cursor: pointer;
   height: 50px;
 }
-
 
 /* Apply a subtle highlight and lift effect to nav items on hover */
 .nav-item:hover {
@@ -165,8 +164,6 @@ a.nav-link.active {
 .nav-item.active .nav-link,
 .nav-item.active:hover .nav-link {
   background-color: var(--nav-hover);
-  height: 100%; 
-  border-radius: 0;
   /* Slightly darker than the hover color to indicate active state */
 }
 
@@ -174,7 +171,9 @@ a.nav-link.active {
   font-size: 1.05em;
 }
 
-@media (max-height: 1100px) {
+/* Note, not compatible with the revised navbar */
+
+/* @media (max-height: 700px) {
   .navbar {
     font-size: 1.1em;
     height: 80px;
@@ -188,4 +187,4 @@ a.nav-link.active {
     height: 80px;
     width: 160px;
   }
-}
+} */
