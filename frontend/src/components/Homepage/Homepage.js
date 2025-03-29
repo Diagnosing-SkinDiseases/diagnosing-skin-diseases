@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Slider from "react-slick";
 import { apiGetAllTrees } from "../../apiControllers/treeApiController";
 import "../CSS/Homepage.css";
 import LoadingPage from "../Loading/LoadingPage";
@@ -21,12 +20,12 @@ const Card = ({ title, image, aboutLink, previewText, treeId }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="card card-custom card-container">
-      <img src={image} alt={title} className="card-img-top" />
-      <div className="card-body">
-        <div className="card-content">
+    <div className="card-wrapper col-lg-3 col-sm-6">
+      <div className="card">
+        <img src={image} alt={title} className="card-img-top" />
+        <div className="card-body">
           <h3 className="card-title">{title}</h3>
-          <p className="card-description">
+          <p className="card-text">
             {previewText ||
               "This is a brief description of the diagnostic tree. It provides..."}
             <a
@@ -38,10 +37,8 @@ const Card = ({ title, image, aboutLink, previewText, treeId }) => {
               Read more
             </a>
           </p>
-        </div>
-        <div className="card-actions">
           <button
-            className="homepage-button"
+            className="btn homepage-button"
             onClick={() => navigate(`/trees/${treeId}`)}
           >
             Start Diagnosis
@@ -100,7 +97,7 @@ function Homepage() {
 
   // Function to adjust card preview description heights
   const adjustCardPreviews = () => {
-    const cardDescriptions = document.querySelectorAll(".card-description");
+    const cardDescriptions = document.querySelectorAll(".card-text");
     let maxDescriptionHeight = 0;
 
     cardDescriptions.forEach((description) => {
@@ -115,71 +112,58 @@ function Homepage() {
     });
   };
 
+  // Function to set the image height to 50% of the card's height
+  const adjustCardImages = () => {
+    const cards = document.querySelectorAll(".card");
+    cards.forEach((card) => {
+      const img = card.querySelector(".card-img-top");
+      if (img) {
+        img.style.height = `${card.offsetHeight * 0.5}px`;
+      }
+    });
+  };
+
   useEffect(() => {
-    // Call both adjustCardTitles and adjustCardPreviews
-    adjustCardTitles();
-    adjustCardPreviews();
+    const adjustCardElements = () => {
+      adjustCardTitles();
+      adjustCardPreviews();
+    };
 
-    window.addEventListener("resize", adjustCardTitles);
-    window.addEventListener("resize", adjustCardPreviews);
+    const adjustCardImagesIfNeeded = () => {
+      if (window.innerWidth >= 900) {
+        adjustCardImages();
+      }
+    };
 
+    // Adjust card elements and images on load
+    adjustCardElements();
+    adjustCardImagesIfNeeded();
+
+    // Attach resize event listeners
+    window.addEventListener("resize", adjustCardElements);
+    window.addEventListener("resize", adjustCardImagesIfNeeded);
+
+    // Cleanup event listeners
     return () => {
-      window.removeEventListener("resize", adjustCardTitles);
-      window.removeEventListener("resize", adjustCardPreviews);
+      window.removeEventListener("resize", adjustCardElements);
+      window.removeEventListener("resize", adjustCardImagesIfNeeded);
     };
   }, [trees]);
-
-  // Slider settings including arrow visibility and vertical scrolling for smaller screens
-  const sliderSettings = {
-    dots: false,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 4,
-    prevArrow: <PrevArrow />,
-    nextArrow: <NextArrow />,
-    rows: 2,
-    vertical: false, // Default horizontal scrolling
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          rows: 2,
-          vertical: false, // Horizontal scrolling for medium screens
-          prevArrow: <PrevArrow />,
-          nextArrow: <NextArrow />,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          rows: 2,
-          vertical: false, // Horizontal scrolling for smaller screens
-          prevArrow: <PrevArrow />,
-          nextArrow: <NextArrow />,
-        },
-      },
-    ],
-  };
 
   return (
     <div className="Homepage">
       <div className="container-fluid">
         <h2 className="homepage-text my-4">Diagnose by Primary Lesion</h2>
-        <p className="homepage-intro-text">
+        <div className="intro-text">
           This website is designed to help diagnose common skin diseases
           frequently seen in children and adults. Select the primary lesion that
           best matches your patient, then click Start Diagnosis for the
           diagnostic tree Q&A or click Info for an overview of that section.
-        </p>
+        </div>
         {isLoading ? (
           <LoadingPage />
         ) : (
-          <Slider {...sliderSettings}>
+          <div className="row">
             {trees.map((tree, index) => (
               <Card
                 key={index}
@@ -190,22 +174,11 @@ function Homepage() {
                 treeId={tree._id}
               />
             ))}
-          </Slider>
+          </div>
         )}
       </div>
     </div>
   );
 }
-
-// Arrow components for slider navigation
-const PrevArrow = (props) => {
-  const { className, style, onClick } = props;
-  return <div className={`${className} arrow`} onClick={onClick} />;
-};
-
-const NextArrow = (props) => {
-  const { className, style, onClick } = props;
-  return <div className={`${className} arrow`} onClick={onClick} />;
-};
 
 export default Homepage;

@@ -36,6 +36,7 @@
   height: 50px;
 }
 
+
 /* Apply a subtle highlight and lift effect to nav items on hover */
 .nav-item:hover {
   background-color: var(--nav-hover);
@@ -164,9 +165,27 @@ a.nav-link.active {
 .nav-item.active .nav-link,
 .nav-item.active:hover .nav-link {
   background-color: var(--nav-hover);
+  height: 100%; 
+  border-radius: 0;
   /* Slightly darker than the hover color to indicate active state */
 }
 
 .subtab-link {
   font-size: 1.05em;
+}
+
+@media (max-height: 1100px) {
+  .navbar {
+    font-size: 1.1em;
+    height: 80px;
+  }
+
+  .nav-link {
+    height: 100%;
+  }
+
+  .nav-logo {
+    height: 80px;
+    width: 160px;
+  }
 }
