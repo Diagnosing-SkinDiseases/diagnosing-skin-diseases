@@ -218,7 +218,7 @@ const NavBarComponent = () => {
         >
           <div
             onClick={() => handleClick(link.path, link.subTabs.length > 0)}
-            className={`nav-link ${activeLink === link.name ? "active" : ""}`}
+            className={`d-flex align-items-center justify-content-center nav-link ${activeLink === link.name ? "active" : ""}`}
           >
             <p className="navbar-link-text">{link.name} </p>
           </div>
