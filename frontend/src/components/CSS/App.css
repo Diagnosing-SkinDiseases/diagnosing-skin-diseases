@@ -136,7 +136,7 @@ h3 {
   bottom: 0;
   height: 4em;
   text-align: center;
-  color: var(--footer)
+  color: var(--footer);
 }
 
 .footer-link {
@@ -182,4 +182,8 @@ html {
   background-color: rgba(0, 0, 0, 0.7);
 
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.content-container {
+  padding-bottom: 50px
 }
