@@ -62,7 +62,7 @@
 
 .navbar-link-text {
   margin: 0em;
-  font-size: 1.5em !important;
+  font-size: 1.5em;
 }
 
 a.nav-link.active {
@@ -147,7 +147,6 @@ a.nav-link.active {
   display: flex;
   justify-content: center;
   width: 222px;
-  height: 50px;
   margin-right: 0.5em;
   margin-left: 1em;
 }
@@ -190,3 +189,19 @@ a.nav-link.active {
     width: 160px;
   }
 } */
+
+@media (max-width: 1400px) {
+
+  .navbar-link-text {
+    font-size: 1em
+  }
+
+  .nav-link {
+    height: 100%;
+  }
+
+  .nav-logo-container {
+    margin-left: 10px;
+    width: 200px
+  }
+}
