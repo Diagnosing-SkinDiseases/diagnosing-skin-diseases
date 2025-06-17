@@ -137,22 +137,25 @@ const mfaSetup = async (req, res) => {
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ error: "User not found" });
 
-    // Generate TOTP secret
-    const secret = speakeasy.generateSecret({
-      name: `YourApp (${user.email})`, // label in authenticator app
-    });
+    let secretBase32 = user.mfaSecret;
 
-    // Store secret temporarily (NOT enabling MFA yet)
-    user.mfaSecret = secret.base32;
-    await user.save();
+    // Only generate a new secret if one doesn't exist
+    if (!secretBase32) {
+      const secret = speakeasy.generateSecret({
+        name: `YourApp (${user.email})`,
+      });
 
-    // Generate QR code image as data URL
-    const otpauthUrl = secret.otpauth_url;
+      secretBase32 = secret.base32;
+      user.mfaSecret = secretBase32;
+      await user.save();
+    }
+
+    const otpauthUrl = `otpauth://totp/YourApp:${user.email}?secret=${secretBase32}&issuer=YourApp`;
     const qrCodeUrl = await qrcode.toDataURL(otpauthUrl);
 
     res.status(200).json({
       qrCodeUrl,
-      manualKey: secret.base32,
+      manualKey: secretBase32,
     });
   } catch (error) {
     res.status(500).json({ error: "Failed to generate MFA setup." });

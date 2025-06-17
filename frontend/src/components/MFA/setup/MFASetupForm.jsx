@@ -1,28 +1,73 @@
 import React, { useState, useEffect } from "react";
+import Cookies from "js-cookie";
 
 const MFASetupForm = () => {
+  const [userId, setUserId] = useState("");
   const [qrCodeUrl, setQrCodeUrl] = useState("");
-  const [manualKey, setManualKey] = useState("");
   const [code, setCode] = useState("");
+  const [message, setMessage] = useState("");
 
+  // Extract userId from token
   useEffect(() => {
-    // Simulate fetching QR code and manual key from server
-    const fetchMfaSetup = async () => {
-      // Replace this with real API call
-      const response = await fakeFetchMfaSetup();
-      setQrCodeUrl(response.qrCodeUrl);
-      setManualKey(response.manualKey);
-    };
-
-    fetchMfaSetup();
+    const token = Cookies.get("token");
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        setUserId(payload.userId);
+      } catch (err) {
+        console.error("Failed to decode token:", err);
+      }
+    }
   }, []);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  // Request MFA setup from backend
+  useEffect(() => {
+    const fetchMfaSetup = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:4000/api/user/mfa/setup",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId }),
+          }
+        );
 
-    // Submit the TOTP code to backend for verification
-    console.log("Verifying MFA code:", code);
-    // await sendCodeToBackend(code);
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Setup failed");
+
+        setQrCodeUrl(data.qrCodeUrl);
+      } catch (err) {
+        console.error(err.message);
+        setMessage("Error setting up MFA. Please try again.");
+      }
+    };
+
+    if (userId) fetchMfaSetup();
+  }, [userId]);
+
+  // Submit TOTP code to enable MFA
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch(
+        "http://localhost:4000/api/user/mfa/verify",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, token: code }),
+        }
+      );
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Verification failed");
+
+      setMessage("✅ MFA setup complete!");
+    } catch (err) {
+      console.error(err.message);
+      setMessage("❌ Invalid code. Try again.");
+    }
   };
 
   return (
@@ -32,26 +77,28 @@ const MFASetupForm = () => {
         {/* QR Code */}
         <div>
           <p>Scan this QR code with your authenticator app:</p>
-          <div
-            style={{
-              width: "200px",
-              height: "200px",
-              border: "2px dashed #ccc",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "1.2rem",
-              marginTop: "10px",
-            }}
-          >
-            QR Code
-          </div>
-        </div>
-
-        {/* Manual Key */}
-        <div>
-          <p>Or enter this code manually:</p>
-          <code>{manualKey}</code>
+          {qrCodeUrl ? (
+            <img
+              src={qrCodeUrl}
+              alt="MFA QR Code"
+              style={{ width: 200, height: 200 }}
+            />
+          ) : (
+            <div
+              style={{
+                width: "200px",
+                height: "200px",
+                border: "2px dashed #ccc",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "1.2rem",
+                marginTop: "10px",
+              }}
+            >
+              QR Code
+            </div>
+          )}
         </div>
 
         {/* TOTP Input */}
@@ -68,19 +115,12 @@ const MFASetupForm = () => {
           />
         </div>
 
-        {/* Submit Button */}
         <button type="submit">Verify & Enable MFA</button>
+
+        {message && <p>{message}</p>}
       </form>
     </div>
   );
-};
-
-// Simulated API response
-const fakeFetchMfaSetup = async () => {
-  return {
-    qrCodeUrl: "https://via.placeholder.com/150", // Replace with real QR code image URL
-    manualKey: "JBSWY3DPEHPK3PXP", // Replace with actual base32 secret
-  };
 };
 
 export default MFASetupForm;
