@@ -22,6 +22,8 @@ import AdminDashboard from "../AdminDashboard/AdminDashboard";
 import ContentEditor from "../AdminDashboard/ContentEditor";
 import ContentTypeEnum from "../AdminDashboard/enums/ContentTypeEnum";
 import UserTreeV2 from "../UserTreeV2/UserTreeV2";
+import MFASetup from "../MFA/setup/MFASetup";
+import MFAVerify from "../MFA/verify/MFAVerify";
 
 // This function wraps your Routes and uses useAuth to access the auth state
 function ProtectedRoute({ children }) {
@@ -224,6 +226,26 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Signup></Signup>
+                </ProtectedRoute>
+              }
+            ></Route>
+
+            {/* MFS Setup */}
+            <Route
+              path="/mfa-setup"
+              element={
+                <ProtectedRoute>
+                  <MFASetup></MFASetup>
+                </ProtectedRoute>
+              }
+            ></Route>
+
+            {/* MFA Verify */}
+            <Route
+              path="/mfa-verify"
+              element={
+                <ProtectedRoute>
+                  <MFAVerify></MFAVerify>
                 </ProtectedRoute>
               }
             ></Route>
