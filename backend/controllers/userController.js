@@ -4,6 +4,10 @@ const ObjectId = mongoose.Types.ObjectId;
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+// MFA Code
+const speakeasy = require("speakeasy");
+const qrcode = require("qrcode");
+
 // Create User
 const createUser = async (req, res) => {
   let { username, email, password } = req.body;
@@ -125,6 +129,68 @@ const deleteUser = async (req, res) => {
   res.status(200).json(user);
 };
 
+// MFA Setup
+const mfaSetup = async (req, res) => {
+  const { userId } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    // Generate TOTP secret
+    const secret = speakeasy.generateSecret({
+      name: `YourApp (${user.email})`, // label in authenticator app
+    });
+
+    // Store secret temporarily (NOT enabling MFA yet)
+    user.mfaSecret = secret.base32;
+    await user.save();
+
+    // Generate QR code image as data URL
+    const otpauthUrl = secret.otpauth_url;
+    const qrCodeUrl = await qrcode.toDataURL(otpauthUrl);
+
+    res.status(200).json({
+      qrCodeUrl,
+      manualKey: secret.base32,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to generate MFA setup." });
+  }
+};
+
+// MFA Verify
+const mfaVerify = async (req, res) => {
+  const { userId, token } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user || !user.mfaSecret) {
+      return res
+        .status(404)
+        .json({ error: "MFA not set up or user not found" });
+    }
+
+    const isValid = speakeasy.totp.verify({
+      secret: user.mfaSecret,
+      encoding: "base32",
+      token,
+      window: 1, // allow slight clock drift
+    });
+
+    if (!isValid) {
+      return res.status(401).json({ error: "Invalid MFA token" });
+    }
+
+    user.mfaEnabled = true;
+    await user.save();
+
+    res.status(200).json({ message: "MFA setup complete" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to verify MFA" });
+  }
+};
+
 module.exports = {
   createUser,
   loginUser,
@@ -132,4 +198,6 @@ module.exports = {
   getUser,
   updateUser,
   deleteUser,
+  mfaSetup,
+  mfaVerify,
 };

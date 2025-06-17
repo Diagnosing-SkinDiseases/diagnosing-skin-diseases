@@ -4,20 +4,31 @@ const Schema = mongoose.Schema;
 
 // define schema for user
 const userSchema = new Schema({
-  // username, must be a string
   username: {
     type: String,
     required: true,
   },
-  // email, must be a string
+
   email: {
     type: String,
     required: true,
   },
-  // password, must be a string
+
   password: {
     type: String,
     required: true,
+  },
+
+  // Indicates whether MFA is enabled for the user
+  mfaEnabled: {
+    type: Boolean,
+    default: false,
+  },
+
+  // Stores the user's TOTP secret (base32 encoded)
+  mfaSecret: {
+    type: String,
+    default: null,
   },
 });
 
