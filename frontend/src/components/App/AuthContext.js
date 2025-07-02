@@ -1,46 +1,79 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import Cookies from "js-cookie"; // Import js-cookie
+import Cookies from "js-cookie";
 
 const AuthContext = createContext();
 
-/**
- * AuthProvider Component
- *
- * Provides an authentication context to child components, managing the login state
- * and authentication token. It uses cookies to persist authentication tokens across sessions.
- *
- * State:
- *   isLoggedIn (Boolean): A state to track whether the user is logged in or not.
- *   isLoading (Boolean): A state to manage the loading state of the authentication check.
- *
- * Effects:
- *   useEffect runs on component mount to check if a user's authentication token exists in cookies
- *   and sets the login state accordingly.
- *
- * Functions:
- *   login (Function): Accepts a token, stores it in cookies, and sets `isLoggedIn` to true.
- *   logout (Function): Removes the token from cookies and sets `isLoggedIn` to false.
- *
- * Props:
- *   children (Node): Child components that can consume the authentication context.
- */
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [mfaEnabled, setMfaEnabled] = useState(false);
+  const [mfaVerified, setMfaVerified] = useState(false);
+
+  // Token Decode Helper Function
+  function decodeToken(token) {
+    try {
+      const parts = token.split(".");
+      if (parts.length !== 3) throw new Error("Invalid token format");
+
+      const base64Url = parts[1];
+      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      const padded = base64.padEnd(
+        base64.length + ((4 - (base64.length % 4)) % 4),
+        "="
+      );
+      return JSON.parse(atob(padded));
+    } catch (err) {
+      console.error("Failed to decode token:", err);
+      return null;
+    }
+  }
 
   useEffect(() => {
-    const token = Cookies.get("token"); // Retrieve the token from cookies
-    setIsLoggedIn(!!token); // Set login state based on the presence of a token
-    setIsLoading(false); // Set loading state to false after checking token
+    const token = Cookies.get("token");
+    console.log("isloading", isLoading);
+
+    if (token) {
+      try {
+        const payload = decodeToken(token);
+        console.log("✅ Decoded JWT Payload:", payload);
+
+        setIsLoggedIn(true);
+        setMfaEnabled(payload.mfaEnabled === true);
+        setMfaVerified(payload.mfaVerified === true); // <-- this!
+
+        console.log("mfaEnabled:", payload.mfaEnabled);
+        console.log("mfaVerified:", payload.mfaVerified);
+      } catch (err) {
+        console.error("❌ Failed to decode JWT:", err);
+        setIsLoggedIn(false);
+        setMfaEnabled(false);
+        setMfaVerified(false);
+      }
+    } else {
+      console.log("No token found.");
+      setIsLoggedIn(false);
+    }
+
+    setIsLoading(false);
   }, []);
 
   const login = (token) => {
-    Cookies.set("token", token, { expires: 1 }); // Store the token in cookies with an expiry of 1 day
-    setIsLoggedIn(true);
+    Cookies.set("token", token, { expires: 1 });
+
+    const payload = decodeToken(token);
+    if (payload) {
+      setIsLoggedIn(true);
+      setMfaEnabled(payload.mfaEnabled === true);
+      setMfaVerified(payload.mfaVerified === true);
+    } else {
+      setIsLoggedIn(false);
+      setMfaEnabled(false);
+      setMfaVerified(false);
+    }
   };
 
   const logout = () => {
-    Cookies.remove("token"); // Clear the token from cookies
+    Cookies.remove("token");
     setIsLoggedIn(false);
   };
 
@@ -51,13 +84,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-/**
- * useAuth Hook
- *
- * Custom hook to access the authentication context. It allows any component in the application
- * to access and modify the authentication state and perform login or logout operations.
- *
- * Returns:
- *   Object containing `isLoggedIn`, `isLoading`, `login`, and `logout` to manage authentication.
- */
 export const useAuth = () => useContext(AuthContext);

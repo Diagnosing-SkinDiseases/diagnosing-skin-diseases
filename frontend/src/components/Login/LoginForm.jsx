@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { apiLoginUser } from '../../apiControllers/userApiController';
-import { useAuth } from "../App/AuthContext"; 
+import { apiLoginUser } from "../../apiControllers/userApiController";
+import { useAuth } from "../App/AuthContext";
+import { useLocation } from "react-router-dom";
 
 /**
  * LoginForm Component
- * 
+ *
  * Provides a user interface for the login process. Users can enter their username and password to authenticate.
  * On successful login, the user is redirected to a specific page (e.g., '/admin/trees'). If there are any errors
  * during the login process, such as invalid credentials or server issues, appropriate error messages are displayed.
@@ -28,9 +29,12 @@ const LoginForm = () => {
   const { login } = useAuth(); // Use the login function provided by AuthContext
   const navigate = useNavigate();
 
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/admin/trees";
+
   /**
    * handleSubmit Function
-   * 
+   *
    * Handles the form submission event. Clears previous error messages, then makes an API call to
    * authenticate the user. Upon successful authentication, the user is logged in via the context provider
    * and redirected to a secure page. Errors during the process are caught and handled by setting appropriate
@@ -45,7 +49,7 @@ const LoginForm = () => {
 
     try {
       // Call to API to log in the user using username and password
-      const response = await apiLoginUser( {
+      const response = await apiLoginUser({
         username,
         password,
       });
@@ -57,12 +61,15 @@ const LoginForm = () => {
       login(token);
 
       // Redirect to a protected route or homepage after successful login
-      navigate("/admin/trees");
+      window.location.href = from;
     } catch (error) {
       // Handle login error
       if (error.response) {
         // Set custom error messages based on the status code or use a generic message
-        const message = error.response.status === 401 ? "Invalid credentials." : "Login failed.";
+        const message =
+          error.response.status === 401
+            ? "Invalid credentials."
+            : "Login failed.";
         setErrorMessage(message);
       } else {
         // For network errors or other issues not related to the server response
@@ -97,4 +104,3 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
-

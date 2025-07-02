@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom"; // ✅ add this!
+import { useAuth } from "../../App/AuthContext";
 
 const MFASetupForm = () => {
   const [userId, setUserId] = useState("");
   const [qrCodeUrl, setQrCodeUrl] = useState("");
   const [code, setCode] = useState("");
   const [message, setMessage] = useState("");
+  const { login } = useAuth();
+
+  const navigate = useNavigate(); // ✅ add this
 
   // Extract userId from token
   useEffect(() => {
@@ -63,7 +68,16 @@ const MFASetupForm = () => {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Verification failed");
 
+      // ✅ Save new token
+      Cookies.set("token", data.token, { expires: 1 });
+
+      // ✅ Update context so new flags are reflected immediately
+      login(data.token);
+
       setMessage("✅ MFA setup complete!");
+      setTimeout(() => {
+        navigate("/admin/trees");
+      }, 500);
     } catch (err) {
       console.error(err.message);
       setMessage("❌ Invalid code. Try again.");

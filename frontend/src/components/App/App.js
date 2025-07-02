@@ -24,14 +24,29 @@ import ContentTypeEnum from "../AdminDashboard/enums/ContentTypeEnum";
 import UserTreeV2 from "../UserTreeV2/UserTreeV2";
 import MFASetup from "../MFA/setup/MFASetup";
 import MFAVerify from "../MFA/verify/MFAVerify";
+import { useLocation } from "react-router-dom";
 
 // This function wraps your Routes and uses useAuth to access the auth state
+
 function ProtectedRoute({ children }) {
-  const { isLoggedIn, isLoading } = useAuth(); // Use the isLoggedIn state from AuthContext
-  if (isLoading) {
-    return <div>Loading...</div>; // Or some loading spinner
+  const { isLoggedIn, isLoading, mfaEnabled, mfaVerified } = useAuth();
+  const location = useLocation();
+
+  if (isLoading) return <div>Loading...</div>;
+
+  if (!isLoggedIn) {
+    return <Navigate to="/login" replace state={{ from: location }} />;
   }
-  return isLoggedIn ? children : <Navigate to="/login" replace />;
+
+  if (!mfaVerified) {
+    if (!mfaEnabled) {
+      return <Navigate to="/mfa-setup" replace state={{ from: location }} />;
+    } else {
+      return <Navigate to="/mfa-verify" replace state={{ from: location }} />;
+    }
+  }
+
+  return children;
 }
 
 function App() {
@@ -231,24 +246,10 @@ function App() {
             ></Route>
 
             {/* MFS Setup */}
-            <Route
-              path="/mfa-setup"
-              element={
-                <ProtectedRoute>
-                  <MFASetup></MFASetup>
-                </ProtectedRoute>
-              }
-            ></Route>
+            <Route path="/mfa-setup" element={<MFASetup />} />
 
             {/* MFA Verify */}
-            <Route
-              path="/mfa-verify"
-              element={
-                <ProtectedRoute>
-                  <MFAVerify></MFAVerify>
-                </ProtectedRoute>
-              }
-            ></Route>
+            <Route path="/mfa-verify" element={<MFAVerify />} />
 
             {/* About DSD */}
             <Route path="/about" element={<About />}></Route>
