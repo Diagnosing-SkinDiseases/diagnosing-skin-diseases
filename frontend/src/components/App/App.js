@@ -32,8 +32,6 @@ function ProtectedRoute({ children }) {
   const { isLoggedIn, isLoading, mfaEnabled, mfaVerified } = useAuth();
   const location = useLocation();
 
-  console.log("TESTDATA", isLoggedIn, isLoading, mfaEnabled, mfaVerified);
-
   if (isLoading) return <div>Loading...</div>;
 
   if (!isLoggedIn) {

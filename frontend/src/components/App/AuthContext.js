@@ -30,19 +30,14 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = Cookies.get("token");
-    console.log("isloading", isLoading);
 
     if (token) {
       try {
         const payload = decodeToken(token);
-        console.log("✅ Decoded JWT Payload:", payload);
 
         setIsLoggedIn(true);
         setMfaEnabled(payload.mfaEnabled === true);
         setMfaVerified(payload.mfaVerified === true); // <-- this!
-
-        console.log("mfaEnabled:", payload.mfaEnabled);
-        console.log("mfaVerified:", payload.mfaVerified);
       } catch (err) {
         console.error("❌ Failed to decode JWT:", err);
         setIsLoggedIn(false);
@@ -50,7 +45,6 @@ export const AuthProvider = ({ children }) => {
         setMfaVerified(false);
       }
     } else {
-      console.log("No token found.");
       setIsLoggedIn(false);
     }
 
@@ -59,8 +53,6 @@ export const AuthProvider = ({ children }) => {
 
   const login = (token) => {
     Cookies.set("token", token, { expires: 1 });
-    console.log("Token:", token);
-    console.log("decoded", decodeToken(token));
 
     const payload = decodeToken(token);
     if (payload) {

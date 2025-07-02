@@ -780,11 +780,6 @@ const NodeFlowInstance = ({
     setEdges((prevEdges) => deduplicateEdges(prevEdges));
 
     setNodes((prevNodes) => deduplicateNodes(prevNodes));
-
-    console.log(
-      "All node IDs:",
-      nodes.map((n) => n.id)
-    );
   }, []);
 
   return (

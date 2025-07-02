@@ -15,7 +15,6 @@ const MFAVerifyForm = () => {
   // Extract userId from token on mount
   useEffect(() => {
     const token = Cookies.get("token");
-    console.log("COOKIE", token);
     if (token) {
       try {
         const parts = token.split(".");
@@ -59,7 +58,6 @@ const MFAVerifyForm = () => {
       setMessage("✅ MFA verified! Proceeding...");
 
       setTimeout(() => {
-        console.log("FROM", from);
         window.location.href = from;
       }, 300); // Shorter delay is often fine
 
