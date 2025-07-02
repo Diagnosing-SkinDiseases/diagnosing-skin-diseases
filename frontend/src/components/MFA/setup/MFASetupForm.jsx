@@ -3,6 +3,8 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom"; // ✅ add this!
 import { useAuth } from "../../App/AuthContext";
 
+import apiUrl from "../../../api";
+
 const MFASetupForm = () => {
   const [userId, setUserId] = useState("");
   const [qrCodeUrl, setQrCodeUrl] = useState("");
@@ -29,14 +31,11 @@ const MFASetupForm = () => {
   useEffect(() => {
     const fetchMfaSetup = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:4000/api/user/mfa/setup",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ userId }),
-          }
-        );
+        const response = await fetch(`${apiUrl}/user/mfa/setup`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId }),
+        });
 
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || "Setup failed");
@@ -56,14 +55,11 @@ const MFASetupForm = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(
-        "http://localhost:4000/api/user/mfa/verify",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, token: code }),
-        }
-      );
+      const response = await fetch(`${apiUrl}/user/mfa/verify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, token: code }),
+      });
 
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Verification failed");

@@ -3,6 +3,8 @@ import Cookies from "js-cookie";
 
 import { useLocation, useNavigate } from "react-router-dom";
 
+import apiUrl from "../../../api";
+
 const MFAVerifyForm = () => {
   const [code, setCode] = useState("");
   const [userId, setUserId] = useState("");
@@ -38,14 +40,11 @@ const MFAVerifyForm = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch(
-        "http://localhost:4000/api/user/mfa/verify",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, token: code }),
-        }
-      );
+      const response = await fetch(`${apiUrl}/user/mfa/verify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, token: code }),
+      });
 
       const data = await response.json();
 
