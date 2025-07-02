@@ -49,6 +49,19 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
+function BasicLoginRoute({ children }) {
+  const { isLoggedIn, isLoading } = useAuth();
+  const location = useLocation();
+
+  if (isLoading) return <div>Loading...</div>;
+
+  if (!isLoggedIn) {
+    return <Navigate to="/login" replace state={{ from: location }} />;
+  }
+
+  return children;
+}
+
 function App() {
   return (
     <AuthProvider>
@@ -246,10 +259,24 @@ function App() {
             ></Route>
 
             {/* MFS Setup */}
-            <Route path="/mfa-setup" element={<MFASetup />} />
+            <Route
+              path="/mfa-setup"
+              element={
+                <BasicLoginRoute>
+                  <MFASetup />
+                </BasicLoginRoute>
+              }
+            />
 
             {/* MFA Verify */}
-            <Route path="/mfa-verify" element={<MFAVerify />} />
+            <Route
+              path="/mfa-verify"
+              element={
+                <BasicLoginRoute>
+                  <MFAVerify />
+                </BasicLoginRoute>
+              }
+            />
 
             {/* About DSD */}
             <Route path="/about" element={<About />}></Route>

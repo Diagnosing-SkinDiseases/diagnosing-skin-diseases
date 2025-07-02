@@ -59,13 +59,17 @@ const MFAVerifyForm = () => {
 
       setTimeout(() => {
         window.location.href = from;
-      }, 300); // Shorter delay is often fine
-
-      // Optional: Redirect or unlock protected views
+      }, 300);
     } catch (err) {
       console.error(err.message);
       setMessage("❌ Invalid code. Please try again.");
     }
+  };
+
+  // Handler for navigating to MFA Setup page
+  const handleReEnableClick = (e) => {
+    e.preventDefault();
+    navigate("/mfa-setup");
   };
 
   return (
@@ -91,9 +95,20 @@ const MFAVerifyForm = () => {
         </div>
 
         <button type="submit">Verify & Continue</button>
-
-        {message && <p>{message}</p>}
       </form>
+
+      {/* Small hyperlink to re-enable MFA */}
+      <p style={{ marginTop: "1rem" }}>
+        <a
+          href="/mfa-setup"
+          onClick={handleReEnableClick}
+          style={{ fontSize: "0.85rem" }}
+        >
+          Re-enable MFA with QR Code
+        </a>
+      </p>
+
+      {message && <p>{message}</p>}
     </div>
   );
 };
