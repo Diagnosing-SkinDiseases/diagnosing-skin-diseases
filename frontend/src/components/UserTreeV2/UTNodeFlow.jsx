@@ -486,9 +486,9 @@ const NodeFlowInstance = ({ rootNode, setRootNode, existingMidOffsets }) => {
       onConnect={onConnect}
       onInit={setRfInstance}
       fitView
-      fitViewOptions={{ padding: 2 }}
+      fitViewOptions={{ padding: 0.1 }}
       nodeTypes={nodeTypes}
-      minZoom={0.081} // Set the minimum zoom level (zoom out)
+      minZoom={0.05}
       deleteKeyCode={"Disabled"}
       onNodeDragStop={handleNodeDragStop}
       proOptions={{ hideAttribution: true }}
