@@ -491,6 +491,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode, existingMidOffsets }) => {
       minZoom={0.081} // Set the minimum zoom level (zoom out)
       deleteKeyCode={"Disabled"}
       onNodeDragStop={handleNodeDragStop}
+      proOptions={{ hideAttribution: true }}
     >
       <Controls
         className="ut-tree-flow-custom-controls"

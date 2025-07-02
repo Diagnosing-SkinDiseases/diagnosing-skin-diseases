@@ -799,6 +799,7 @@ const NodeFlowInstance = ({
       onNodeDragStop={handleNodeDragStop}
       onNodeDragStart={handleNodeDragStart}
       onNodeDrag={handleNodeDrag}
+      proOptions={{ hideAttribution: true }}
     >
       <Panel position="top-right">
         <div
