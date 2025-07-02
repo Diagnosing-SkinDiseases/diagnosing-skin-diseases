@@ -53,9 +53,13 @@ const loginUser = async (req, res) => {
 
     // User is authenticated, generate a JWT
     const token = jwt.sign(
-      { userId: user._id },
-      process.env.JWT_SECRET, // Secret key for signing JWTs
-      { expiresIn: "1h" } // Token expires in 1 hour
+      {
+        userId: user._id,
+        mfaEnabled: user.mfaEnabled || false, // pull from DB, fallback to false
+        mfaVerified: false, // not verified yet
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
     );
 
     // Send the JWT in the response
@@ -178,7 +182,7 @@ const mfaVerify = async (req, res) => {
       secret: user.mfaSecret,
       encoding: "base32",
       token,
-      window: 1, // allow slight clock drift
+      window: 1,
     });
 
     if (!isValid) {
@@ -188,7 +192,14 @@ const mfaVerify = async (req, res) => {
     user.mfaEnabled = true;
     await user.save();
 
-    res.status(200).json({ message: "MFA setup complete" });
+    // ✅ Issue a new JWT with mfaVerified = true
+    const newToken = jwt.sign(
+      { userId: user._id, mfaVerified: true },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    res.status(200).json({ message: "MFA setup complete", token: newToken });
   } catch (error) {
     res.status(500).json({ error: "Failed to verify MFA" });
   }
