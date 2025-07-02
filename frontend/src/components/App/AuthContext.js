@@ -59,6 +59,8 @@ export const AuthProvider = ({ children }) => {
 
   const login = (token) => {
     Cookies.set("token", token, { expires: 1 });
+    console.log("Token:", token);
+    console.log("decoded", decodeToken(token));
 
     const payload = decodeToken(token);
     if (payload) {
@@ -78,7 +80,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, isLoading, login, logout }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn, isLoading, mfaEnabled, mfaVerified, login, logout }}
+    >
       {!isLoading && children}
     </AuthContext.Provider>
   );

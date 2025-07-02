@@ -194,7 +194,7 @@ const mfaVerify = async (req, res) => {
 
     // ✅ Issue a new JWT with mfaVerified = true
     const newToken = jwt.sign(
-      { userId: user._id, mfaVerified: true },
+      { userId: user._id, mfaEnabled: user.mfaEnabled, mfaVerified: true },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
