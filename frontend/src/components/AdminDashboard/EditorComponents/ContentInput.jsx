@@ -45,16 +45,16 @@ const ContentInput = ({ block, updateBlock, remove, className, onClick }) => {
       case ArticleContentType.HEADER1:
         return (
           <div className="art-title">
-            <label className="label">Title</label>
-            {renderInput("text", "title", "Title")}
+            <label className="label">Header 1</label>
+            {renderInput("text", "title", "Header 1")}
           </div>
         );
       case ArticleContentType.HEADER2:
       case ArticleContentType.SUBTITLE:
         return (
           <div className="art-subtitle">
-            <label className="label">Subtitle</label>
-            {renderInput("text", "subtitle", "Subtitle")}
+            <label className="label">Header 2</label>
+            {renderInput("text", "subtitle", "Header 2")}
           </div>
         );
       case ArticleContentType.PARAGRAPH:

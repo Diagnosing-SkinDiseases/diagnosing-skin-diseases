@@ -7,8 +7,110 @@ import VideoInput from "./VideoInput";
 import Button from "../GeneralComponents/Button";
 import labels from "../labels.json";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage, faVideo } from "@fortawesome/free-solid-svg-icons";
+import {
+  faImage,
+  faVideo,
+  faGripVertical,
+} from "@fortawesome/free-solid-svg-icons";
 import { apiGetArticle } from "../../../apiControllers/articleApiController";
+
+// Drag and Drop imports
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  arrayMove,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+
+// Custom Button Container Component
+const ButtonContainer = ({ addContentBlockAfter, index }) => {
+  return (
+    <div className="add-content-btn-container">
+      <Button
+        className="button add-content-btn"
+        label={labels.buttonLabels.add.title}
+        onClick={() => addContentBlockAfter(index, ArticleContentType.HEADER1)}
+      />
+      <Button
+        className="button add-content-btn"
+        label={labels.buttonLabels.add.subtitle}
+        onClick={() => addContentBlockAfter(index, ArticleContentType.HEADER2)}
+      />
+      <Button
+        className="button add-content-btn"
+        label={labels.buttonLabels.add.paragraph}
+        onClick={() =>
+          addContentBlockAfter(index, ArticleContentType.PARAGRAPH)
+        }
+      />
+      <Button
+        className="button add-content-btn add-media-content-btn"
+        onClick={() => addContentBlockAfter(index, ArticleContentType.IMAGE)}
+      >
+        <FontAwesomeIcon icon={faImage} />
+      </Button>
+      <Button
+        className="button add-content-btn add-media-content-btn"
+        onClick={() => addContentBlockAfter(index, ArticleContentType.VIDEO)}
+      >
+        <FontAwesomeIcon icon={faVideo} />
+      </Button>
+    </div>
+  );
+};
+
+// Custom Wrapper Component for Draggable context
+const SortableBlock = ({
+  id,
+  index,
+  block,
+  selectedContent,
+  setSelectedContent,
+  renderContentInput,
+  addContentBlockAfter,
+}) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} className="sortable-block">
+      <div className="drag-handle" {...listeners} {...attributes}>
+        <FontAwesomeIcon icon={faGripVertical} />
+      </div>
+
+      <div style={{ flexGrow: 1 }} onClick={() => setSelectedContent(index)}>
+        {renderContentInput(block, index)}
+
+        {selectedContent === index && (
+          <ButtonContainer
+            addContentBlockAfter={addContentBlockAfter}
+            index={index}
+          />
+        )}
+      </div>
+    </div>
+  );
+};
 
 /**
  * Article is a component for creating and editing articles. It allows users to dynamically
@@ -26,6 +128,14 @@ const Article = ({ onUpdate }) => {
   const location = useLocation();
   const article = location.state?.id;
   const [selectedContent, setSelectedContent] = useState(null);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 5,
+      },
+    })
+  );
 
   useEffect(() => {
     console.log("Selected content index:", selectedContent);
@@ -180,58 +290,66 @@ const Article = ({ onUpdate }) => {
     onUpdate(newBlocks);
   };
 
+  function moveBlock(dragIndex, hoverIndex) {
+    const updatedBlocks = [...contentBlocks];
+    const [movedBlock] = updatedBlocks.splice(dragIndex, 1);
+    updatedBlocks.splice(hoverIndex, 0, movedBlock);
+    setContentBlocks(updatedBlocks);
+  }
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+    if (!over) return;
+
+    const oldIndex = active.id;
+    const newIndex = over.id;
+
+    if (oldIndex !== newIndex) {
+      const reordered = arrayMove(contentBlocks, oldIndex, newIndex);
+      setContentBlocks(reordered);
+      onUpdate(reordered);
+    }
+  };
+
   /**
    * @returns The article component.
    */
   return (
     <div>
-      {contentBlocks.map((block, index) => (
-        <div key={index}>
-          {renderContentInput(block, index)}
+      {renderContentInput(contentBlocks[0], 0)}
 
-          {selectedContent === index && (
-            <div className="add-content-btn-container">
-              <Button
-                label={labels.buttonLabels.add.title}
-                onClick={() =>
-                  addContentBlockAfter(index, ArticleContentType.HEADER1)
-                }
-                className="button add-content-btn"
-              ></Button>
-              <Button
-                label={labels.buttonLabels.add.subtitle}
-                onClick={() =>
-                  addContentBlockAfter(index, ArticleContentType.HEADER2)
-                }
-                className="button add-content-btn"
-              ></Button>
-              <Button
-                label={labels.buttonLabels.add.paragraph}
-                onClick={() =>
-                  addContentBlockAfter(index, ArticleContentType.PARAGRAPH)
-                }
-                className="button add-content-btn"
-              ></Button>
-              <Button
-                onClick={() =>
-                  addContentBlockAfter(index, ArticleContentType.IMAGE)
-                }
-                className="add-content-btn add-media-content-btn "
-              >
-                <FontAwesomeIcon icon={faImage} className="fa-add-content" />
-              </Button>
-              <Button
-                onClick={() =>
-                  addContentBlockAfter(index, ArticleContentType.VIDEO)
-                }
-                className="add-content-btn add-media-content-btn "
-              >
-                <FontAwesomeIcon icon={faVideo} className="fa-add-content" />
-              </Button>
-            </div>
-          )}
-        </div>
-      ))}
+      {selectedContent === 0 && (
+        <ButtonContainer
+          addContentBlockAfter={addContentBlockAfter}
+          index={0}
+        />
+      )}
+
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext
+          items={contentBlocks
+            .map((_, index) => index)
+            .filter((index) => index !== 0)}
+          strategy={verticalListSortingStrategy}
+        >
+          {contentBlocks.slice(1).map((block, index) => (
+            <SortableBlock
+              key={index + 1}
+              id={index + 1}
+              index={index + 1}
+              block={block}
+              selectedContent={selectedContent}
+              setSelectedContent={setSelectedContent}
+              renderContentInput={renderContentInput}
+              addContentBlockAfter={addContentBlockAfter}
+            />
+          ))}
+        </SortableContext>
+      </DndContext>
     </div>
   );
 };

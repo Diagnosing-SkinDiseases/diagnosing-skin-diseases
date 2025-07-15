@@ -84,11 +84,10 @@
   display: none;
 }
 .delete-button-container {
-  height: 100%;
   display: flex;
-  justify-content: flex-end;
-  margin-top: 0.5em;
-  align-self: flex-end;
+  align-items: flex-start;
+  padding-left: 0.5em;
+  margin-top: 1em;
 }
 
 .delete-button {
@@ -114,8 +113,8 @@
 /* Ensures the wrapper takes the full width */
 .content-input-wrapper {
   display: flex;
-  /* align-items: center; */
-  justify-content: space-between;
+  align-items: start;
+  justify-content: start;
   width: 100%;
   margin-bottom: 0.5em;
 }
@@ -136,6 +135,28 @@
   background: var(--btn-color);
   cursor: pointer;
   color: #fff;
+}
+
+.drag-handle {
+  /* Example brown */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  user-select: none;
+  background: var(--btn-color);
+  cursor: pointer;
+  color: #fff;
+  border-radius: 50%;
+  width: 2em;
+  height: 2em;
+
+  margin-top: 1em;
+  margin-right: 1em;
+}
+
+.sortable-block {
+  display: flex;
 }
 
 .add-content-btn {
