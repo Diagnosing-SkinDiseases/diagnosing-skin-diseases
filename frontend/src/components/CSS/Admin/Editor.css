@@ -172,12 +172,18 @@
 }
 
 .video-container {
-  height: 20em;
+  position: relative;
+  width: 80%;
+  padding-top: 40%;
+  margin-bottom: 1rem;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 0.5em;
+  height: 100%;
 }
 
 .video-preview {
