@@ -1,8 +1,8 @@
-import React from 'react';
-import Button from '../GeneralComponents/Button';
-import ArticleContentType from '../enums/ArticleContentType';
+import React from "react";
+import Button from "../GeneralComponents/Button";
+import ArticleContentType from "../enums/ArticleContentType";
 import "../../CSS/Admin/List.css";
-import "../../CSS/Admin/Editor.css"; 
+import "../../CSS/Admin/Editor.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
@@ -18,27 +18,58 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
  * @param {String} [props.className] - Optional CSS class for additional styling.
  * @returns {JSX.Element} The JSX rendering of the content input block.
  */
-const ContentInput = ({ block, updateBlock, remove, className }) => {
+const ContentInput = ({ block, updateBlock, remove, className, onClick }) => {
   const handleChange = (e) => {
     updateBlock(e.target.value);
   };
 
-  /**
-   * A function that renders content based on the type of block.
-   *
-   * @return {JSX.Element} The JSX element representing the content based on the block type.
-   */
+  const renderInput = (type = "text", id, placeholder) => (
+    <input
+      id={id}
+      type={type}
+      value={block.value}
+      onChange={handleChange}
+      onClick={onClick}
+      placeholder={placeholder}
+    />
+  );
+
   const renderContentByType = () => {
     switch (block.type) {
       case ArticleContentType.TITLE:
-        return <div className="art-title"><input id = "art-title" type="text" value={block.value} onChange={handleChange} placeholder="Title" /></div>;
+        return (
+          <div className="art-title">
+            {renderInput("text", "art-title", "Title")}
+          </div>
+        );
       case ArticleContentType.HEADER1:
-        return <div className="art-title"><label className="label">Title</label><input id = "title" type="text" value={block.value} onChange={handleChange} placeholder="Title" /></div>;
+        return (
+          <div className="art-title">
+            <label className="label">Title</label>
+            {renderInput("text", "title", "Title")}
+          </div>
+        );
       case ArticleContentType.HEADER2:
       case ArticleContentType.SUBTITLE:
-        return <div className="art-subtitle"><label className="label">Subtitle</label><input id = "subtitle" type="text" value={block.value} onChange={handleChange} placeholder="Subtitle" /></div>;
+        return (
+          <div className="art-subtitle">
+            <label className="label">Subtitle</label>
+            {renderInput("text", "subtitle", "Subtitle")}
+          </div>
+        );
       case ArticleContentType.PARAGRAPH:
-        return <div className="art-paragraph"><label className="label">Paragraph</label><textarea value={block.value} onChange={handleChange} placeholder="Paragraph" rows={4} /></div>;
+        return (
+          <div className="art-paragraph">
+            <label className="label">Paragraph</label>
+            <textarea
+              value={block.value}
+              onChange={handleChange}
+              onClick={onClick}
+              placeholder="Paragraph"
+              rows={4}
+            />
+          </div>
+        );
       default:
         return null;
     }
@@ -49,13 +80,12 @@ const ContentInput = ({ block, updateBlock, remove, className }) => {
    */
   return (
     <div className={`content-input-wrapper ${className}`}>
-        <div className={`content-input ${className}`}>
-              {renderContentByType()}
-              
+      <div className={`content-input ${className}`}>
+        {renderContentByType()}
       </div>
       <div className="delete-button-container">
         <Button onClick={remove} className="delete-button">
-            <FontAwesomeIcon icon={faTrashAlt} className="fa-trash-alt" />
+          <FontAwesomeIcon icon={faTrashAlt} className="fa-trash-alt" />
         </Button>
       </div>
     </div>

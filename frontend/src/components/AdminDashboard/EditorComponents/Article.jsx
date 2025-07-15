@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import ArticleContentType from '../enums/ArticleContentType';
-import ContentInput from './ContentInput';
-import ImageInput from './ImageInput';
-import VideoInput from './VideoInput';
-import Button from '../GeneralComponents/Button';
-import labels from '../labels.json';
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import ArticleContentType from "../enums/ArticleContentType";
+import ContentInput from "./ContentInput";
+import ImageInput from "./ImageInput";
+import VideoInput from "./VideoInput";
+import Button from "../GeneralComponents/Button";
+import labels from "../labels.json";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faVideo } from "@fortawesome/free-solid-svg-icons";
-import { apiGetArticle } from '../../../apiControllers/articleApiController';
+import { apiGetArticle } from "../../../apiControllers/articleApiController";
 
 /**
  * Article is a component for creating and editing articles. It allows users to dynamically
@@ -19,10 +19,17 @@ import { apiGetArticle } from '../../../apiControllers/articleApiController';
  * @param {Function} props.onUpdate - Callback function to be called with updated content blocks.
  * @returns {JSX.Element} The rendered component.
  */
-const Article = ({ onUpdate}) => {
-  const [contentBlocks, setContentBlocks] = useState([{ type: ArticleContentType.TITLE, value: '' }]);
+const Article = ({ onUpdate }) => {
+  const [contentBlocks, setContentBlocks] = useState([
+    { type: ArticleContentType.TITLE, value: "" },
+  ]);
   const location = useLocation();
   const article = location.state?.id;
+  const [selectedContent, setSelectedContent] = useState(null);
+
+  useEffect(() => {
+    console.log("Selected content index:", selectedContent);
+  }, [selectedContent]);
 
   /**
    * Converts a string to title case.
@@ -31,11 +38,15 @@ const Article = ({ onUpdate}) => {
    * @return {string} the string converted to title case
    */
   const toTitleCase = (str) => {
-    return str.toLowerCase().split(' ').map(function(word) {
-    return (word.charAt(0).toUpperCase() + word.slice(1));
-  }).join(' ');
-  }
-  
+    return str
+      .toLowerCase()
+      .split(" ")
+      .map(function (word) {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      })
+      .join(" ");
+  };
+
   /**
    * Parses the given article data to create an array of content blocks.
    *
@@ -43,12 +54,14 @@ const Article = ({ onUpdate}) => {
    * @return {Array} An array of content blocks including the title block and content blocks.
    */
   const parseArticleData = (data) => {
-    const titleBlock = [{
-      type: ArticleContentType.TITLE,
-      value: data.title
-    }];
+    const titleBlock = [
+      {
+        type: ArticleContentType.TITLE,
+        value: data.title,
+      },
+    ];
 
-    const contentBlocks = data.content.map(block => ({
+    const contentBlocks = data.content.map((block) => ({
       type: toTitleCase(block.type),
       value: block.content,
     }));
@@ -62,18 +75,19 @@ const Article = ({ onUpdate}) => {
    */
   useEffect(() => {
     if (article) {
-      apiGetArticle(article).then((response) => {
-        const parsedContent = parseArticleData(response.data);
-        let i = 0;
-        parsedContent.forEach(block => {
-          renderContentInput(block, i);
-          i++;
-        });
-        setContentBlocks(parsedContent);
-        onUpdate(parsedContent);
-      })
+      apiGetArticle(article)
+        .then((response) => {
+          const parsedContent = parseArticleData(response.data);
+          let i = 0;
+          parsedContent.forEach((block) => {
+            renderContentInput(block, i);
+            i++;
+          });
+          setContentBlocks(parsedContent);
+          onUpdate(parsedContent);
+        })
         .catch((error) => {
-          console.error('Error fetching article:', error);
+          console.error("Error fetching article:", error);
         });
     }
   }, [article]);
@@ -82,10 +96,10 @@ const Article = ({ onUpdate}) => {
    * Adds a content block of the specified type to the contentBlocks array.
    *
    * @param {type} type - the type of content block to add
-   * @return {void} 
+   * @return {void}
    */
   const addContentBlock = (type) => {
-    setContentBlocks([...contentBlocks, { type, value: '' }]);
+    setContentBlocks([...contentBlocks, { type, value: "" }]);
   };
 
   /**
@@ -96,10 +110,12 @@ const Article = ({ onUpdate}) => {
    * @param {any} value - The new value for the block to be updated
    */
   const updateContentBlock = (index, type, value) => {
-    const updatedBlocks = contentBlocks.map((block, i) => i === index ? { ...block, type, value } : block);
+    const updatedBlocks = contentBlocks.map((block, i) =>
+      i === index ? { ...block, type, value } : block
+    );
     setContentBlocks(updatedBlocks);
     onUpdate(updatedBlocks);
-};
+  };
 
   /**
    * Removes the content block at the specified index from the contentBlocks array.
@@ -113,7 +129,6 @@ const Article = ({ onUpdate}) => {
     onUpdate(updatedBlocks); // Update the parent component with the new state
   };
 
-
   /**
    * Renders content input based on the block and index.
    *
@@ -122,16 +137,23 @@ const Article = ({ onUpdate}) => {
    * @return {JSX.Element} The rendered content input
    */
   const renderContentInput = (block, index) => {
-      const isDefaultTitle = index === 0 && block.type === ArticleContentType.TITLE;
-      const blockClassName = isDefaultTitle ? 'default-title' : '';
+    const isDefaultTitle =
+      index === 0 && block.type === ArticleContentType.TITLE;
+    const blockClassName = isDefaultTitle ? "default-title" : "";
+
+    const handleSelect = () => setSelectedContent(index);
+
     const contentInputProps = {
       key: index,
       block: block,
-      // updateBlock: (value) => updateContentBlock(index, value),
       updateBlock: (value) => updateContentBlock(index, block.type, value),
       remove: () => removeContentBlock(index),
-      className: blockClassName, 
+      className: `${blockClassName} ${
+        selectedContent === index ? "selected" : ""
+      }`,
+      onClick: handleSelect,
     };
+
     switch (block.type) {
       case ArticleContentType.TITLE:
       case ArticleContentType.SUBTITLE:
@@ -148,39 +170,68 @@ const Article = ({ onUpdate}) => {
     }
   };
 
+  const addContentBlockAfter = (index, type) => {
+    const newBlocks = [
+      ...contentBlocks.slice(0, index + 1),
+      { type, value: "" },
+      ...contentBlocks.slice(index + 1),
+    ];
+    setContentBlocks(newBlocks);
+    onUpdate(newBlocks);
+  };
+
   /**
    * @returns The article component.
    */
   return (
     <div>
-      {contentBlocks.map((block, index) => renderContentInput(block, index))}
-          <div className ="add-content-btn-container">
+      {contentBlocks.map((block, index) => (
+        <div key={index}>
+          {renderContentInput(block, index)}
+
+          {selectedContent === index && (
+            <div className="add-content-btn-container">
               <Button
-        label={labels.buttonLabels.add.title}
-        onClick={() => addContentBlock(ArticleContentType.HEADER1)}
-        className="button add-content-btn">
+                label={labels.buttonLabels.add.title}
+                onClick={() =>
+                  addContentBlockAfter(index, ArticleContentType.HEADER1)
+                }
+                className="button add-content-btn"
+              ></Button>
+              <Button
+                label={labels.buttonLabels.add.subtitle}
+                onClick={() =>
+                  addContentBlockAfter(index, ArticleContentType.HEADER2)
+                }
+                className="button add-content-btn"
+              ></Button>
+              <Button
+                label={labels.buttonLabels.add.paragraph}
+                onClick={() =>
+                  addContentBlockAfter(index, ArticleContentType.PARAGRAPH)
+                }
+                className="button add-content-btn"
+              ></Button>
+              <Button
+                onClick={() =>
+                  addContentBlockAfter(index, ArticleContentType.IMAGE)
+                }
+                className="add-content-btn add-media-content-btn "
+              >
+                <FontAwesomeIcon icon={faImage} className="fa-add-content" />
               </Button>
               <Button
-        label={labels.buttonLabels.add.subtitle}
-        onClick={() => addContentBlock(ArticleContentType.HEADER2)}
-        className="button add-content-btn">
+                onClick={() =>
+                  addContentBlockAfter(index, ArticleContentType.VIDEO)
+                }
+                className="add-content-btn add-media-content-btn "
+              >
+                <FontAwesomeIcon icon={faVideo} className="fa-add-content" />
               </Button>
-              <Button
-        label={labels.buttonLabels.add.paragraph}
-        onClick={() => addContentBlock(ArticleContentType.PARAGRAPH)}
-                  className="button add-content-btn">
-              </Button>
-              <Button
-        onClick={() => addContentBlock(ArticleContentType.IMAGE)}
-                  className="add-content-btn add-media-content-btn ">
-                  <FontAwesomeIcon icon={faImage} className="fa-add-content" />
-              </Button>
-              <Button
-        onClick={() => addContentBlock(ArticleContentType.VIDEO)}
-                  className="add-content-btn add-media-content-btn ">
-                  <FontAwesomeIcon icon={faVideo} className="fa-add-content" />
-              </Button>
-      </div>
+            </div>
+          )}
+        </div>
+      ))}
     </div>
   );
 };

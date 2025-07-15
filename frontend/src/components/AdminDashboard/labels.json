@@ -4,9 +4,9 @@
             "tree" : "Add tree",
             "article" : "Add article",
             "definition" : "Add definition",
-            "title" : "Add title",
-            "subtitle" : "Add subtitle",
-            "paragraph" : "Add text"
+            "title" : "Add Header 1",
+            "subtitle" : "Add Header 2",
+            "paragraph" : "Add Paragraph"
         },
         "publish": {
             "publish" : "Publish",
