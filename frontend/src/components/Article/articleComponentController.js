@@ -12,11 +12,16 @@ import styles from "./styles";
 const parseData = ({ type, content }, index) => {
   switch (type) {
     case ArticleContentType.HEADER1:
+      return (
+        <div key={index} id={content} className="art-h1">
+          <hr /> {/* Horizontal separator/line */}
+          <h2>{content}</h2>
+        </div>
+      );
     case ArticleContentType.HEADER2:
       return (
         <div key={index} id={content}>
-          <hr /> {/* Horizontal separator/line */}
-          <h2>{content}</h2>
+          <h2 className="art-h2">{content}</h2>
         </div>
       );
     case ArticleContentType.PARAGRAPH:
@@ -31,11 +36,7 @@ const parseData = ({ type, content }, index) => {
     case ArticleContentType.IMAGE:
       return (
         <div key={index} className="container">
-          <img
-            src={`${content}`}
-            alt="Converted"
-            className="d-block w-25 mx-auto"
-          />
+          <img src={`${content}`} alt="Converted" className="d-block mx-auto" />
         </div>
       );
     case ArticleContentType.VIDEO:
@@ -79,11 +80,7 @@ const generateSummary = (content) => {
   return (
     <ul className="summary-list">
       {content
-        .filter(
-          (item) =>
-            item.type === ArticleContentType.HEADER1 ||
-            item.type === ArticleContentType.HEADER2
-        )
+        .filter((item) => item.type === ArticleContentType.HEADER1)
         .map(({ content }, index) => (
           <li key={index}>
             <a href={`#${content}`} className="summary-link">
