@@ -127,6 +127,15 @@ const NodeFlowInstance = ({
   const [rfInstance, setRfInstance] = useState(null);
   const { setViewport } = useReactFlow();
 
+  // Panel - link builder
+  // States you need in the parent component:
+  const [showLinkBuilder, setShowLinkBuilder] = useState(false);
+  const [linkText, setLinkText] = useState("");
+  const [linkHref, setLinkHref] = useState("");
+
+  // Computed output
+  const generatedLink = `<a href="${linkHref}" target="_blank" rel="noopener noreferrer">${linkText}</a>`;
+
   // Load existing nodes once on page load
   useEffect(() => {
     setNodes([]);
@@ -880,6 +889,63 @@ const NodeFlowInstance = ({
           >
             Multi Select
           </button>
+
+          {/* Toggle button */}
+          <button
+            className="tree-flow-panel-btn"
+            onClick={() => setShowLinkBuilder(!showLinkBuilder)}
+          >
+            {showLinkBuilder ? "Hide Link Builder" : "Add Link"}
+          </button>
+
+          {/* Hidden area revealed when toggled */}
+          {showLinkBuilder && (
+            <div
+              style={{
+                marginTop: "1em",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <input
+                type="text"
+                placeholder="Text to display"
+                value={linkText}
+                onChange={(e) => setLinkText(e.target.value)}
+                style={{ marginBottom: "0.5em" }}
+              />
+              <input
+                type="text"
+                placeholder="Target URL"
+                value={linkHref}
+                onChange={(e) => setLinkHref(e.target.value)}
+                style={{ marginBottom: "0.5em" }}
+              />
+              <textarea
+                className={"tree-flow-link-output"}
+                placeholder="Generated Link"
+                readOnly
+                value={linkText && linkHref ? generatedLink : ""}
+                rows={1}
+                style={{ resize: "none" }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.target.select();
+
+                  navigator.clipboard
+                    .writeText(e.target.value)
+                    .then(() => {
+                      console.log("Copied to clipboard!");
+                      // Optionally give visual feedback here
+                    })
+                    .catch((err) => {
+                      console.error("Failed to copy: ", err);
+                    });
+                  e.target.blur();
+                }}
+              />
+            </div>
+          )}
         </div>
       </Panel>
       <Controls />

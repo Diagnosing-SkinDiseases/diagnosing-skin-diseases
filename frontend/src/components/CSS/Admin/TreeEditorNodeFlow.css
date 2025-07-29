@@ -132,3 +132,8 @@
 .tree-flow-panel-btn {
     margin-left: 0.5em;
 }
+
+.tree-flow-link-output {
+    cursor: pointer;
+    user-select: none;
+}
