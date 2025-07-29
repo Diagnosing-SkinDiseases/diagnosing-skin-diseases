@@ -249,4 +249,10 @@
 
 .art-h1 {
   scroll-margin-top: 100px;
+  color: var(--header-text);
+}
+
+.art-h2 {
+  scroll-margin-top: 100px;
+  color: var(--header-text);
 }
