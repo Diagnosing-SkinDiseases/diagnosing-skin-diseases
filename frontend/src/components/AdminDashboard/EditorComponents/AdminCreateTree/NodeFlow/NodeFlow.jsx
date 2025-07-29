@@ -134,7 +134,7 @@ const NodeFlowInstance = ({
   const [linkHref, setLinkHref] = useState("");
 
   // Computed output
-  const generatedLink = `<a href="${linkHref}" target="_blank" rel="noopener noreferrer">${linkText}</a>`;
+  const generatedLink = `<br/><a href="${linkHref}" target="_blank" rel="noopener noreferrer">${linkText}</a>`;
 
   // Load existing nodes once on page load
   useEffect(() => {
