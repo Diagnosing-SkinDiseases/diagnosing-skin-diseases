@@ -333,3 +333,7 @@
     z-index: auto !important;
     /* position: relative !important; */
     }
+
+.ut-tree-diagnosis-link {
+    color: #CC5500;
+}

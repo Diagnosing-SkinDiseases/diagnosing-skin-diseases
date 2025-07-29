@@ -1,6 +1,10 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { parseData, generateSummary, renderError } from "./articleComponentController";
+import {
+  parseData,
+  generateSummary,
+  renderError,
+} from "./articleComponentController";
 
 /**
  * ArticleContent component renders the content of an article, including the title, summary, and dynamic content.
@@ -53,9 +57,7 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
           </div>
 
           {/* Summary */}
-          <div className="container summary">
-            {generateSummary(content)}
-          </div>
+          <div className="container summary">{generateSummary(content)}</div>
 
           {/* Article */}
           <div className="container p-4 pt-0">

@@ -137,3 +137,31 @@
     cursor: pointer;
     user-select: none;
 }
+
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.tree-flow-tooltip-container .tooltip-text {
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    font-size: 0.8em;
+    border-radius: 4px;
+    padding: 4px 8px;
+    position: absolute;
+    top: -30px;
+    left: 10px;
+    z-index: 1;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.tree-flow-tooltip-container:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}

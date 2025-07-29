@@ -58,7 +58,7 @@
   /* Increase font size for the separator */
   font-weight: 500;
   /* Make the separator bold */
-  color: var(--title-text);
+  color: #CC5500;
   /* Adjust color to match your design */
 }
 
@@ -69,7 +69,7 @@
 
 .summary-link {
   text-decoration: none;
-  color: var(--title-text);
+  color: #CC5500;
   cursor: pointer;
   font-weight: 500;
   font-size: 18px;

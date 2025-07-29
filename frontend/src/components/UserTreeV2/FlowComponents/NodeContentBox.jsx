@@ -20,7 +20,13 @@ const NodeContentBox = ({ content, onBack, onNo, onYes, selectedNode }) => {
       if (url && linkText) {
         // Add the link as a React element
         segments.push(
-          <a key={url} href={url} target="_blank" rel="noopener noreferrer">
+          <a
+            className="ut-tree-diagnosis-link"
+            key={url}
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {linkText}
           </a>
         );

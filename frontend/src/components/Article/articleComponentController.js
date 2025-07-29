@@ -14,7 +14,7 @@ const parseData = ({ type, content }, index) => {
     case ArticleContentType.HEADER1:
       return (
         <div key={index} id={content} className="art-h1">
-          <hr /> {/* Horizontal separator/line */}
+          <hr className="art-hr" /> {/* Horizontal separator/line */}
           <h2>{content}</h2>
         </div>
       );
