@@ -57,7 +57,9 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
           </div>
 
           {/* Summary */}
-          <div className="container summary">{generateSummary(content)}</div>
+          <div className="container summary-container">
+            {generateSummary(content)}
+          </div>
 
           {/* Article */}
           <div className="container p-4 pt-0">

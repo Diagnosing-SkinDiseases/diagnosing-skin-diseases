@@ -21,6 +21,21 @@
 
 /* Summary */
 
+:root {
+  --nav-height: 100px;
+  /* adjust to match your navbar height */
+}
+
+.summary-container {
+  position: sticky;
+  top: var(--nav-height);
+  z-index: 100;
+  background: white;
+  padding: 1.5em;
+  padding-top: 10px;
+  padding-bottom: 0px;
+}
+
 .summary-list {
   display: flex;
   flex-wrap: wrap;
@@ -28,8 +43,9 @@
   padding: 0;
   margin: 0;
   align-items: center;
-  /* Align items vertically to center */
-}
+  padding-bottom: 10px;
+
+ }
 
 .summary-list li {
   margin-right: 15px;
@@ -77,4 +93,15 @@
 
 .summary-link:hover {
   text-decoration: underline;
+}
+
+/* Header jump behavior */
+.art-h1 {
+  scroll-margin-top: 160px;
+  color: var(--header-text);
+}
+
+.art-h2 {
+  scroll-margin-top: 200px;
+  color: var(--header-text);
 }

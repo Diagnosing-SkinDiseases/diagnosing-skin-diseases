@@ -246,18 +246,3 @@
   padding-top: 0.3em;
   color: var(--header-text);
 }
-
-.art-h1 {
-  scroll-margin-top: 100px;
-  color: var(--header-text);
-}
-
-.art-h2 {
-  scroll-margin-top: 100px;
-  color: var(--header-text);
-}
-
-.art-hr {
-  /* height: 4px;
-  background-color: black; */
-}

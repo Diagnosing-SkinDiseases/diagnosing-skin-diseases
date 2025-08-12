@@ -162,7 +162,7 @@ h3 {
 }
 
 html {
-  overflow-y: scroll;
+  overflow-y: visible;
 }
 
 ::-webkit-scrollbar {
