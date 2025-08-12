@@ -28,28 +28,11 @@
   flex-grow: 1;
   text-align: center;
   position: relative;
-  list-style-type: none;
   font-weight: 500;
   background-color: white;
   border-radius: 10px;
-  /* margin-inline: 10px; */
   width: 80px;
   cursor: pointer;
-  height: 50px;
-}
-
-/* Apply a subtle highlight and lift effect to nav items on hover */
-.nav-item:hover {
-  background-color: var(--nav-hover);
-  /* Lighter shade for the background */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  /* Soft shadow for a "lifted" effect */
-  font-weight: bold;
-  transform: translateY(-2px);
-  /* Slight "lift" effect */
-  transition: background-color 0.3s ease, box-shadow 0.3s ease,
-    transform 0.3s ease;
-  /* Smooth transition for the effects */
 }
 
 .nav-link {
@@ -58,6 +41,7 @@
   text-decoration: none;
   color: var(--nav-text);
   border-radius: 10px;
+  border: 1px solid transparent;
 }
 
 .navbar-link-text {
@@ -74,6 +58,28 @@ a.nav-link.active {
   color: var(--nav-text);
 }
 
+.nav-active {
+  background-color: var(--nav-hover);
+  border: 1px solid var(--interactive-color)
+}
+
+.nav-hover {
+  background-color: var(--nav-hover);
+  border: 1px solid var(--interactive-color)
+}
+
+/* Apply a subtle highlight and lift effect to nav items on hover */
+/* .nav-item:hover {
+  background-color: var(--nav-hover);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+  transform: translateY(-2px);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease,
+    transform 0.3s ease;
+} */
+
+/* Dropdown */
+
 .dropdown-content {
   display: none;
   position: absolute;
@@ -83,15 +89,15 @@ a.nav-link.active {
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   padding: 12px 16px;
   z-index: 1;
-  font-size: smaller;
+  font-size: 14px;
   font-weight: bold;
+  margin-top: 2px;
 }
 
 .nav-item:hover .dropdown-content {
   display: block;
 }
 
-/* Add this to ensure hover effect is only applied to items with dropdown */
 .has-dropdown:hover .dropdown-content {
   display: block;
 }
@@ -107,16 +113,8 @@ a.nav-link.active {
 
 .subtab-item:hover {
   background-color: var(--nav-hover);
-  /* Lighter shade for the background */
   color: var(--nav-text);
-  /* Keep the text color consistent or change as desired */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  /* This adds a slight shadow that makes the item "pop" */
-  transform: translateY(-2px);
-  /* Optional: adds a subtle "lift" effect */
-  transition: background-color 0.3s ease, box-shadow 0.3s ease,
-    transform 0.3s ease;
-  /* Smooth transition for the effect */
 }
 
 .subtab-item a {
@@ -126,20 +124,16 @@ a.nav-link.active {
 
 .dropdown-content {
   display: none;
-  /* Initially hidden */
   position: absolute;
-  /* Other styles as necessary */
   background-color: var(--nav-back_ground);
 }
 
 .has-nested-dropdown:hover .dropdown-content {
   display: block;
-  /* Display on hover */
 }
 
 .dropdown-content .dropdown-content {
   left: 100%;
-  /* Position to the right of the parent item */
   top: 0;
 }
 
@@ -155,40 +149,6 @@ a.nav-link.active {
   max-width: 100%;
   max-height: 100%;
 }
-
-/* .nav-logo {
-  display: flex;
-  justify-content: center;
-  transform: scale(0.3);
-} */
-
-.nav-item.active .nav-link,
-.nav-item.active:hover .nav-link {
-  background-color: var(--nav-hover);
-  /* Slightly darker than the hover color to indicate active state */
-}
-
-.subtab-link {
-  font-size: 1.05em;
-}
-
-/* Note, not compatible with the revised navbar */
-
-/* @media (max-height: 700px) {
-  .navbar {
-    font-size: 1.1em;
-    height: 80px;
-  }
-
-  .nav-link {
-    height: 100%;
-  }
-
-  .nav-logo {
-    height: 80px;
-    width: 160px;
-  }
-} */
 
 @media (max-width: 1400px) {
 

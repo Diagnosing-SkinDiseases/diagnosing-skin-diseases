@@ -210,15 +210,17 @@ const NavBarComponent = () => {
       {links.map((link, index) => (
         <div
           key={index}
-          className={`nav-item ${
-            link.subTabs.length > 0 ? "has-dropdown" : ""
-          } ${isActiveLink(link.path) ? "active" : ""}`}
+          className={`nav-item 
+            ${link.subTabs.length > 0 ? "has-dropdown" : ""} 
+            ${isActiveLink(link.path) ? "nav-active" : ""}
+            ${activeLink === link.name ? "nav-hover" : ""}
+            `}
           onMouseEnter={() => setActiveLink(link.name)}
           onMouseLeave={() => setActiveLink("")}
         >
           <div
             onClick={() => handleClick(link.path, link.subTabs.length > 0)}
-            className={`d-flex align-items-center justify-content-center nav-link ${activeLink === link.name ? "active" : ""}`}
+            className={`d-flex align-items-center justify-content-center nav-link`}
           >
             <p className="navbar-link-text">{link.name} </p>
           </div>

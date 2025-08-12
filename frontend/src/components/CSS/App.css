@@ -10,6 +10,7 @@
   --nav-hover: #d0be9f;
   --nav-text: #715529;
   /* --nav-text-hover: #fefefe; */
+  --nav-height: 100px;
 
   /* Footer */
   --footer: #715529;
@@ -46,10 +47,14 @@
 
   --about-hover: #715529;
 
-  /* Contact FOrm */
+  /* Contact Form */
   --bg-disabled-fields: #e4ddd0;
   --bg-disabled-btn: #e4ddd0;
   --color-disabled-btn: #715529;
+
+  /* Interactivity */
+  --interactive-color: #CC5500;
+
 }
 
 .App {

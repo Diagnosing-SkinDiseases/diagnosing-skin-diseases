@@ -21,11 +21,6 @@
 
 /* Summary */
 
-:root {
-  --nav-height: 100px;
-  /* adjust to match your navbar height */
-}
-
 .summary-container {
   position: sticky;
   top: var(--nav-height);
@@ -99,9 +94,11 @@
 .art-h1 {
   scroll-margin-top: 160px;
   color: var(--header-text);
+  font-size: 36px;
 }
 
 .art-h2 {
   scroll-margin-top: 200px;
   color: var(--header-text);
+  font-size: 24px;
 }
