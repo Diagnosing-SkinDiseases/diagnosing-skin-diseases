@@ -33,6 +33,7 @@
   border-radius: 10px;
   width: 80px;
   cursor: pointer;
+  border: 1px solid transparent;
 }
 
 .nav-link {
@@ -41,21 +42,11 @@
   text-decoration: none;
   color: var(--nav-text);
   border-radius: 10px;
-  border: 1px solid transparent;
 }
 
 .navbar-link-text {
   margin: 0em;
   font-size: 1.5em;
-}
-
-a.nav-link.active {
-  color: var(--nav-text);
-  text-decoration: none;
-}
-
-.nav-link:active {
-  color: var(--nav-text);
 }
 
 .nav-active {
