@@ -26,10 +26,11 @@ const parseData = ({ type, content }, index) => {
       );
     case ArticleContentType.PARAGRAPH:
       // Replace anchor tags with target="_blank" attribute for opening links in new tab
-      const parsedContent = content.replace(
+      let parsedContent = content.replace(
         /<a href="(.*?)">(.*?)<\/a>/g,
         '<a href="$1" target="_blank" rel="noopener noreferrer">$2</a>'
       );
+      parsedContent = parsedContent.replace(/\n/g, "<br>");
       return (
         <p key={index} dangerouslySetInnerHTML={{ __html: parsedContent }} />
       );
