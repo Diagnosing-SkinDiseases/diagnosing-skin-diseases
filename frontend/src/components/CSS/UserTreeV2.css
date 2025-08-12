@@ -335,5 +335,5 @@
     }
 
 .ut-tree-diagnosis-link {
-    color: #CC5500;
+    color: var(--interactive-color);
 }

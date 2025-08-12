@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { apiGetAllGlossaryItems } from "../../apiControllers/glossaryItemApiController";
-import "../CSS/Glossary.css";
 import SearchBar from "./SearchBar";
 import LetterFilter from "./LetterFilter";
 import GlossaryContent from "./GlossaryContent";
@@ -9,6 +8,9 @@ import LoadingPage from "../Loading/LoadingPage";
 import ErrorMessage from "../Error/ErrorMessage";
 import messages from "../App/messages";
 import dData from "./glossaryListDummyData.json";
+
+// Styles
+import "../CSS/GlossaryList.css";
 
 const dummyData = dData;
 
@@ -204,11 +206,11 @@ const GlossaryListPage = () => {
   };
 
   return (
-    <div className="article-list-page">
-      <div className="article-list-banner">
+    <div className="glossary-list-page">
+      <div className="glossary-list-banner">
         <div>
           {/* Title */}
-          <h1 className="article-list-title">Glossary</h1>
+          <h1 className="glossary-list-title">Glossary</h1>
 
           {/* Introduction */}
           <p className="homepage-intro-text">
@@ -218,9 +220,9 @@ const GlossaryListPage = () => {
         </div>
 
         {/* Search bar */}
-        <form className="glossary-search-container">
-          <div className="glossary-search-label-container">
-            <p className="glossary-search-label">Find a glossary term:</p>
+        <form className="glossary-list-search-container">
+          <div className="glossary-list-search-label-container">
+            <p className="glossary-list-search-label">Find a glossary term:</p>
           </div>
           <input
             type="text"
@@ -228,20 +230,20 @@ const GlossaryListPage = () => {
             placeholder="  Search..."
             aria-label="Search"
             onChange={handleSearchChange}
-            className="glossary-search-input"
+            className="glossary-list-search-input"
           />
         </form>
       </div>
 
-      <div className="article-list-jump-section">
+      <div className="glossary-list-jump-section">
         <span>Sections:</span>
-        <div className="article-list-alphabet">
+        <div className="glossary-list-alphabet">
           {alphabet.map((letter) => (
             <a
               href={glossaryItems[letter] ? `#${letter}` : undefined}
               key={letter}
               className={
-                "article-list-alphabet-letter " +
+                "glossary-list-alphabet-letter " +
                 (glossaryItems[letter] ? "active" : "inactive")
               }
             >
@@ -251,21 +253,19 @@ const GlossaryListPage = () => {
         </div>
       </div>
 
-      <div className="article-list-content">
+      <div className="glossary-list-content">
         {columns.map((column, columnIndex) => (
-          <div key={columnIndex} className="article-list-section-column">
+          <div key={columnIndex} className="glossary-list-section-column">
             {column.map(({ letter, items }) => (
-              <div key={letter} id={letter} className="article-list-section">
+              <div key={letter} id={letter} className="glossary-list-section">
                 <h3>{letter}</h3>
                 <ul>
                   {items.map((item) => (
                     <li
                       key={item._id}
-                      className={
-                        expandedItems.includes(item._id)
-                          ? "glossary-item-expanded"
-                          : "glossary-item"
-                      }
+                      className={`glossary-list-section-item ${
+                        expandedItems.includes(item._id) ? "expanded" : ""
+                      }`}
                     >
                       <span
                         className=""

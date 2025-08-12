@@ -55,22 +55,16 @@
 
 .summary-list li::after {
   content: "|";
-  /* Vertical separator */
   position: absolute;
   right: -10px;
-  /* Position separator */
   top: 0;
   bottom: 0;
   height: 100%;
-  /* Ensure separator spans the full height */
   display: flex;
   align-items: center;
   font-size: 24px;
-  /* Increase font size for the separator */
   font-weight: 500;
-  /* Make the separator bold */
-  color: #CC5500;
-  /* Adjust color to match your design */
+  color: var(--interactive-color);
 }
 
 .summary-list li:last-child::after {
@@ -80,7 +74,7 @@
 
 .summary-link {
   text-decoration: none;
-  color: #CC5500;
+  color: var(--interactive-color);
   cursor: pointer;
   font-weight: 500;
   font-size: 18px;

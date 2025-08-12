@@ -53,7 +53,9 @@
   --color-disabled-btn: #715529;
 
   /* Interactivity */
-  --interactive-color: #CC5500;
+    --interactive-color: #CC5500; 
+  /* Test */
+    /* --interactive-color: green; */
 
 }
 

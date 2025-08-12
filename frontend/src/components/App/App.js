@@ -4,7 +4,7 @@ import About from "../About/About";
 import Article from "../Article/Article";
 import ArticlePage from "../ArticleList/ArticleList";
 import "../CSS/App.css";
-import Glossary from "../Glossary/Glossary";
+import Glossary from "../Glossary/GlossaryList";
 import Homepage from "../Homepage/Homepage";
 import Login from "../Login/Login";
 import Logout from "../Logout/Logout";
