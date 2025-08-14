@@ -53,7 +53,6 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
           {/* Title */}
           <div className="container mt-4 article-title text-center">
             <h1>{title}</h1>
-            <hr />
           </div>
 
           {/* Summary */}

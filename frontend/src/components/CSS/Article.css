@@ -1,5 +1,12 @@
+/* General Article */
 .article-container {
   background-color: white;
+}
+
+.article-title {
+  border-bottom: 2px solid var(--interactive-color);
+  width: 97%;
+  padding-bottom: 4px;
 }
 
 .article .article-h3 {
