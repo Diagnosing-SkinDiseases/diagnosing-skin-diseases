@@ -263,26 +263,21 @@ const GlossaryListPage = () => {
                   {items.map((item) => (
                     <li
                       key={item._id}
+                      onClick={() => handleToggleExpand(item._id)}
                       className={`glossary-list-section-item ${
                         expandedItems.includes(item._id) ? "expanded" : ""
                       }`}
                     >
-                      <span
-                        className="glossary-list-section-item-term"
-                        onClick={() => handleToggleExpand(item._id)}
-                        style={{ cursor: "pointer" }}
-                      >
-                        {item.term}
-                      </span>
-                      {expandedItems.includes(item._id) && (
-                        <p
-                          className="glossary-item-definition"
-                          onClick={() => handleToggleExpand(item._id)}
-                          style={{ cursor: "pointer" }}
-                        >
-                          {item.definition}
-                        </p>
-                      )}
+                      <div className="glossary-list-section-item-content">
+                        <span className="glossary-list-section-item-term">
+                          {item.term}
+                        </span>
+                        {expandedItems.includes(item._id) && (
+                          <p className="glossary-item-definition">
+                            {item.definition}
+                          </p>
+                        )}
+                      </div>
                     </li>
                   ))}
                 </ul>

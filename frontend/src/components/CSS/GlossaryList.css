@@ -95,6 +95,7 @@
     color: var(--interactive-color);
     text-decoration: none;
     font-weight: 400;
+    cursor: pointer;
 }
 
 .glossary-list-section-item.expanded {
@@ -104,6 +105,7 @@
     margin-bottom: 5px;
     color: var(--nav-text-hover);
     border: 2px solid var(--interactive-color);
+
 }
 
 .glossary-list-intro-text {
