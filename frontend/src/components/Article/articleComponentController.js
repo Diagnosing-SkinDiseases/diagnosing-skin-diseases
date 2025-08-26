@@ -9,12 +9,12 @@ import styles from "./styles";
  * @param {number} index - The index of the article element.
  * @returns {JSX.Element|null} - Returns the JSX element corresponding to the parsed article element, or null if no match.
  */
-const parseData = ({ type, content }, index) => {
+const parseData = ({ type, content }, index, firstH1Index) => {
   switch (type) {
     case ArticleContentType.HEADER1:
       return (
         <div key={index} id={content} className="art-h1">
-          <hr className="art-hr" /> {/* Horizontal separator/line */}
+          {index !== firstH1Index && <hr className="art-hr" />}
           <h2>{content}</h2>
         </div>
       );

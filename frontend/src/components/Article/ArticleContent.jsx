@@ -5,6 +5,7 @@ import {
   generateSummary,
   renderError,
 } from "./articleComponentController";
+import ArticleContentType from "./enums";
 
 /**
  * ArticleContent component renders the content of an article, including the title, summary, and dynamic content.
@@ -16,6 +17,9 @@ import {
 const ArticleContent = ({ data: { title, content }, errorMsg }) => {
   // Get hash value from URL location
   const { hash } = useLocation();
+  const firstH1Index = content.findIndex(
+    (item) => item.type === ArticleContentType.HEADER1
+  );
 
   /**
    * Handles hash navigation within the article.
@@ -63,7 +67,7 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
           {/* Article */}
           <div className="container p-4 pt-0">
             {/* Dynamic Content */}
-            {content.map(parseData)}
+            {content.map((item, index) => parseData(item, index, firstH1Index))}
           </div>
         </div>
       )}
