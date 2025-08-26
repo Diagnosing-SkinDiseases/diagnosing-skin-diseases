@@ -268,7 +268,7 @@ const GlossaryListPage = () => {
                       }`}
                     >
                       <span
-                        className=""
+                        className="glossary-list-section-item-term"
                         onClick={() => handleToggleExpand(item._id)}
                         style={{ cursor: "pointer" }}
                       >

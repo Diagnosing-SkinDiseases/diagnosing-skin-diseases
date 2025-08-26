@@ -6,6 +6,8 @@ import "../../CSS/Admin/Editor.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
+import ParagraphEditor from "./AdminCreateArticle/ParagraphEditor";
+
 /**
  * ContentInput is a component for rendering and managing individual content blocks within an article.
  * It supports various types of content blocks, including titles, headers, subtitles, and paragraphs. Each block
@@ -18,7 +20,14 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
  * @param {String} [props.className] - Optional CSS class for additional styling.
  * @returns {JSX.Element} The JSX rendering of the content input block.
  */
-const ContentInput = ({ block, updateBlock, remove, className, onClick }) => {
+const ContentInput = ({
+  block,
+  updateBlock,
+  remove,
+  className,
+  onClick,
+  index,
+}) => {
   const handleChange = (e) => {
     updateBlock(e.target.value);
   };
@@ -59,16 +68,11 @@ const ContentInput = ({ block, updateBlock, remove, className, onClick }) => {
         );
       case ArticleContentType.PARAGRAPH:
         return (
-          <div className="art-paragraph">
-            <label className="label">Paragraph</label>
-            <textarea
-              value={block.value}
-              onChange={handleChange}
-              onClick={onClick}
-              placeholder="Paragraph"
-              rows={4}
-            />
-          </div>
+          <ParagraphEditor
+            key={index}
+            value={block.value}
+            onChange={updateBlock}
+          />
         );
       default:
         return null;

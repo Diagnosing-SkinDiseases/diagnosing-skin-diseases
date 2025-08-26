@@ -103,6 +103,7 @@
     border-radius: 5px;
     margin-bottom: 5px;
     color: var(--nav-text-hover);
+    border: 2px solid var(--interactive-color);
 }
 
 .glossary-list-intro-text {
@@ -160,3 +161,8 @@
     font-weight: 500;
     font-size: 1.25em;
 }
+
+.expanded > .glossary-list-section-item-term {
+    font-weight: bold;
+}
+
