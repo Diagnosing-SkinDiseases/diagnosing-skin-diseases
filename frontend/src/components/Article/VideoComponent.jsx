@@ -7,13 +7,13 @@ import styles from "./styles";
  * @param {string} props.videoId - The ID of the YouTube video to embed.
  * @returns {JSX.Element} - Returns the JSX element for the YouTube video player.
  */
-const VideoComponent = ({ videoId }) => {
+const VideoComponent = ({ videoSrc }) => {
   return (
     <div style={styles.videoResponsive}>
       {/* Embedded YouTube video player */}
       <iframe
         style={styles.videoResponsiveIframe}
-        src={`https://player.vimeo.com/video/1109473308?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479`}
+        src={`${videoSrc}`}
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
@@ -25,7 +25,12 @@ const VideoComponent = ({ videoId }) => {
 
 export default VideoComponent;
 
-{
-  /* <div style="padding:52.73% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1109473308?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="3959710-uhd_4096_2160_25fps"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script> */
-}
-// https://vimeo.com/1109473308?share=copy
+/**    <div stle={styles.videResponsive}>
+      <iframe
+        src="https://player.vimeo.com/video/1109473308?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+        frameborder="0"
+        allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        title="3959710-uhd_4096_2160_25fps"
+      ></iframe>
+    </div> */

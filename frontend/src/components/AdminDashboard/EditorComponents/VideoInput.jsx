@@ -23,24 +23,41 @@ const VideoInput = ({ block, updateBlock, remove }) => {
     updateBlock(e.target.value);
   };
 
-  /**
-   * Converts a standard YouTube video URL into an embeddable URL format.
-   *
-   * @param {string} url - The video URL to be converted.
-   * @returns {string} The embeddable URL if the input is a YouTube URL, otherwise the original URL.
-   */
-  const getEmbedUrl = (url) => {
-    // A basic function to convert a YouTube URL to an embed URL
-    // This should be expanded to handle different URL formats and video services
-    const regExp =
-      /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-    const match = url.match(regExp);
+  function extractVimeoIframeSrc(input) {
+    // If they pasted just a URL, accept it directly.
+    try {
+      const u = new URL(input.trim());
+      if (u.hostname.includes("vimeo.com")) return u.toString();
+    } catch {}
 
-    if (match && match[2].length === 11) {
-      return `https://www.youtube.com/embed/${match[2]}?rel=0&modestbranding=1&controls=1`;
+    // Prefer DOM parsing (browser)
+    if (typeof window !== "undefined" && "DOMParser" in window) {
+      const doc = new DOMParser().parseFromString(String(input), "text/html");
+      const iframe = doc.querySelector('iframe[src*="vimeo.com"]');
+      if (iframe) {
+        let src = iframe.getAttribute("src") || "";
+        src = src.replace(/&amp;/g, "&").trim(); // decode entities
+        try {
+          return new URL(src, "https://player.vimeo.com").toString();
+        } catch {
+          return src;
+        }
+      }
     }
-    return url; // If not a YouTube URL, return the original URL
-  };
+
+    // Fallback: regex
+    const m = String(input).match(/<iframe[^>]+src=["']([^"']+)["']/i);
+    if (m) {
+      let src = m[1].replace(/&amp;/g, "&").trim();
+      try {
+        return new URL(src, "https://player.vimeo.com").toString();
+      } catch {
+        return src;
+      }
+    }
+
+    return null; // not found
+  }
 
   /**
    * @returns {JSX.Element} The rendered video input.
@@ -50,7 +67,7 @@ const VideoInput = ({ block, updateBlock, remove }) => {
       {block.value && (
         <div className="video-container">
           <iframe
-            src={getEmbedUrl(block.value)}
+            src={extractVimeoIframeSrc(block.value)}
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
             className="video-preview"

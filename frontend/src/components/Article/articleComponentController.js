@@ -32,7 +32,11 @@ const parseData = ({ type, content }, index, firstH1Index) => {
       );
       parsedContent = parsedContent.replace(/\n/g, "<br>");
       return (
-        <p key={index} dangerouslySetInnerHTML={{ __html: parsedContent }} />
+        <p
+          className={"art-p"}
+          key={index}
+          dangerouslySetInnerHTML={{ __html: parsedContent }}
+        />
       );
     case ArticleContentType.IMAGE:
       return (
@@ -42,23 +46,51 @@ const parseData = ({ type, content }, index, firstH1Index) => {
       );
     case ArticleContentType.VIDEO:
       // Function to extract YouTube video ID from URL
-      function extractYouTubeVideoID(url) {
-        const regExp =
-          /^.*(youtu\.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#\&\?]*).*/;
-        const match = url.match(regExp);
 
-        if (match && match[2].length === 11) {
-          return match[2];
-        } else {
-          // Handle cases where the URL does not contain a valid YouTube video ID
-          return null;
+      function extractVimeoIframeSrc(input) {
+        // If they pasted just a URL, accept it directly.
+        try {
+          const u = new URL(input.trim());
+          if (u.hostname.includes("vimeo.com")) return u.toString();
+        } catch {}
+
+        // Prefer DOM parsing (browser)
+        if (typeof window !== "undefined" && "DOMParser" in window) {
+          const doc = new DOMParser().parseFromString(
+            String(input),
+            "text/html"
+          );
+          const iframe = doc.querySelector('iframe[src*="vimeo.com"]');
+          if (iframe) {
+            let src = iframe.getAttribute("src") || "";
+            src = src.replace(/&amp;/g, "&").trim(); // decode entities
+            try {
+              return new URL(src, "https://player.vimeo.com").toString();
+            } catch {
+              return src;
+            }
+          }
         }
+
+        // Fallback: regex
+        const m = String(input).match(/<iframe[^>]+src=["']([^"']+)["']/i);
+        if (m) {
+          let src = m[1].replace(/&amp;/g, "&").trim();
+          try {
+            return new URL(src, "https://player.vimeo.com").toString();
+          } catch {
+            return src;
+          }
+        }
+
+        return null; // not found
       }
 
-      let videoId = extractYouTubeVideoID(content);
+      let videoSrc = extractVimeoIframeSrc(content);
+
       return (
         <div className="user-article-video-container">
-          <VideoComponent key={index} videoId={videoId}></VideoComponent>
+          <VideoComponent key={index} videoSrc={videoSrc}></VideoComponent>
         </div>
       );
     case ArticleContentType.SUBTITLE:
