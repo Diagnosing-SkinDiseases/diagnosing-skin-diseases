@@ -78,7 +78,7 @@ export default function ParagraphEditor({ value, onChange }) {
 
   // Keep internal state in sync if parent value changes externally
   useEffect(() => {
-    setText(value || "");
+    setText(normalizeToParagraph(value) || "");
     if (mode === "clean" && cleanRef.current) {
       cleanRef.current.innerHTML = sanitize(value || "");
     }
@@ -91,6 +91,23 @@ export default function ParagraphEditor({ value, onChange }) {
       document.execCommand("defaultParagraphSeparator", false, "p");
     } catch {}
   }, []);
+
+  function normalizeToParagraph(html) {
+    const trimmed = (html || "").trim();
+
+    // If it already starts with <p>, <ul>, <ol>, <blockquote>, etc., leave it
+    if (/^<(p|ul|ol|blockquote|pre|h[1-6])[\s>]/i.test(trimmed)) {
+      return trimmed;
+    }
+
+    // If it's empty string, return a blank <p>
+    if (trimmed === "") {
+      return "<p></p>";
+    }
+
+    // Otherwise, wrap in a paragraph
+    return `<p>${trimmed}</p>`;
+  }
 
   // optional: shift+Enter = <br>
   const handleCleanKeyDown = (e) => {
