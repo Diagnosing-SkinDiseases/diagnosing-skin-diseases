@@ -3,6 +3,50 @@ import ArticleContentType from "./enums";
 import VideoComponent from "./VideoComponent";
 import styles from "./styles";
 
+import DOMPurify from "dompurify";
+
+// Allow only what you need for paragraphs
+const SANITIZE_CFG = {
+  ALLOWED_TAGS: [
+    "p",
+    "br",
+    "strong",
+    "b",
+    "em",
+    "i",
+    "u",
+    "a",
+    "ul",
+    "ol",
+    "li",
+    "blockquote",
+    "code",
+    "pre",
+    "span",
+  ],
+  ALLOWED_ATTR: ["href", "target", "rel", "title", "class"],
+};
+
+// Add the safe-link hook once (avoid stacking in HMR)
+if (typeof window !== "undefined" && !window.__DP_HOOK_ADDED__) {
+  DOMPurify.addHook("afterSanitizeAttributes", (node) => {
+    if (node.nodeName === "A") {
+      const href = node.getAttribute("href") || "";
+      // Kill javascript: etc. (DOMPurify already blocks, this is extra belt)
+      if (!/^https?:\/\//i.test(href) && !href.startsWith("#")) {
+        node.removeAttribute("href");
+      }
+      if (!node.getAttribute("target")) node.setAttribute("target", "_blank");
+      node.setAttribute("rel", "noopener noreferrer");
+    }
+  });
+  window.__DP_HOOK_ADDED__ = true;
+}
+
+function sanitize(html) {
+  return DOMPurify.sanitize(html, SANITIZE_CFG);
+}
+
 /**
  * parseData function parses the article content based on its type.
  * @param {Object} data - The data object containing type and content of the article element.
@@ -24,20 +68,32 @@ const parseData = ({ type, content }, index, firstH1Index) => {
           <h2 className="art-h2">{content}</h2>
         </div>
       );
-    case ArticleContentType.PARAGRAPH:
-      // Replace anchor tags with target="_blank" attribute for opening links in new tab
-      let parsedContent = content.replace(
-        /<a href="(.*?)">(.*?)<\/a>/g,
-        '<a href="$1" target="_blank" rel="noopener noreferrer">$2</a>'
-      );
-      parsedContent = parsedContent.replace(/\n/g, "<br>");
+    case ArticleContentType.PARAGRAPH: {
+      let html = content;
+
+      // Only do newline-><br> for plain text
+      const hasTags = /<\s*[a-zA-Z]/.test(html);
+      if (!hasTags) html = html.replace(/\n/g, "<br>");
+
+      // Optional: upgrade bare <a> to safe link before sanitize, but the hook handles it.
+      // html = html.replace(/<a\s+href="(.*?)">(.*?)<\/a>/g,
+      //   '<a href="$1" target="_blank" rel="noopener noreferrer">$2</a>');
+
+      const clean = sanitize(html);
+
+      // If the (sanitized) HTML contains block tags, don't wrap in <p>
+      const hasBlock =
+        /<(p|div|ul|ol|li|h[1-6]|blockquote|pre|table|hr)\b/i.test(clean);
+      const Wrapper = hasBlock ? "div" : "p";
+
       return (
-        <p
-          className={"art-p"}
+        <Wrapper
+          className="art-p"
           key={index}
-          dangerouslySetInnerHTML={{ __html: parsedContent }}
+          dangerouslySetInnerHTML={{ __html: clean }}
         />
       );
+    }
     case ArticleContentType.IMAGE:
       return (
         <div key={index} className="container">
