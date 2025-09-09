@@ -144,11 +144,7 @@ const parseData = ({ type, content }, index, firstH1Index) => {
 
       let videoSrc = extractVimeoIframeSrc(content);
 
-      return (
-        <div className="user-article-video-container">
-          <VideoComponent key={index} videoSrc={videoSrc}></VideoComponent>
-        </div>
-      );
+      return <VideoComponent key={index} videoSrc={videoSrc}></VideoComponent>;
     case ArticleContentType.SUBTITLE:
       return (
         <p key={index} style={styles.subtitle}>

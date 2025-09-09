@@ -9,16 +9,17 @@ import styles from "./styles";
  */
 const VideoComponent = ({ videoSrc }) => {
   return (
-    <div style={styles.videoResponsive}>
-      {/* Embedded YouTube video player */}
-      <iframe
-        style={styles.videoResponsiveIframe}
-        src={`${videoSrc}`}
-        frameBorder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-        title="Embedded youtube"
-      />
+    <div className="user-article-video-layout">
+      <div className="user-article-video-container">
+        {/* Embedded YouTube video player */}
+        <iframe
+          src={`${videoSrc}`}
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          title="Embedded youtube"
+        ></iframe>
+      </div>
     </div>
   );
 };
