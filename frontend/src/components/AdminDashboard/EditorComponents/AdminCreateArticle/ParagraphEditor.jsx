@@ -3,6 +3,7 @@ import DOMPurify from "dompurify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faList,
+  faListOl,
   faLink,
   faUnlink,
   faBold,
@@ -61,9 +62,23 @@ function placeCaretAtEnd(el) {
   sel.addRange(range);
 }
 
+function getSelectionContainer() {
+  const sel = window.getSelection();
+  if (!sel || sel.rangeCount === 0) return null;
+  const node = sel.anchorNode;
+  return node?.nodeType === 1 ? node : node?.parentElement || null;
+}
+
 export default function ParagraphEditor({ value, onChange }) {
   const [mode, setMode] = useState("clean"); // "clean" | "raw"
   const [text, setText] = useState(value || "");
+  const [tb, setTb] = useState({
+    isBold: false,
+    isItalic: false,
+    inUL: false,
+    inOL: false,
+  });
+
   const cleanRef = useRef(null);
   const rawRef = useRef(null);
 
@@ -91,6 +106,35 @@ export default function ParagraphEditor({ value, onChange }) {
       document.execCommand("defaultParagraphSeparator", false, "p");
     } catch {}
   }, []);
+
+  useEffect(() => {
+    if (mode !== "clean") return;
+    const onSelChange = () => recomputeToolbarState();
+    document.addEventListener("selectionchange", onSelChange);
+    // compute once when entering Clean mode
+    recomputeToolbarState();
+    return () => document.removeEventListener("selectionchange", onSelChange);
+  }, [mode]);
+
+  function recomputeToolbarState() {
+    if (mode !== "clean") return; // We only show live states in Clean mode
+    const container = getSelectionContainer();
+
+    // queryCommandState is fine for inline styles
+    let isBold = false,
+      isItalic = false;
+    try {
+      isBold = document.queryCommandState("bold");
+      isItalic = document.queryCommandState("italic");
+    } catch {}
+
+    // list/link via DOM proximity (more reliable across browsers)
+    const inUL = !!container?.closest("ul");
+    const inOL = !!container?.closest("ol");
+    const inLink = !!container?.closest("a");
+
+    setTb({ isBold, isItalic, inUL, inOL, inLink });
+  }
 
   function normalizeToParagraph(html) {
     const trimmed = (html || "").trim();
@@ -166,7 +210,11 @@ export default function ParagraphEditor({ value, onChange }) {
   const handleRawBlur = () => onChange(sanitize(text));
 
   // ---- Toolbar actions for both modes ----
-  const applyInClean = (cmd, arg) => document.execCommand(cmd, false, arg);
+  const applyInClean = (cmd, arg) => {
+    document.execCommand(cmd, false, arg);
+    // Ensure state updates immediately
+    recomputeToolbarState();
+  };
 
   const wrapInRaw = (before, after = "") => {
     const ta = rawRef.current;
@@ -237,9 +285,21 @@ export default function ParagraphEditor({ value, onChange }) {
         // fix the “unlist leaves no <p>” case
         requestAnimationFrame(() => {
           ensureParagraphAroundSelection();
+          recomputeToolbarState();
         });
       } else {
         listifyRaw(false);
+      }
+    },
+    ol: () => {
+      if (mode === "clean") {
+        applyInClean("insertOrderedList");
+        requestAnimationFrame(() => {
+          ensureParagraphAroundSelection();
+          recomputeToolbarState();
+        });
+      } else {
+        listifyRaw(true);
       }
     },
     link: () => {
@@ -287,7 +347,9 @@ export default function ParagraphEditor({ value, onChange }) {
           type="button"
           onMouseDown={(e) => e.preventDefault()}
           onClick={actions.bold}
-          className="art-paragraph-editor-btn button"
+          className={`art-paragraph-editor-btn button ${
+            tb.isBold ? "is-active" : ""
+          }`}
         >
           <FontAwesomeIcon icon={faBold} />
         </button>
@@ -295,7 +357,9 @@ export default function ParagraphEditor({ value, onChange }) {
           type="button"
           onMouseDown={(e) => e.preventDefault()}
           onClick={actions.italic}
-          className="art-paragraph-editor-btn button"
+          className={`art-paragraph-editor-btn button ${
+            tb.isItalic ? "is-active" : ""
+          }`}
         >
           <FontAwesomeIcon icon={faItalic} />
         </button>
@@ -303,15 +367,31 @@ export default function ParagraphEditor({ value, onChange }) {
           type="button"
           onMouseDown={(e) => e.preventDefault()}
           onClick={actions.ul}
-          className="art-paragraph-editor-btn button"
+          className={`art-paragraph-editor-btn button ${
+            tb.inUL ? "is-active" : ""
+          }`}
         >
           <FontAwesomeIcon icon={faList} />
         </button>
+
+        <button
+          type="button"
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={actions.ol}
+          className={`art-paragraph-editor-btn button ${
+            tb.inOL ? "is-active" : ""
+          }`}
+          aria-label="Numbered list"
+          title="Numbered list"
+        >
+          <FontAwesomeIcon icon={faListOl} />
+        </button>
+
         <button
           type="button"
           onMouseDown={(e) => e.preventDefault()}
           onClick={actions.link}
-          className="art-paragraph-editor-btn button"
+          className={`art-paragraph-editor-btn button`}
         >
           <FontAwesomeIcon icon={faLink} />
         </button>
@@ -319,7 +399,7 @@ export default function ParagraphEditor({ value, onChange }) {
           type="button"
           onMouseDown={(e) => e.preventDefault()}
           onClick={actions.unlink}
-          className="art-paragraph-editor-btn button"
+          className={`art-paragraph-editor-btn button`}
         >
           <FontAwesomeIcon icon={faUnlink} />
         </button>
@@ -327,7 +407,7 @@ export default function ParagraphEditor({ value, onChange }) {
           type="button"
           onMouseDown={(e) => e.preventDefault()}
           onClick={actions.br}
-          className="art-paragraph-editor-btn button"
+          className={`art-paragraph-editor-btn button`}
         >
           <FontAwesomeIcon icon={faLevelDownAlt} />
         </button>

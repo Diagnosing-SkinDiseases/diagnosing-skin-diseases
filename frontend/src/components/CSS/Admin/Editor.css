@@ -251,3 +251,7 @@
  max-width: 35px;
  max-height: 35px;
 }
+
+.art-paragraph-editor-btn.is-active {
+  background-color: var(--interactive-color);
+}
