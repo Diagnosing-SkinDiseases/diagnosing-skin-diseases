@@ -26,16 +26,18 @@
   display: flex;
   width: 100%;
   justify-content: center;
+  margin-top: 1em
 }
 
 .user-article-video-container {
   position: relative;
-  width: 100%;
+  width: 50em;
   height: 25em;
   /* padding-bottom: 56.25%;
   height: 0; */
   /* 16:9 ratio, tweak as needed */
   overflow: hidden;
+  /* border: 1px solid black; */
 }
 
 .user-article-video-container iframe {
@@ -44,6 +46,7 @@
     left: 0;
     width: 100%;
     height: 100%;
+    /* border: 1px solid blue; */
 }
 
 /* Summary */
