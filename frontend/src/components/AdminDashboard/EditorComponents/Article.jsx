@@ -254,7 +254,7 @@ const Article = ({ onUpdate }) => {
     const handleSelect = () => setSelectedContent(index);
 
     const contentInputProps = {
-      key: index,
+      index: index,
       block: block,
       updateBlock: (value) => updateContentBlock(index, block.type, value),
       remove: () => removeContentBlock(index),
@@ -262,6 +262,7 @@ const Article = ({ onUpdate }) => {
         selectedContent === index ? "selected" : ""
       }`,
       onClick: handleSelect,
+      selectedContent: selectedContent,
     };
 
     switch (block.type) {
@@ -270,11 +271,11 @@ const Article = ({ onUpdate }) => {
       case ArticleContentType.HEADER1:
       case ArticleContentType.HEADER2:
       case ArticleContentType.PARAGRAPH:
-        return <ContentInput {...contentInputProps} />;
+        return <ContentInput {...contentInputProps} key={index} />;
       case ArticleContentType.IMAGE:
-        return <ImageInput {...contentInputProps} />;
+        return <ImageInput {...contentInputProps} key={index} />;
       case ArticleContentType.VIDEO:
-        return <VideoInput {...contentInputProps} />;
+        return <VideoInput {...contentInputProps} key={index} />;
       default:
         return null;
     }

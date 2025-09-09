@@ -27,6 +27,7 @@ const ContentInput = ({
   className,
   onClick,
   index,
+  selectedContent,
 }) => {
   const handleChange = (e) => {
     updateBlock(e.target.value);
@@ -69,7 +70,8 @@ const ContentInput = ({
       case ArticleContentType.PARAGRAPH:
         return (
           <ParagraphEditor
-            key={index}
+            index={index}
+            selectedContent={selectedContent}
             value={block.value}
             onChange={updateBlock}
           />

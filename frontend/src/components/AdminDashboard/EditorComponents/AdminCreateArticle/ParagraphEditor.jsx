@@ -69,7 +69,12 @@ function getSelectionContainer() {
   return node?.nodeType === 1 ? node : node?.parentElement || null;
 }
 
-export default function ParagraphEditor({ value, onChange }) {
+export default function ParagraphEditor({
+  value,
+  onChange,
+  index,
+  selectedContent,
+}) {
   const [mode, setMode] = useState("clean"); // "clean" | "raw"
   const [text, setText] = useState(value || "");
   const [tb, setTb] = useState({
@@ -331,94 +336,92 @@ export default function ParagraphEditor({ value, onChange }) {
   const toggleMode = () => setMode((m) => (m === "clean" ? "raw" : "clean"));
 
   return (
-    <div className="art-paragraph">
+    <div className={`art-paragraph`}>
       <label className="label">Paragraph</label>
 
       <div
-        className="pe-toolbar"
-        style={{
-          display: "flex",
-          gap: 8,
-          alignItems: "center",
-          margin: "6px 0",
-        }}
+        className={`pe-toolbar ${selectedContent === index ? "" : "hidden"}`}
       >
-        <button
-          type="button"
-          onMouseDown={(e) => e.preventDefault()}
-          onClick={actions.bold}
-          className={`art-paragraph-editor-btn button ${
-            tb.isBold ? "is-active" : ""
-          }`}
-        >
-          <FontAwesomeIcon icon={faBold} />
-        </button>
-        <button
-          type="button"
-          onMouseDown={(e) => e.preventDefault()}
-          onClick={actions.italic}
-          className={`art-paragraph-editor-btn button ${
-            tb.isItalic ? "is-active" : ""
-          }`}
-        >
-          <FontAwesomeIcon icon={faItalic} />
-        </button>
-        <button
-          type="button"
-          onMouseDown={(e) => e.preventDefault()}
-          onClick={actions.ul}
-          className={`art-paragraph-editor-btn button ${
-            tb.inUL ? "is-active" : ""
-          }`}
-        >
-          <FontAwesomeIcon icon={faList} />
-        </button>
+        <div className="art-pe-tb-left">
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={actions.bold}
+            className={`art-paragraph-editor-btn button ${
+              tb.isBold ? "is-active" : ""
+            }`}
+          >
+            <FontAwesomeIcon icon={faBold} />
+          </button>
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={actions.italic}
+            className={`art-paragraph-editor-btn button ${
+              tb.isItalic ? "is-active" : ""
+            }`}
+          >
+            <FontAwesomeIcon icon={faItalic} />
+          </button>
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={actions.ul}
+            className={`art-paragraph-editor-btn button ${
+              tb.inUL ? "is-active" : ""
+            }`}
+          >
+            <FontAwesomeIcon icon={faList} />
+          </button>
 
-        <button
-          type="button"
-          onMouseDown={(e) => e.preventDefault()}
-          onClick={actions.ol}
-          className={`art-paragraph-editor-btn button ${
-            tb.inOL ? "is-active" : ""
-          }`}
-          aria-label="Numbered list"
-          title="Numbered list"
-        >
-          <FontAwesomeIcon icon={faListOl} />
-        </button>
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={actions.ol}
+            className={`art-paragraph-editor-btn button ${
+              tb.inOL ? "is-active" : ""
+            }`}
+            aria-label="Numbered list"
+            title="Numbered list"
+          >
+            <FontAwesomeIcon icon={faListOl} />
+          </button>
 
-        <button
-          type="button"
-          onMouseDown={(e) => e.preventDefault()}
-          onClick={actions.link}
-          className={`art-paragraph-editor-btn button`}
-        >
-          <FontAwesomeIcon icon={faLink} />
-        </button>
-        <button
-          type="button"
-          onMouseDown={(e) => e.preventDefault()}
-          onClick={actions.unlink}
-          className={`art-paragraph-editor-btn button`}
-        >
-          <FontAwesomeIcon icon={faUnlink} />
-        </button>
-        <button
-          type="button"
-          onMouseDown={(e) => e.preventDefault()}
-          onClick={actions.br}
-          className={`art-paragraph-editor-btn button`}
-        >
-          <FontAwesomeIcon icon={faLevelDownAlt} />
-        </button>
-        <span style={{ flex: 1 }} />
-        <button
-          type="button"
-          className="art-paragraph-editor-btn button"
-          onClick={toggleMode}
-        >
-          {mode === "clean" ? "</>" : <FontAwesomeIcon icon={faFont} />}
-        </button>
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={actions.link}
+            className={`art-paragraph-editor-btn button`}
+          >
+            <FontAwesomeIcon icon={faLink} />
+          </button>
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={actions.unlink}
+            className={`art-paragraph-editor-btn button`}
+          >
+            <FontAwesomeIcon icon={faUnlink} />
+          </button>
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={actions.br}
+            className={`art-paragraph-editor-btn button`}
+          >
+            <FontAwesomeIcon icon={faLevelDownAlt} />
+          </button>
+        </div>
+
+        <div className="art-pe-tb-right">
+          <button
+            type="button"
+            className="art-paragraph-editor-btn button"
+            onClick={toggleMode}
+          >
+            {mode === "clean" ? "</>" : <FontAwesomeIcon icon={faFont} />}
+          </button>
+        </div>
       </div>
 
       {mode === "clean" ? (
@@ -431,14 +434,6 @@ export default function ParagraphEditor({ value, onChange }) {
           onPaste={handleCleanPaste}
           onBlur={handleCleanBlur}
           onKeyDown={handleCleanKeyDown}
-          style={{
-            minHeight: 160,
-            border: "1px solid #ccc",
-            borderRadius: 6,
-            padding: 10,
-            lineHeight: 1.5,
-            background: "#fff",
-          }}
         />
       ) : (
         <textarea
@@ -462,7 +457,7 @@ export default function ParagraphEditor({ value, onChange }) {
         />
       )}
 
-      <div style={{ marginTop: 6, fontSize: 12, color: "#666" }}>
+      <div className="pe-info">
         Mode:{" "}
         <strong>
           {mode === "clean"

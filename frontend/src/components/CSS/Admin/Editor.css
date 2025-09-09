@@ -255,3 +255,34 @@
 .art-paragraph-editor-btn.is-active {
   background-color: var(--interactive-color);
 }
+
+.pe-toolbar {
+  display: flex;
+  align-items: center;
+  margin: 6px 0;
+  justify-content: space-between;
+}
+
+.pe-toolbar.hidden {
+  display: none;
+}
+
+.art-pe-tb-left {
+  display: flex;
+  gap: 2px; 
+}
+
+.pe-surface {
+  min-height: 160px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+  line-height: 1.5;
+  background: #fff;
+}
+
+.pe-info {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #666;
+}
