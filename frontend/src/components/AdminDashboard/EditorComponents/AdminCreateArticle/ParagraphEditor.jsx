@@ -331,6 +331,32 @@ export default function ParagraphEditor({
     unlink: () => (mode === "clean" ? applyInClean("unlink") : removeLinkRaw()),
     br: () =>
       mode === "clean" ? applyInClean("insertLineBreak") : wrapInRaw("<br>"),
+    indent: () => {
+      if (mode === "clean") {
+        applyInClean("indent");
+        requestAnimationFrame(recomputeToolbarState);
+      } else {
+        wrapInRaw("<blockquote>", "</blockquote>");
+      }
+    },
+    outdent: () => {
+      if (mode === "clean") {
+        applyInClean("outdent");
+        requestAnimationFrame(recomputeToolbarState);
+      } else {
+        // crude raw fallback: remove one level of blockquote
+        const ta = rawRef.current;
+        if (!ta) return;
+        const { value: v, selectionStart: s } = ta;
+        const open = v.lastIndexOf("<blockquote>", s);
+        const close = v.indexOf("</blockquote>", s);
+        if (open !== -1 && close !== -1) {
+          const next =
+            v.slice(0, open) + v.slice(open + 12, close) + v.slice(close + 13);
+          setText(next);
+        }
+      }
+    },
   };
 
   const toggleMode = () => setMode((m) => (m === "clean" ? "raw" : "clean"));
@@ -385,6 +411,28 @@ export default function ParagraphEditor({
             title="Numbered list"
           >
             <FontAwesomeIcon icon={faListOl} />
+          </button>
+
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={actions.indent}
+            className="art-paragraph-editor-btn button"
+            aria-label="Indent more"
+            title="Indent more"
+          >
+            {">|"}
+          </button>
+
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={actions.outdent}
+            className="art-paragraph-editor-btn button"
+            aria-label="Indent less"
+            title="Indent less"
+          >
+            {"|<"}
           </button>
 
           <button

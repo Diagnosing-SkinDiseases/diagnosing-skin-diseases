@@ -2,6 +2,7 @@
 const ArticleContentType = {
   HEADER1: "HEADER1",
   HEADER2: "HEADER2",
+  SUBTYPE: "SUBTYPE",
   PARAGRAPH: "PARAGRAPH",
   PNG: "PNG",
   JPEG: "JPEG",
