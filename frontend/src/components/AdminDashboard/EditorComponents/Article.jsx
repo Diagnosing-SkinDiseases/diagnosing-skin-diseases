@@ -142,9 +142,7 @@ const Article = ({ onUpdate }) => {
     })
   );
 
-  useEffect(() => {
-    console.log("Selected content index:", selectedContent);
-  }, [selectedContent]);
+  useEffect(() => {}, [selectedContent]);
 
   /**
    * Converts a string to title case.
