@@ -15,6 +15,11 @@ const ArticleContentType = {
   HEADER2: "HEADER2",
 
   /**
+   * Represents a subtype.
+   */
+  SUBTYPE: "SUBTYPE",
+
+  /**
    * Represents a paragraph of text.
    */
   PARAGRAPH: "PARAGRAPH",

@@ -46,6 +46,11 @@ const ButtonContainer = ({ addContentBlockAfter, index }) => {
       />
       <Button
         className="button add-content-btn"
+        label={labels.buttonLabels.add.subtype}
+        onClick={() => addContentBlockAfter(index, ArticleContentType.SUBTYPE)}
+      />
+      <Button
+        className="button add-content-btn"
         label={labels.buttonLabels.add.paragraph}
         onClick={() =>
           addContentBlockAfter(index, ArticleContentType.PARAGRAPH)
@@ -270,6 +275,7 @@ const Article = ({ onUpdate }) => {
       case ArticleContentType.SUBTITLE:
       case ArticleContentType.HEADER1:
       case ArticleContentType.HEADER2:
+      case ArticleContentType.SUBTYPE:
       case ArticleContentType.PARAGRAPH:
         return <ContentInput {...contentInputProps} key={index} />;
       case ArticleContentType.IMAGE:

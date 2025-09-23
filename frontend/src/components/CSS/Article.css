@@ -56,10 +56,10 @@
   top: var(--nav-height);
   z-index: 100;
   background: white;
-  padding: 1.5em;
-  padding-top: 10px;
-  padding-bottom: 0px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .summary-list {
@@ -69,8 +69,32 @@
   padding: 0;
   margin: 0;
   align-items: center;
+  border-bottom: 2px solid var(--interactive-color);
+  
+  padding-top: 10px;
   padding-bottom: 10px;
-  border-bottom: 2px solid var(--interactive-color)
+ }
+
+ .subtype-list {
+   display: flex;
+   flex-wrap: wrap;
+   list-style: none;
+   padding: 0;
+   margin: 0;
+   align-items: center;
+   border-bottom: 2px solid var(--interactive-color);
+
+  padding-top: 10px;
+  padding-bottom: 10px;
+ }
+
+ .subtype-list li {
+   margin-right: 15px;
+   /* Space between items */
+   position: relative;
+   line-height: 1;
+   /* Reduce line height to make the items occupy less vertical space */
+   margin-bottom: 0px;
  }
 
 .summary-list li {
@@ -78,10 +102,6 @@
   /* Space between items */
   position: relative;
   line-height: 1;
-  /* Reduce line height to make the items occupy less vertical space */
-  margin-bottom: 0px;
-  padding-top: 5px;
-  padding-bottom: 5px;
 }
 
 .summary-list li::after {
@@ -117,7 +137,7 @@
 
 /* Header jump behavior */
 .art-h1 {
-  scroll-margin-top: 160px;
+  scroll-margin-top: 180px;
   color: var(--header-text);
   font-size: 36px;
 }
@@ -126,4 +146,9 @@
   scroll-margin-top: 200px;
   color: var(--header-text);
   font-size: 24px;
+}
+
+.art-subtype {
+    scroll-margin-top: 180px;
+    color: var(--header-text);
 }

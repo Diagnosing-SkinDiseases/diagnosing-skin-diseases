@@ -68,6 +68,12 @@ const parseData = ({ type, content }, index, firstH1Index) => {
           <h2 className="art-h2">{content}</h2>
         </div>
       );
+    case ArticleContentType.SUBTYPE:
+      return (
+        <div key={index} id={content} className="art-subtype">
+          <h1>{content}</h1>
+        </div>
+      );
     case ArticleContentType.PARAGRAPH: {
       let html = content;
 
@@ -163,17 +169,32 @@ const parseData = ({ type, content }, index, firstH1Index) => {
  */
 const generateSummary = (content) => {
   return (
-    <ul className="summary-list">
-      {content
-        .filter((item) => item.type === ArticleContentType.HEADER1)
-        .map(({ content }, index) => (
-          <li key={index}>
-            <a href={`#${content}`} className="summary-link">
-              {content}
-            </a>
-          </li>
-        ))}
-    </ul>
+    <div>
+      <ul className="summary-list">
+        {content
+          .filter((item) => item.type === ArticleContentType.HEADER1)
+          .map(({ content }, index) => (
+            <li key={index}>
+              <a href={`#${content}`} className="summary-link">
+                {content}
+              </a>
+            </li>
+          ))}
+      </ul>
+
+      {/* SUBTYPE summary */}
+      <ul className="subtype-list">
+        {content
+          .filter((item) => item.type === ArticleContentType.SUBTYPE)
+          .map(({ content }, index) => (
+            <li key={`sub-${index}`}>
+              <a href={`#${content}`} className="summary-link">
+                {content}
+              </a>
+            </li>
+          ))}
+      </ul>
+    </div>
   );
 };
 

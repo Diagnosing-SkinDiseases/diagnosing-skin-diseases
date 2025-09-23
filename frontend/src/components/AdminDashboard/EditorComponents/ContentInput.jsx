@@ -59,6 +59,13 @@ const ContentInput = ({
             {renderInput("text", "title", "Header 1")}
           </div>
         );
+      case ArticleContentType.SUBTYPE:
+        return (
+          <div className="art-subtitle">
+            <label className="label">Subtype</label>
+            {renderInput("text", "subtitle", "Subtype")}
+          </div>
+        );
       case ArticleContentType.HEADER2:
       case ArticleContentType.SUBTITLE:
         return (

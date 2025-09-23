@@ -6,7 +6,8 @@
             "definition" : "Add definition",
             "title" : "Add Header 1",
             "subtitle" : "Add Header 2",
-            "paragraph" : "Add Paragraph"
+            "paragraph" : "Add Paragraph",
+            "subtype" : "Add Subtype"
         },
         "publish": {
             "publish" : "Publish",

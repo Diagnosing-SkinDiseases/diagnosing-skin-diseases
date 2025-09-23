@@ -11,6 +11,7 @@ const ArticleContentType = {
   TEXT: "Text",
   HEADER1: "Header1",
   HEADER2: "Header2",
+  SUBTYPE: "Subtype",
 };
 
 export default ArticleContentType;
