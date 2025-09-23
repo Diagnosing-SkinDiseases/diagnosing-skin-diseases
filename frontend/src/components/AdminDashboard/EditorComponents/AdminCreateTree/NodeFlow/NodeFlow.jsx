@@ -935,7 +935,6 @@ const NodeFlowInstance = ({
                   navigator.clipboard
                     .writeText(e.target.value)
                     .then(() => {
-                      console.log("Copied to clipboard!");
                       // Optionally give visual feedback here
                     })
                     .catch((err) => {

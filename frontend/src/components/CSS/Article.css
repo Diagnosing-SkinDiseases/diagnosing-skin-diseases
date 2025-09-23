@@ -97,6 +97,20 @@
    margin-bottom: 0px;
  }
 
+ .subtype-list li::after {
+   content: "|";
+   position: absolute;
+   right: -10px;
+   top: 0;
+   bottom: 0;
+   height: 100%;
+   display: flex;
+   align-items: center;
+   font-size: 24px;
+   font-weight: 500;
+   color: var(--interactive-color);
+ }
+
 .summary-list li {
   margin-right: 15px;
   /* Space between items */
@@ -146,6 +160,9 @@
   scroll-margin-top: 200px;
   color: var(--header-text);
   font-size: 24px;
+
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .art-subtype {
