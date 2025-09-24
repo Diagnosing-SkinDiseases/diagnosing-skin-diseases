@@ -38,6 +38,19 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
     }
   }, [hash, content]);
 
+  // To calculate summary container heigh and scroll margin top
+  useEffect(() => {
+    const headerOffsetEl = document.querySelector(".summary-container");
+    if (headerOffsetEl) {
+      const height = headerOffsetEl.offsetHeight + 100;
+      console.log("HEIGHT", height);
+      document.documentElement.style.setProperty(
+        "--dynamic-scroll-margin",
+        `${height}px`
+      );
+    }
+  }, [content]);
+
   return (
     <>
       {errorMsg ? (
