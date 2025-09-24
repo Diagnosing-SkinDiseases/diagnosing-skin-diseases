@@ -184,6 +184,7 @@ const generateSummary = (content) => {
 
       {/* SUBTYPE summary */}
       <ul className="subtype-list">
+        <li className="subtype-list-label">SUBTYPE:</li>
         {content
           .filter((item) => item.type === ArticleContentType.SUBTYPE)
           .map(({ content }, index) => (
