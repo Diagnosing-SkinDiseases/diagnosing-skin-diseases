@@ -42,7 +42,7 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
   useEffect(() => {
     const headerOffsetEl = document.querySelector(".summary-container");
     if (headerOffsetEl) {
-      const height = headerOffsetEl.offsetHeight + 100;
+      const height = headerOffsetEl.offsetHeight + 120;
       console.log("HEIGHT", height);
       document.documentElement.style.setProperty(
         "--dynamic-scroll-margin",
