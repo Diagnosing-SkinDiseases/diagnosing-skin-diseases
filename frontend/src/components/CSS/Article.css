@@ -173,7 +173,8 @@
 
 /* Header hr */
 .art-hr {
+  margin-top: 30px;
+  margin-bottom: 30px;
   border: none;
   border-top: 4px solid #ccc;
-  margin: 1em 0;
 }
