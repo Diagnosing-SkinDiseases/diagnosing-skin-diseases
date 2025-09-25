@@ -71,6 +71,7 @@ const parseData = ({ type, content }, index, firstH1Index) => {
     case ArticleContentType.SUBTYPE:
       return (
         <div key={index} id={content} className="art-subtype">
+          <hr className="art-hr" />
           <h1>{content}</h1>
         </div>
       );
