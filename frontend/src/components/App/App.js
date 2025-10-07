@@ -25,6 +25,7 @@ import UserTreeV2 from "../UserTreeV2/UserTreeV2";
 import MFASetup from "../MFA/setup/MFASetup";
 import MFAVerify from "../MFA/verify/MFAVerify";
 import { useLocation } from "react-router-dom";
+import MFAReset from "../MFA/reset/MFAReset";
 
 // This function wraps your Routes and uses useAuth to access the auth state
 
@@ -274,6 +275,16 @@ function App() {
               element={
                 <BasicLoginRoute>
                   <MFAVerify />
+                </BasicLoginRoute>
+              }
+            />
+
+            {/* MFA Reset */}
+            <Route
+              path="/mfa-reset"
+              element={
+                <BasicLoginRoute>
+                  <MFAReset />
                 </BasicLoginRoute>
               }
             />

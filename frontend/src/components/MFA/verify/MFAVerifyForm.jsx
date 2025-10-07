@@ -97,13 +97,13 @@ const MFAVerifyForm = () => {
       </form>
 
       {/* Small hyperlink to re-enable MFA */}
-      <p style={{ marginTop: "1rem" }}>
-        <a
-          href="/mfa-setup"
-          onClick={handleReEnableClick}
-          style={{ fontSize: "0.85rem" }}
-        >
+      <p style={{ marginTop: "1rem", textAlign: "center" }}>
+        <a href="/mfa-setup" style={{ fontSize: "0.85rem" }}>
           Re-enable MFA with QR Code
+        </a>
+
+        <a href="/mfa-reset" style={{ fontSize: "0.85rem" }}>
+          Reset MFA for lost device
         </a>
       </p>
 
