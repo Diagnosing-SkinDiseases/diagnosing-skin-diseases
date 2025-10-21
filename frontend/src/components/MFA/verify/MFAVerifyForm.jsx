@@ -10,6 +10,9 @@ const MFAVerifyForm = () => {
   const [userId, setUserId] = useState("");
   const [message, setMessage] = useState("");
 
+  // Mfa Enabled Check
+  const [mfaEnabled, setMfaEnabled] = useState(false);
+
   const location = useLocation();
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/admin/trees";
@@ -30,6 +33,7 @@ const MFAVerifyForm = () => {
         );
         const payload = JSON.parse(atob(padded));
         setUserId(payload.userId);
+        setMfaEnabled(payload.mfaEnabled);
       } catch (err) {
         console.error("Failed to decode token:", err);
       }
@@ -98,11 +102,14 @@ const MFAVerifyForm = () => {
 
       {/* Small hyperlink to re-enable MFA */}
       <p style={{ marginTop: "1rem", textAlign: "center" }}>
-        <a href="/mfa-setup" style={{ fontSize: "0.85rem" }}>
-          Re-enable MFA with QR Code
-        </a>
-
-        <br></br>
+        {!mfaEnabled && (
+          <>
+            <a href="/mfa-setup" style={{ fontSize: "0.85rem" }}>
+              Re-enable MFA with QR Code
+            </a>
+            <br></br>
+          </>
+        )}
 
         <a href="/mfa-reset" style={{ fontSize: "0.85rem" }}>
           Reset MFA for lost device

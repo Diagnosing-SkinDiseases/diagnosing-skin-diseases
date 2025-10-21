@@ -4,6 +4,8 @@ const ObjectId = mongoose.Types.ObjectId;
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+const crypto = require("crypto");
+
 // MFA Code
 const speakeasy = require("speakeasy");
 const qrcode = require("qrcode");
@@ -152,6 +154,14 @@ const mfaSetup = async (req, res) => {
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ error: "User not found" });
 
+    // ✅ Guardrail: Block setup if MFA is already enabled
+    if (user.mfaEnabled) {
+      return res.status(403).json({
+        error:
+          "MFA is already enabled. Reset it first if you want to reconfigure.",
+      });
+    }
+
     let secretBase32 = user.mfaSecret;
 
     // Only generate a new secret if one doesn't exist
@@ -173,6 +183,7 @@ const mfaSetup = async (req, res) => {
       manualKey: secretBase32,
     });
   } catch (error) {
+    console.error("Error in mfaSetup:", error);
     res.status(500).json({ error: "Failed to generate MFA setup." });
   }
 };
@@ -221,13 +232,33 @@ const mfaResetTrigger = async (req, res) => {
   console.log("BODY", req.body);
 
   try {
-    const { userId } = req.body; // ✅ pull from request
-    const email = "sean.sollestre@gmail.com"; // or find by userId in DB
+    const { userId } = req.body;
+    if (!userId) {
+      return res.status(400).json({ error: "Missing userId" });
+    }
 
-    await sendHelloWorldEmail(email, userId); // ✅ pass it along
-    res.status(200).json({ message: "MFA reset email sent" });
+    // ✅ Find user in DB
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // ✅ Generate cryptographically secure token
+    const token = crypto.randomBytes(32).toString("hex");
+    const expiresAt = Date.now() + 15 * 60 * 1000; // 15 minutes
+
+    // ✅ Save token to user for one-time use
+    user.mfaLinkToken = token;
+    user.mfaLinkExpiresAt = expiresAt;
+    user.mfaLinkUsed = false;
+    await user.save();
+
+    // ✅ Send email (emailService builds the link)
+    await sendHelloWorldEmail(user.email, token);
+
+    res.status(200).json({ message: "MFA reset email sent successfully" });
   } catch (err) {
-    console.error(err);
+    console.error("Error in MFA reset trigger:", err);
     res.status(500).json({ error: "Failed to send MFA reset email" });
   }
 };
@@ -235,24 +266,40 @@ const mfaResetTrigger = async (req, res) => {
 // MFA Reset
 const mfaReset = async (req, res) => {
   try {
-    console.log("MFA RESET endpoint hit"); // <--- ADD LOG
+    const { token } = req.body;
+    if (!token) return res.status(400).json({ error: "Missing token" });
 
-    const { userId } = req.query; // or req.body depending on your setup
-    console.log("Incoming userId:", userId); // <--- ADD LOG
+    const user = await User.findOne({ mfaLinkToken: token });
+    if (!user)
+      return res.status(400).json({ error: "Invalid or expired link" });
 
-    const user = await User.findById(userId);
-    if (!user) {
-      console.log("User not found in DB for id:", userId); // <--- ADD LOG
-      return res.status(404).json({ error: "User not found" });
+    if (user.mfaLinkUsed) {
+      return res.status(400).json({ error: "This link has already been used" });
     }
 
-    // Reset secret
+    if (!user.mfaLinkExpiresAt || Date.now() > user.mfaLinkExpiresAt) {
+      return res.status(400).json({ error: "Link has expired" });
+    }
+
     user.mfaSecret = undefined;
     user.mfaEnabled = false;
+    user.mfaLinkUsed = true;
     await user.save();
 
-    console.log("MFA reset complete for user:", user.email); // <--- ADD LOG
-    res.status(200).json({ message: "MFA has been reset successfully" });
+    const newLoginToken = jwt.sign(
+      {
+        userId: user._id,
+        mfaEnabled: false,
+        mfaVerified: false,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    res.status(200).json({
+      message: "MFA has been reset successfully",
+      token: newLoginToken,
+    });
   } catch (err) {
     console.error("Error in MFA reset:", err);
     res.status(500).json({ error: "Failed to reset MFA" });

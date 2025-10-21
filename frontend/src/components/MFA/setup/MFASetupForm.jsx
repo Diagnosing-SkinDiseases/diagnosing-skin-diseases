@@ -82,53 +82,46 @@ const MFASetupForm = () => {
 
   return (
     <div className="login-card">
-      <h2>MFA Setup</h2>
-      <form onSubmit={handleSubmit}>
-        {/* QR Code */}
-        <div>
-          <p>Scan this QR code with your authenticator app:</p>
-          {qrCodeUrl ? (
-            <img
-              src={qrCodeUrl}
-              alt="MFA QR Code"
-              style={{ width: 200, height: 200 }}
-            />
-          ) : (
-            <div
-              style={{
-                width: "200px",
-                height: "200px",
-                border: "2px dashed #ccc",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "1.2rem",
-                marginTop: "10px",
-              }}
-            >
-              QR Code
+      {!qrCodeUrl ? (
+        <span>{"UNAUTHORIZED"}</span>
+      ) : (
+        <>
+          <h2>MFA Setup</h2>
+          <form onSubmit={handleSubmit}>
+            {/* QR Code */}
+            <div>
+              <p>Scan this QR code with your authenticator app:</p>
+              <img
+                src={qrCodeUrl}
+                alt="MFA QR Code"
+                style={{ width: 200, height: 200 }}
+              />
             </div>
-          )}
-        </div>
 
-        {/* TOTP Input */}
-        <div>
-          <label htmlFor="totp">Enter the 6-digit code from your app:</label>
-          <input
-            type="text"
-            id="totp"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            required
-            pattern="\d{6}"
-            maxLength={6}
-          />
-        </div>
+            <br></br>
 
-        <button type="submit">Verify & Enable MFA</button>
+            {/* TOTP Input */}
+            <div>
+              <label htmlFor="totp">
+                Enter the 6-digit code from your app:
+              </label>
+              <input
+                type="text"
+                id="totp"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                required
+                pattern="\d{6}"
+                maxLength={6}
+              />
+            </div>
 
-        {message && <p>{message}</p>}
-      </form>
+            <button type="submit">Verify & Enable MFA</button>
+
+            {message && <p>{message}</p>}
+          </form>
+        </>
+      )}
     </div>
   );
 };

@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 const Schema = mongoose.Schema;
 
 // define schema for user
@@ -12,6 +11,7 @@ const userSchema = new Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
   },
 
   password: {
@@ -29,6 +29,22 @@ const userSchema = new Schema({
   mfaSecret: {
     type: String,
     default: null,
+  },
+
+  // One-time MFA link data
+  mfaLinkToken: {
+    type: String,
+    default: null,
+  },
+
+  mfaLinkExpiresAt: {
+    type: Date,
+    default: null,
+  },
+
+  mfaLinkUsed: {
+    type: Boolean,
+    default: false,
   },
 });
 

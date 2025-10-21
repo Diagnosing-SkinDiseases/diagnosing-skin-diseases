@@ -291,10 +291,7 @@ function App() {
             />
 
             {/* MFA Reset Confirm */}
-            <Route
-              path="/mfa-reset-confirm/:userId"
-              element={<MFAResetConfirm />}
-            />
+            <Route path="/mfa-reset-confirm" element={<MFAResetConfirm />} />
 
             {/* About DSD */}
             <Route path="/about" element={<About />}></Route>
