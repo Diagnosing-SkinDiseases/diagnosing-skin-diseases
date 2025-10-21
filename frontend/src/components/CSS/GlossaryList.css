@@ -164,7 +164,7 @@
     font-size: 1.25em;
 }
 
-.expanded > .glossary-list-section-item-term {
+.expanded > .glossary-list-section-item-content > .glossary-list-section-item-term {
     font-weight: bold;
 }
 
