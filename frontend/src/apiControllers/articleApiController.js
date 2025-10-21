@@ -25,6 +25,27 @@ const apiGetAllArticles = () => {
 };
 
 /**
+ * Creates a promise for getting a lightweight list of articles from the database. \
+ * Returns only `_id` and `title` for each article.
+ *
+ * @returns the promise for the API response
+ */
+const apiListArticles = () => {
+  /*
+    Response payload format:
+    [
+      {
+        _id: String,
+        title: String
+      }
+    ]
+  */
+  return axios.get(`${apiUrl}/article/list`);
+};
+
+export { apiListArticles };
+
+/**
  * Creates a promise for creating an article for the database. \
  * See comments inside function for the format of payloads.
  *

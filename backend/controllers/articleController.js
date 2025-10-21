@@ -30,6 +30,21 @@ const getAllArticles = async (req, res) => {
   }
 };
 
+// Lightweight article listing (id + title only)
+const listArticles = async (req, res) => {
+  try {
+    const articles = await Article.find(
+      {},
+      { _id: 1, title: 1, status: 1 }
+    ).sort({
+      title: 1,
+    });
+    res.status(200).json(articles);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 // Read single article
 const getArticle = async (req, res) => {
   try {
@@ -56,7 +71,6 @@ const getArticle = async (req, res) => {
       .json({ error: "Server error, please try again later." });
   }
 };
-
 
 // Update article
 const updateArticle = async (req, res) => {
@@ -114,4 +128,5 @@ module.exports = {
   getArticle,
   updateArticle,
   deleteArticle,
+  listArticles,
 };
