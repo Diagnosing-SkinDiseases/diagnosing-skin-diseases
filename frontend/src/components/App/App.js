@@ -26,6 +26,7 @@ import MFASetup from "../MFA/setup/MFASetup";
 import MFAVerify from "../MFA/verify/MFAVerify";
 import { useLocation } from "react-router-dom";
 import MFAReset from "../MFA/reset/MFAReset";
+import MFAResetConfirm from "../MFA/reset/MFAResetConfirm";
 
 // This function wraps your Routes and uses useAuth to access the auth state
 
@@ -287,6 +288,12 @@ function App() {
                   <MFAReset />
                 </BasicLoginRoute>
               }
+            />
+
+            {/* MFA Reset Confirm */}
+            <Route
+              path="/mfa-reset-confirm/:userId"
+              element={<MFAResetConfirm />}
             />
 
             {/* About DSD */}

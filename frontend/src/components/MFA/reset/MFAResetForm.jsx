@@ -25,30 +25,27 @@ const MFAResetForm = () => {
     }
   }, []);
 
+  // Send reset request to backend
   const handleSendReset = async () => {
-    console.log("Would trigger backend email to reset MFA for:", userId);
-    setMessage(
-      "A reset link has been sent to your registered email (if available)."
-    );
+    try {
+      const response = await fetch(`${apiUrl}/user/mfa/reset/email`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId }),
+      });
 
-    // In production you’d do:
-    // try {
-    //   const response = await fetch(`${apiUrl}/user/mfa/reset`, {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify({ userId }),
-    //   });
-    //   const data = await response.json();
-    //   if (!response.ok) throw new Error(data.error || "Reset failed");
-    //   setMessage("Reset link sent to your email.");
-    // } catch (err) {
-    //   console.error(err.message);
-    //   setMessage("❌ Error sending reset email. Please try again.");
-    // }
+      const data = await response.json();
+
+      if (!response.ok) throw new Error(data.error || "Reset request failed");
+
+      setMessage("✅ Reset link sent to your registered email.");
+    } catch (err) {
+      console.error("Reset error:", err);
+      setMessage("❌ Error sending reset email. Please try again later.");
+    }
   };
 
   const handleBack = () => {
-    console.log("Navigate back to MFA login");
     navigate("/mfa-verify");
   };
 

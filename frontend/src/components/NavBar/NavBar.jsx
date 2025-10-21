@@ -198,7 +198,9 @@ const NavBarComponent = () => {
 
   // Use appropriate links based on authentication status
   const links =
-    isLoggedIn && new URL(window.location).pathname.includes("/admin")
+    isLoggedIn &&
+    (new URL(window.location).pathname.includes("/admin") ||
+      /^\/mfa-\w+/i.test(new URL(window.location).pathname))
       ? authLinks
       : guestLinks;
 

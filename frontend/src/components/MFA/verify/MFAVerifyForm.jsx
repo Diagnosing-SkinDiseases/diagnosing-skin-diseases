@@ -102,6 +102,8 @@ const MFAVerifyForm = () => {
           Re-enable MFA with QR Code
         </a>
 
+        <br></br>
+
         <a href="/mfa-reset" style={{ fontSize: "0.85rem" }}>
           Reset MFA for lost device
         </a>

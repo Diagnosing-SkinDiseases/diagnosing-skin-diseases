@@ -12,11 +12,12 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.4",
+    "dotenv": "^16.6.1",
     "express": "^4.18.3",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.3.0",
     "mongoose": "^8.9.5",
+    "nodemailer": "^7.0.9",
     "qrcode": "^1.5.4",
     "speakeasy": "^2.0.0"
   }

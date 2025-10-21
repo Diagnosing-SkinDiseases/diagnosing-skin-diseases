@@ -7,10 +7,12 @@ const jwt = require("jsonwebtoken");
 // MFA Code
 const speakeasy = require("speakeasy");
 const qrcode = require("qrcode");
+const sendHelloWorldEmail = require("../utils/mailer");
 
 // Create User
 const createUser = async (req, res) => {
   let { username, email, password } = req.body;
+  console.log("TEST", req.body);
 
   try {
     // Hash the password before storing it in the database
@@ -37,17 +39,25 @@ const createUser = async (req, res) => {
 // Login User
 const loginUser = async (req, res) => {
   const { username, password } = req.body;
+  console.log("Request Received", req.body);
 
   try {
     // Check if user exists
+    console.log("Trace 1");
     const user = await User.findOne({ username });
+    console.log("Trace 2");
     if (!user) {
+      console.log("Trace 3");
       return res.status(404).json({ message: "User not found" });
     }
 
     // Compare provided password with hashed password in database
+    console.log("Trace 4");
     const isMatch = await bcrypt.compare(password, user.password);
+    console.log("Trace 5");
+    console.log("USER", isMatch);
     if (!isMatch) {
+      console.log("NO MATCH!!!");
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
@@ -63,6 +73,7 @@ const loginUser = async (req, res) => {
     );
 
     // Send the JWT in the response
+    console.log("SUCCESS");
     res.status(200).json({ message: "Login successful", token });
   } catch (error) {
     console.error(error);
@@ -205,6 +216,49 @@ const mfaVerify = async (req, res) => {
   }
 };
 
+// MFA Reset Trigger
+const mfaResetTrigger = async (req, res) => {
+  console.log("BODY", req.body);
+
+  try {
+    const { userId } = req.body; // ✅ pull from request
+    const email = "sean.sollestre@gmail.com"; // or find by userId in DB
+
+    await sendHelloWorldEmail(email, userId); // ✅ pass it along
+    res.status(200).json({ message: "MFA reset email sent" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to send MFA reset email" });
+  }
+};
+
+// MFA Reset
+const mfaReset = async (req, res) => {
+  try {
+    console.log("MFA RESET endpoint hit"); // <--- ADD LOG
+
+    const { userId } = req.query; // or req.body depending on your setup
+    console.log("Incoming userId:", userId); // <--- ADD LOG
+
+    const user = await User.findById(userId);
+    if (!user) {
+      console.log("User not found in DB for id:", userId); // <--- ADD LOG
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Reset secret
+    user.mfaSecret = undefined;
+    user.mfaEnabled = false;
+    await user.save();
+
+    console.log("MFA reset complete for user:", user.email); // <--- ADD LOG
+    res.status(200).json({ message: "MFA has been reset successfully" });
+  } catch (err) {
+    console.error("Error in MFA reset:", err);
+    res.status(500).json({ error: "Failed to reset MFA" });
+  }
+};
+
 module.exports = {
   createUser,
   loginUser,
@@ -214,4 +268,6 @@ module.exports = {
   deleteUser,
   mfaSetup,
   mfaVerify,
+  mfaResetTrigger,
+  mfaReset,
 };

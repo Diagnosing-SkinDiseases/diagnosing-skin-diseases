@@ -1,3 +1,6 @@
+// Dotenv access
+require("dotenv").config();
+
 // Module imports
 const express = require("express");
 const app = express();
@@ -9,9 +12,6 @@ const userRouter = require("./routers/userRouter.js");
 const glossaryItemRouter = require("./routers/glossaryRouter.js");
 const treeRouter = require("./routers/treeRouter.js");
 const articleRouter = require("./routers/articleRouter.js");
-
-// Dotenv access
-require("dotenv").config();
 
 // Environment variables
 const port = process.env.PORT;

@@ -9,6 +9,8 @@ const {
   deleteUser,
   mfaSetup,
   mfaVerify,
+  mfaResetTrigger,
+  mfaReset,
 } = require("../controllers/userController");
 
 // Create user
@@ -34,5 +36,11 @@ userRouter.post("/user/mfa/setup", mfaSetup);
 
 // MFA Verify
 userRouter.post("/user/mfa/verify", mfaVerify);
+
+// MFA Reset
+userRouter.post("/user/mfa/reset/email", mfaResetTrigger);
+
+// MFA Reset True
+userRouter.post("/user/mfa/reset", mfaReset);
 
 module.exports = userRouter;
