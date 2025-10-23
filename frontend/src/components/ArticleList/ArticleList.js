@@ -65,22 +65,13 @@ const ArticleListPage = () => {
         : performance.now();
       setTotalLoadTime(totalTime);
 
-      // ---- Benchmark metrics ----
+      // Metrics for profiling
       const metrics = {
         page: "ArticleListPage",
         timestamp: new Date().toISOString(),
         totalLoadTime: Math.round(totalTime),
         backendResponseTime: fetchDuration ? Math.round(fetchDuration) : null,
       };
-
-      console.table(metrics);
-
-      // Optional: send to backend for aggregation
-      fetch("/api/perf/log", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(metrics),
-      }).catch(() => {});
     }
   }, [isLoading, fetchDuration]);
 

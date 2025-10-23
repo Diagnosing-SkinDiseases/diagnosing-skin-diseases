@@ -78,6 +78,7 @@ const AdminDashboard = ({ contentType }) => {
     const frontendTime = Math.round(totalTime);
     const backendTime = Math.round(fetchDuration);
 
+    // Metrics for profiling
     const metrics = {
       page: "AdminDashboard",
       contentType: "Article",
@@ -85,15 +86,6 @@ const AdminDashboard = ({ contentType }) => {
       totalLoadTime: frontendTime,
       backendResponseTime: backendTime,
     };
-
-    console.table(metrics);
-
-    // Optional backend log
-    fetch("/api/perf/log", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(metrics),
-    }).catch(() => {});
   }, [contentType, fetchDuration]);
 
   // ---- Data processing ----
