@@ -29,8 +29,6 @@ const ArticleListPage = () => {
 
         const response = await apiListArticles();
 
-        console.log("RESPONSE", response);
-
         // ---- Benchmark: End backend timer ----
         const fetchEnd = performance.now();
         const backendTime = fetchEnd - fetchStart;

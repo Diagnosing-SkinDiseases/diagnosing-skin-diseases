@@ -32,7 +32,6 @@ const MFAResetConfirm = () => {
         });
 
         const data = await response.json();
-        console.log("Response:", data);
 
         // Treat idempotent "already reset" as success
         if (response.ok) {

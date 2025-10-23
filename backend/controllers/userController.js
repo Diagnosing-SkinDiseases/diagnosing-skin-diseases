@@ -14,7 +14,6 @@ const sendHelloWorldEmail = require("../utils/mailer");
 // Create User
 const createUser = async (req, res) => {
   let { username, email, password } = req.body;
-  console.log("TEST", req.body);
 
   try {
     // Hash the password before storing it in the database
@@ -41,25 +40,17 @@ const createUser = async (req, res) => {
 // Login User
 const loginUser = async (req, res) => {
   const { username, password } = req.body;
-  console.log("Request Received", req.body);
 
   try {
     // Check if user exists
-    console.log("Trace 1");
     const user = await User.findOne({ username });
-    console.log("Trace 2");
     if (!user) {
-      console.log("Trace 3");
       return res.status(404).json({ message: "User not found" });
     }
 
     // Compare provided password with hashed password in database
-    console.log("Trace 4");
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log("Trace 5");
-    console.log("USER", isMatch);
     if (!isMatch) {
-      console.log("NO MATCH!!!");
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
@@ -75,7 +66,7 @@ const loginUser = async (req, res) => {
     );
 
     // Send the JWT in the response
-    console.log("SUCCESS");
+
     res.status(200).json({ message: "Login successful", token });
   } catch (error) {
     console.error(error);
@@ -229,8 +220,6 @@ const mfaVerify = async (req, res) => {
 
 // MFA Reset Trigger
 const mfaResetTrigger = async (req, res) => {
-  console.log("BODY", req.body);
-
   try {
     const { userId } = req.body;
     if (!userId) {

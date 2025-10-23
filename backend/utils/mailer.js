@@ -25,8 +25,6 @@ async function sendHelloWorldEmail(to, token) {
       <p>If you did not request this, you can safely ignore this email.</p>
     `,
   });
-
-  console.log("✅ MFA reset email sent: %s", info.messageId);
 }
 
 module.exports = sendHelloWorldEmail;
