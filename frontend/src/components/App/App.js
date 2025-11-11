@@ -221,10 +221,10 @@ function App() {
             ></Route>
 
             {/* Article List */}
-            <Route path="/treatment" element={<ArticlePage />}></Route>
+            <Route path="/articles" element={<ArticlePage />}></Route>
 
             {/* Article */}
-            <Route path="/treatment/:title/:id" element={<Article />}></Route>
+            <Route path="/articles/:title/:id" element={<Article />}></Route>
 
             {/* Glossary */}
             <Route path="/glossary" element={<Glossary></Glossary>}></Route>

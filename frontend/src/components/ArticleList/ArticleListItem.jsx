@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"; // Assuming react-router for navigation
 
 /**
  * ArticleListItem Component
- * 
+ *
  * Represents a single item in a list of articles. This component renders a link to the article's detailed view.
  * The URL for the link is constructed based on the article's title and its unique identifier. It transforms
  * the title into a URL-friendly format by converting spaces to dashes and making all characters lowercase.
@@ -19,7 +19,7 @@ function ArticleListItem({ article }) {
   return (
     <li className="article-list-item">
       <Link
-        to={`/treatment/${article.title.toLowerCase().replace(/ /g, "-")}/${
+        to={`/articles/${article.title.toLowerCase().replace(/ /g, "-")}/${
           article._id
         }`}
       >

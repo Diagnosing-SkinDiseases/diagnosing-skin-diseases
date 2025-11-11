@@ -191,7 +191,7 @@ const NavBarComponent = () => {
         },
       ],
     },
-    { name: "Articles", path: "/treatment", subTabs: [] },
+    { name: "Articles", path: "/articles", subTabs: [] },
     { name: "Glossary", path: "/glossary", subTabs: [] },
     { name: "About", path: "/about", subTabs: [] },
   ];

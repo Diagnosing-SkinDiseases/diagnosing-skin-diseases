@@ -211,7 +211,7 @@ const ArticleListPage = () => {
                   {items.map((item, index) => (
                     <li key={index}>
                       <Link
-                        to={`/treatment/${item.title
+                        to={`/articles/${item.title
                           .toLowerCase()
                           .replace(/ /g, "-")}/${item._id}`}
                         className="article-list-section-item"
