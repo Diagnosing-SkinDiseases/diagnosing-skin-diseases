@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../App/AuthContext";
-// import DSD from "../NavBar/DSD.png";
-// import DSD from "../NavBar/DSD_Text_Only.png";
 import DSD from "./dsd-logo-2.png";
 import "../CSS/NavBarComponent.css";
 
@@ -76,7 +74,6 @@ const NavBarComponent = () => {
 
   // Determine if a link is active based on the current path
   const isActiveLink = (linkPath) => {
-    // For homepage and when on a diagnostic tree
     if (location.pathname.includes("/trees")) {
       if (linkPath === "/") {
         return true;
@@ -93,8 +90,8 @@ const NavBarComponent = () => {
   // Handle link click: navigate to the path, and for non-subtab links, force a page reload
   const handleClick = (path, hasSubTabs) => {
     if (!hasSubTabs) {
-      navigate(path); // Use navigate to change the path
-      window.location.reload(); // Force the window to reload
+      navigate(path);
+      window.location.reload();
     }
   };
 
@@ -108,9 +105,7 @@ const NavBarComponent = () => {
 
   // Links definition for guests
   const guestLinks = [
-    // For homepage
     { name: "Diagnostic Trees", path: "/", subTabs: [] },
-    // For when on the diagnostic tree itself
     {
       name: "How To...",
       subTabs: [
@@ -193,7 +188,21 @@ const NavBarComponent = () => {
     },
     { name: "Articles", path: "/articles", subTabs: [] },
     { name: "Glossary", path: "/glossary", subTabs: [] },
-    { name: "About", path: "/about", subTabs: [] },
+    {
+      name: "About",
+      subTabs: [
+        { name: "About DSD", path: "/about?selectedItem=About DSD" },
+        {
+          name: "Using This Website",
+          path: "/about?selectedItem=Using This Website",
+        },
+        {
+          name: "Acknowledgements",
+          path: "/about?selectedItem=Acknowledgements",
+        },
+        { name: "Contact", path: "/about?selectedItem=Contact" },
+      ],
+    },
   ];
 
   // Use appropriate links based on authentication status

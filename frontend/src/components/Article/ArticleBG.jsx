@@ -15,23 +15,9 @@ const ArticleBG = ({ data, errorMsg }) => {
   const location = useLocation();
   const [previousUrl, setPreviousUrl] = useState(null);
 
-  // Store document.referrer once on mount
-  useEffect(() => {
-    const referrer = document.referrer;
-    setPreviousUrl(referrer);
-    const currentUrl =
-      window.location.pathname + window.location.search + window.location.hash;
-
-    console.log("Stored Previous URL (on mount):", referrer);
-    console.log("Current URL (useEffect):", currentUrl);
-  }, []);
-
   const handleBack = () => {
     const currentUrl =
       window.location.pathname + window.location.search + window.location.hash;
-
-    console.log("Previous URL (handleBack):", previousUrl);
-    console.log("Current URL (handleBack):", currentUrl);
 
     if (previousUrl) {
       window.location.href = previousUrl;

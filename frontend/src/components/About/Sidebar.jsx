@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = ({ setArticleId, selectedArticleId }) => {
   const [selectedItem, setSelectedItem] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Map articleId to selectedItem
@@ -27,11 +29,14 @@ const Sidebar = ({ setArticleId, selectedArticleId }) => {
     const articleIdMap = {
       "About DSD": "660e30352dc5942805a1372d",
       "Using This Website": "660e303a2dc5942805a137c0",
-      "Acknowledgements": "660e303f2dc5942805a13854",
-      "Contact": "contact",
+      Acknowledgements: "660e303f2dc5942805a13854",
+      Contact: "contact",
     };
     setArticleId(articleIdMap[itemName]);
     setSelectedItem(itemName);
+
+    // Update the URL query param (so reloads/bookmarks preserve selection)
+    navigate(`/about?selectedItem=${encodeURIComponent(itemName)}`);
   };
 
   return (
