@@ -100,12 +100,14 @@
   text-decoration: none;
   padding: 10px;
   font-weight: normal;
+  font-size: 1.25em
 }
 
 .subtab-item:hover {
   background-color: var(--nav-hover);
   color: var(--nav-text);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
 }
 
 .subtab-item a {
