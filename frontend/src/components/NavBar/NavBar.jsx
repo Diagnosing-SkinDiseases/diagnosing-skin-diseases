@@ -74,6 +74,7 @@ const NavBarComponent = () => {
 
   // Determine if a link is active based on the current path
   const isActiveLink = (linkPath) => {
+    console.log("Link path:", linkPath);
     if (location.pathname.includes("/trees")) {
       if (linkPath === "/") {
         return true;
@@ -190,6 +191,7 @@ const NavBarComponent = () => {
     { name: "Glossary", path: "/glossary", subTabs: [] },
     {
       name: "About",
+      path: "/about",
       subTabs: [
         { name: "About DSD", path: "/about?selectedItem=About DSD" },
         {
@@ -218,28 +220,34 @@ const NavBarComponent = () => {
       <Link className="nav-logo-container" to="/">
         <img className="nav-logo" src={DSD} alt="DSD Logo" />
       </Link>
-      {links.map((link, index) => (
-        <div
-          key={index}
-          className={`nav-item ${
-            link.subTabs.length > 0 ? "has-dropdown" : ""
-          } ${isActiveLink(link.path) ? "nav-active" : ""} ${
-            activeLink === link.name ? "nav-hover" : ""
-          }`}
-          onMouseEnter={() => setActiveLink(link.name)}
-          onMouseLeave={() => setActiveLink("")}
-        >
+      {links.map((link, index) => {
+        console.log("LINK", link);
+        return (
           <div
-            onClick={() => handleClick(link.path, link.subTabs.length > 0)}
-            className={`d-flex align-items-center justify-content-center nav-link`}
+            key={index}
+            className={`nav-item ${
+              link.subTabs.length > 0 ? "has-dropdown" : ""
+            } ${isActiveLink(link.path) ? "nav-active" : ""} ${
+              activeLink === link.name ? "nav-hover" : ""
+            }`}
+            onMouseEnter={() => setActiveLink(link.name)}
+            onMouseLeave={() => setActiveLink("")}
           >
-            <p className="navbar-link-text">{link.name} </p>
+            <div
+              onClick={() => handleClick(link.path, link.subTabs.length > 0)}
+              className={`d-flex align-items-center justify-content-center nav-link`}
+            >
+              <p className="navbar-link-text">{link.name} </p>
+            </div>
+            {link.subTabs.length > 0 && (
+              <NavSubtab
+                show={activeLink === link.name}
+                titles={link.subTabs}
+              />
+            )}
           </div>
-          {link.subTabs.length > 0 && (
-            <NavSubtab show={activeLink === link.name} titles={link.subTabs} />
-          )}
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };
