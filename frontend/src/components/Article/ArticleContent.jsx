@@ -48,6 +48,7 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
         `${height}px`
       );
     }
+    console.log("Content", title, content);
   }, [content]);
 
   return (
@@ -81,6 +82,40 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
             {/* Dynamic Content */}
             {content.map((item, index) => parseData(item, index, firstH1Index))}
           </div>
+
+          {/* Tree Links */}
+          {(() => {
+            const treeLinkBlock = content.find(
+              (c) => c.type === ArticleContentType.TREE_LINK
+            );
+
+            console.log("treelinkblock", treeLinkBlock);
+
+            let treeLinks = [];
+            try {
+              treeLinks = JSON.parse(treeLinkBlock?.content || "[]");
+            } catch {
+              treeLinks = [];
+            }
+
+            console.log("TEST2", treeLinks);
+
+            return (
+              <div className="tree-link-group">
+                {treeLinks.map((item, i) => (
+                  <a
+                    key={i}
+                    href={item.link}
+                    className="article-nav-button"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {item.label || item.link}
+                  </a>
+                ))}
+              </div>
+            );
+          })()}
         </div>
       )}
     </>

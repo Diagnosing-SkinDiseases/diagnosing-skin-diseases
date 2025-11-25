@@ -12,6 +12,7 @@ const ArticleContentType = {
   HEADER1: "Header1",
   HEADER2: "Header2",
   SUBTYPE: "Subtype",
+  TREELINKINPUT: "TREELINKINPUT",
 };
 
 export default ArticleContentType;

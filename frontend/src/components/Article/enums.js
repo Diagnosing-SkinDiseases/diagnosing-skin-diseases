@@ -37,6 +37,7 @@ const ArticleContentType = {
    * Represents a subtitle.
    */
   SUBTITLE: "SUBTITLE",
+  TREE_LINK: "TREELINKINPUT",
 };
 
 export default ArticleContentType;

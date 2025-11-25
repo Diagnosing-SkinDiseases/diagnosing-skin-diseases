@@ -29,6 +29,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import TreeLinkInput from "./TreeLinkInput";
 
 // Custom Button Container Component
 const ButtonContainer = ({ addContentBlockAfter, index }) => {
@@ -126,53 +127,32 @@ const SortableBlock = ({
  * @param {Function} props.onUpdate - Callback function to be called with updated content blocks.
  * @returns {JSX.Element} The rendered component.
  */
+// --------------------------------------------------------
+// Main Article Component
+// --------------------------------------------------------
 const Article = ({ onUpdate }) => {
   const [contentBlocks, setContentBlocks] = useState([
     { type: ArticleContentType.TITLE, value: "" },
+    { type: ArticleContentType.TREELINKINPUT, value: "[]" },
   ]);
+
   const location = useLocation();
   const article = location.state?.id;
   const [selectedContent, setSelectedContent] = useState(null);
 
   const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 5,
-      },
-    })
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
   );
 
-  useEffect(() => {}, [selectedContent]);
-
-  /**
-   * Converts a string to title case.
-   *
-   * @param {string} str - the input string
-   * @return {string} the string converted to title case
-   */
-  const toTitleCase = (str) => {
-    return str
+  const toTitleCase = (str) =>
+    str
       .toLowerCase()
       .split(" ")
-      .map(function (word) {
-        return word.charAt(0).toUpperCase() + word.slice(1);
-      })
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
-  };
 
-  /**
-   * Parses the given article data to create an array of content blocks.
-   *
-   * @param {Object} data - The article data to be parsed.
-   * @return {Array} An array of content blocks including the title block and content blocks.
-   */
   const parseArticleData = (data) => {
-    const titleBlock = [
-      {
-        type: ArticleContentType.TITLE,
-        value: data.title,
-      },
-    ];
+    const titleBlock = [{ type: ArticleContentType.TITLE, value: data.title }];
 
     const contentBlocks = data.content.map((block) => ({
       type: toTitleCase(block.type),
@@ -182,125 +162,90 @@ const Article = ({ onUpdate }) => {
     return [...titleBlock, ...contentBlocks];
   };
 
-  /**
-   * Fetches the article data from the backend when the article id is available
-   * and updates the state with the parsed content blocks.
-   */
+  // --------------------------------------------------------
+  // Ensure TreeLink exists at index 1
+  // --------------------------------------------------------
+  const ensureTreeLinkBlock = (blocks) => {
+    console.log("Blocks:", blocks);
+
+    // Find any TreeLinkInput regardless of casing
+    const existingIndex = blocks.findIndex(
+      (b) => b.type && b.type.toLowerCase() === "treelinkinput"
+    );
+
+    // CASE 1 — No TreeLinkInput exists at all
+    if (existingIndex === -1) {
+      const treeLinkBlock = {
+        type: ArticleContentType.TREELINKINPUT, // uppercase always
+        value: "[]",
+      };
+
+      // Insert after title
+      if (blocks.length >= 1) {
+        return [blocks[0], treeLinkBlock, ...blocks.slice(1)];
+      }
+
+      // If somehow no title exists (rare)
+      return [treeLinkBlock];
+    }
+
+    // CASE 2 — A Treelinkinput exists → normalize its type only
+    const newBlocks = [...blocks];
+    newBlocks[existingIndex] = {
+      ...newBlocks[existingIndex],
+      type: ArticleContentType.TREELINKINPUT,
+    };
+
+    return newBlocks;
+  };
+
+  // Load existing article
   useEffect(() => {
     if (article) {
       apiGetArticle(article)
         .then((response) => {
-          const parsedContent = parseArticleData(response.data);
-          let i = 0;
-          parsedContent.forEach((block) => {
-            renderContentInput(block, i);
-            i++;
-          });
+          let parsedContent = parseArticleData(response.data);
+          parsedContent = ensureTreeLinkBlock(parsedContent);
+
           setContentBlocks(parsedContent);
           onUpdate(parsedContent);
         })
-        .catch((error) => {
-          console.error("Error fetching article:", error);
-        });
+        .catch((error) => console.error("Error fetching article:", error));
     }
   }, [article]);
 
-  /**
-   * Adds a content block of the specified type to the contentBlocks array.
-   *
-   * @param {type} type - the type of content block to add
-   * @return {void}
-   */
-  const addContentBlock = (type) => {
-    setContentBlocks([...contentBlocks, { type, value: "" }]);
-  };
-
-  /**
-   * Generate the updated blocks array with the change applied to the specific block
-   *
-   * @param {number} index - The index of the block to be updated
-   * @param {string} type - The type of the block to be updated
-   * @param {any} value - The new value for the block to be updated
-   */
   const updateContentBlock = (index, type, value) => {
-    const updatedBlocks = contentBlocks.map((block, i) =>
-      i === index ? { ...block, type, value } : block
+    const updated = contentBlocks.map((b, i) =>
+      i === index ? { ...b, type, value } : b
     );
-    setContentBlocks(updatedBlocks);
-    onUpdate(updatedBlocks);
+    setContentBlocks(updated);
+    onUpdate(updated);
   };
 
-  /**
-   * Removes the content block at the specified index from the contentBlocks array.
-   *
-   * @param {number} index - The index of the block to be removed
-   * @return {void}
-   */
   const removeContentBlock = (index) => {
-    const updatedBlocks = contentBlocks.filter((_, i) => i !== index);
-    setContentBlocks(updatedBlocks);
-    onUpdate(updatedBlocks); // Update the parent component with the new state
-  };
-
-  /**
-   * Renders content input based on the block and index.
-   *
-   * @param {Object} block - The block object
-   * @param {number} index - The index of the block
-   * @return {JSX.Element} The rendered content input
-   */
-  const renderContentInput = (block, index) => {
-    const isDefaultTitle =
-      index === 0 && block.type === ArticleContentType.TITLE;
-    const blockClassName = isDefaultTitle ? "default-title" : "";
-
-    const handleSelect = () => setSelectedContent(index);
-
-    const contentInputProps = {
-      index: index,
-      block: block,
-      updateBlock: (value) => updateContentBlock(index, block.type, value),
-      remove: () => removeContentBlock(index),
-      className: `${blockClassName} ${
-        selectedContent === index ? "selected" : ""
-      }`,
-      onClick: handleSelect,
-      selectedContent: selectedContent,
-    };
-
-    switch (block.type) {
-      case ArticleContentType.TITLE:
-      case ArticleContentType.SUBTITLE:
-      case ArticleContentType.HEADER1:
-      case ArticleContentType.HEADER2:
-      case ArticleContentType.SUBTYPE:
-      case ArticleContentType.PARAGRAPH:
-        return <ContentInput {...contentInputProps} key={index} />;
-      case ArticleContentType.IMAGE:
-        return <ImageInput {...contentInputProps} key={index} />;
-      case ArticleContentType.VIDEO:
-        return <VideoInput {...contentInputProps} key={index} />;
-      default:
-        return null;
-    }
+    const updated = contentBlocks.filter((_, i) => i !== index);
+    const corrected = ensureTreeLinkBlock(updated);
+    setContentBlocks(corrected);
+    onUpdate(corrected);
   };
 
   const addContentBlockAfter = (index, type) => {
+    // Ensure TreeLink stays at index 1 no matter what
+    const insertionIndex = index < 1 ? index + 1 : index + 1;
+
+    // But do NOT allow inserting BETWEEN Title and TreeLink
+    // i.e. do not insert at index 1
+    const safeIndex = insertionIndex === 1 ? 2 : insertionIndex;
+
     const newBlocks = [
-      ...contentBlocks.slice(0, index + 1),
+      ...contentBlocks.slice(0, safeIndex),
       { type, value: "" },
-      ...contentBlocks.slice(index + 1),
+      ...contentBlocks.slice(safeIndex),
     ];
+
     setContentBlocks(newBlocks);
     onUpdate(newBlocks);
   };
-
-  function moveBlock(dragIndex, hoverIndex) {
-    const updatedBlocks = [...contentBlocks];
-    const [movedBlock] = updatedBlocks.splice(dragIndex, 1);
-    updatedBlocks.splice(hoverIndex, 0, movedBlock);
-    setContentBlocks(updatedBlocks);
-  }
 
   const handleDragEnd = (event) => {
     const { active, over } = event;
@@ -310,18 +255,68 @@ const Article = ({ onUpdate }) => {
     const newIndex = over.id;
 
     if (oldIndex !== newIndex) {
-      const reordered = arrayMove(contentBlocks, oldIndex, newIndex);
-      setContentBlocks(reordered);
-      onUpdate(reordered);
+      const draggableBlocks = contentBlocks.slice(2);
+      const moved = arrayMove(draggableBlocks, oldIndex - 2, newIndex - 2);
+
+      const updated = [contentBlocks[0], contentBlocks[1], ...moved];
+
+      setContentBlocks(updated);
+      onUpdate(updated);
     }
   };
 
-  /**
-   * @returns The article component.
-   */
+  // --------------------------------------------------------
+  // Rendering
+  // --------------------------------------------------------
+  const renderContentInput = (block, index) => {
+    const isFixedTitle = index === 0 && block.type === ArticleContentType.TITLE;
+    const blockClassName = isFixedTitle ? "default-title" : "";
+
+    const handleSelect = () => setSelectedContent(index);
+
+    const props = {
+      index,
+      block,
+      updateBlock: (value) => updateContentBlock(index, block.type, value),
+      remove: () => removeContentBlock(index),
+      className: `${blockClassName} ${
+        selectedContent === index ? "selected" : ""
+      }`,
+      onClick: handleSelect,
+      selectedContent,
+    };
+
+    switch (block.type) {
+      case ArticleContentType.TITLE:
+      case ArticleContentType.SUBTITLE:
+      case ArticleContentType.HEADER1:
+      case ArticleContentType.HEADER2:
+      case ArticleContentType.SUBTYPE:
+      case ArticleContentType.PARAGRAPH:
+        return <ContentInput {...props} key={index} />;
+      case ArticleContentType.IMAGE:
+        return <ImageInput {...props} key={index} />;
+      case ArticleContentType.VIDEO:
+        return <VideoInput {...props} key={index} />;
+      case ArticleContentType.TREELINKINPUT:
+        return <TreeLinkInput {...props} key={index} />;
+      default:
+        return null;
+    }
+  };
+
+  // Logging
+  useEffect(() => {
+    console.log("contentblocks", contentBlocks);
+  }, [contentBlocks]);
+
   return (
     <div>
+      {/* Title at index 0 */}
       {renderContentInput(contentBlocks[0], 0)}
+
+      {/* TreeLink fixed at index 1 */}
+      {contentBlocks[1] && renderContentInput(contentBlocks[1], 1)}
 
       {selectedContent === 0 && (
         <ButtonContainer
@@ -335,17 +330,16 @@ const Article = ({ onUpdate }) => {
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
       >
+        {/* Only blocks AFTER index 1 are draggable */}
         <SortableContext
-          items={contentBlocks
-            .map((_, index) => index)
-            .filter((index) => index !== 0)}
+          items={contentBlocks.map((_, i) => i).filter((i) => i > 1)}
           strategy={verticalListSortingStrategy}
         >
-          {contentBlocks.slice(1).map((block, index) => (
+          {contentBlocks.slice(2).map((block, idx) => (
             <SortableBlock
-              key={index + 1}
-              id={index + 1}
-              index={index + 1}
+              key={idx + 2}
+              id={idx + 2}
+              index={idx + 2}
               block={block}
               selectedContent={selectedContent}
               setSelectedContent={setSelectedContent}

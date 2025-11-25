@@ -11,6 +11,7 @@ const ArticleContentType = {
   SUBTITLE: "SUBTITLE",
   IMAGE: "IMAGE",
   TITLE: "TITLE",
+  TREELINKINPUT: "TREELINKINPUT",
 };
 
 module.exports = ArticleContentType;
