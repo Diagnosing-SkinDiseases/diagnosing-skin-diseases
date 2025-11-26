@@ -110,7 +110,7 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {item.label || item.link}
+                    {"Diagnose: " + item.label || item.link}
                   </a>
                 ))}
               </div>
