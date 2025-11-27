@@ -45,6 +45,12 @@ const TreeLinkInput = ({ block, updateBlock, remove }) => {
 
   const links = parseLinks();
 
+  const removeLink = (index) => {
+    const links = parseLinks();
+    const updated = links.filter((_, i) => i !== index);
+    updateBlock(JSON.stringify(updated));
+  };
+
   return (
     <div className="tree-link-input-container">
       <div className="art-tree-link">
@@ -71,6 +77,9 @@ const TreeLinkInput = ({ block, updateBlock, remove }) => {
               className="tree-link-input"
               placeholder={`Link ${i + 1}`}
             />
+            <button className="delete-button" onClick={() => removeLink(i)}>
+              <FontAwesomeIcon icon={faTrashAlt} />
+            </button>
           </div>
         ))}
       </div>
