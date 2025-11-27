@@ -19,30 +19,14 @@
 }
 
 .article-nav-button {
-  display: inline-block;
   width: auto;
   padding: 0.5em 0.75em;
-
-  /* Remove default link look */
   text-decoration: none;
-  color: inherit;
-
-  /* Subtle button-like appearance */
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background: #f7f7f7;
-
-  /* Spacing */
-  margin-bottom: 6px;
-
-  /* Optional hover improvement */
-  transition: background 0.15s;
 
   /* Special case standard button behavior */
   height: 2.5em;
   background-color: var(--btn-color);
   color: var(--btn-text-color);
-  padding: auto;
   border: none;
   border-radius: 20px;
   cursor: pointer;
@@ -50,6 +34,10 @@
   display: inline-block;
   margin: 4px 2px;
   transition-duration: 0.4s;
+}
+
+.article-nav-button:hover {
+    opacity: 0.7;
 }
 
 .tree-link-group {
