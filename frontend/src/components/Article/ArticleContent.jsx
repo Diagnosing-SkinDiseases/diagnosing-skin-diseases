@@ -48,7 +48,6 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
         `${height}px`
       );
     }
-    console.log("Content", title, content);
   }, [content]);
 
   return (
@@ -89,16 +88,12 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
               (c) => c.type === ArticleContentType.TREE_LINK
             );
 
-            console.log("treelinkblock", treeLinkBlock);
-
             let treeLinks = [];
             try {
               treeLinks = JSON.parse(treeLinkBlock?.content || "[]");
             } catch {
               treeLinks = [];
             }
-
-            console.log("TEST2", treeLinks);
 
             return (
               <div className="tree-link-group">

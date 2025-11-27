@@ -166,8 +166,6 @@ const Article = ({ onUpdate }) => {
   // Ensure TreeLink exists at index 1
   // --------------------------------------------------------
   const ensureTreeLinkBlock = (blocks) => {
-    console.log("Blocks:", blocks);
-
     // Find any TreeLinkInput regardless of casing
     const existingIndex = blocks.findIndex(
       (b) => b.type && b.type.toLowerCase() === "treelinkinput"
@@ -304,11 +302,6 @@ const Article = ({ onUpdate }) => {
         return null;
     }
   };
-
-  // Logging
-  useEffect(() => {
-    console.log("contentblocks", contentBlocks);
-  }, [contentBlocks]);
 
   return (
     <div>

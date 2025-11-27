@@ -74,7 +74,6 @@ const NavBarComponent = () => {
 
   // Determine if a link is active based on the current path
   const isActiveLink = (linkPath) => {
-    console.log("Link path:", linkPath);
     if (location.pathname.includes("/trees")) {
       if (linkPath === "/") {
         return true;
@@ -221,7 +220,6 @@ const NavBarComponent = () => {
         <img className="nav-logo" src={DSD} alt="DSD Logo" />
       </Link>
       {links.map((link, index) => {
-        console.log("LINK", link);
         return (
           <div
             key={index}

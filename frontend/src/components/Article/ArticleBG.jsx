@@ -65,11 +65,6 @@ const ArticleBG = ({ data, errorMsg }) => {
     );
   };
 
-  // Logging
-  useEffect(() => {
-    console.log("data", data);
-  });
-
   return (
     <>
       <div className="container pb-5 mt-5">

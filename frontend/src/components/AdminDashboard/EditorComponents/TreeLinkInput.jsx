@@ -20,16 +20,11 @@ const TreeLinkInput = ({ block, updateBlock, remove }) => {
     }
   };
 
-  useEffect(() => {
-    console.log("TreeLink raw state:", block.value);
-  }, [block.value]);
-
   // Add a new blank label/link pair
   const addLink = () => {
     const links = parseLinks();
     const updated = [...links, { label: "", link: "" }];
     updateBlock(JSON.stringify(updated));
-    console.log("Added new link object:", updated);
   };
 
   // Update one field of one link object
@@ -38,7 +33,6 @@ const TreeLinkInput = ({ block, updateBlock, remove }) => {
     links[index][field] = value;
 
     const newString = JSON.stringify(links);
-    console.log(`Updated link ${index} field "${field}" to:`, value);
 
     updateBlock(newString);
   };
