@@ -1,5 +1,5 @@
-const testApi = "http://localhost:4000/api";
-const hostedApi = "https://dsd-backend.vercel.app/api";
-const apiUrl = testApi;
+const testApi = process.env.REACT_APP_TEST_API;
+const hostedApi = process.env.REACT_APP_HOSTED_API;
+const apiUrl = hostedApi;
 
 export default apiUrl;
