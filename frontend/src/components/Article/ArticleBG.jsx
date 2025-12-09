@@ -12,45 +12,6 @@ import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
 const ArticleBG = ({ data, errorMsg }) => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const location = useLocation();
-  const [previousUrl, setPreviousUrl] = useState(null);
-
-  // Store document.referrer once on mount
-  useEffect(() => {
-    const referrer = document.referrer;
-    setPreviousUrl(referrer);
-    // Logging
-    const currentUrl =
-      window.location.pathname + window.location.search + window.location.hash;
-  }, []);
-
-  const handleBack = () => {
-    // Logging
-    const currentUrl =
-      window.location.pathname + window.location.search + window.location.hash;
-
-    if (previousUrl) {
-      window.location.href = previousUrl;
-    } else if (window.history.length > 1) {
-      window.history.back();
-    } else {
-      navigate("/", { replace: true });
-    }
-  };
-
-  // Back button component for certain cases
-  const BackButton = () => {
-    const pathname = location.pathname;
-    if (pathname === "/about" || pathname.includes("/preview")) {
-      return null;
-    }
-
-    return (
-      <button className="article-nav-button button" onClick={handleBack}>
-        Previous
-      </button>
-    );
-  };
 
   // Start diagnosis button component for certain cases
   const ToTreeButton = () => {
@@ -71,8 +32,15 @@ const ArticleBG = ({ data, errorMsg }) => {
         <div className="row justify-content-center article-container">
           <ArticleContent data={data} errorMsg={errorMsg}></ArticleContent>
         </div>
+
+        {/* Bottom Navigation Row */}
         <div className="row justify-content-between mt-3 px-2">
-          <BackButton></BackButton>
+          {/* Bottom-left button */}
+          <button className="article-nav-button" onClick={() => navigate("/")}>
+            All Diagnostic Trees
+          </button>
+
+          {/* Bottom-right button (only when applicable) */}
           {searchParams.get("treeId") && <ToTreeButton />}
         </div>
       </div>
