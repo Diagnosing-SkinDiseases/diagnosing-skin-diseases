@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import MainContent from "./MainContent";
 import Sidebar from "./Sidebar";
 import { useLocation } from "react-router-dom";
+import "../CSS/About.css";
 
 const About = () => {
   const [articleId, setArticleId] = useState("660e30352dc5942805a1372d");
@@ -10,7 +11,7 @@ const About = () => {
   useEffect(() => {
     // Extract query parameter from URL
     const queryParams = new URLSearchParams(location.search);
-    const selectedItem = queryParams.get('selectedItem');
+    const selectedItem = queryParams.get("selectedItem");
 
     // Map selected item to articleId
     switch (selectedItem) {
@@ -29,7 +30,7 @@ const About = () => {
   }, [location.search]);
 
   return (
-    <div className="container">
+    <div className="container about-container">
       <div className="row">
         <div className="col-md-3">
           <h1 className="mt-4 text-center">About</h1>
