@@ -52,16 +52,13 @@
   padding-top: 5px;
   padding-bottom: 5px;
   border-radius: 10px;
-}
-
-.about-btn {
-  background-color: var(--btn-text-color);
-  color: var(--btn-color);
+  transition-duration: 0.4s;
 }
 
 .homepage-button:hover {
   background-color: var(--btn-color-hover);
   color: var(--btn-text-color);
+  opacity: 0.7;
 }
 
 .card-title {
@@ -76,6 +73,11 @@
 .card-link {
   color: var(--card-title);
   font-weight: 600;
+  transition-duration: 0.4s;
+}
+
+.card-link:hover {
+  opacity: 0.7;
 }
 
 .card-text,

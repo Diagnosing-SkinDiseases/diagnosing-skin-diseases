@@ -2,3 +2,8 @@
     /* background-color: green; */
     min-height: 79vh;
 }
+
+.about-btn {
+    background-color: var(--btn-text-color);
+    color: var(--btn-color);
+}

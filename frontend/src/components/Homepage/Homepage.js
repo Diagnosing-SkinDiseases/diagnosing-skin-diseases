@@ -38,7 +38,7 @@ const Card = ({ title, image, aboutLink, previewText, treeId }) => {
             </a>
           </p>
           <button
-            className="btn homepage-button"
+            className="homepage-button"
             onClick={() => navigate(`/trees/${treeId}`)}
           >
             Start Diagnosis

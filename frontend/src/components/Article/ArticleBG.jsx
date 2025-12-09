@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
 import ArticleContent from "./ArticleContent";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 /**
  * ArticleBG component renders the background layout for an article,
@@ -10,21 +9,10 @@ import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
  * @returns {JSX.Element} - Returns the JSX element for the article background.
  */
 const ArticleBG = ({ data, errorMsg }) => {
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // Start diagnosis button component for certain cases
-  const ToTreeButton = () => {
-    const treeId = searchParams.get("treeId");
-    return (
-      <button
-        className="article-nav-button button"
-        onClick={() => navigate(`/trees/${treeId}`)}
-      >
-        Start Diagnosis
-      </button>
-    );
-  };
+  const hideButton = location.pathname.includes("/about");
 
   return (
     <>
@@ -36,12 +24,14 @@ const ArticleBG = ({ data, errorMsg }) => {
         {/* Bottom Navigation Row */}
         <div className="row justify-content-between mt-3 px-2">
           {/* Bottom-left button */}
-          <button className="article-nav-button" onClick={() => navigate("/")}>
-            All Diagnostic Trees
-          </button>
-
-          {/* Bottom-right button (only when applicable) */}
-          {searchParams.get("treeId") && <ToTreeButton />}
+          {!hideButton && (
+            <button
+              className="article-nav-secondary"
+              onClick={() => navigate("/")}
+            >
+              All Diagnostic Trees
+            </button>
+          )}
         </div>
       </div>
     </>
