@@ -39,7 +39,7 @@
 .article-nav-secondary {
   background-color: var(--btn-text-color);
   color: var(--btn-color);
-  border: 2px solid var(--interactive-color-tree);
+  border: 2px solid var(--interactive-color);
   width: auto;
   padding: 0.5em 0.75em;
   text-decoration: none;
@@ -56,8 +56,8 @@
 }
 
 .article-nav-secondary:hover {
-  background-color: var(--btn-text-color);
-    color: var(--btn-color);
+  background-color: var(--nav-hover);
+  color: var(--btn-color);
   opacity: 1;
 }
 
