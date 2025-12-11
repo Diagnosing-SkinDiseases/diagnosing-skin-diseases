@@ -59,6 +59,16 @@
   border: 2px solid var(--interactive-color)
 }
 
+.navbar-tree-meta.nav-active {
+  background-color: var(--nav-hover);
+  border: 2px solid var(--interactive-color-tree)
+}
+
+.navbar-tree-meta.nav-hover {
+  background-color: var(--nav-hover);
+  border: 2px solid var(--interactive-color-tree)
+}
+
 /* Apply a subtle highlight and lift effect to nav items on hover */
 /* .nav-item:hover {
   background-color: var(--nav-hover);

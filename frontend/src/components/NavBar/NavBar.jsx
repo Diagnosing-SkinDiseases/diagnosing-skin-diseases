@@ -225,9 +225,9 @@ const NavBarComponent = () => {
             key={index}
             className={`nav-item ${
               link.subTabs.length > 0 ? "has-dropdown" : ""
-            } ${isActiveLink(link.path) ? "nav-active" : ""} ${
-              activeLink === link.name ? "nav-hover" : ""
-            }`}
+            }${link.path === "/" ? "navbar-tree-meta" : ""} ${
+              isActiveLink(link.path) ? "nav-active" : ""
+            } ${activeLink === link.name ? "nav-hover" : ""}`}
             onMouseEnter={() => setActiveLink(link.name)}
             onMouseLeave={() => setActiveLink("")}
           >
