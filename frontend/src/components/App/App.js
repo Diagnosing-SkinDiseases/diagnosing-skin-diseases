@@ -226,34 +226,13 @@ function App() {
           ></Route>
 
           {/* MFS Setup */}
-          <Route
-            path="/mfa-setup"
-            element={
-              <ProtectedRoute>
-                <MFASetup />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/mfa-setup" element={<MFASetup />} />
 
           {/* MFA Verify */}
-          <Route
-            path="/mfa-verify"
-            element={
-              <ProtectedRoute>
-                <MFAVerify />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/mfa-verify" element={<MFAVerify />} />
 
           {/* MFA Reset */}
-          <Route
-            path="/mfa-reset"
-            element={
-              <ProtectedRoute>
-                <MFAReset />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/mfa-reset" element={<MFAReset />} />
 
           {/* MFA Reset Confirm */}
           <Route path="/mfa-reset-confirm" element={<MFAResetConfirm />} />

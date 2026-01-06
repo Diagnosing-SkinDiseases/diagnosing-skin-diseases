@@ -3,16 +3,19 @@ const authRouter = express.Router();
 
 const {
   loginUser,
-  authenticate,
-  authMe,
   logoutUser,
+  authMe,
 } = require("../controllers/authController");
+const {
+  authenticate,
+  requireMfaVerified,
+} = require("../middleware/authMiddleware");
 
 // Login
 authRouter.post("/auth/login", loginUser);
 
-// Authenticate
-authRouter.get("/auth/me", authenticate, authMe);
+// Auth Me
+authRouter.get("/auth/me", authenticate, requireMfaVerified, authMe);
 
 // Logout
 authRouter.post("/auth/logout", logoutUser);

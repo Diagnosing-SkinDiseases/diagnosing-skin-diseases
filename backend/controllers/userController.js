@@ -144,9 +144,12 @@ const mfaSetup = async (req, res) => {
 
 // MFA Verify
 const mfaVerify = async (req, res) => {
-  const { userId, token } = req.body;
+  const { code } = req.body;
 
   try {
+    // Identity comes ONLY from authenticated session
+    const userId = req.user.userId;
+
     const user = await User.findById(userId);
     if (!user || !user.mfaSecret) {
       return res
@@ -157,7 +160,7 @@ const mfaVerify = async (req, res) => {
     const isValid = speakeasy.totp.verify({
       secret: user.mfaSecret,
       encoding: "base32",
-      token,
+      token: code,
       window: 1,
     });
 
@@ -165,19 +168,32 @@ const mfaVerify = async (req, res) => {
       return res.status(401).json({ error: "Invalid MFA token" });
     }
 
+    // Mark MFA enabled (if not already)
     user.mfaEnabled = true;
     await user.save();
 
-    // ✅ Issue a new JWT with mfaVerified = true
-    const newToken = jwt.sign(
-      { userId: user._id, mfaEnabled: user.mfaEnabled, mfaVerified: true },
+    // 🔐 Upgrade session → new JWT
+    const upgradedToken = jwt.sign(
+      {
+        userId: user._id,
+        mfaEnabled: true,
+        mfaVerified: true,
+      },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 
-    res.status(200).json({ message: "MFA setup complete", token: newToken });
+    // 🍪 Store in HttpOnly cookie
+    res.cookie("access_token", upgradedToken, {
+      httpOnly: true,
+      maxAge: 60 * 60 * 1000,
+      path: "/",
+    });
+
+    return res.status(200).json({ message: "MFA verified" });
   } catch (error) {
-    res.status(500).json({ error: "Failed to verify MFA" });
+    console.error(error);
+    return res.status(500).json({ error: "Failed to verify MFA" });
   }
 };
 

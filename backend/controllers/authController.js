@@ -43,36 +43,6 @@ const loginUser = async (req, res) => {
   }
 };
 
-// Auth Middleware
-const authenticate = (req, res, next) => {
-  const token = req.cookies?.access_token;
-
-  console.log("TOKEN", token);
-
-  // No token present
-  if (!token) {
-    return res.status(401).json({ message: "Not authenticated" });
-  }
-
-  try {
-    // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    // Attach user context to request
-    req.user = {
-      userId: decoded.userId,
-      mfaEnabled: decoded.mfaEnabled,
-      mfaVerified: decoded.mfaVerified,
-    };
-
-    // Proceed to protected route
-    next();
-  } catch (err) {
-    // Invalid or expired token
-    return res.status(401).json({ message: "Invalid or expired token" });
-  }
-};
-
 // Auth Me
 const authMe = (req, res) => {
   res.sendStatus(200);
@@ -92,7 +62,6 @@ const logoutUser = (req, res) => {
 
 module.exports = {
   loginUser,
-  authenticate,
   authMe,
   logoutUser,
 };

@@ -12,15 +12,39 @@ export const AuthProvider = ({ children }) => {
     const checkAuth = async () => {
       try {
         const res = await fetch(`${apiUrl}/auth/me`, {
-          method: "GET",
           credentials: "include",
         });
 
+        console.log("Start");
+
+        // Not authenticated
+        if (res.status === 401) {
+          navigate("/login", { replace: true });
+          return;
+        }
+
+        console.log("Check 1");
+
+        // Authenticated but MFA required
+        if (res.status === 403) {
+          const data = await res.json();
+          if (data.error === "MFA_REQUIRED") {
+            navigate("/mfa-verify", { replace: true });
+            return;
+          }
+        }
+
+        console.log("Check 2");
+
+        // Any other unexpected failure
         if (!res.ok) {
           navigate("/login", { replace: true });
           return;
         }
 
+        console.log("Check 3");
+
+        // Auth OK
         setChecked(true);
       } catch {
         navigate("/login", { replace: true });
@@ -28,9 +52,10 @@ export const AuthProvider = ({ children }) => {
     };
 
     checkAuth();
-
-    console.log("AUTH PLACEHOLDER");
   }, [navigate]);
+
+  // 🔒 Block rendering until auth is resolved
+  if (!checked) return null;
 
   return <AuthContext.Provider value={null}>{children}</AuthContext.Provider>;
 };

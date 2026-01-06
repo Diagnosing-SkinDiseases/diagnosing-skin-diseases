@@ -12,25 +12,29 @@ const {
   mfaReset,
 } = require("../controllers/userController");
 
-const { loginUser, authenticate } = require("../controllers/authController");
+const {
+  authenticate,
+  requireMfaVerified,
+} = require("../middleware/authMiddleware");
+const { loginUser } = require("../controllers/authController");
 
 // Create user
-userRouter.post("/user/create", authenticate, createUser);
+userRouter.post("/user/create", authenticate, requireMfaVerified, createUser);
 
 // Login
 userRouter.post("/user/login", loginUser);
 
 // Read all users
-userRouter.get("/user/read/all", authenticate, getAllUsers);
+userRouter.get("/user/read/all", authenticate, requireMfaVerified, getAllUsers);
 
 // Read singular user
-userRouter.get("/user/read", authenticate, getUser);
+userRouter.get("/user/read", authenticate, requireMfaVerified, getUser);
 
 // Update user
-userRouter.patch("/user/update", authenticate, updateUser);
+userRouter.patch("/user/update", authenticate, requireMfaVerified, updateUser);
 
 // Delete user
-userRouter.delete("/user/delete", authenticate, deleteUser);
+userRouter.delete("/user/delete", authenticate, requireMfaVerified, deleteUser);
 
 // MFA Setup
 userRouter.post("/user/mfa/setup", authenticate, mfaSetup);
@@ -38,10 +42,10 @@ userRouter.post("/user/mfa/setup", authenticate, mfaSetup);
 // MFA Verify
 userRouter.post("/user/mfa/verify", authenticate, mfaVerify);
 
-// MFA Reset
+// MFA Reset Email
 userRouter.post("/user/mfa/reset/email", mfaResetTrigger);
 
-// MFA Reset True
+// MFA Reset Reset
 userRouter.post("/user/mfa/reset", mfaReset);
 
 module.exports = userRouter;

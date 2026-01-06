@@ -8,10 +8,18 @@ const {
   deleteArticle,
   listArticles,
 } = require("../controllers/articleController");
-const { authenticate } = require("../controllers/authController");
+const {
+  authenticate,
+  requireMfaVerified,
+} = require("../middleware/authMiddleware");
 
 // Create article
-articleRouter.post("/article/create", authenticate, createArticle);
+articleRouter.post(
+  "/article/create",
+  authenticate,
+  requireMfaVerified,
+  createArticle
+);
 
 // Read all articles
 articleRouter.get("/article/read/all", getAllArticles);
@@ -20,12 +28,27 @@ articleRouter.get("/article/read/all", getAllArticles);
 articleRouter.get("/article/list", listArticles);
 
 // Read singular article
-articleRouter.get("/article/read", authenticate, getArticle);
+articleRouter.get(
+  "/article/read",
+  authenticate,
+  requireMfaVerified,
+  getArticle
+);
 
 // Update article
-articleRouter.patch("/article/update", authenticate, updateArticle);
+articleRouter.patch(
+  "/article/update",
+  authenticate,
+  requireMfaVerified,
+  updateArticle
+);
 
 // Delete article
-articleRouter.delete("/article/delete", authenticate, deleteArticle);
+articleRouter.delete(
+  "/article/delete",
+  authenticate,
+  requireMfaVerified,
+  deleteArticle
+);
 
 module.exports = articleRouter;

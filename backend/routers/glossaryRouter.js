@@ -8,12 +8,16 @@ const {
   deleteGlossaryItem,
 } = require("../controllers/glossaryItemController");
 
-const { authenticate } = require("../controllers/authController");
+const {
+  authenticate,
+  requireMfaVerified,
+} = require("../middleware/authMiddleware");
 
 // Create glossary item
 glossaryItemRouter.post(
   "/glossaryItem/create",
   authenticate,
+  requireMfaVerified,
   createGlossaryItem
 );
 
@@ -27,6 +31,7 @@ glossaryItemRouter.get("/glossaryItem/read", getGlossaryItem);
 glossaryItemRouter.patch(
   "/glossaryItem/update",
   authenticate,
+  requireMfaVerified,
   updateGlossaryItem
 );
 
@@ -34,6 +39,7 @@ glossaryItemRouter.patch(
 glossaryItemRouter.delete(
   "/glossaryItem/delete",
   authenticate,
+  requireMfaVerified,
   deleteGlossaryItem
 );
 
