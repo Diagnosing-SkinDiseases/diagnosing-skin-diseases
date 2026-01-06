@@ -37,43 +37,6 @@ const createUser = async (req, res) => {
   }
 };
 
-// Login User
-const loginUser = async (req, res) => {
-  const { username, password } = req.body;
-
-  try {
-    // Check if user exists
-    const user = await User.findOne({ username });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    // Compare provided password with hashed password in database
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ message: "Invalid credentials" });
-    }
-
-    // User is authenticated, generate a JWT
-    const token = jwt.sign(
-      {
-        userId: user._id,
-        mfaEnabled: user.mfaEnabled || false, // pull from DB, fallback to false
-        mfaVerified: false, // not verified yet
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    );
-
-    // Send the JWT in the response
-
-    res.status(200).json({ message: "Login successful", token });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
 // Read all users
 const getAllUsers = async (req, res) => {
   try {
@@ -297,7 +260,6 @@ const mfaReset = async (req, res) => {
 
 module.exports = {
   createUser,
-  loginUser,
   getAllUsers,
   getUser,
   updateUser,

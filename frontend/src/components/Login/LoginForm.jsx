@@ -1,33 +1,11 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { apiLoginUser } from "../../apiControllers/userApiController";
-import { useAuth } from "../App/AuthContext";
+import { useState } from "react";
 import { useLocation } from "react-router-dom";
+import apiUrl from "../../api";
 
-/**
- * LoginForm Component
- *
- * Provides a user interface for the login process. Users can enter their username and password to authenticate.
- * On successful login, the user is redirected to a specific page (e.g., '/admin/trees'). If there are any errors
- * during the login process, such as invalid credentials or server issues, appropriate error messages are displayed.
- *
- * State:
- *   username (String): Stores the username input by the user.
- *   password (String): Stores the password input by the user.
- *   errorMessage (String): Stores any error messages to display based on login attempt outcomes.
- *
- * Context:
- *   useAuth: Hook to access the login function from AuthContext, which updates the authentication status and token.
- *
- * Navigation:
- *   useNavigate: Hook for programmatically navigating to other routes post-login.
- */
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const { login } = useAuth(); // Use the login function provided by AuthContext
-  const navigate = useNavigate();
 
   const location = useLocation();
   const from = location.state?.from?.pathname || "/admin/trees";
@@ -47,19 +25,16 @@ const LoginForm = () => {
     event.preventDefault();
     setErrorMessage(""); // Clear previous error messages on new submit
 
+    console.log("Logging in user with username:", username);
+
     try {
       // Call to API to log in the user using username and password
-      const response = await apiLoginUser({
-        username,
-        password,
+      fetch(`${apiUrl}/auth/login`, {
+        method: "POST",
+        credentials: "include", // REQUIRED
+        body: JSON.stringify({ username, password }),
+        headers: { "Content-Type": "application/json" },
       });
-
-      // Assuming the response includes the token
-      const { token } = response.data;
-
-      // Use the login method from your context to update the auth status and set the token
-      login(token);
-
       // Redirect to a protected route or homepage after successful login
       window.location.href = from;
     } catch (error) {

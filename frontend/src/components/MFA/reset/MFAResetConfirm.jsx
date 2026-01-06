@@ -1,13 +1,12 @@
 import { useEffect, useState, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import apiUrl from "../../../api";
-import { useAuth } from "../../App/AuthContext";
 
 const MFAResetConfirm = () => {
   const [message, setMessage] = useState("Processing your MFA reset...");
   const [searchParams] = useSearchParams();
   const resetToken = searchParams.get("token");
-  const { login } = useAuth();
+
   const navigate = useNavigate();
   const hasRun = useRef(false); // prevent double run in StrictMode
 
@@ -35,7 +34,6 @@ const MFAResetConfirm = () => {
 
         // Treat idempotent "already reset" as success
         if (response.ok) {
-          login(data.token);
           setMessage("✅ MFA has been reset. Redirecting to setup...");
           setTimeout(() => navigate("/mfa-setup"), 1200);
         } else {
@@ -51,7 +49,7 @@ const MFAResetConfirm = () => {
     confirmReset();
 
     return () => controller.abort();
-  }, [resetToken, login, navigate]);
+  }, [resetToken, navigate]);
 
   return (
     <div className="login-card">

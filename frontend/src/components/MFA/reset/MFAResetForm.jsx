@@ -1,15 +1,12 @@
 // MFAResetForm.jsx
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../App/AuthContext";
-
 import apiUrl from "../../../api";
 
 const MFAResetForm = () => {
   const [userId, setUserId] = useState("");
   const [message, setMessage] = useState("");
-  const { login } = useAuth();
   const navigate = useNavigate();
 
   // Extract userId from token

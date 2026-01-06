@@ -2,7 +2,6 @@ const express = require("express");
 const userRouter = express.Router();
 const {
   createUser,
-  loginUser,
   getAllUsers,
   getUser,
   updateUser,
@@ -13,6 +12,8 @@ const {
   mfaReset,
 } = require("../controllers/userController");
 
+const { loginUser, authenticate } = require("../controllers/authController");
+
 // Create user
 userRouter.post("/user/create", createUser);
 
@@ -20,22 +21,22 @@ userRouter.post("/user/create", createUser);
 userRouter.post("/user/login", loginUser);
 
 // Read all users
-userRouter.get("/user/read/all", getAllUsers);
+userRouter.get("/user/read/all", authenticate, getAllUsers);
 
 // Read singular user
-userRouter.get("/user/read", getUser);
+userRouter.get("/user/read", authenticate, getUser);
 
 // Update user
-userRouter.patch("/user/update", updateUser);
+userRouter.patch("/user/update", authenticate, updateUser);
 
 // Delete user
-userRouter.delete("/user/delete", deleteUser);
+userRouter.delete("/user/delete", authenticate, deleteUser);
 
 // MFA Setup
-userRouter.post("/user/mfa/setup", mfaSetup);
+userRouter.post("/user/mfa/setup", authenticate, mfaSetup);
 
 // MFA Verify
-userRouter.post("/user/mfa/verify", mfaVerify);
+userRouter.post("/user/mfa/verify", authenticate, mfaVerify);
 
 // MFA Reset
 userRouter.post("/user/mfa/reset/email", mfaResetTrigger);

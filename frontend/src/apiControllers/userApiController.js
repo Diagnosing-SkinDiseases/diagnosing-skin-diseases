@@ -16,7 +16,7 @@ const apiCreateUser = (payload) => {
  * @returns the promise for the api response
  */
 const apiLoginUser = (payload) => {
-  return axios.post(`${apiUrl}/user/login`, payload);
+  return axios.post(`${apiUrl}/auth/login`, payload);
 };
 
 /**

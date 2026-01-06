@@ -67,7 +67,6 @@ const NavSubtab = ({ show, titles }) => {
  *   activeLink (string): Tracks which main link is currently active.
  */
 const NavBarComponent = () => {
-  const { isLoggedIn } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const [activeLink, setActiveLink] = useState("");
@@ -208,9 +207,8 @@ const NavBarComponent = () => {
 
   // Use appropriate links based on authentication status
   const links =
-    isLoggedIn &&
-    (new URL(window.location).pathname.includes("/admin") ||
-      /^\/mfa-\w+/i.test(new URL(window.location).pathname))
+    new URL(window.location).pathname.includes("/admin") ||
+    /^\/mfa-\w+/i.test(new URL(window.location).pathname)
       ? authLinks
       : guestLinks;
 

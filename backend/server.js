@@ -6,12 +6,14 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 // Routers
 const userRouter = require("./routers/userRouter.js");
 const glossaryItemRouter = require("./routers/glossaryRouter.js");
 const treeRouter = require("./routers/treeRouter.js");
 const articleRouter = require("./routers/articleRouter.js");
+const authRouter = require("./routers/authRouter.js");
 
 // Environment variables
 const port = process.env.PORT;
@@ -19,9 +21,29 @@ const mongoUser = process.env.DB_USER;
 const mongoPassword = process.env.PASSWORD;
 const mongoDB = process.env.DATABASE;
 
+// Parse allowed origins from env
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(",").map((origin) => origin.trim())
+  : [];
+
 // App configurations
 app.use(express.json({ limit: "10mb" }));
-app.use(cors());
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like Insomnia, curl)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  })
+);
+app.use(cookieParser());
 
 // App endpoints start here
 app.get("/", (req, res) => {
@@ -39,6 +61,9 @@ app.use("/api", treeRouter);
 
 // Article endpoints
 app.use("/api", articleRouter);
+
+// Auth endpoints
+app.use("/api", authRouter);
 
 // Connect to db
 const mongoUri = `mongodb+srv://${mongoUser}:${mongoPassword}@cluster0.1anl6wt.mongodb.net/${mongoDB}?retryWrites=true&w=majority`;

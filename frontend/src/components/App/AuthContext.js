@@ -1,83 +1,38 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
-import Cookies from "js-cookie";
+import { createContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import apiUrl from "../../api";
 
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [mfaEnabled, setMfaEnabled] = useState(false);
-  const [mfaVerified, setMfaVerified] = useState(false);
-
-  // Token Decode Helper Function
-  function decodeToken(token) {
-    try {
-      const parts = token.split(".");
-      if (parts.length !== 3) throw new Error("Invalid token format");
-
-      const base64Url = parts[1];
-      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-      const padded = base64.padEnd(
-        base64.length + ((4 - (base64.length % 4)) % 4),
-        "="
-      );
-      return JSON.parse(atob(padded));
-    } catch (err) {
-      console.error("Failed to decode token:", err);
-      return null;
-    }
-  }
+  const navigate = useNavigate();
+  const [checked, setChecked] = useState(false);
 
   useEffect(() => {
-    const token = Cookies.get("token");
-
-    if (token) {
+    const checkAuth = async () => {
       try {
-        const payload = decodeToken(token);
+        const res = await fetch(`${apiUrl}/auth/me`, {
+          method: "GET",
+          credentials: "include",
+        });
 
-        setIsLoggedIn(true);
-        setMfaEnabled(payload.mfaEnabled === true);
-        setMfaVerified(payload.mfaVerified === true); // <-- this!
-      } catch (err) {
-        console.error("❌ Failed to decode JWT:", err);
-        setIsLoggedIn(false);
-        setMfaEnabled(false);
-        setMfaVerified(false);
+        if (!res.ok) {
+          navigate("/login", { replace: true });
+          return;
+        }
+
+        setChecked(true);
+      } catch {
+        navigate("/login", { replace: true });
       }
-    } else {
-      setIsLoggedIn(false);
-    }
+    };
 
-    setIsLoading(false);
-  }, []);
+    checkAuth();
 
-  const login = (token) => {
-    Cookies.set("token", token, { expires: 1 });
+    console.log("AUTH PLACEHOLDER");
+  }, [navigate]);
 
-    const payload = decodeToken(token);
-    if (payload) {
-      setIsLoggedIn(true);
-      setMfaEnabled(payload.mfaEnabled === true);
-      setMfaVerified(payload.mfaVerified === true);
-    } else {
-      setIsLoggedIn(false);
-      setMfaEnabled(false);
-      setMfaVerified(false);
-    }
-  };
-
-  const logout = () => {
-    Cookies.remove("token");
-    setIsLoggedIn(false);
-  };
-
-  return (
-    <AuthContext.Provider
-      value={{ isLoggedIn, isLoading, mfaEnabled, mfaVerified, login, logout }}
-    >
-      {!isLoading && children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={null}>{children}</AuthContext.Provider>;
 };
 
-export const useAuth = () => useContext(AuthContext);
+export default AuthContext;
