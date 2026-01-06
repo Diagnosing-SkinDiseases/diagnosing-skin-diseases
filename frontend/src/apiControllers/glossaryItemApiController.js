@@ -38,7 +38,9 @@ const apiCreateGlossaryItem = (payload) => {
       status: Enum String (Status)
     }
   */
-  return axios.post(`${apiUrl}/glossaryItem/create`, payload);
+  return axios.post(`${apiUrl}/glossaryItem/create`, payload, {
+    withCredentials: true,
+  });
 };
 
 /**
@@ -58,7 +60,9 @@ const apiDeleteGlossaryItem = (targetId) => {
       status: Enum String (Status)
     }
   */
-  return axios.delete(`${apiUrl}/glossaryItem/delete?id=${targetId}`);
+  return axios.delete(`${apiUrl}/glossaryItem/delete?id=${targetId}`, {
+    withCredentials: true,
+  });
 };
 
 /**
@@ -78,7 +82,9 @@ const apiGetGlossaryItem = (targetId) => {
       status: Enum String (Status)
     }
   */
-  return axios.get(`${apiUrl}/glossaryItem/read/?id=${targetId}`);
+  return axios.get(`${apiUrl}/glossaryItem/read/?id=${targetId}`, {
+    withCredentials: true,
+  });
 };
 
 /**
@@ -98,7 +104,9 @@ const apiUpdateGlossaryItem = (payload) => {
       status: Enum String (Status)
     }
   */
-  return axios.patch(`${apiUrl}/glossaryItem/update/`, payload);
+  return axios.patch(`${apiUrl}/glossaryItem/update/`, payload, {
+    withCredentials: true,
+  });
 };
 
 export {

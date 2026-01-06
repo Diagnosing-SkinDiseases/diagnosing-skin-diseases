@@ -80,11 +80,13 @@ const authMe = (req, res) => {
 
 // Logout User
 const logoutUser = (req, res) => {
-  res.clearCookie("access_token", {
+  res.cookie("access_token", "", {
     httpOnly: true,
+    expires: new Date(0),
     path: "/",
   });
 
+  console.log("Logged out");
   return res.sendStatus(204);
 };
 

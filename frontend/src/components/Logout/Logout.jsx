@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import apiUrl from "../../api";
+import { apiLogoutUser } from "../../apiControllers/authApiController";
 
 const Logout = () => {
   const navigate = useNavigate();
@@ -8,17 +8,13 @@ const Logout = () => {
   useEffect(() => {
     const logout = async () => {
       try {
-        await fetch(`${apiUrl}/auth/logout`, {
-          method: "POST",
-          credentials: "include",
-        });
+        await apiLogoutUser();
       } finally {
-        // Always redirect, even if the request fails
         navigate("/login", { replace: true });
       }
     };
 
-    // logout();
+    logout();
     console.log("LOGOUT PLACEHOLDER");
   }, [navigate]);
 

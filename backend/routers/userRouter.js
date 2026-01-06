@@ -15,7 +15,7 @@ const {
 const { loginUser, authenticate } = require("../controllers/authController");
 
 // Create user
-userRouter.post("/user/create", createUser);
+userRouter.post("/user/create", authenticate, createUser);
 
 // Login
 userRouter.post("/user/login", loginUser);

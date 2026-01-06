@@ -7,16 +7,9 @@ import apiUrl from "../api";
  * @returns the promise for the api response
  */
 const apiCreateUser = (payload) => {
-  return axios.post(`${apiUrl}/user/create`, payload);
-};
-
-/**
- * Creates a promise for logging in a user.
- * @param {*} payload - the payload for the login request as an object
- * @returns the promise for the api response
- */
-const apiLoginUser = (payload) => {
-  return axios.post(`${apiUrl}/auth/login`, payload);
+  return axios.post(`${apiUrl}/user/create`, payload, {
+    withCredentials: true,
+  });
 };
 
 /**
@@ -24,7 +17,9 @@ const apiLoginUser = (payload) => {
  * @returns the promise for the api response
  */
 const apiGetAllUsers = () => {
-  return axios.get(`${apiUrl}/user/read/all`);
+  return axios.get(`${apiUrl}/user/read/all`, {
+    withCredentials: true,
+  });
 };
 
 /**
@@ -33,7 +28,9 @@ const apiGetAllUsers = () => {
  * @returns the promise for the api response
  */
 const apiGetUser = (userId) => {
-  return axios.get(`${apiUrl}/user/read/?id=${userId}`);
+  return axios.get(`${apiUrl}/user/read/?id=${userId}`, {
+    withCredentials: true,
+  });
 };
 
 /**
@@ -42,7 +39,9 @@ const apiGetUser = (userId) => {
  * @returns the promise for the api response
  */
 const apiUpdateUser = (payload) => {
-  return axios.patch(`${apiUrl}/user/update`, payload);
+  return axios.patch(`${apiUrl}/user/update`, payload, {
+    withCredentials: true,
+  });
 };
 
 /**
@@ -51,12 +50,13 @@ const apiUpdateUser = (payload) => {
  * @returns the promise for the api response
  */
 const apiDeleteUser = (userId) => {
-  return axios.delete(`${apiUrl}/user/delete?id=${userId}`);
+  return axios.delete(`${apiUrl}/user/delete?id=${userId}`, {
+    withCredentials: true,
+  });
 };
 
 export {
   apiCreateUser,
-  apiLoginUser,
   apiGetAllUsers,
   apiGetUser,
   apiUpdateUser,

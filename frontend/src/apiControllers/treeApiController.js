@@ -66,7 +66,9 @@ const apiCreateTree = (payload) => {
         status: Enum String (Status)
       }
   */
-  return axios.post(`${apiUrl}/tree/create`, payload);
+  return axios.post(`${apiUrl}/tree/create`, payload, {
+    withCredentials: true,
+  });
 };
 
 /**
@@ -96,7 +98,9 @@ const apiDeleteTree = (targetId) => {
       status: Enum String (Status)
     }
   */
-  return axios.delete(`${apiUrl}/tree/delete?id=${targetId}`);
+  return axios.delete(`${apiUrl}/tree/delete?id=${targetId}`, {
+    withCredentials: true,
+  });
 };
 
 /**
@@ -164,7 +168,9 @@ const apiUpdateTree = (payload) => {
         status: Enum String (Status)
       }
   */
-  return axios.patch(`${apiUrl}/tree/update/`, payload);
+  return axios.patch(`${apiUrl}/tree/update/`, payload, {
+    withCredentials: true,
+  });
 };
 
 export {

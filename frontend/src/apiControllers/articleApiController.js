@@ -64,7 +64,9 @@ const apiCreateArticle = (payload) => {
       status: Enum String (Status)
     }
   */
-  return axios.post(`${apiUrl}/article/create`, payload);
+  return axios.post(`${apiUrl}/article/create`, payload, {
+    withCredentials: true,
+  });
 };
 
 /**
@@ -87,7 +89,9 @@ const apiDeleteArticle = (targetId) => {
       status: Enum String (Status)
     }
   */
-  return axios.delete(`${apiUrl}/article/delete/?id=${targetId}`);
+  return axios.delete(`${apiUrl}/article/delete/?id=${targetId}`, {
+    withCredentials: true,
+  });
 };
 
 /**
@@ -110,7 +114,9 @@ const apiGetArticle = (targetId) => {
       status: Enum String (Status)
     }
   */
-  return axios.get(`${apiUrl}/article/read/?id=${targetId}`);
+  return axios.get(`${apiUrl}/article/read/?id=${targetId}`, {
+    withCredentials: true,
+  });
 };
 
 /**
@@ -133,7 +139,9 @@ const apiUpdateArticle = (payload) => {
       status: Enum String (Status)
     }
   */
-  return axios.patch(`${apiUrl}/article/update/`, payload);
+  return axios.patch(`${apiUrl}/article/update/`, payload, {
+    withCredentials: true,
+  });
 };
 
 export {

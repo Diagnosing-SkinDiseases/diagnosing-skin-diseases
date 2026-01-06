@@ -8,9 +8,10 @@ const {
   deleteArticle,
   listArticles,
 } = require("../controllers/articleController");
+const { authenticate } = require("../controllers/authController");
 
 // Create article
-articleRouter.post("/article/create", createArticle);
+articleRouter.post("/article/create", authenticate, createArticle);
 
 // Read all articles
 articleRouter.get("/article/read/all", getAllArticles);
@@ -19,12 +20,12 @@ articleRouter.get("/article/read/all", getAllArticles);
 articleRouter.get("/article/list", listArticles);
 
 // Read singular article
-articleRouter.get("/article/read", getArticle);
+articleRouter.get("/article/read", authenticate, getArticle);
 
 // Update article
-articleRouter.patch("/article/update", updateArticle);
+articleRouter.patch("/article/update", authenticate, updateArticle);
 
 // Delete article
-articleRouter.delete("/article/delete", deleteArticle);
+articleRouter.delete("/article/delete", authenticate, deleteArticle);
 
 module.exports = articleRouter;

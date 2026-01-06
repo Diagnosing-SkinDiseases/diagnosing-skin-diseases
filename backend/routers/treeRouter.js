@@ -7,9 +7,10 @@ const {
   updateTree,
   deleteTree,
 } = require("../controllers/treeController");
+const { authenticate } = require("../controllers/authController");
 
 // Create tree
-treeRouter.post("/tree/create", createTree);
+treeRouter.post("/tree/create", authenticate, createTree);
 
 // Read all trees
 treeRouter.get("/tree/read/all", getAllTrees);
@@ -18,9 +19,9 @@ treeRouter.get("/tree/read/all", getAllTrees);
 treeRouter.get("/tree/read", getTree);
 
 // Update tree
-treeRouter.patch("/tree/update", updateTree);
+treeRouter.patch("/tree/update", authenticate, updateTree);
 
 // Delete tree
-treeRouter.delete("/tree/delete", deleteTree);
+treeRouter.delete("/tree/delete", authenticate, deleteTree);
 
 module.exports = treeRouter;
