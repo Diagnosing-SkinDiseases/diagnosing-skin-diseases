@@ -26,14 +26,24 @@ export const AuthProvider = ({ children }) => {
 
         console.log("Check 1");
 
-        // Authenticated but MFA required
+        // ⚠️ Authenticated, but not fully authorized
         if (res.status === 403) {
           setChecked(false);
           const data = await res.json();
+
+          if (data.error === "MFA_NOT_INITIALIZED") {
+            navigate("/mfa-setup", { replace: true });
+            return;
+          }
+
           if (data.error === "MFA_REQUIRED") {
             navigate("/mfa-verify", { replace: true });
             return;
           }
+
+          // Any other 403 → treat as auth failure
+          navigate("/login", { replace: true });
+          return;
         }
 
         console.log("Check 2");

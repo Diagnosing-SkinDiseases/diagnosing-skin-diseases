@@ -44,17 +44,21 @@ const requireMfaVerified = (req, res, next) => {
     req.user.mfaVerified
   );
 
-  if (!req.user?.mfaEnabled) {
-    // User does not have MFA enabled → allow
-    return next();
+  // MFA not set up at all
+  if (!req.user.mfaEnabled) {
+    return res.status(403).json({
+      error: "MFA_NOT_INITIALIZED",
+    });
   }
 
+  // MFA set up but not verified
   if (!req.user.mfaVerified) {
     return res.status(403).json({
       error: "MFA_REQUIRED",
     });
   }
 
+  // MFA verified
   next();
 };
 
