@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import apiUrl from "../../api";
+import { apiLoginUser } from "../../apiControllers/authApiController";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
@@ -23,31 +24,21 @@ const LoginForm = () => {
    */
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setErrorMessage(""); // Clear previous error messages on new submit
-
-    console.log("Logging in user with username:", username);
+    setErrorMessage("");
 
     try {
-      // Call to API to log in the user using username and password
-      fetch(`${apiUrl}/auth/login`, {
-        method: "POST",
-        credentials: "include", // REQUIRED
-        body: JSON.stringify({ username, password }),
-        headers: { "Content-Type": "application/json" },
-      });
-      // Redirect to a protected route or homepage after successful login
+      await apiLoginUser({ username, password });
+
+      // After successful login, let gates decide next step
       window.location.href = from;
     } catch (error) {
-      // Handle login error
       if (error.response) {
-        // Set custom error messages based on the status code or use a generic message
         const message =
           error.response.status === 401
             ? "Invalid credentials."
             : "Login failed.";
         setErrorMessage(message);
       } else {
-        // For network errors or other issues not related to the server response
         setErrorMessage("The login service is currently unavailable.");
       }
     }

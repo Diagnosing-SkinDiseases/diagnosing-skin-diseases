@@ -19,6 +19,7 @@ export const AuthProvider = ({ children }) => {
 
         // Not authenticated
         if (res.status === 401) {
+          setChecked(false);
           navigate("/login", { replace: true });
           return;
         }
@@ -27,6 +28,7 @@ export const AuthProvider = ({ children }) => {
 
         // Authenticated but MFA required
         if (res.status === 403) {
+          setChecked(false);
           const data = await res.json();
           if (data.error === "MFA_REQUIRED") {
             navigate("/mfa-verify", { replace: true });
@@ -38,6 +40,7 @@ export const AuthProvider = ({ children }) => {
 
         // Any other unexpected failure
         if (!res.ok) {
+          setChecked(false);
           navigate("/login", { replace: true });
           return;
         }

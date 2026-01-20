@@ -43,7 +43,7 @@ userRouter.post("/user/mfa/setup", authenticate, mfaSetup);
 userRouter.post("/user/mfa/verify", authenticate, mfaVerify);
 
 // MFA Reset Email
-userRouter.post("/user/mfa/reset/email", mfaResetTrigger);
+userRouter.post("/user/mfa/reset/email", authenticate, mfaResetTrigger);
 
 // MFA Reset Reset
 userRouter.post("/user/mfa/reset", mfaReset);

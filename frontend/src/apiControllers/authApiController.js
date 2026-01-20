@@ -7,7 +7,7 @@ import apiUrl from "../api";
  * @returns the promise for the api response
  */
 const apiLoginUser = (payload) => {
-  return axios.post(`${apiUrl}/auth/login`, payload);
+  return axios.post(`${apiUrl}/auth/login`, payload, { withCredentials: true });
 };
 
 const apiLogoutUser = () => {

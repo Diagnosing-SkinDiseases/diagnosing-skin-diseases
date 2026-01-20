@@ -1,75 +1,54 @@
 import { useState, useEffect } from "react";
-import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
 import apiUrl from "../../../api";
 
 const MFASetupForm = () => {
-  const [userId, setUserId] = useState("");
   const [qrCodeUrl, setQrCodeUrl] = useState("");
   const [code, setCode] = useState("");
   const [message, setMessage] = useState("");
 
-  const navigate = useNavigate(); // ✅ add this
+  const navigate = useNavigate();
 
-  // Extract userId from token
-  useEffect(() => {
-    const token = Cookies.get("token");
-    if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        setUserId(payload.userId);
-      } catch (err) {
-        console.error("Failed to decode token:", err);
-      }
-    }
-  }, []);
-
-  // Request MFA setup from backend
+  // Request MFA setup from backend (session-based)
   useEffect(() => {
     const fetchMfaSetup = async () => {
       try {
-        const response = await fetch(`${apiUrl}/user/mfa/setup`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId }),
-        });
+        const res = await axios.post(
+          `${apiUrl}/user/mfa/setup`,
+          {},
+          { withCredentials: true }
+        );
 
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error || "Setup failed");
-
-        setQrCodeUrl(data.qrCodeUrl);
+        setQrCodeUrl(res.data.qrCodeUrl);
       } catch (err) {
-        console.error(err.message);
+        console.error(err);
         setMessage("Error setting up MFA. Please try again.");
       }
     };
 
-    if (userId) fetchMfaSetup();
-  }, [userId]);
+    fetchMfaSetup();
+  }, []);
 
   // Submit TOTP code to enable MFA
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("");
 
     try {
-      const response = await fetch(`${apiUrl}/user/mfa/verify`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, token: code }),
-      });
-
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "Verification failed");
-
-      Cookies.set("token", data.token, { expires: 1 });
+      await axios.post(
+        `${apiUrl}/user/mfa/verify`,
+        { code },
+        { withCredentials: true }
+      );
 
       setMessage("✅ MFA setup complete!");
+
       setTimeout(() => {
-        navigate("/admin/trees");
-      }, 500);
+        navigate("/admin/trees", { replace: true });
+      }, 300);
     } catch (err) {
-      console.error(err.message);
+      console.error(err);
       setMessage("❌ Invalid code. Try again.");
     }
   };
@@ -77,38 +56,34 @@ const MFASetupForm = () => {
   return (
     <div className="login-card">
       {!qrCodeUrl ? (
-        <span>{"UNAUTHORIZED"}</span>
+        <p>Loading MFA setup…</p>
       ) : (
         <>
           <h2>MFA Setup</h2>
+
           <form onSubmit={handleSubmit}>
-            {/* QR Code */}
-            <div>
-              <p>Scan this QR code with your authenticator app:</p>
-              <img
-                src={qrCodeUrl}
-                alt="MFA QR Code"
-                style={{ width: 200, height: 200 }}
-              />
-            </div>
+            <p>Scan this QR code with your authenticator app:</p>
 
-            <br></br>
+            <img
+              src={qrCodeUrl}
+              alt="MFA QR Code"
+              style={{ width: 200, height: 200 }}
+            />
 
-            {/* TOTP Input */}
-            <div>
-              <label htmlFor="totp">
-                Enter the 6-digit code from your app:
-              </label>
-              <input
-                type="text"
-                id="totp"
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-                required
-                pattern="\d{6}"
-                maxLength={6}
-              />
-            </div>
+            <br />
+
+            <label htmlFor="totp">Enter the 6-digit code from your app:</label>
+
+            <input
+              type="text"
+              id="totp"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              required
+              pattern="\d{6}"
+              maxLength={6}
+              placeholder="123456"
+            />
 
             <button type="submit">Verify & Enable MFA</button>
 

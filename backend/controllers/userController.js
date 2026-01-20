@@ -102,23 +102,26 @@ const deleteUser = async (req, res) => {
 
 // MFA Setup
 const mfaSetup = async (req, res) => {
-  const { userId } = req.body;
-
   try {
-    const user = await User.findById(userId);
-    if (!user) return res.status(404).json({ error: "User not found" });
+    // 🔐 Identity comes ONLY from authenticated session
+    const userId = req.user.userId;
 
-    // ✅ Guardrail: Block setup if MFA is already enabled
-    if (user.mfaEnabled) {
-      return res.status(403).json({
-        error:
-          "MFA is already enabled. Reset it first if you want to reconfigure.",
-      });
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
     }
+
+    // 🚧 Guardrail: block re-setup if already enabled
+    // if (user.mfaEnabled) {
+    //   return res.status(403).json({
+    //     error:
+    //       "MFA is already enabled. Reset it first if you want to reconfigure.",
+    //   });
+    // }
 
     let secretBase32 = user.mfaSecret;
 
-    // Only generate a new secret if one doesn't exist
+    // Generate secret only once
     if (!secretBase32) {
       const secret = speakeasy.generateSecret({
         name: `YourApp (${user.email})`,
@@ -132,13 +135,13 @@ const mfaSetup = async (req, res) => {
     const otpauthUrl = `otpauth://totp/YourApp:${user.email}?secret=${secretBase32}&issuer=YourApp`;
     const qrCodeUrl = await qrcode.toDataURL(otpauthUrl);
 
-    res.status(200).json({
+    return res.status(200).json({
       qrCodeUrl,
       manualKey: secretBase32,
     });
   } catch (error) {
     console.error("Error in mfaSetup:", error);
-    res.status(500).json({ error: "Failed to generate MFA setup." });
+    return res.status(500).json({ error: "Failed to generate MFA setup." });
   }
 };
 
@@ -197,37 +200,42 @@ const mfaVerify = async (req, res) => {
   }
 };
 
-// MFA Reset Trigger
+// MFA Reset Trigger (email link)
 const mfaResetTrigger = async (req, res) => {
   try {
-    const { userId } = req.body;
-    if (!userId) {
-      return res.status(400).json({ error: "Missing userId" });
-    }
+    // 🔐 Identity comes ONLY from authenticated session
+    const userId = req.user.userId;
 
-    // ✅ Find user in DB
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    // ✅ Generate cryptographically secure token
-    const token = crypto.randomBytes(32).toString("hex");
+    // 🚧 Guardrail: no MFA to reset
+    if (!user.mfaEnabled) {
+      return res.status(400).json({
+        error: "MFA is not enabled on this account",
+      });
+    }
+
+    // 🔑 Generate cryptographically secure, one-time token
+    const resetToken = crypto.randomBytes(32).toString("hex");
     const expiresAt = Date.now() + 15 * 60 * 1000; // 15 minutes
 
-    // ✅ Save token to user for one-time use
-    user.mfaLinkToken = token;
+    user.mfaLinkToken = resetToken;
     user.mfaLinkExpiresAt = expiresAt;
     user.mfaLinkUsed = false;
     await user.save();
 
-    // ✅ Send email (emailService builds the link)
-    await sendHelloWorldEmail(user.email, token);
+    // 📧 Send email with reset link
+    await sendHelloWorldEmail(user.email, resetToken);
 
-    res.status(200).json({ message: "MFA reset email sent successfully" });
+    return res
+      .status(200)
+      .json({ message: "MFA reset email sent successfully" });
   } catch (err) {
     console.error("Error in MFA reset trigger:", err);
-    res.status(500).json({ error: "Failed to send MFA reset email" });
+    return res.status(500).json({ error: "Failed to send MFA reset email" });
   }
 };
 
