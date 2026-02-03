@@ -14,6 +14,7 @@ const glossaryItemRouter = require("./routers/glossaryRouter.js");
 const treeRouter = require("./routers/treeRouter.js");
 const articleRouter = require("./routers/articleRouter.js");
 const authRouter = require("./routers/authRouter.js");
+const responseUrlRewrite = require("./middleware/responseUrlRewrite.js");
 
 // Environment variables
 const port = process.env.PORT;
@@ -44,6 +45,9 @@ app.use(
   })
 );
 app.use(cookieParser());
+
+// ✅ GLOBAL URL REWRITE (TESTING)
+app.use(responseUrlRewrite);
 
 // App endpoints start here
 app.get("/", (req, res) => {

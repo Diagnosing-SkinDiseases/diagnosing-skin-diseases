@@ -28,12 +28,7 @@ articleRouter.get("/article/read/all", getAllArticles);
 articleRouter.get("/article/list", listArticles);
 
 // Read singular article
-articleRouter.get(
-  "/article/read",
-  authenticate,
-  requireMfaVerified,
-  getArticle
-);
+articleRouter.get("/article/read", getArticle);
 
 // Update article
 articleRouter.patch(
