@@ -28,6 +28,12 @@ import { useLocation } from "react-router-dom";
 import MFAReset from "../MFA/reset/MFAReset";
 import MFAResetConfirm from "../MFA/reset/MFAResetConfirm";
 
+// Analytics
+import { initGA } from "../Analytics/GA4";
+import RouteTracker from "../Analytics/RouteTracker";
+
+initGA();
+
 // This function wraps your Routes and uses useAuth to access the auth state
 function ProtectedRoute({ children }) {
   return <AuthProvider>{children}</AuthProvider>;
@@ -38,6 +44,7 @@ function App() {
     <div className="app-container">
       <NavBarComponent></NavBarComponent>
       <div className="content-container">
+        <RouteTracker />
         <Routes>
           {/* Admin */}
           {/* Admin - Trees */}

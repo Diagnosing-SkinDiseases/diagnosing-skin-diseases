@@ -42,12 +42,12 @@ app.use(
       return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
-  })
+  }),
 );
 app.use(cookieParser());
 
 // ✅ GLOBAL URL REWRITE (TESTING)
-app.use(responseUrlRewrite);
+// app.use(responseUrlRewrite);
 
 // App endpoints start here
 app.get("/", (req, res) => {
