@@ -27,8 +27,12 @@ const loginUser = async (req, res) => {
       { expiresIn: "1h" },
     );
 
+    const isProd = process.env.NODE_ENV === "PRODUCTION";
+
     res.cookie("access_token", token, {
       httpOnly: true,
+      secure: isProd,
+      sameSite: isProd ? "none" : "lax",
       maxAge: 60 * 60 * 1000,
       path: "/",
     });
