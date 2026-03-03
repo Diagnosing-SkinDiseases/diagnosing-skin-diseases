@@ -73,7 +73,7 @@ const updateUser = async (req, res) => {
     const user = await User.findOneAndUpdate(
       { _id: ObjectId.createFromHexString(id) },
       { ...data },
-      { runValidators: true }
+      { runValidators: true },
     );
     if (!user) {
       return res.status(404).json({ error: "User not found" });
@@ -183,12 +183,16 @@ const mfaVerify = async (req, res) => {
         mfaVerified: true,
       },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "1h" },
     );
+
+    const isProd = process.env.NODE_ENV === "PRODUCTION";
 
     // 🍪 Store in HttpOnly cookie
     res.cookie("access_token", upgradedToken, {
       httpOnly: true,
+      secure: isProd,
+      sameSite: isProd ? "none" : "lax",
       maxAge: 60 * 60 * 1000,
       path: "/",
     });
@@ -269,7 +273,7 @@ const mfaReset = async (req, res) => {
         mfaVerified: false,
       },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "1h" },
     );
 
     res.status(200).json({

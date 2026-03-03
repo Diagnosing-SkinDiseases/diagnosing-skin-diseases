@@ -51,8 +51,11 @@ const authMe = (req, res) => {
 
 // Logout User
 const logoutUser = (req, res) => {
+  const isProd = process.env.NODE_ENV === "PRODUCTION";
   res.cookie("access_token", "", {
     httpOnly: true,
+    secure: isProd,
+    sameSite: isProd ? "none" : "lax",
     expires: new Date(0),
     path: "/",
   });
