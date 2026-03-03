@@ -22,9 +22,6 @@ export const trackPage = (path) => {
   });
 };
 
-export const trackEvent = (action, params = {}) => {
-  ReactGA.event({
-    action,
-    ...params,
-  });
+export const trackEvent = (eventName, params = {}) => {
+  ReactGA.event(eventName, params);
 };

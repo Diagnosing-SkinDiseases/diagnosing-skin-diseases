@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../App/AuthContext";
 import DSD from "./dsd-logo-2.png";
 import "../CSS/NavBarComponent.css";
+import { trackNavClick } from "../Analytics/events";
 
 /**
  * NavSubtab Component
@@ -37,7 +37,17 @@ const NavSubtab = ({ show, titles }) => {
           }`}
           onMouseEnter={() => setActiveSubtab(title.name)}
         >
-          <Link to={title.path || "#"} className="subtab-link">
+          <Link
+            to={title.path || "#"}
+            className="subtab-link"
+            onClick={() =>
+              trackNavClick({
+                label: title.name,
+                level: "sub",
+                path: title.path,
+              })
+            }
+          >
             {title.name}
           </Link>
           {title.subTabs &&
@@ -87,10 +97,15 @@ const NavBarComponent = () => {
   };
 
   // Handle link click: navigate to the path, and for non-subtab links, force a page reload
-  const handleClick = (path, hasSubTabs) => {
+  const handleClick = (path, hasSubTabs, label) => {
     if (!hasSubTabs) {
+      trackNavClick({
+        label,
+        level: "top",
+        path,
+      });
+
       navigate(path);
-      window.location.reload();
     }
   };
 
@@ -230,7 +245,9 @@ const NavBarComponent = () => {
             onMouseLeave={() => setActiveLink("")}
           >
             <div
-              onClick={() => handleClick(link.path, link.subTabs.length > 0)}
+              onClick={() =>
+                handleClick(link.path, link.subTabs.length > 0, link.name)
+              }
               className={`d-flex align-items-center justify-content-center nav-link`}
             >
               <p className="navbar-link-text">{link.name} </p>
