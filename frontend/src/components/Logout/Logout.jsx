@@ -15,7 +15,6 @@ const Logout = () => {
     };
 
     logout();
-    console.log("LOGOUT PLACEHOLDER");
   }, [navigate]);
 
   return null;

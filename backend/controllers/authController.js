@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 // Login User
 const loginUser = async (req, res) => {
   const { username, password } = req.body;
-  console.log("LOGIN PROCESS", username, password);
 
   try {
     const user = await User.findOne({ username });
@@ -25,7 +24,7 @@ const loginUser = async (req, res) => {
         mfaVerified: false,
       },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "1h" },
     );
 
     res.cookie("access_token", token, {
@@ -33,8 +32,6 @@ const loginUser = async (req, res) => {
       maxAge: 60 * 60 * 1000,
       path: "/",
     });
-
-    console.log("SUCCESS", token);
 
     res.status(200).json({ message: "Login successful" });
   } catch (error) {
@@ -56,7 +53,6 @@ const logoutUser = (req, res) => {
     path: "/",
   });
 
-  console.log("Logged out");
   return res.sendStatus(204);
 };
 

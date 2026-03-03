@@ -15,16 +15,12 @@ export const AuthProvider = ({ children }) => {
           credentials: "include",
         });
 
-        console.log("Start");
-
         // Not authenticated
         if (res.status === 401) {
           setChecked(false);
           navigate("/login", { replace: true });
           return;
         }
-
-        console.log("Check 1");
 
         // ⚠️ Authenticated, but not fully authorized
         if (res.status === 403) {
@@ -46,16 +42,12 @@ export const AuthProvider = ({ children }) => {
           return;
         }
 
-        console.log("Check 2");
-
         // Any other unexpected failure
         if (!res.ok) {
           setChecked(false);
           navigate("/login", { replace: true });
           return;
         }
-
-        console.log("Check 3");
 
         // Auth OK
         setChecked(true);

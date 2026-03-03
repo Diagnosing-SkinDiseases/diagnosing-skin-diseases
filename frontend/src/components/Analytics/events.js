@@ -14,11 +14,8 @@ const shouldTrackPath = (path) => {
 };
 
 export const trackNavClick = ({ label, level, path }) => {
-  console.log("trackNavClick", { label, level, path });
-
   // Skip tracking if path matches blocked keywords
   if (!shouldTrackPath(path)) {
-    console.log("nav_click blocked for path:", path);
     return;
   }
 

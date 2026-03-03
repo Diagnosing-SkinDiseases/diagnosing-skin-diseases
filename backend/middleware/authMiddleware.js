@@ -2,11 +2,7 @@ const jwt = require("jsonwebtoken");
 
 // Auth Middleware
 const authenticate = (req, res, next) => {
-  console.log("AUTH HIT:", req.method, req.originalUrl);
-
   const token = req.cookies?.access_token;
-
-  console.log("Authentication TOKEN", token);
 
   // No token present
   if (!token) {
@@ -24,8 +20,6 @@ const authenticate = (req, res, next) => {
       mfaVerified: decoded.mfaVerified,
     };
 
-    console.log("Authentication USER", req.user);
-
     // Proceed to protected route
     next();
   } catch (err) {
@@ -35,15 +29,6 @@ const authenticate = (req, res, next) => {
 };
 
 const requireMfaVerified = (req, res, next) => {
-  console.log(
-    "MFA CHECK:",
-    req.originalUrl,
-    "enabled:",
-    req.user.mfaEnabled,
-    "verified:",
-    req.user.mfaVerified
-  );
-
   // MFA not set up at all
   if (!req.user.mfaEnabled) {
     return res.status(403).json({

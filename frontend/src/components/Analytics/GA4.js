@@ -1,8 +1,6 @@
 import ReactGA from "react-ga4";
 
 export const initGA = () => {
-  console.log("TESTING", process.env.REACT_APP_GA_MEASUREMENT_ID);
-
   if (!process.env.REACT_APP_GA_MEASUREMENT_ID) {
     console.warn("GA Measurement ID missing");
     return;
