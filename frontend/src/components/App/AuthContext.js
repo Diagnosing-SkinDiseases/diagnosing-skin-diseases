@@ -15,6 +15,8 @@ export const AuthProvider = ({ children }) => {
           credentials: "include",
         });
 
+        console.log("DEBUG", res);
+
         // Not authenticated
         if (res.status === 401) {
           setChecked(false);

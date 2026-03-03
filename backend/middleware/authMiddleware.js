@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 const authenticate = (req, res, next) => {
   const token = req.cookies?.access_token;
 
+  console.log("DEBUG", token);
+
   // No token present
   if (!token) {
     return res.status(401).json({ error: "Not authenticated" });
@@ -19,6 +21,8 @@ const authenticate = (req, res, next) => {
       mfaEnabled: decoded.mfaEnabled,
       mfaVerified: decoded.mfaVerified,
     };
+
+    console.log("DEBUG", req.user);
 
     // Proceed to protected route
     next();
