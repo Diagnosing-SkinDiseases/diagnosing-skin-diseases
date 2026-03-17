@@ -233,3 +233,25 @@
   border: none;
   border-top: 4px solid #4d4d4d;
 }
+
+/* Modal */
+.image-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.image-modal-content {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 8px;
+  transform: scale(1.5);
+  transition: transform 0.2s ease;
+}

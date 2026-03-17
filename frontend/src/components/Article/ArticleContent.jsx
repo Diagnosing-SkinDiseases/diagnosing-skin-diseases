@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import {
   parseData,
@@ -18,8 +18,9 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
   // Get hash value from URL location
   const { hash } = useLocation();
   const firstH1Index = content.findIndex(
-    (item) => item.type === ArticleContentType.HEADER1
+    (item) => item.type === ArticleContentType.HEADER1,
   );
+  const [selectedImage, setSelectedImage] = useState(null);
 
   /**
    * Handles hash navigation within the article.
@@ -45,7 +46,7 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
       const height = headerOffsetEl.offsetHeight + 120;
       document.documentElement.style.setProperty(
         "--dynamic-scroll-margin",
-        `${height}px`
+        `${height}px`,
       );
     }
   }, [content]);
@@ -79,13 +80,15 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
           {/* Article */}
           <div className="container p-4 pt-0">
             {/* Dynamic Content */}
-            {content.map((item, index) => parseData(item, index, firstH1Index))}
+            {content.map((item, index) =>
+              parseData(item, index, firstH1Index, setSelectedImage),
+            )}
           </div>
 
           {/* Tree Links */}
           {(() => {
             const treeLinkBlock = content.find(
-              (c) => c.type === ArticleContentType.TREE_LINK
+              (c) => c.type === ArticleContentType.TREE_LINK,
             );
 
             let treeLinks = [];
@@ -111,6 +114,21 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
               </div>
             );
           })()}
+
+          {/* Img Modal */}
+          {selectedImage && (
+            <div
+              className="image-modal-overlay"
+              onClick={() => setSelectedImage(null)}
+            >
+              <img
+                src={selectedImage}
+                alt="Enlarged"
+                className="image-modal-content"
+                onClick={(e) => e.stopPropagation()} // prevent closing when clicking image
+              />
+            </div>
+          )}
         </div>
       )}
     </>

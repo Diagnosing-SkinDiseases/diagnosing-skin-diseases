@@ -47,21 +47,36 @@ function sanitize(html) {
   return DOMPurify.sanitize(html, SANITIZE_CFG);
 }
 
+const toSlug = (text) =>
+  text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "") // remove special chars
+    .replace(/\s+/g, "-");
+
 /**
  * parseData function parses the article content based on its type.
  * @param {Object} data - The data object containing type and content of the article element.
  * @param {number} index - The index of the article element.
  * @returns {JSX.Element|null} - Returns the JSX element corresponding to the parsed article element, or null if no match.
  */
-const parseData = ({ type, content }, index, firstH1Index) => {
+const parseData = (
+  { type, content },
+  index,
+  firstH1Index,
+  setSelectedImage,
+) => {
   switch (type) {
-    case ArticleContentType.HEADER1:
+    case ArticleContentType.HEADER1: {
+      const normalized = toSlug(content);
+
       return (
-        <div key={index} id={content} className="art-h1">
+        <div key={index} id={normalized} className="art-h1">
           {index !== firstH1Index && <hr className="art-hr" />}
           <h2>{content}</h2>
         </div>
       );
+    }
     case ArticleContentType.HEADER2:
       return (
         <div key={index} id={content}>
@@ -104,7 +119,13 @@ const parseData = ({ type, content }, index, firstH1Index) => {
     case ArticleContentType.IMAGE:
       return (
         <div key={index} className="container">
-          <img src={`${content}`} alt="Converted" className="d-block mx-auto" />
+          <img
+            src={content}
+            alt="Converted"
+            className="d-block mx-auto"
+            style={{ cursor: "pointer", maxWidth: "100%" }}
+            onClick={() => setSelectedImage(content)}
+          />
         </div>
       );
     case ArticleContentType.VIDEO:
@@ -121,7 +142,7 @@ const parseData = ({ type, content }, index, firstH1Index) => {
         if (typeof window !== "undefined" && "DOMParser" in window) {
           const doc = new DOMParser().parseFromString(
             String(input),
-            "text/html"
+            "text/html",
           );
           const iframe = doc.querySelector('iframe[src*="vimeo.com"]');
           if (iframe) {
@@ -174,13 +195,17 @@ const generateSummary = (content) => {
       <ul className="summary-list">
         {content
           .filter((item) => item.type === ArticleContentType.HEADER1)
-          .map(({ content }, index) => (
-            <li key={index}>
-              <a href={`#${content}`} className="summary-link">
-                {content}
-              </a>
-            </li>
-          ))}
+          .map(({ content }, index) => {
+            const normalized = toSlug(content);
+
+            return (
+              <li key={index}>
+                <a href={`#${normalized}`} className="summary-link">
+                  {content}
+                </a>
+              </li>
+            );
+          })}
       </ul>
 
       {/* SUBTYPE summary */}
