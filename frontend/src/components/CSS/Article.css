@@ -249,9 +249,9 @@
 }
 
 .image-modal-content {
-  max-width: 90%;
-  max-height: 90%;
+  height: 80vh;
+  width: auto;
+  max-width: 90vw;
   border-radius: 8px;
-  transform: scale(1.5);
-  transition: transform 0.2s ease;
+  object-fit: contain;
 }

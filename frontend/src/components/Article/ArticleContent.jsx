@@ -125,7 +125,6 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
                 src={selectedImage}
                 alt="Enlarged"
                 className="image-modal-content"
-                onClick={(e) => e.stopPropagation()} // prevent closing when clicking image
               />
             </div>
           )}
