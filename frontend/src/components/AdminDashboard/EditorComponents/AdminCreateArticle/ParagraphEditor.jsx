@@ -8,11 +8,9 @@ import {
   faUnlink,
   faBold,
   faItalic,
-  faParagraph,
   faFont,
-  faArrowTurnDown,
-  faLevelDown,
   faLevelDownAlt,
+  faUnderline,
 } from "@fortawesome/free-solid-svg-icons";
 
 // ---- DOMPurify config & hooks (register once) ----
@@ -80,6 +78,7 @@ export default function ParagraphEditor({
   const [tb, setTb] = useState({
     isBold: false,
     isItalic: false,
+    isUnderline: false,
     inUL: false,
     inOL: false,
   });
@@ -127,10 +126,12 @@ export default function ParagraphEditor({
 
     // queryCommandState is fine for inline styles
     let isBold = false,
-      isItalic = false;
+      isItalic = false,
+      isUnderline = false;
     try {
       isBold = document.queryCommandState("bold");
       isItalic = document.queryCommandState("italic");
+      isUnderline = document.queryCommandState("underline");
     } catch {}
 
     // list/link via DOM proximity (more reliable across browsers)
@@ -138,7 +139,7 @@ export default function ParagraphEditor({
     const inOL = !!container?.closest("ol");
     const inLink = !!container?.closest("a");
 
-    setTb({ isBold, isItalic, inUL, inOL, inLink });
+    setTb({ isBold, isItalic, isUnderline, inUL, inOL, inLink });
   }
 
   function normalizeToParagraph(html) {
@@ -284,6 +285,8 @@ export default function ParagraphEditor({
         : wrapInRaw("<strong>", "</strong>"),
     italic: () =>
       mode === "clean" ? applyInClean("italic") : wrapInRaw("<em>", "</em>"),
+    underline: () =>
+      mode === "clean" ? applyInClean("underline") : wrapInRaw("<u>", "</u>"),
     ul: () => {
       if (mode === "clean") {
         applyInClean("insertUnorderedList");
@@ -324,7 +327,7 @@ export default function ParagraphEditor({
       } else {
         wrapInRaw(
           `<a href="${url}" target="_blank" rel="noopener noreferrer">`,
-          "</a>"
+          "</a>",
         );
       }
     },
@@ -388,6 +391,17 @@ export default function ParagraphEditor({
             }`}
           >
             <FontAwesomeIcon icon={faItalic} />
+          </button>
+
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={actions.underline}
+            className={`art-paragraph-editor-btn button ${
+              tb.isUnderline ? "is-active" : ""
+            }`}
+          >
+            <FontAwesomeIcon icon={faUnderline} />
           </button>
           <button
             type="button"
