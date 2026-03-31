@@ -30,7 +30,15 @@ import ConfirmModal from "./ConfirmModal";
  * @param {Function} props.onDelete The function to call when the delete button is clicked.
  * @returns {JSX.Element} The rendered item component.
  */
-const Item = ({ title, linkId, published, onPublish, onEdit, onDelete }) => {
+const Item = ({
+  title,
+  linkId,
+  contentType,
+  published,
+  onPublish,
+  onEdit,
+  onDelete,
+}) => {
   const slug = title.toLowerCase().replace(/ /g, "-");
 
   return (
@@ -38,7 +46,7 @@ const Item = ({ title, linkId, published, onPublish, onEdit, onDelete }) => {
       <span className="title">
         {title + " "}
 
-        {published && (
+        {published && contentType === ContentTypeEnum.ARTICLE && (
           <Link
             to={`/articles/${slug}/${linkId}`}
             target="_blank"
@@ -227,6 +235,7 @@ const List = ({ initialItems = [], contentType, searchQuery }) => {
               key={index}
               title={item.title}
               linkId={item.id}
+              contentType={contentType}
               published={item.published}
               onPublish={() => handlePublishToggle(index, item, contentType)}
               onEdit={() => handleEditBtn(item.id, contentType)}
