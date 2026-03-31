@@ -14,6 +14,16 @@
   padding-left: 0.2em;
 }
 
+.title-link-icon {
+  color: var(--btn-color);
+  text-decoration: none;
+  margin-left: 6px;
+}
+
+.title-link-icon:hover {
+  filter: brightness(0.8);
+}
+
 .publish-state {
   margin-right: 1rem;
   color: var(--header-text);

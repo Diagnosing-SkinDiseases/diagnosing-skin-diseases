@@ -4,8 +4,8 @@ import Button from "../GeneralComponents/Button";
 import ContentTypeEnum from "../enums/ContentTypeEnum";
 import "../../CSS/Admin/List.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+import { faPen, faTrashAlt, faLink } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate, Link } from "react-router-dom";
 import {
   apiDeleteGlossaryItem,
   apiUpdateGlossaryItem,
@@ -30,29 +30,50 @@ import ConfirmModal from "./ConfirmModal";
  * @param {Function} props.onDelete The function to call when the delete button is clicked.
  * @returns {JSX.Element} The rendered item component.
  */
-const Item = ({ title, published, onPublish, onEdit, onDelete }) => (
-  <div className="item">
-    <span className="title">{title}</span>
-    <span className={`publish-state ${published ? "published" : ""}`}>
-      {published ? labels.publishState.published : labels.publishState.added}
-    </span>
-    <Button
-      label={
-        published
-          ? labels.buttonLabels.publish.unpublish
-          : labels.buttonLabels.publish.publish
-      }
-      onClick={onPublish}
-      className="button"
-    />
-    <Button onClick={onEdit} className="edit-button">
-      <FontAwesomeIcon icon={faPen} className="fa-edit" />
-    </Button>
-    <Button onClick={onDelete} className="delete-button">
-      <FontAwesomeIcon icon={faTrashAlt} className="fa-trash-alt " />
-    </Button>
-  </div>
-);
+const Item = ({ title, linkId, published, onPublish, onEdit, onDelete }) => {
+  const slug = title.toLowerCase().replace(/ /g, "-");
+
+  return (
+    <div className="item">
+      <span className="title">
+        {title + " "}
+
+        {published && (
+          <Link
+            to={`/articles/${slug}/${linkId}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="title-link-icon"
+          >
+            <FontAwesomeIcon icon={faLink} />
+          </Link>
+        )}
+      </span>
+
+      <span className={`publish-state ${published ? "published" : ""}`}>
+        {published ? labels.publishState.published : labels.publishState.added}
+      </span>
+
+      <Button
+        label={
+          published
+            ? labels.buttonLabels.publish.unpublish
+            : labels.buttonLabels.publish.publish
+        }
+        onClick={onPublish}
+        className="button"
+      />
+
+      <Button onClick={onEdit} className="edit-button">
+        <FontAwesomeIcon icon={faPen} className="fa-edit" />
+      </Button>
+
+      <Button onClick={onDelete} className="delete-button">
+        <FontAwesomeIcon icon={faTrashAlt} className="fa-trash-alt" />
+      </Button>
+    </div>
+  );
+};
 
 /**
  * List component manages and displays a list of items.
@@ -134,7 +155,7 @@ const List = ({ initialItems = [], contentType, searchQuery }) => {
       const path = `/admin/${contentType.toLowerCase()}s/edit/${id}`;
       navigate(path, { state: { id } });
     },
-    [navigate, contentType]
+    [navigate, contentType],
   );
 
   /**
@@ -205,6 +226,7 @@ const List = ({ initialItems = [], contentType, searchQuery }) => {
             <Item
               key={index}
               title={item.title}
+              linkId={item.id}
               published={item.published}
               onPublish={() => handlePublishToggle(index, item, contentType)}
               onEdit={() => handleEditBtn(item.id, contentType)}
