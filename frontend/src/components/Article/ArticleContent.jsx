@@ -76,7 +76,6 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
         const response = await apiOverviewArticles();
 
         setOverviewArticles(response.data);
-        console.log("Overview articles:", response.data);
       } catch (error) {
         console.error("Failed to fetch overview articles:", error);
       }
