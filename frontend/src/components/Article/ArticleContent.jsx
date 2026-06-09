@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import {
-  parseData,
-  generateSummary,
-  renderError,
-} from "./articleComponentController";
+import { parseData, generateSummary } from "./articleComponentController";
 import ArticleContentType from "./enums";
 import { apiOverviewArticles } from "../../apiControllers/articleApiController";
 
@@ -15,14 +11,17 @@ import { apiOverviewArticles } from "../../apiControllers/articleApiController";
  * @param {Array} data.content - An array containing objects representing different types of content in the article.
  * @returns {JSX.Element} - Returns the JSX element for the article content.
  */
-const ArticleContent = ({ data: { title, content }, errorMsg }) => {
+const ArticleContent = ({
+  data: { title, content },
+  overviewArticles,
+  errorMsg,
+}) => {
   // Get hash value from URL location
   const { hash } = useLocation();
   const firstH1Index = content.findIndex(
     (item) => item.type === ArticleContentType.HEADER1,
   );
   const [selectedImage, setSelectedImage] = useState(null);
-  const [overviewArticles, setOverviewArticles] = useState([]);
 
   /**
    * Handles hash navigation within the article.
@@ -52,37 +51,6 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
       );
     }
   }, [content]);
-
-  const hasTreeLinkInput = (article) => {
-    const treeLinkInput = article.content?.find(
-      (item) => item.type === ArticleContentType.TREELINKINPUT,
-    );
-
-    if (!treeLinkInput?.content) return false;
-
-    try {
-      const parsed = JSON.parse(treeLinkInput.content);
-
-      return Array.isArray(parsed) && parsed.length > 0;
-    } catch (error) {
-      console.error("Invalid TREELINKINPUT JSON:", treeLinkInput.content);
-      return false;
-    }
-  };
-
-  useEffect(() => {
-    const fetchOverviewArticles = async () => {
-      try {
-        const response = await apiOverviewArticles();
-
-        setOverviewArticles(response.data);
-      } catch (error) {
-        console.error("Failed to fetch overview articles:", error);
-      }
-    };
-
-    fetchOverviewArticles();
-  }, []);
 
   return (
     <>

@@ -2,10 +2,12 @@ import ArticleBG from "./ArticleBG";
 import "../CSS/Article.css";
 import { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { apiGetArticle } from "../../apiControllers/articleApiController";
+import {
+  apiGetArticle,
+  apiOverviewArticles,
+} from "../../apiControllers/articleApiController";
 import LoadingPage from "../Loading/LoadingPage";
 import messages from "../App/messages";
-import { faListSquares } from "@fortawesome/free-solid-svg-icons";
 import { renderError } from "./articleComponentController";
 
 /**
@@ -14,8 +16,9 @@ import { renderError } from "./articleComponentController";
  * @returns {JSX.Element} - Returns the JSX element for the article.
  */
 const Article = ({ articleId = "" }) => {
-  // State to hold article data and loading status
+  // State to hold article data, overview data, and loading status
   const [data, setData] = useState({ content: [] });
+  const [overviewArticles, setOverviewArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -25,57 +28,76 @@ const Article = ({ articleId = "" }) => {
   const { state } = location;
 
   useEffect(() => {
-  // Function to fetch article data
-  const getArticle = async (funcId) => {
-  setIsLoading(true); // Ensure loading state is set before starting fetch
-  setErrorMsg(""); // Reset error message before fetching new data
+    // Function to fetch article data and overview article data
+    const getArticle = async (funcId) => {
+      setIsLoading(true);
+      setErrorMsg("");
 
-  try {
-    const response = await apiGetArticle(funcId);
+      try {
+        const [articleResponse, overviewResponse] = await Promise.all([
+          apiGetArticle(funcId),
+          apiOverviewArticles(),
+        ]);
 
-    if (response.data.status === "UNPUBLISHED") {
-      // Handle unpublished status
-      setErrorMsg(renderError(messages.Article.articleIdNotFound, messages.email));
+        setOverviewArticles(overviewResponse.data || []);
+
+        if (articleResponse.data.status === "UNPUBLISHED") {
+          setErrorMsg(
+            renderError(messages.Article.articleIdNotFound, messages.email),
+          );
+        } else {
+          setData(articleResponse.data);
+        }
+      } catch (error) {
+        console.error("Error fetching article: ", error);
+        setErrorMsg(
+          renderError(messages.Article.articleIdNotFound, messages.email),
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    // Check if in preview mode
+    const url = new URL(window.location.href);
+    const isPreviewMode = url.pathname.includes("/admin/articles/preview");
+
+    if (isPreviewMode) {
+      // If in preview mode, use data from session storage
+      const previewData = sessionStorage.getItem("previewData");
+
+      if (previewData) {
+        setData(JSON.parse(previewData));
+      }
+
+      // Preview mode does not need overview articles unless you want it to
+      setOverviewArticles([]);
+      setIsLoading(false);
+    } else if (articleId) {
+      // If articleId is provided, fetch article using that ID
+      getArticle(articleId);
+    } else if (paramId) {
+      // If no articleId is provided, but paramId exists, fetch article using paramId
+      getArticle(paramId);
     } else {
-      // Set article data if published
-      setData(response.data);
+      // If no IDs are provided, stop loading
+      setIsLoading(false);
     }
-  } catch (error) {
-    console.error("Error fetching article: ", error);
-    setErrorMsg(renderError(messages.Article.articleIdNotFound, messages.email));
-  } finally {
-    setIsLoading(false);
-  }
-};
-
-
-  // Check if in preview mode
-  const url = new URL(window.location.href);
-  const isPreviewMode = url.pathname.includes("/admin/articles/preview");
-
-  if (isPreviewMode) {
-    // If in preview mode, use data from session storage
-    const previewData = sessionStorage.getItem("previewData");
-    if (previewData) {
-      setData(JSON.parse(previewData));
-    }
-    setIsLoading(false);
-  } else if (articleId) {
-    // If articleId is provided, fetch article using that ID
-    getArticle(articleId);
-  } else if (paramId) {
-    // If no articleId is provided, but paramId exists, fetch article using paramId
-    getArticle(paramId);
-  } else {
-    // If no IDs are provided, stop loading
-    setIsLoading(false);
-  }
-}, [paramId, state, articleId]);
-
+  }, [paramId, state, articleId]);
 
   // Render loading page while fetching data, otherwise render ArticleBG component with article data
   return (
-    <>{isLoading ? <LoadingPage /> : <ArticleBG data={data} errorMsg = {errorMsg}></ArticleBG>}</>
+    <>
+      {isLoading ? (
+        <LoadingPage />
+      ) : (
+        <ArticleBG
+          data={data}
+          errorMsg={errorMsg}
+          overviewArticles={overviewArticles}
+        />
+      )}
+    </>
   );
 };
 

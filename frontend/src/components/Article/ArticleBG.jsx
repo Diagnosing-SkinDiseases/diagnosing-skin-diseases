@@ -8,7 +8,7 @@ import { useNavigate, useLocation } from "react-router-dom";
  * @param {Object} data - The data object containing article content.
  * @returns {JSX.Element} - Returns the JSX element for the article background.
  */
-const ArticleBG = ({ data, errorMsg }) => {
+const ArticleBG = ({ data, errorMsg, overviewArticles }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -18,7 +18,11 @@ const ArticleBG = ({ data, errorMsg }) => {
     <>
       <div className="container pb-5 mt-5">
         <div className="row justify-content-center article-container">
-          <ArticleContent data={data} errorMsg={errorMsg}></ArticleContent>
+          <ArticleContent
+            data={data}
+            errorMsg={errorMsg}
+            overviewArticles={overviewArticles}
+          ></ArticleContent>
         </div>
 
         {/* Bottom Navigation Row */}
