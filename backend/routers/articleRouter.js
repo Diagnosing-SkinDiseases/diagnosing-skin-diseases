@@ -7,6 +7,7 @@ const {
   updateArticle,
   deleteArticle,
   listArticles,
+  overviewArticles,
 } = require("../controllers/articleController");
 const {
   authenticate,
@@ -18,7 +19,7 @@ articleRouter.post(
   "/article/create",
   authenticate,
   requireMfaVerified,
-  createArticle
+  createArticle,
 );
 
 // Read all articles
@@ -35,7 +36,7 @@ articleRouter.patch(
   "/article/update",
   authenticate,
   requireMfaVerified,
-  updateArticle
+  updateArticle,
 );
 
 // Delete article
@@ -43,7 +44,10 @@ articleRouter.delete(
   "/article/delete",
   authenticate,
   requireMfaVerified,
-  deleteArticle
+  deleteArticle,
 );
+
+// Get overview article data
+articleRouter.get("/article/overview", overviewArticles);
 
 module.exports = articleRouter;

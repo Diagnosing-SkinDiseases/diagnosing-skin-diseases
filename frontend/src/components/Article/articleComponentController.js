@@ -189,7 +189,7 @@ const parseData = (
  * @param {Array} content - An array containing objects representing different types of content in the article.
  * @returns {JSX.Element} - Returns a JSX element for the summary.
  */
-const generateSummary = (content = [], publishedArticlesWithTreeLinks = []) => {
+const generateSummary = (content = [], overviewArticles = []) => {
   const hasValidTreeLink = content.some((c) => {
     if (c.type !== ArticleContentType.TREELINKINPUT) return false;
 
@@ -204,25 +204,17 @@ const generateSummary = (content = [], publishedArticlesWithTreeLinks = []) => {
   return (
     <div>
       {/* Overview summary */}
-      {hasValidTreeLink && (
+      {hasValidTreeLink && overviewArticles.length > 0 && (
         <ul className="overview-list">
           <li className="overview-list-label">OVERVIEW:</li>
 
-          {publishedArticlesWithTreeLinks.map((article, index) => {
-            const articleSlug = encodeURIComponent(
-              article.title.trim().toLowerCase().replace(/\s+/g, "-"),
-            );
-
-            const articleUrl = `/articles/${articleSlug}/${article._id}`;
-
-            return (
-              <li key={`overview-${article._id || index}`}>
-                <a href={articleUrl} className="summary-link">
-                  {article.title}
-                </a>
-              </li>
-            );
-          })}
+          {overviewArticles.map((article, index) => (
+            <li key={`overview-${article._id || index}`}>
+              <a href={article.url} className="summary-link">
+                {article.title}
+              </a>
+            </li>
+          ))}
         </ul>
       )}
 
@@ -231,6 +223,7 @@ const generateSummary = (content = [], publishedArticlesWithTreeLinks = []) => {
         .length > 0 && (
         <ul className="summary-list">
           <li className="summary-list-label">SECTIONS:</li>
+
           {content
             .filter((item) => item.type === ArticleContentType.HEADER1)
             .map(({ content }, index) => {

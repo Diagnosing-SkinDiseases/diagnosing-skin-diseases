@@ -30,12 +30,60 @@ const getAllArticles = async (req, res) => {
   }
 };
 
+// Read overview articles only
+const overviewArticles = async (req, res) => {
+  try {
+    const articles = await Article.find({
+      status: "PUBLISHED",
+      content: {
+        $elemMatch: {
+          type: "TREELINKINPUT",
+        },
+      },
+    })
+      .select("_id title content")
+      .sort({ title: 1 })
+      .lean();
+
+    const overviewArticles = articles
+      .filter((article) => {
+        const treeLinkBlock = article.content?.find(
+          (block) => block.type === "TREELINKINPUT",
+        );
+
+        if (!treeLinkBlock?.content) return false;
+
+        try {
+          const parsed = JSON.parse(treeLinkBlock.content);
+          return Array.isArray(parsed) && parsed.length > 0;
+        } catch {
+          return false;
+        }
+      })
+      .map((article) => {
+        const slug = encodeURIComponent(
+          article.title.trim().toLowerCase().replace(/\s+/g, "-"),
+        );
+
+        return {
+          _id: article._id,
+          title: article.title,
+          url: `/articles/${slug}/${article._id}`,
+        };
+      });
+
+    res.status(200).json(overviewArticles);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 // Lightweight article listing (id + title only)
 const listArticles = async (req, res) => {
   try {
     const articles = await Article.find(
       {},
-      { _id: 1, title: 1, status: 1 }
+      { _id: 1, title: 1, status: 1 },
     ).sort({
       title: 1,
     });
@@ -95,7 +143,7 @@ const updateArticle = async (req, res) => {
     const article = await Article.findOneAndUpdate(
       { _id: ObjectId.createFromHexString(id) },
       { ...data },
-      { runValidators: true }
+      { runValidators: true },
     );
     if (!article) {
       return res.status(404).json({ error: "Article not found" });
@@ -129,4 +177,5 @@ module.exports = {
   updateArticle,
   deleteArticle,
   listArticles,
+  overviewArticles,
 };

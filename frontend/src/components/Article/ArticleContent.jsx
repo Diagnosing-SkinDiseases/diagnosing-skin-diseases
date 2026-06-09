@@ -6,7 +6,7 @@ import {
   renderError,
 } from "./articleComponentController";
 import ArticleContentType from "./enums";
-import { apiGetAllArticles } from "../../apiControllers/articleApiController";
+import { apiOverviewArticles } from "../../apiControllers/articleApiController";
 
 /**
  * ArticleContent component renders the content of an article, including the title, summary, and dynamic content.
@@ -22,8 +22,7 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
     (item) => item.type === ArticleContentType.HEADER1,
   );
   const [selectedImage, setSelectedImage] = useState(null);
-  const [publishedArticlesWithTreeLinks, setPublishedArticlesWithTreeLinks] =
-    useState([]);
+  const [overviewArticles, setOverviewArticles] = useState([]);
 
   /**
    * Handles hash navigation within the article.
@@ -72,23 +71,18 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
   };
 
   useEffect(() => {
-    const fetchArticles = async () => {
+    const fetchOverviewArticles = async () => {
       try {
-        const response = await apiGetAllArticles();
+        const response = await apiOverviewArticles();
 
-        const filteredArticles = response.data.filter(
-          (article) =>
-            article.status?.toLowerCase() === "published" &&
-            hasTreeLinkInput(article),
-        );
-
-        setPublishedArticlesWithTreeLinks(filteredArticles);
+        setOverviewArticles(response.data);
+        console.log("Overview articles:", response.data);
       } catch (error) {
-        console.error("Failed to fetch articles:", error);
+        console.error("Failed to fetch overview articles:", error);
       }
     };
 
-    fetchArticles();
+    fetchOverviewArticles();
   }, []);
 
   return (
@@ -114,7 +108,7 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
 
           {/* Summary */}
           <div className="container summary-container">
-            {generateSummary(content, publishedArticlesWithTreeLinks)}
+            {generateSummary(content, overviewArticles)}
           </div>
 
           {/* Article */}

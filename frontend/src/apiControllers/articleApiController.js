@@ -45,6 +45,22 @@ const apiListArticles = () => {
 
 export { apiListArticles };
 
+const apiOverviewArticles = () => {
+  /*
+    Response payload format:
+    [
+      {
+        _id: String,
+        title: String,
+        url: String
+      }
+    ]
+  */
+  return axios.get(`${apiUrl}/article/overview`);
+};
+
+export { apiOverviewArticles };
+
 /**
  * Creates a promise for creating an article for the database. \
  * See comments inside function for the format of payloads.
