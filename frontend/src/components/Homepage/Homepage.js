@@ -19,6 +19,8 @@ import LoadingPage from "../Loading/LoadingPage";
 const Card = ({ title, image, aboutLink, previewText, treeId }) => {
   const navigate = useNavigate();
 
+  const stripHtml = (html = "") => html.replace(/<[^>]*>/g, "").trim();
+
   return (
     <div className="card-wrapper col-lg-3 col-sm-6">
       <div className="card">
@@ -26,12 +28,13 @@ const Card = ({ title, image, aboutLink, previewText, treeId }) => {
         <div className="card-body">
           <h3 className="card-title">{title}</h3>
           <p className="card-text">
-            {previewText ||
+            {stripHtml(previewText) ||
               "This is a brief description of the diagnostic tree. It provides..."}
+
             <a
               className="card-link"
               href={aboutLink}
-              target="_blank"
+              target="_self"
               rel="noopener noreferrer"
             >
               Read more
@@ -66,7 +69,7 @@ function Homepage() {
       try {
         const response = await apiGetAllTrees();
         const publishedTrees = response.data.filter(
-          (tree) => tree.status === "PUBLISHED"
+          (tree) => tree.status === "PUBLISHED",
         );
         setTrees(publishedTrees);
         setIsLoading(false);
