@@ -55,7 +55,6 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
   }, [content]);
 
   const hasTreeLinkInput = (article) => {
-    console.log(article);
     const treeLinkInput = article.content?.find(
       (item) => item.type === ArticleContentType.TREELINKINPUT,
     );
@@ -84,8 +83,6 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
         );
 
         setPublishedArticlesWithTreeLinks(filteredArticles);
-
-        console.log("Published articles with TREELINKINPUT:", filteredArticles);
       } catch (error) {
         console.error("Failed to fetch articles:", error);
       }
