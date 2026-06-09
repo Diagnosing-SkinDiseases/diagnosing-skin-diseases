@@ -6,6 +6,7 @@ import {
   renderError,
 } from "./articleComponentController";
 import ArticleContentType from "./enums";
+import { apiGetAllArticles } from "../../apiControllers/articleApiController";
 
 /**
  * ArticleContent component renders the content of an article, including the title, summary, and dynamic content.
@@ -21,6 +22,8 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
     (item) => item.type === ArticleContentType.HEADER1,
   );
   const [selectedImage, setSelectedImage] = useState(null);
+  const [publishedArticlesWithTreeLinks, setPublishedArticlesWithTreeLinks] =
+    useState([]);
 
   /**
    * Handles hash navigation within the article.
@@ -51,6 +54,46 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
     }
   }, [content]);
 
+  const hasTreeLinkInput = (article) => {
+    console.log(article);
+    const treeLinkInput = article.content?.find(
+      (item) => item.type === ArticleContentType.TREELINKINPUT,
+    );
+
+    if (!treeLinkInput?.content) return false;
+
+    try {
+      const parsed = JSON.parse(treeLinkInput.content);
+
+      return Array.isArray(parsed) && parsed.length > 0;
+    } catch (error) {
+      console.error("Invalid TREELINKINPUT JSON:", treeLinkInput.content);
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const response = await apiGetAllArticles();
+
+        const filteredArticles = response.data.filter(
+          (article) =>
+            article.status?.toLowerCase() === "published" &&
+            hasTreeLinkInput(article),
+        );
+
+        setPublishedArticlesWithTreeLinks(filteredArticles);
+
+        console.log("Published articles with TREELINKINPUT:", filteredArticles);
+      } catch (error) {
+        console.error("Failed to fetch articles:", error);
+      }
+    };
+
+    fetchArticles();
+  }, []);
+
   return (
     <>
       {errorMsg ? (
@@ -74,7 +117,7 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
 
           {/* Summary */}
           <div className="container summary-container">
-            {generateSummary(content)}
+            {generateSummary(content, publishedArticlesWithTreeLinks)}
           </div>
 
           {/* Article */}
@@ -88,7 +131,7 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
           {/* Tree Links */}
           {(() => {
             const treeLinkBlock = content.find(
-              (c) => c.type === ArticleContentType.TREE_LINK,
+              (c) => c.type === ArticleContentType.TREELINKINPUT,
             );
 
             let treeLinks = [];

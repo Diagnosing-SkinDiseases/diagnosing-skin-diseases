@@ -189,42 +189,84 @@ const parseData = (
  * @param {Array} content - An array containing objects representing different types of content in the article.
  * @returns {JSX.Element} - Returns a JSX element for the summary.
  */
-const generateSummary = (content) => {
+const generateSummary = (content = [], publishedArticlesWithTreeLinks = []) => {
+  const hasValidTreeLink = content.some((c) => {
+    if (c.type !== ArticleContentType.TREELINKINPUT) return false;
+
+    try {
+      const parsed = JSON.parse(c.content);
+      return Array.isArray(parsed) && parsed.length > 0;
+    } catch {
+      return false;
+    }
+  });
+
   return (
     <div>
-      <ul className="summary-list">
-        {content
-          .filter((item) => item.type === ArticleContentType.HEADER1)
-          .map(({ content }, index) => {
-            const normalized = toSlug(content);
+      {/* Overview summary */}
+      {hasValidTreeLink && (
+        <ul className="overview-list">
+          <li className="overview-list-label">OVERVIEW:</li>
+
+          {publishedArticlesWithTreeLinks.map((article, index) => {
+            const articleSlug = encodeURIComponent(
+              article.title.trim().toLowerCase().replace(/\s+/g, "-"),
+            );
+
+            const articleUrl = `/articles/${articleSlug}/${article._id}`;
 
             return (
-              <li key={index}>
-                <a href={`#${normalized}`} className="summary-link">
-                  {content}
+              <li key={`overview-${article._id || index}`}>
+                <a href={articleUrl} className="summary-link">
+                  {article.title}
                 </a>
               </li>
             );
           })}
-      </ul>
+        </ul>
+      )}
+
+      {/* HEADER1 summary */}
+      {content.filter((item) => item.type === ArticleContentType.HEADER1)
+        .length > 0 && (
+        <ul className="summary-list">
+          <li className="summary-list-label">SECTIONS:</li>
+          {content
+            .filter((item) => item.type === ArticleContentType.HEADER1)
+            .map(({ content }, index) => {
+              const normalized = toSlug(content);
+
+              return (
+                <li key={index}>
+                  <a href={`#${normalized}`} className="summary-link">
+                    {content}
+                  </a>
+                </li>
+              );
+            })}
+        </ul>
+      )}
 
       {/* SUBTYPE summary */}
-      <ul className="subtype-list">
-        <li className="subtype-list-label">SUBTYPE:</li>
-        {content
-          .filter((item) => item.type === ArticleContentType.SUBTYPE)
-          .map(({ content }, index) => (
-            <li key={`sub-${index}`}>
-              <a href={`#${content}`} className="summary-link">
-                {content}
-              </a>
-            </li>
-          ))}
-      </ul>
+      {content.filter((item) => item.type === ArticleContentType.SUBTYPE)
+        .length > 0 && (
+        <ul className="subtype-list">
+          <li className="subtype-list-label">SUBTYPE:</li>
+
+          {content
+            .filter((item) => item.type === ArticleContentType.SUBTYPE)
+            .map(({ content }, index) => (
+              <li key={`sub-${index}`}>
+                <a href={`#${content}`} className="summary-link">
+                  {content}
+                </a>
+              </li>
+            ))}
+        </ul>
+      )}
     </div>
   );
 };
-
 /**
  * renderError function renders an error message with a dynamic email link.
  * @param {string} message - The error message containing a placeholder for email.
