@@ -1,6 +1,19 @@
 import React from "react";
 
 const NodeContentBox = ({ content, onBack, onNo, onYes, selectedNode }) => {
+  const toRelativeIfAbsolute = (url = "") => {
+    if (!/^https?:\/\//i.test(url)) {
+      return url;
+    }
+
+    try {
+      const parsedUrl = new URL(url);
+
+      return `${parsedUrl.pathname}${parsedUrl.search}${parsedUrl.hash}`;
+    } catch {
+      return url;
+    }
+  };
   const parseContent = (text) => {
     // Regular expression to detect <a> tags and <br> tags
     const linkAndBreakRegex = /<a href="([^"]+)"[^>]*>(.*?)<\/a>|<br\s*\/?>/g;
@@ -25,7 +38,7 @@ const NodeContentBox = ({ content, onBack, onNo, onYes, selectedNode }) => {
           >
             <a
               className="ut-tree-diagnosis-button"
-              href={url}
+              href={toRelativeIfAbsolute(url)}
               target="_blank"
               rel="noopener noreferrer"
             >
