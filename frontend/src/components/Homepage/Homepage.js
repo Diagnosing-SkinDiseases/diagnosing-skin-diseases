@@ -21,6 +21,15 @@ const Card = ({ title, image, aboutLink, previewText, treeId }) => {
 
   const stripHtml = (html = "") => html.replace(/<[^>]*>/g, "").trim();
 
+  const toRelativeUrl = (url = "") => {
+    try {
+      const parsedUrl = new URL(url);
+      return `${parsedUrl.pathname}${parsedUrl.search}${parsedUrl.hash}`;
+    } catch {
+      return url;
+    }
+  };
+
   return (
     <div className="card-wrapper col-lg-3 col-sm-6">
       <div className="card">
@@ -33,7 +42,7 @@ const Card = ({ title, image, aboutLink, previewText, treeId }) => {
 
             <a
               className="card-link"
-              href={aboutLink}
+              href={toRelativeUrl(aboutLink) || aboutLink}
               target="_self"
               rel="noopener noreferrer"
             >

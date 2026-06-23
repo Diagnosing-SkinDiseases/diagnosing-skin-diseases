@@ -84,6 +84,15 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
     fetchOverviewArticles();
   }, []);
 
+  const toRelativeUrl = (url = "") => {
+    try {
+      const parsedUrl = new URL(url);
+      return `${parsedUrl.pathname}${parsedUrl.search}${parsedUrl.hash}`;
+    } catch {
+      return url;
+    }
+  };
+
   return (
     <>
       {errorMsg ? (
@@ -136,12 +145,10 @@ const ArticleContent = ({ data: { title, content }, errorMsg }) => {
                 {treeLinks.map((item, i) => (
                   <a
                     key={i}
-                    href={item.link}
-                    className="article-nav-button"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href={toRelativeUrl(item.link) || item.link}
+                    className="article-nav-button article-cta"
                   >
-                    {"Diagnose: " + item.label || item.link}
+                    {"Start Diagnosis" || item.link}
                   </a>
                 ))}
               </div>

@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import UTNodeFlow from "./UTNodeFlow";
 import "../CSS/UserTreeV2.css";
 
-const UTContent = ({ existingTitle, existingTree, existingMidOffsets }) => {
+const UTContent = ({
+  existingTitle,
+  existingTree,
+  existingMidOffsets,
+  existingAboutLink,
+}) => {
   // Node State
   const [rootNode, setRootNode] = useState(
     existingTree !== null
@@ -15,8 +20,17 @@ const UTContent = ({ existingTitle, existingTree, existingMidOffsets }) => {
           yesChild: [],
           xPos: 0,
           yPos: 0,
-        }
+        },
   );
+
+  const toRelativeUrl = (url = "") => {
+    try {
+      const parsedUrl = new URL(url);
+      return `${parsedUrl.pathname}${parsedUrl.search}${parsedUrl.hash}`;
+    } catch {
+      return url;
+    }
+  };
 
   return (
     <>
@@ -33,6 +47,18 @@ const UTContent = ({ existingTitle, existingTree, existingMidOffsets }) => {
             setRootNode={setRootNode}
             existingMidOffsets={existingMidOffsets}
           ></UTNodeFlow>
+
+          <div className="ut-bot-content">
+            <a href={"/"} className="article-nav-secondary ut-nav-btn-mod">
+              Diagnostic Trees
+            </a>
+            <a
+              href={toRelativeUrl(existingAboutLink)}
+              className="article-nav-button ut-nav-btn-mod"
+            >
+              Overview Article
+            </a>
+          </div>
         </div>
       </div>
     </>
