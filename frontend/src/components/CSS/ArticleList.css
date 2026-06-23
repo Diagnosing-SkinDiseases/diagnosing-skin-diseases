@@ -158,8 +158,17 @@
 /* Overview */
 
 .article-list-overview-mod {
-  font-size: 28px;
-  
+  display: grid;
+
+  row-gap: 0px;
+}
+
+.article-list-overview-mod> :nth-child(odd) {
+  grid-column: 1;
+}
+
+.article-list-overview-mod> :nth-child(even) {
+  grid-column: 2;
 }
 
 .article-list-overview-banner {
