@@ -25,57 +25,82 @@ const Article = ({ articleId = "" }) => {
   const { state } = location;
 
   useEffect(() => {
-  // Function to fetch article data
-  const getArticle = async (funcId) => {
-  setIsLoading(true); // Ensure loading state is set before starting fetch
-  setErrorMsg(""); // Reset error message before fetching new data
+    // Function to fetch article data
+    const getArticle = async (funcId) => {
+      setIsLoading(true); // Ensure loading state is set before starting fetch
+      setErrorMsg(""); // Reset error message before fetching new data
 
-  try {
-    const response = await apiGetArticle(funcId);
+      try {
+        const response = await apiGetArticle(funcId);
 
-    if (response.data.status === "UNPUBLISHED") {
-      // Handle unpublished status
-      setErrorMsg(renderError(messages.Article.articleIdNotFound, messages.email));
+        if (response.data.status === "UNPUBLISHED") {
+          // Handle unpublished status
+          setErrorMsg(
+            renderError(messages.Article.articleIdNotFound, messages.email),
+          );
+        } else {
+          // Set article data if published
+          setData(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching article: ", error);
+        setErrorMsg(
+          renderError(messages.Article.articleIdNotFound, messages.email),
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    // Check if in preview mode
+    const url = new URL(window.location.href);
+    const isPreviewMode = url.pathname.includes("/admin/articles/preview");
+
+    if (isPreviewMode) {
+      // If in preview mode, use data from session storage
+      const previewData = sessionStorage.getItem("previewData");
+      if (previewData) {
+        setData(JSON.parse(previewData));
+      }
+      setIsLoading(false);
+    } else if (articleId) {
+      // If articleId is provided, fetch article using that ID
+      getArticle(articleId);
+    } else if (paramId) {
+      // If no articleId is provided, but paramId exists, fetch article using paramId
+      getArticle(paramId);
     } else {
-      // Set article data if published
-      setData(response.data);
+      // If no IDs are provided, stop loading
+      setIsLoading(false);
     }
-  } catch (error) {
-    console.error("Error fetching article: ", error);
-    setErrorMsg(renderError(messages.Article.articleIdNotFound, messages.email));
-  } finally {
-    setIsLoading(false);
-  }
-};
+  }, [paramId, state, articleId]);
 
+  useEffect(() => {
+    if (isLoading || !window.location.hash) return;
 
-  // Check if in preview mode
-  const url = new URL(window.location.href);
-  const isPreviewMode = url.pathname.includes("/admin/articles/preview");
+    const targetId = decodeURIComponent(window.location.hash.slice(1));
 
-  if (isPreviewMode) {
-    // If in preview mode, use data from session storage
-    const previewData = sessionStorage.getItem("previewData");
-    if (previewData) {
-      setData(JSON.parse(previewData));
-    }
-    setIsLoading(false);
-  } else if (articleId) {
-    // If articleId is provided, fetch article using that ID
-    getArticle(articleId);
-  } else if (paramId) {
-    // If no articleId is provided, but paramId exists, fetch article using paramId
-    getArticle(paramId);
-  } else {
-    // If no IDs are provided, stop loading
-    setIsLoading(false);
-  }
-}, [paramId, state, articleId]);
+    requestAnimationFrame(() => {
+      const target = document.getElementById(targetId);
 
+      if (target) {
+        target.scrollIntoView({
+          behavior: "auto",
+          block: "start",
+        });
+      }
+    });
+  }, [isLoading, data]);
 
   // Render loading page while fetching data, otherwise render ArticleBG component with article data
   return (
-    <>{isLoading ? <LoadingPage /> : <ArticleBG data={data} errorMsg = {errorMsg}></ArticleBG>}</>
+    <>
+      {isLoading ? (
+        <LoadingPage />
+      ) : (
+        <ArticleBG data={data} errorMsg={errorMsg}></ArticleBG>
+      )}
+    </>
   );
 };
 
