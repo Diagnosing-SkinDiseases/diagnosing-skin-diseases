@@ -347,3 +347,23 @@
 .ut-tree-diagnosis-link {
     color: var(--interactive-color);
 }
+
+.ut-tree-diagnosis-button-container {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 8px;
+}
+
+.ut-tree-diagnosis-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background-color: #198754;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+}

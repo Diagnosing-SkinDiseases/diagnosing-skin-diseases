@@ -18,23 +18,24 @@ const NodeContentBox = ({ content, onBack, onNo, onYes, selectedNode }) => {
       }
 
       if (url && linkText) {
-        // Add the link as a React element
         segments.push(
-          <a
-            className="ut-tree-diagnosis-link"
-            key={url}
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
+          <div
+            className="ut-tree-diagnosis-button-container"
+            key={`container-${url}`}
           >
-            {linkText}
-          </a>
+            <a
+              className="ut-tree-diagnosis-button"
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {linkText}
+            </a>
+          </div>,
         );
       } else {
-        // Add a line break for <br> tags
         segments.push(<br key={`br-${segments.length}`} />);
       }
-
       // Update the last index to end of the current match
       lastIndex = match.index + fullMatch.length;
     }
