@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
-  apiGetAllArticles,
+  apiOverviewArticles,
   apiListArticles,
 } from "../../apiControllers/articleApiController";
 import "../CSS/ArticleList.css";
@@ -14,44 +14,80 @@ const ArticleListPage = () => {
   const [selectedLetter, setSelectedLetter] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [articles, setArticles] = useState([]);
-  const [originalArticles, setOrginalArticles] = useState([]);
+  const [originalArticles, setOriginalArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   // Benchmark states
   const [fetchDuration, setFetchDuration] = useState(null);
   const [totalLoadTime, setTotalLoadTime] = useState(null);
 
+  const [overviewArticles, setOverviewArticles] = useState([]);
+
+  const hasValidTreeLink = (article) => {
+    const treeLinkBlock = article.content?.find(
+      (item) => item.type === "TREELINKINPUT",
+    );
+
+    if (!treeLinkBlock?.content) return false;
+
+    try {
+      const treeLinks = JSON.parse(treeLinkBlock.content);
+
+      return Array.isArray(treeLinks) && treeLinks.length > 0;
+    } catch {
+      return false;
+    }
+  };
+
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        // ---- Benchmark: Start backend timer ----
         const fetchStart = performance.now();
 
-        const response = await apiListArticles();
+        const [articleResponse, overviewResponse] = await Promise.all([
+          apiListArticles(),
+          apiOverviewArticles(),
+        ]);
 
-        // ---- Benchmark: End backend timer ----
         const fetchEnd = performance.now();
-        const backendTime = fetchEnd - fetchStart;
-        setFetchDuration(backendTime);
+        setFetchDuration(fetchEnd - fetchStart);
 
-        const publishedArticles = response.data.filter(
-          (article) => article.status === "PUBLISHED"
+        const overviewArticles = overviewResponse.data || [];
+
+        const overviewArticleIds = new Set(
+          overviewArticles.map((article) => String(article._id)),
+        );
+
+        const publishedArticles = articleResponse.data.filter(
+          (article) =>
+            article.status === "PUBLISHED" &&
+            !overviewArticleIds.has(String(article._id)),
         );
 
         const groupedArticles = publishedArticles.reduce((acc, article) => {
           const firstLetter = article.title[0].toUpperCase();
+
           if (!acc[firstLetter]) acc[firstLetter] = [];
-          acc[firstLetter].push({ title: article.title, _id: article._id });
+
+          acc[firstLetter].push({
+            title: article.title,
+            _id: article._id,
+          });
+
           return acc;
         }, {});
 
+        setOverviewArticles(overviewArticles);
         setArticles(groupedArticles);
-        setOrginalArticles(groupedArticles);
-        setIsLoading(false);
+        setOriginalArticles(groupedArticles);
       } catch (error) {
         console.error("Error fetching articles: ", error);
+      } finally {
+        setIsLoading(false);
       }
     };
+
+    fetchArticles();
 
     fetchArticles();
   }, []);
@@ -80,7 +116,7 @@ const ArticleListPage = () => {
   // -------------------------------
   const totalContent = Object.values(articles).reduce(
     (acc, items) => acc + items.length,
-    0
+    0,
   );
   const columnTarget = Math.floor((totalContent / 3) * 0.8);
 
@@ -119,12 +155,12 @@ const ArticleListPage = () => {
     const filteredArticles = Object.keys(originalArticles).reduce(
       (acc, letter) => {
         const matchingItems = originalArticles[letter].filter((item) =>
-          item.title.toLowerCase().includes(event.target.value.toLowerCase())
+          item.title.toLowerCase().includes(event.target.value.toLowerCase()),
         );
         if (matchingItems.length > 0) acc[letter] = matchingItems;
         return acc;
       },
-      {}
+      {},
     );
 
     setArticles(filteredArticles);
@@ -141,12 +177,12 @@ const ArticleListPage = () => {
     const filteredArticles = Object.keys(originalArticles).reduce(
       (acc, letter) => {
         const matchingItems = originalArticles[letter].filter((item) =>
-          item.title.toLowerCase().includes(searchTerm.toLowerCase())
+          item.title.toLowerCase().includes(searchTerm.toLowerCase()),
         );
         if (matchingItems.length > 0) acc[letter] = matchingItems;
         return acc;
       },
-      {}
+      {},
     );
 
     setArticles(filteredArticles);
@@ -154,9 +190,33 @@ const ArticleListPage = () => {
 
   return (
     <div className="article-list-page">
+      <div className="article-list-banner article-list-overview-banner">
+        <div className="article-overview-banner-content">
+          <h1 className="article-list-title">Overview Articles</h1>
+          <p className="article-list-intro-text">
+            Generally illustrative in determining which diagnostic tree to
+            utilize.
+          </p>
+        </div>
+      </div>
+
+      <div className="article-list-content article-list-overview-mod">
+        {overviewArticles.map((article) => (
+          <Link
+            key={article._id}
+            to={article.url}
+            className="article-list-section-item"
+          >
+            {article.title}
+          </Link>
+        ))}
+      </div>
+
       <div className="article-list-banner">
         <div>
-          <h1 className="article-list-title">Articles</h1>
+          <h1 className="article-list-title">
+            Diagnostic and Treatment Articles
+          </h1>
           <p className="article-list-intro-text">
             The articles in this program describe the common skin diseases that
             you see in family practice. The articles are in alphabetical order
