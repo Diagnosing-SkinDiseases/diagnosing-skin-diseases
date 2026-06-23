@@ -46,7 +46,7 @@ const Card = ({ title, image, aboutLink, previewText, treeId }) => {
               target="_self"
               rel="noopener noreferrer"
             >
-              Read more
+              Overview
             </a>
           </p>
           <button
