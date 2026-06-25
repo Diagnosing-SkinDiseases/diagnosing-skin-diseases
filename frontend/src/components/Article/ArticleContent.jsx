@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { parseData, generateSummary } from "./articleComponentController";
 import ArticleContentType from "./enums";
-import { apiOverviewArticles } from "../../apiControllers/articleApiController";
 
 /**
  * ArticleContent component renders the content of an article, including the title, summary, and dynamic content.
@@ -51,23 +50,6 @@ const ArticleContent = ({
       );
     }
   }, [content]);
-
-  const hasTreeLinkInput = (article) => {
-    const treeLinkInput = article.content?.find(
-      (item) => item.type === ArticleContentType.TREELINKINPUT,
-    );
-
-    if (!treeLinkInput?.content) return false;
-
-    try {
-      const parsed = JSON.parse(treeLinkInput.content);
-
-      return Array.isArray(parsed) && parsed.length > 0;
-    } catch (error) {
-      console.error("Invalid TREELINKINPUT JSON:", treeLinkInput.content);
-      return false;
-    }
-  };
 
   const toRelativeUrl = (url = "") => {
     try {

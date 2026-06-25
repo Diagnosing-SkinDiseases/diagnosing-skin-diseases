@@ -85,6 +85,23 @@ const Article = ({ articleId = "" }) => {
     }
   }, [paramId, state, articleId]);
 
+  useEffect(() => {
+    if (isLoading || !window.location.hash) return;
+
+    const targetId = decodeURIComponent(window.location.hash.slice(1));
+
+    requestAnimationFrame(() => {
+      const target = document.getElementById(targetId);
+
+      if (target) {
+        target.scrollIntoView({
+          behavior: "auto",
+          block: "start",
+        });
+      }
+    });
+  }, [isLoading, data]);
+
   // Render loading page while fetching data, otherwise render ArticleBG component with article data
   return (
     <>
