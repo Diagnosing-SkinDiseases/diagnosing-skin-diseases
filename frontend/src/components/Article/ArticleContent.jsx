@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import {
-  parseData,
-  generateSummary,
-  renderError,
-} from "./articleComponentController";
+import { parseData, generateSummary } from "./articleComponentController";
 import ArticleContentType from "./enums";
 import { apiOverviewArticles } from "../../apiControllers/articleApiController";
 
@@ -15,14 +11,17 @@ import { apiOverviewArticles } from "../../apiControllers/articleApiController";
  * @param {Array} data.content - An array containing objects representing different types of content in the article.
  * @returns {JSX.Element} - Returns the JSX element for the article content.
  */
-const ArticleContent = ({ data: { title, content }, errorMsg }) => {
+const ArticleContent = ({
+  data: { title, content },
+  overviewArticles,
+  errorMsg,
+}) => {
   // Get hash value from URL location
   const { hash } = useLocation();
   const firstH1Index = content.findIndex(
     (item) => item.type === ArticleContentType.HEADER1,
   );
   const [selectedImage, setSelectedImage] = useState(null);
-  const [overviewArticles, setOverviewArticles] = useState([]);
 
   /**
    * Handles hash navigation within the article.
