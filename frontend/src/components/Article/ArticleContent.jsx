@@ -69,20 +69,6 @@ const ArticleContent = ({
     }
   };
 
-  useEffect(() => {
-    const fetchOverviewArticles = async () => {
-      try {
-        const response = await apiOverviewArticles();
-
-        setOverviewArticles(response.data);
-      } catch (error) {
-        console.error("Failed to fetch overview articles:", error);
-      }
-    };
-
-    fetchOverviewArticles();
-  }, []);
-
   const toRelativeUrl = (url = "") => {
     try {
       const parsedUrl = new URL(url);
