@@ -1,90 +1,121 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import labels from "../labels.json";
-import Button from "../GeneralComponents/Button";
+// import Button from "../GeneralComponents/Button";
 import ContentTypeEnum from "../enums/ContentTypeEnum";
 import "../../CSS/Admin/Controls.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
+// import { useCallback } from "react";
 
 /**
- * Controls component provides UI for adding new content, filtering, and searching within the content list.
+ * Controls component provides UI for adding new content, filtering, and
+ * searching within the content list.
  *
- * @param {Function} props.onFilterChange - Callback function that is called when the filter option is changed.
- * @param {Function} props.onSearch - Callback function that is called when a search is performed.
- * @param {string} props.contentType - Type of content, determines the labels and actions for add button and filters.
- * @returns {JSX.Element} The Controls component.
+ * @param {Function} props.onFilterChange - Called when the filter changes.
+ * @param {Function} props.onSearch - Called when a search is performed.
+ * @param {string} props.contentType - Determines labels and the add route.
+ * @returns {JSX.Element}
  */
 const Controls = ({ onFilterChange, onSearch, contentType }) => {
   const [filter, setFilter] = useState("all");
   const [input, setInput] = useState("");
-  const navigate = useNavigate();
-  const [searchResults, setSearchResults] = useState([]);
 
-  /**
-   * Handles the "Add" action based on the content type. It navigates to the appropriate
-   * add page for the given content type.
+  // const navigate = useNavigate();
+
+  // Currently unused. Preserved in case search result state is needed later.
+  // const [searchResults, setSearchResults] = useState([]);
+
+  const pathMap = {
+    [ContentTypeEnum.TREE]: "/admin/trees/add",
+    [ContentTypeEnum.ARTICLE]: "/admin/articles/add",
+    [ContentTypeEnum.DEFINITION]: "/admin/definitions/add",
+  };
+
+  const addPath = pathMap[contentType];
+
+  /*
+   * Archived button navigation logic.
+   *
+   * Handles the "Add" action based on the content type. It navigates to the
+   * appropriate add page for the given content type.
    */
+  /*
   const handleAdd = useCallback(() => {
     const pathMap = {
       [ContentTypeEnum.TREE]: "/admin/trees/add",
       [ContentTypeEnum.ARTICLE]: "/admin/articles/add",
       [ContentTypeEnum.DEFINITION]: "/admin/definitions/add",
     };
-    const path = pathMap[contentType] || console.error("Unknown content type");
+
+    const path =
+      pathMap[contentType] || console.error("Unknown content type");
+
     if (path) navigate(path);
   }, [contentType, navigate]);
+  */
 
   /**
-   * Updates the local filter state
+   * Updates the local filter state.
    *
-   * @param {string} event - The new filter value selected by the user.
-   * @return {void}
+   * @param {string} value - The new filter value.
+   * @returns {void}
    */
-  const handleFilterChange = (event) => {
-    setFilter(event);
-    onFilterChange(event);
+  const handleFilterChange = (value) => {
+    setFilter(value);
+    onFilterChange(value);
   };
 
   /**
-   * A function that handles the change event for the search input.
+   * Handles changes to the search input.
    *
-   * @param {Event} event - the event object
-   * @return {void}
+   * @param {Event} event - The input change event.
+   * @returns {void}
    */
   const handleSearchChange = (event) => {
     setInput(event.target.value);
   };
 
   /**
-   * Handles the submit event for the search form.
+   * Handles submission of the search form.
    *
-   * @param {event} event - the event object
-   * @return {void}
+   * @param {Event} event - The form submission event.
+   * @returns {void}
    */
   const handleSearchSubmit = (event) => {
     event.preventDefault();
     onSearch(input);
   };
 
-  /**
-   * Renders the Controls component which includes an add button, filter dropdown, and search field.
-   *
-   * @returns {JSX.Element} The JSX markup for the Controls component.
-   */
   return (
     <div className="controls-wrapper">
       <div className="controls">
+        {/* Archived button implementation */}
+        {/*
         <Button
           label={labels.buttonLabels.add[contentType.toLowerCase()]}
           onClick={handleAdd}
           className="button"
         />
+        */}
+
+        {addPath ? (
+          <Link to={addPath} className="button add-content-button">
+            {labels.buttonLabels.add[contentType.toLowerCase()]}
+          </Link>
+        ) : (
+          <span className="button disabled" aria-disabled="true">
+            Unknown content type
+          </span>
+        )}
+
         <FilterComponent
           labels={labels}
           value={filter}
           onChange={handleFilterChange}
         />
+
         <SearchField
           value={input}
           onChange={handleSearchChange}
@@ -97,31 +128,32 @@ const Controls = ({ onFilterChange, onSearch, contentType }) => {
 };
 
 /**
- * The FilterComponent renders a dropdown menu allowing the user to select a filter option.
+ * The FilterComponent renders a dropdown menu allowing the user to select a
+ * filter option.
  *
- * @param {Object} props.labels - An object containing label strings for the component, including options for the dropdown.
- * @param {string} props.value - The current value of the filter, used to set the initial selected option in the dropdown.
- * @param {Function} props.onChange - A callback function to be called with the new selected option when the selection changes.
- * @returns {JSX.Element} A dropdown menu for selecting a filter option.
+ * @param {Object} props.labels - Label strings and dropdown options.
+ * @param {string} props.value - The current selected filter.
+ * @param {Function} props.onChange - Called with the selected filter.
+ * @returns {JSX.Element}
  */
 const FilterComponent = ({ labels, value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(value);
 
   /**
-   * Handles the dropdown toggle.
+   * Toggles the dropdown.
    *
    * @returns {void}
    */
   const handleDropdownToggle = () => {
-    setIsOpen(!isOpen);
+    setIsOpen((currentValue) => !currentValue);
   };
 
   /**
-   * Handles the selection of an option.
+   * Selects a dropdown option.
    *
-   * @param {type} key - the key of the selected option
-   * @return {type} no return value
+   * @param {string} key - The selected option key.
+   * @returns {void}
    */
   const handleOptionSelect = (key) => {
     setSelectedOption(key);
@@ -129,11 +161,6 @@ const FilterComponent = ({ labels, value, onChange }) => {
     setIsOpen(false);
   };
 
-  /**
-   * Renders the dropdown menu for filter.
-   *
-   * @returns {JSX.Element} The JSX filterdropwon component.
-   */
   return (
     <div className="select-wrapper">
       <div
@@ -141,13 +168,15 @@ const FilterComponent = ({ labels, value, onChange }) => {
         onClick={handleDropdownToggle}
       >
         <p className="select-option">{labels.filterOption[selectedOption]}</p>
+
         <span className="select-icon">&#9660;</span>
+
         {isOpen && (
           <div className="select-content-container">
             <ul className="select-content">
-              {Object.entries(labels.filterOption).map(([key, value]) => (
+              {Object.entries(labels.filterOption).map(([key, optionLabel]) => (
                 <li key={key} onClick={() => handleOptionSelect(key)}>
-                  {value}
+                  {optionLabel}
                 </li>
               ))}
             </ul>
@@ -159,20 +188,21 @@ const FilterComponent = ({ labels, value, onChange }) => {
 };
 
 /**
- * Renders a search field component with a search input and submit button.
+ * Renders a search field with an input and submit button.
  *
- * @param {object} value - The current value of the search input
- * @param {function} onChange - The function to handle changes in the search input
- * @param {function} onSubmit - The function to handle form submission
- * @param {string} placeholder - The placeholder text for the search input
- * @return {JSX.Element} The search field component
+ * @param {string} props.value - Current input value.
+ * @param {Function} props.onChange - Handles input changes.
+ * @param {Function} props.onSubmit - Handles form submission.
+ * @param {string} props.placeholder - Search input placeholder.
+ * @returns {JSX.Element}
  */
 const SearchField = ({ value, onChange, onSubmit, placeholder }) => {
   return (
     <form onSubmit={onSubmit} className="search-form">
-      <button className="search-button">
+      <button type="submit" className="search-button" aria-label="Search">
         <FontAwesomeIcon icon={faMagnifyingGlass} />
       </button>
+
       <input
         type="text"
         value={value}

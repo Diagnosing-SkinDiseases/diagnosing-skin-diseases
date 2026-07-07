@@ -166,3 +166,23 @@
 .controls-wrapper {
   height: 5em;
 }
+
+/* Add Button link ver */
+.add-content-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 108px;
+  padding: 8px 18px;
+
+  border-radius: 999px;
+  text-decoration: none;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.add-content-button:hover,
+.add-content-button:focus {
+  text-decoration: none;
+}
