@@ -72,9 +72,17 @@ const Item = ({
         className="button"
       />
 
-      <Button onClick={onEdit} className="edit-button">
+      {/* <Button onClick={onEdit} className="edit-button">
         <FontAwesomeIcon icon={faPen} className="fa-edit" />
-      </Button>
+      </Button> */}
+
+      <Link
+        to={`/admin/${contentType.toLowerCase()}s/edit/${linkId}`}
+        className="edit-button"
+        aria-label={`Edit ${title}`}
+      >
+        <FontAwesomeIcon icon={faPen} className="fa-edit" />
+      </Link>
 
       <Button onClick={onDelete} className="delete-button">
         <FontAwesomeIcon icon={faTrashAlt} className="fa-trash-alt" />

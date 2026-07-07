@@ -42,6 +42,17 @@
   margin-left: 0.5rem;
 }
 
+/* Link edit button */
+.edit-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 4px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .edit-button,
 .delete-button,
 .add-content-btn {
