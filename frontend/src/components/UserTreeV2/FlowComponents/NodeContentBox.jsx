@@ -1,4 +1,5 @@
 import React from "react";
+import InternalLink from "../../Reusable/InternalLink";
 
 const NodeContentBox = ({ content, onBack, onNo, onYes, selectedNode }) => {
   const toRelativeIfAbsolute = (url = "") => {
@@ -36,14 +37,13 @@ const NodeContentBox = ({ content, onBack, onNo, onYes, selectedNode }) => {
             className="ut-tree-diagnosis-button-container"
             key={`container-${url}`}
           >
-            <a
+            <InternalLink
               className="ut-tree-diagnosis-button"
-              href={toRelativeIfAbsolute(url)}
-              target="_blank"
-              rel="noopener noreferrer"
+              key={`link-${url}`}
+              to={toRelativeIfAbsolute(url)}
             >
               {linkText}
-            </a>
+            </InternalLink>
           </div>,
         );
       } else {
