@@ -8,6 +8,11 @@
 
 .ut-content-title {
     margin-top: 0.2em;
+    font-size: 32px;
+}
+
+.ut-intro-text {
+    font-size: 24px;
 }
 
 .ut-content-main-content {
@@ -236,12 +241,13 @@
 .ut-tree-content-button {
     width: 25%;
     border: 0;
-    font-size: 1em;
+    font-size: 20px;
     color: var(--title-text);
     font-weight: 500;
     border-radius: 0.3em;
     transition: all 0.2s ease-in-out;  
-    color: #fff
+    color: #fff;
+    padding: 2px;
 }
 
 .ut-tree-content-button:hover {
@@ -274,7 +280,7 @@
 
 .ut-tree-content-text {
     color: var(--card-title);
-    font-size: 1.25em;
+    font-size: 24px;
     font-weight: 600;
 }
 
@@ -300,9 +306,11 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 10;
-    width: 3em;
+    width: 52px;
     height: 9em;
     overflow: hidden;
+
+    margin-left: -8px;
 
     display: flex;
     /* Enable flexbox */
