@@ -97,6 +97,10 @@
   color: var(--interactive-color);
   text-decoration: none;
   font-weight: 400;
+
+  display: block;
+  padding-left: 1.25em;
+  text-indent: -1.25em;
 }
 
 .article-list-intro-text {
