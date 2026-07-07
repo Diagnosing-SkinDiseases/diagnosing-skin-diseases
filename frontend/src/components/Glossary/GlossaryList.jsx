@@ -32,7 +32,7 @@ const GlossaryListPage = () => {
       (prevExpandedItems) =>
         prevExpandedItems.includes(itemId)
           ? prevExpandedItems.filter((id) => id !== itemId) // Collapse if already expanded
-          : [...prevExpandedItems, itemId] // Expand if not already expanded
+          : [...prevExpandedItems, itemId], // Expand if not already expanded
     );
   };
 
@@ -43,7 +43,7 @@ const GlossaryListPage = () => {
       .then((response) => {
         // Filter items to only include those with status "PUBLISHED"
         let publishedItems = response.data.filter(
-          (item) => item.status === "PUBLISHED"
+          (item) => item.status === "PUBLISHED",
         );
 
         // Group glossaryItems by the first letter of their term
@@ -61,7 +61,7 @@ const GlossaryListPage = () => {
             });
             return acc;
           },
-          {}
+          {},
         );
 
         if (isPreviewMode) {
@@ -70,7 +70,7 @@ const GlossaryListPage = () => {
             const previewData = JSON.parse(previewDataString);
             // Check if previewData already exists in publishedItems by id or another unique property
             const previewDataExists = publishedItems.some(
-              (item) => item.term === previewData.term
+              (item) => item.term === previewData.term,
             );
             if (!previewDataExists) {
               publishedItems = [...publishedItems, previewData];
@@ -89,18 +89,18 @@ const GlossaryListPage = () => {
         setIsLoading(false);
       })
       .catch((error) =>
-        console.error("Error fetching glossary items: ", error)
+        console.error("Error fetching glossary items: ", error),
       );
   }, []);
 
   // Toggle selection state of an item
   function handleSelectItem(item) {
     const index = selectedItems.findIndex(
-      (selectedItem) => selectedItem.term === item.term
+      (selectedItem) => selectedItem.term === item.term,
     );
     if (index > -1) {
       setSelectedItems(
-        selectedItems.filter((selectedItem) => selectedItem.term !== item.term)
+        selectedItems.filter((selectedItem) => selectedItem.term !== item.term),
       );
     } else {
       setSelectedItems([...selectedItems, item]);
@@ -110,7 +110,7 @@ const GlossaryListPage = () => {
   // Calculate total content count
   const totalContent = Object.values(glossaryItems).reduce(
     (acc, items) => acc + items.length,
-    0
+    0,
   );
   const columnTarget = Math.floor((totalContent / 3) * 0.8);
 
@@ -159,7 +159,7 @@ const GlossaryListPage = () => {
     const filteredGlossaryItems = Object.keys(originalGlossaryItems).reduce(
       (acc, letter) => {
         const matchingItems = originalGlossaryItems[letter].filter(
-          (item) => item.term.toLowerCase().includes(lowerCaseSearchTerm) // Case-insensitive match
+          (item) => item.term.toLowerCase().includes(lowerCaseSearchTerm), // Case-insensitive match
         );
 
         if (matchingItems.length > 0) {
@@ -168,7 +168,7 @@ const GlossaryListPage = () => {
 
         return acc;
       },
-      {}
+      {},
     );
 
     setGlossaryItems(filteredGlossaryItems);
@@ -190,7 +190,7 @@ const GlossaryListPage = () => {
     const filteredGlossaryItems = Object.keys(originalGlossaryItems).reduce(
       (acc, letter) => {
         const matchingItems = originalGlossaryItems[letter].filter(
-          (item) => item.term.toLowerCase().includes(lowerCaseSearchTerm) // Case-insensitive match
+          (item) => item.term.toLowerCase().includes(lowerCaseSearchTerm), // Case-insensitive match
         );
 
         if (matchingItems.length > 0) {
@@ -199,7 +199,7 @@ const GlossaryListPage = () => {
 
         return acc;
       },
-      {}
+      {},
     );
 
     setGlossaryItems(filteredGlossaryItems);
@@ -213,7 +213,7 @@ const GlossaryListPage = () => {
           <h1 className="glossary-list-title">Glossary</h1>
 
           {/* Introduction */}
-          <p className="homepage-intro-text">
+          <p className="glossary-list-intro-text">
             This glossary has the medical definitions for all the material in
             this program.
           </p>

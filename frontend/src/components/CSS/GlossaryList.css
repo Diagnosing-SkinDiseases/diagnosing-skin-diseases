@@ -7,7 +7,7 @@
 }
 
 .glossary-list-title {
-    font-size: 2rem;
+    font-size: 32px;
     color: var(--title-text);
     font-weight: 500;
 }
@@ -18,7 +18,9 @@
     display: flex;
     align-items: center;
     justify-content: start;
-    border-bottom: 1px solid lightgray
+    border-bottom: 1px solid lightgray;
+
+    font-size: 24px;
 }
 
 .glossary-list-jump-section span {
@@ -110,6 +112,7 @@
 
 .glossary-list-intro-text {
     width: 70%;
+    font-size: 24px;
 }
 
 /* Search Bar */
@@ -118,7 +121,9 @@
     display: flex;
     justify-content: center;
     padding: 20px 0;
-    margin-left: 1em
+    margin-left: 1em;
+
+    font-size: 16px;
 }
 
 .glossary-list-search-input {
@@ -164,7 +169,12 @@
     font-size: 1.25em;
 }
 
+.glossary-list-section-item-content {
+    font-size: 24px;
+}
+
 .expanded > .glossary-list-section-item-content > .glossary-list-section-item-term {
     font-weight: bold;
+    font-size: 24px;
 }
 

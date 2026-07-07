@@ -54,6 +54,8 @@
   padding-bottom: 5px;
   border-radius: 10px;
   transition-duration: 0.4s;
+
+  font-size: 24px;
 }
 
 .homepage-button:hover {
@@ -85,7 +87,7 @@
 .card-link {
   color: var(--card-title);
   margin-bottom: 0;
-  font-size: 1em;
+  font-size: 16px;
 }
 
 .card {
@@ -142,11 +144,11 @@
 
 @media (max-height: 1024px) {
   .homepage-text {
-    font-size: 1.3em;
+    font-size: 32px;
   }
   .intro-text, 
   .card-title {
-    font-size: 0.9em;
+    font-size: 24px;
   }
 }
 
@@ -155,5 +157,6 @@
   margin-right: 0.2em;
   margin-top: 0.5em;
   margin-bottom: 1em;
-  font-size: 1em;
+
+  font-size: 24px;
 }
