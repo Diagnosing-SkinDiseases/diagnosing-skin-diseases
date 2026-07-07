@@ -4,46 +4,57 @@ import { parseData, generateSummary } from "./articleComponentController";
 import ArticleContentType from "./enums";
 
 /**
- * ArticleContent component renders the content of an article, including the title, summary, and dynamic content.
- * @param {Object} data - The data object containing the title and content of the article.
- * @param {string} data.title - The title of the article.
- * @param {Array} data.content - An array containing objects representing different types of content in the article.
- * @returns {JSX.Element} - Returns the JSX element for the article content.
+ * ArticleContent component renders the content of an article, including the
+ * title, summary, and dynamic content.
+ *
+ * @param {Object} data - The article data.
+ * @param {string} data.title - The article title.
+ * @param {Array} data.content - The article content blocks.
+ * @param {Array} overviewArticles - Overview article navigation data.
+ * @param {string} errorMsg - Error message to display.
+ * @returns {JSX.Element}
  */
 const ArticleContent = ({
   data: { title, content },
   overviewArticles,
   errorMsg,
 }) => {
-  // Get hash value from URL location
   const { hash } = useLocation();
+
   const firstH1Index = content.findIndex(
     (item) => item.type === ArticleContentType.HEADER1,
   );
+
   const [selectedImage, setSelectedImage] = useState(null);
 
   /**
    * Handles hash navigation within the article.
-   * @param {string} hash - The current hash value from the URL, to identify the target section.
    */
   useEffect(() => {
-    if (hash) {
-      // Wait for the dynamic content to render
-      setTimeout(() => {
-        const id = hash.replace("#", "");
-        const element = document.getElementById(id);
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth" });
-        }
-      }, 0);
-    }
+    if (!hash) return;
+
+    const timeoutId = setTimeout(() => {
+      const id = decodeURIComponent(hash.replace("#", ""));
+      const element = document.getElementById(id);
+
+      if (element) {
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+    }, 0);
+
+    return () => clearTimeout(timeoutId);
   }, [hash, content]);
 
-  // To calculate summary container heigh and scroll margin top
+  // Calculate summary container height and update the scroll margin.
   useEffect(() => {
-    const headerOffsetEl = document.querySelector(".summary-container");
-    if (headerOffsetEl) {
-      const height = headerOffsetEl.offsetHeight + 120;
+    const headerOffsetElement = document.querySelector(".summary-container");
+
+    if (headerOffsetElement) {
+      const height = headerOffsetElement.offsetHeight + 120;
+
       document.documentElement.style.setProperty(
         "--dynamic-scroll-margin",
         `${height}px`,
@@ -54,6 +65,7 @@ const ArticleContent = ({
   const toRelativeUrl = (url = "") => {
     try {
       const parsedUrl = new URL(url);
+
       return `${parsedUrl.pathname}${parsedUrl.search}${parsedUrl.hash}`;
     } catch {
       return url;
@@ -63,18 +75,17 @@ const ArticleContent = ({
   return (
     <>
       {errorMsg ? (
-        // Display error message if available
         <div className="container px-5">
           <div className="container mt-4 article-title text-center">
             <h1>Not Found</h1>
             <hr />
           </div>
+
           <div className="container summary text-center">
             <p className="error-info-message">{errorMsg}</p>
           </div>
         </div>
       ) : (
-        // Display article content if no error message
         <div className="container px-5">
           {/* Title */}
           <div className="container mt-4 article-title text-center">
@@ -88,45 +99,50 @@ const ArticleContent = ({
 
           {/* Article */}
           <div className="container p-4 pt-0">
-            {/* Dynamic Content */}
             {content.map((item, index) =>
               parseData(item, index, firstH1Index, setSelectedImage),
             )}
           </div>
 
-          {/* Tree Links */}
+          {/* Tree links */}
           {(() => {
             const treeLinkBlock = content.find(
-              (c) => c.type === ArticleContentType.TREELINKINPUT,
+              (item) => item.type === ArticleContentType.TREELINKINPUT,
             );
 
             let treeLinks = [];
+
             try {
-              treeLinks = JSON.parse(treeLinkBlock?.content || "[]");
+              const parsedTreeLinks = JSON.parse(
+                treeLinkBlock?.content || "[]",
+              );
+
+              treeLinks = Array.isArray(parsedTreeLinks) ? parsedTreeLinks : [];
             } catch {
               treeLinks = [];
             }
 
             return (
               <div className="tree-link-group">
-                {treeLinks.map((item, i) => (
+                {treeLinks.map((item, index) => (
                   <a
-                    key={i}
-                    href={toRelativeUrl(item.link) || item.link}
+                    key={item.link || index}
+                    href={toRelativeUrl(item.link)}
                     className="article-nav-button article-cta"
                   >
-                    {"Start Diagnosis" || item.link}
+                    Start Diagnosis
                   </a>
                 ))}
               </div>
             );
           })()}
 
-          {/* Img Modal */}
+          {/* Image modal */}
           {selectedImage && (
             <div
               className="image-modal-overlay"
               onClick={() => setSelectedImage(null)}
+              role="presentation"
             >
               <img
                 src={selectedImage}

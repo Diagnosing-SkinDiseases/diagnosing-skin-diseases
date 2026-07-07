@@ -6,6 +6,7 @@ import {
 } from "../../apiControllers/articleApiController";
 import "../CSS/ArticleList.css";
 import dData from "./articleListDummyData.json";
+import InternalLink from "../Reusable/InternalLink";
 
 const dummyData = dData;
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -202,13 +203,13 @@ const ArticleListPage = () => {
 
       <div className="article-list-content article-list-overview-mod">
         {overviewArticles.map((article) => (
-          <Link
+          <InternalLink
             key={article._id}
             to={article.url}
             className="article-list-section-item"
           >
             {article.title}
-          </Link>
+          </InternalLink>
         ))}
       </div>
 
@@ -270,14 +271,14 @@ const ArticleListPage = () => {
                 <ul>
                   {items.map((item, index) => (
                     <li key={index}>
-                      <Link
+                      <InternalLink
                         to={`/articles/${item.title
                           .toLowerCase()
                           .replace(/ /g, "-")}/${item._id}`}
                         className="article-list-section-item"
                       >
                         {item.title}
-                      </Link>
+                      </InternalLink>
                     </li>
                   ))}
                 </ul>
