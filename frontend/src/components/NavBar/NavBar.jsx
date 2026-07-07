@@ -232,27 +232,35 @@ const NavBarComponent = () => {
       <Link className="nav-logo-container" to="/">
         <img className="nav-logo" src={DSD} alt="DSD Logo" />
       </Link>
+
       {links.map((link, index) => {
+        const hasDropdown = link.subTabs.length > 0;
+
         return (
           <div
-            key={index}
+            key={link.name || index}
             className={`nav-item ${
-              link.subTabs.length > 0 ? "has-dropdown" : ""
-            }${link.path === "/" ? "navbar-tree-meta" : ""} ${
+              hasDropdown ? "has-dropdown" : ""
+            } ${link.path === "/" ? "navbar-tree-meta" : ""} ${
               isActiveLink(link.path) ? "nav-active" : ""
             } ${activeLink === link.name ? "nav-hover" : ""}`}
             onMouseEnter={() => setActiveLink(link.name)}
             onMouseLeave={() => setActiveLink("")}
           >
-            <div
-              onClick={() =>
-                handleClick(link.path, link.subTabs.length > 0, link.name)
-              }
-              className={`d-flex align-items-center justify-content-center nav-link`}
+            <Link
+              to={link.path}
+              className="d-flex align-items-center justify-content-center nav-link"
+              onClick={(event) => {
+                if (hasDropdown) {
+                  event.preventDefault();
+                  handleClick(link.path, true, link.name);
+                }
+              }}
             >
-              <p className="navbar-link-text">{link.name} </p>
-            </div>
-            {link.subTabs.length > 0 && (
+              <p className="navbar-link-text">{link.name}</p>
+            </Link>
+
+            {hasDropdown && (
               <NavSubtab
                 show={activeLink === link.name}
                 titles={link.subTabs}
