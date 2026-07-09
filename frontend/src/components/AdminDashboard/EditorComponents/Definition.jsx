@@ -1,29 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useLocation, useParams } from "react-router-dom";
 import labels from "../labels.json";
 import "../../CSS/Admin/Editor.css";
 import { apiGetGlossaryItem } from "../../../apiControllers/glossaryItemApiController";
 
-/** 
-* The Definition is a component to view and edit a glossary term and its definition.
-*
-* Props:
-*   - onUpdate (function): A callback function that is called with the updated title and definition.
-*
-* State:
-*   - title (string): The term of the glossary.
-*   - paragraph (string): The definition of the glossary term.
-*
-* @param {Function} props.onUpdate - Callback function to be called with updated title and definition.
-* @returns {JSX.Element} The rendered component.
-*/
-const Definition = ({ onUpdate}) => {
-  const location = useLocation(); // Get the location state
-  const definition = location.state?.id; // Access the item passed in the state, if any
+/**
+ * The Definition is a component to view and edit a glossary term and its definition.
+ *
+ * Props:
+ *   - onUpdate (function): A callback function that is called with the updated title and definition.
+ *
+ * State:
+ *   - title (string): The term of the glossary.
+ *   - paragraph (string): The definition of the glossary term.
+ *
+ * @param {Function} props.onUpdate - Callback function to be called with updated title and definition.
+ * @returns {JSX.Element} The rendered component.
+ */
+const Definition = ({ onUpdate }) => {
+  const location = useLocation();
+  const { id: paramId } = useParams();
+
+  const definition = location.state?.id || paramId;
 
   // State hooks for title and paragraph
-  const [title, setTitle] = useState('');
-  const [paragraph, setParagraph] = useState('');
+  const [title, setTitle] = useState("");
+  const [paragraph, setParagraph] = useState("");
 
   /**
    * useEffect hook to fetch a glossary item from the backend when the component mounts
@@ -32,15 +34,16 @@ const Definition = ({ onUpdate}) => {
   useEffect(() => {
     if (definition) {
       // fetch using getDefinition(id)
-      apiGetGlossaryItem(definition).then((response) => {
-        const fetchedTitle = response.data.term;
-        const fetchedParagraph = response.data.definition;
-        setTitle(fetchedTitle);
-        setParagraph(fetchedParagraph);
-        onUpdate(fetchedTitle, fetchedParagraph);
-      })
+      apiGetGlossaryItem(definition)
+        .then((response) => {
+          const fetchedTitle = response.data.term;
+          const fetchedParagraph = response.data.definition;
+          setTitle(fetchedTitle);
+          setParagraph(fetchedParagraph);
+          onUpdate(fetchedTitle, fetchedParagraph);
+        })
         .catch((error) => {
-          console.error('Error fetching definition:', error);
+          console.error("Error fetching definition:", error);
         });
     }
   }, [definition]);
@@ -73,10 +76,9 @@ const Definition = ({ onUpdate}) => {
    * @param {object} e The event object
    */
   const handleInput = (e) => {
-    e.target.style.height = 'inherit';
+    e.target.style.height = "inherit";
     e.target.style.height = `${e.target.scrollHeight}px`;
   };
-
 
   /**
    * @return The definition component.
@@ -85,7 +87,9 @@ const Definition = ({ onUpdate}) => {
   return (
     <div className="definition">
       <div className="input-group">
-        <label htmlFor="definition-title"  className="label">{labels.definitionLabels.title}</label>
+        <label htmlFor="definition-title" className="label">
+          {labels.definitionLabels.title}
+        </label>
         <input
           id="definition-title"
           type="text"
@@ -94,7 +98,9 @@ const Definition = ({ onUpdate}) => {
         />
       </div>
       <div className="input-group content">
-        <label htmlFor="definition-paragraph" className="label">{labels.definitionLabels.definition}</label>
+        <label htmlFor="definition-paragraph" className="label">
+          {labels.definitionLabels.definition}
+        </label>
         <textarea
           id="definition-paragraph"
           value={paragraph}
@@ -105,7 +111,6 @@ const Definition = ({ onUpdate}) => {
       </div>
     </div>
   );
-
 };
 
-export default Definition; 
+export default Definition;

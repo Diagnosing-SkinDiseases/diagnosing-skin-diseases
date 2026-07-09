@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import ArticleContentType from "../enums/ArticleContentType";
 import ContentInput from "./ContentInput";
 import ImageInput from "./ImageInput";
@@ -137,11 +137,13 @@ const Article = ({ onUpdate }) => {
   ]);
 
   const location = useLocation();
-  const article = location.state?.id;
+  const { id: paramId } = useParams();
+
+  const article = location.state?.id || paramId;
   const [selectedContent, setSelectedContent] = useState(null);
 
   const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
   );
 
   const toTitleCase = (str) =>
@@ -168,7 +170,7 @@ const Article = ({ onUpdate }) => {
   const ensureTreeLinkBlock = (blocks) => {
     // Find any TreeLinkInput regardless of casing
     const existingIndex = blocks.findIndex(
-      (b) => b.type && b.type.toLowerCase() === "treelinkinput"
+      (b) => b.type && b.type.toLowerCase() === "treelinkinput",
     );
 
     // CASE 1 — No TreeLinkInput exists at all
@@ -214,7 +216,7 @@ const Article = ({ onUpdate }) => {
 
   const updateContentBlock = (index, type, value) => {
     const updated = contentBlocks.map((b, i) =>
-      i === index ? { ...b, type, value } : b
+      i === index ? { ...b, type, value } : b,
     );
     setContentBlocks(updated);
     onUpdate(updated);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import EditorButtons from "./EditorComponents/EditorButtons";
 import ContentTypeEnum from "./enums/ContentTypeEnum";
 import Definition from "./EditorComponents/Definition";
@@ -103,7 +103,7 @@ const ContentEditor = ({ contentType }) => {
         });
         // Remove empty blocks that are not titles
         const sanitizedContent = trimmedBlocks.filter(
-          (block) => block.type === "Title" || block.value !== ""
+          (block) => block.type === "Title" || block.value !== "",
         ); // Keep title blocks and non-empty blocks
         setArticleContent(sanitizedContent);
         updatedContent = sanitizedContent;
@@ -294,7 +294,7 @@ const ContentEditor = ({ contentType }) => {
 
         // Filter out empty content blocks
         parsedArticle.content = parsedArticle.content.filter(
-          (block) => block.content.trim() !== ""
+          (block) => block.content.trim() !== "",
         );
 
         createPromise = apiCreateArticle(parsedArticle);
