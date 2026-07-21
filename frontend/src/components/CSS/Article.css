@@ -119,14 +119,23 @@
   position: sticky;
   top: var(--nav-height);
   z-index: 100;
-  background: white;
+  isolation: isolate;
   margin-bottom: 15px;
-
   padding-left: 20px;
   padding-right: 20px;
-  background-color: #F7F2EE;
-  border-radius: 20px;
-  /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); */
+}
+
+/* Full-width background layer */
+.summary-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  background-color: #f7f2ee;
+  z-index: -1;
 }
 
 .summary-container > div > ul  > li > a, .summary-container > div > ul {
