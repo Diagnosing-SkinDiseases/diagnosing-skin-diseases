@@ -4,6 +4,28 @@ import VideoComponent from "./VideoComponent";
 import styles from "./styles";
 
 import DOMPurify from "dompurify";
+import InternalLink from "../Reusable/InternalLink";
+
+import parse, { domToReact } from "html-react-parser";
+
+const isInternalUrl = (url = "") => {
+  try {
+    const parsed = new URL(url, window.location.origin);
+    return parsed.origin === window.location.origin;
+  } catch {
+    return false;
+  }
+};
+
+const toRelativeUrl = (url = "") => {
+  try {
+    const parsed = new URL(url, window.location.origin);
+
+    return `${parsed.pathname}${parsed.search}${parsed.hash}`;
+  } catch {
+    return url;
+  }
+};
 
 // Allow only what you need for paragraphs
 const SANITIZE_CFG = {
@@ -93,27 +115,57 @@ const parseData = (
     case ArticleContentType.PARAGRAPH: {
       let html = content;
 
-      // Only do newline-><br> for plain text
       const hasTags = /<\s*[a-zA-Z]/.test(html);
-      if (!hasTags) html = html.replace(/\n/g, "<br>");
 
-      // Optional: upgrade bare <a> to safe link before sanitize, but the hook handles it.
-      // html = html.replace(/<a\s+href="(.*?)">(.*?)<\/a>/g,
-      //   '<a href="$1" target="_blank" rel="noopener noreferrer">$2</a>');
+      if (!hasTags) {
+        html = html.replace(/\n/g, "<br>");
+      }
 
       const clean = sanitize(html);
 
-      // If the (sanitized) HTML contains block tags, don't wrap in <p>
       const hasBlock =
         /<(p|div|ul|ol|li|h[1-6]|blockquote|pre|table|hr)\b/i.test(clean);
+
       const Wrapper = hasBlock ? "div" : "p";
 
+      const parsedContent = parse(clean, {
+        replace: (node) => {
+          if (node.name !== "a") return undefined;
+
+          const href = node.attribs?.href;
+
+          if (!href) return undefined;
+
+          const children = domToReact(node.children);
+
+          if (isInternalUrl(href)) {
+            return (
+              <InternalLink
+                to={toRelativeUrl(href)}
+                className={node.attribs?.class}
+              >
+                {children}
+              </InternalLink>
+            );
+          }
+
+          return (
+            <a
+              href={href}
+              className={node.attribs?.class}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {children}
+            </a>
+          );
+        },
+      });
+
       return (
-        <Wrapper
-          className="art-p"
-          key={index}
-          dangerouslySetInnerHTML={{ __html: clean }}
-        />
+        <Wrapper className="art-p" key={index}>
+          {parsedContent}
+        </Wrapper>
       );
     }
     case ArticleContentType.IMAGE:
@@ -210,9 +262,9 @@ const generateSummary = (content = [], overviewArticles = []) => {
 
           {overviewArticles.map((article, index) => (
             <li key={`overview-${article._id || index}`}>
-              <a href={article.url} className="summary-link">
+              <InternalLink to={article.url} className="summary-link">
                 {article.title}
-              </a>
+              </InternalLink>
             </li>
           ))}
         </ul>

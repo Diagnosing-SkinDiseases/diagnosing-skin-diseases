@@ -17,8 +17,25 @@ const ArticleBG = ({ data, errorMsg, overviewArticles }) => {
 
   const hideButton = routerLocation.pathname.includes("/about");
 
-  const previousUrl = routerLocation.state?.internalPrevious;
-  const showPreviousButton = Boolean(previousUrl);
+  const internalHistory = Array.isArray(routerLocation.state?.internalHistory)
+    ? routerLocation.state.internalHistory
+    : [];
+
+  const showPreviousButton = internalHistory.length > 0;
+
+  const handlePrevious = () => {
+    if (internalHistory.length === 0) return;
+
+    const previousUrl = internalHistory[internalHistory.length - 1];
+    const remainingHistory = internalHistory.slice(0, -1);
+
+    navigate(previousUrl, {
+      state: {
+        internalHistory: remainingHistory,
+        internalPrevious: remainingHistory[remainingHistory.length - 1] || null,
+      },
+    });
+  };
 
   return (
     <div className="container pb-5 mt-5">
@@ -37,7 +54,7 @@ const ArticleBG = ({ data, errorMsg, overviewArticles }) => {
             <button
               type="button"
               className="article-nav-secondary article-previous-button"
-              onClick={() => navigate(previousUrl)}
+              onClick={handlePrevious}
             >
               Previous
             </button>

@@ -5,7 +5,13 @@ const InternalLink = ({ to, state = {}, children, target, ...props }) => {
 
   const isNewTab = target === "_blank";
 
-  const previousPath = `${location.pathname}${location.search}${location.hash}`;
+  const currentPath = `${location.pathname}${location.search}${location.hash}`;
+
+  const existingHistory = Array.isArray(location.state?.internalHistory)
+    ? location.state.internalHistory
+    : [];
+
+  const nextHistory = [...existingHistory, currentPath];
 
   return (
     <Link
@@ -16,7 +22,8 @@ const InternalLink = ({ to, state = {}, children, target, ...props }) => {
           ? state
           : {
               ...state,
-              internalPrevious: previousPath,
+              internalPrevious: currentPath,
+              internalHistory: nextHistory,
             }
       }
       {...props}

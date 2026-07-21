@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { apiGetAllTrees } from "../../apiControllers/treeApiController";
 import "../CSS/Homepage.css";
 import LoadingPage from "../Loading/LoadingPage";
+import InternalLink from "../Reusable/InternalLink";
 
 /**
  * Card Component
@@ -40,14 +41,12 @@ const Card = ({ title, image, aboutLink, previewText, treeId }) => {
             {stripHtml(previewText) ||
               "This is a brief description of the diagnostic tree. It provides..."}
 
-            <a
+            <InternalLink
               className="card-link"
-              href={toRelativeUrl(aboutLink) || aboutLink}
-              target="_self"
-              rel="noopener noreferrer"
+              to={toRelativeUrl(aboutLink) || aboutLink}
             >
               Overview
-            </a>
+            </InternalLink>
           </p>
           <button
             className="homepage-button"
