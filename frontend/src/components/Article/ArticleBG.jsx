@@ -38,7 +38,7 @@ const ArticleBG = ({ data, errorMsg, overviewArticles }) => {
   };
 
   return (
-    <div className="container pb-5 mt-5">
+    <div className="container pb-5 mt-5 article-layout-container">
       <div className="row justify-content-center article-container">
         <ArticleContent
           data={data}

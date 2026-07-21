@@ -193,5 +193,6 @@ html {
 }
 
 .content-container {
-  padding-bottom: 50px
+  padding-bottom: 50px;
+  overflow-x: clip;
 }

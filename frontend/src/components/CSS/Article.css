@@ -136,6 +136,7 @@
   transform: translateX(-50%);
   background-color: #f7f2ee;
   z-index: -1;
+  
 }
 
 .summary-container > div > ul  > li > a, .summary-container > div > ul {
