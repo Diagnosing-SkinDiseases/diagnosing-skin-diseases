@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
-import ReCAPTCHA from 'react-google-recaptcha';
-import '../CSS/ContactForm.css';
-import strings from '../strings.json'
-import { contactFormController } from "../../apiControllers/contactApiController"; 
+import React, { useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
+import "../CSS/ContactForm.css";
+import strings from "../strings.json";
+import { contactFormController } from "../../apiControllers/contactApiController";
 
 const ContactForm = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [captchaToken, setCaptchaToken] = useState(null);
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+
   // Error states
-  const [nameError, setNameError] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [messageError, setMessageError] = useState('');
-  const [captchaError, setCaptchaError] = useState('');
-  const [formError, setFormError] = useState(''); 
+  const [nameError, setNameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [messageError, setMessageError] = useState("");
+  const [captchaError, setCaptchaError] = useState("");
+  const [formError, setFormError] = useState("");
 
   // Utility functions
   const sanitizeInput = (input) => input.trim();
@@ -31,22 +31,22 @@ const ContactForm = () => {
   // Error Reset Handlers
   const handleNameChange = (e) => {
     setName(e.target.value);
-    if (nameError) setNameError(''); 
+    if (nameError) setNameError("");
   };
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
-    if (emailError) setEmailError(''); 
+    if (emailError) setEmailError("");
   };
 
   const handleMessageChange = (e) => {
     setMessage(e.target.value);
-    if (messageError) setMessageError(''); 
+    if (messageError) setMessageError("");
   };
 
   const handleCaptchaChange = (token) => {
     setCaptchaToken(token);
-    setCaptchaError(''); 
+    setCaptchaError("");
   };
 
   // Validation Function
@@ -54,11 +54,11 @@ const ContactForm = () => {
     let isValid = true;
 
     // Reset error messages
-    setNameError('');
-    setEmailError('');
-    setMessageError('');
-    setCaptchaError('');
-    setFormError('');
+    setNameError("");
+    setEmailError("");
+    setMessageError("");
+    setCaptchaError("");
+    setFormError("");
 
     if (!sanitizeInput(name)) {
       setNameError(strings.ContactForm.nameError);
@@ -90,8 +90,8 @@ const ContactForm = () => {
 
     // Check if captcha token is missing or expired and trigger a new one if necessary
     if (!captchaToken) {
-        setCaptchaError(strings.captchaError);
-        return;
+      setCaptchaError(strings.captchaError);
+      return;
     }
 
     setLoading(true); // Show loader
@@ -106,13 +106,13 @@ const ContactForm = () => {
       const contactResponse = await contactFormController(formData);
       if (contactResponse.status === 200) {
         setFormSubmitted(true);
-        setFormError(''); // Reset error message on success
+        setFormError(""); // Reset error message on success
       } else {
-        console.error('Failed to submit contact form:', contactResponse);
+        console.error("Failed to submit contact form:", contactResponse);
         setFormError(strings.ContactForm.submissionError);
       }
     } catch (error) {
-      console.error('Form submission error:', error);
+      console.error("Form submission error:", error);
       setFormError(strings.ContactForm.genericError);
     } finally {
       setLoading(false);
@@ -126,15 +126,17 @@ const ContactForm = () => {
         <div className="container px-5 contact-form">
           <h1>{strings.ContactForm.contactUs}</h1>
           {formSubmitted ? (
-            <p className='result'>{strings.ContactForm.thankYouMessage}</p>
+            <p className="result">{strings.ContactForm.thankYouMessage}</p>
           ) : (
             <>
               {formError && <p className="error-text result">{formError}</p>}
               <form onSubmit={handleSubmit} noValidate>
                 {/* name */}
-                <label className='contact-form-label' htmlFor="name">{strings.ContactForm.nameLabel}</label>
+                <label className="contact-form-label" htmlFor="name">
+                  {strings.ContactForm.nameLabel}
+                </label>
                 <input
-                  className='contact-form-input'
+                  className="contact-form-input"
                   type="text"
                   id="name"
                   name="name"
@@ -145,9 +147,11 @@ const ContactForm = () => {
                 {nameError && <p className="error-text">{nameError}</p>}
 
                 {/* email */}
-                <label className='contact-form-label' htmlFor="email">{strings.ContactForm.emailLabel}</label>
+                <label className="contact-form-label" htmlFor="email">
+                  {strings.ContactForm.emailLabel}
+                </label>
                 <input
-                  className='contact-form-input'
+                  className="contact-form-input"
                   type="email"
                   id="email"
                   name="email"
@@ -158,9 +162,11 @@ const ContactForm = () => {
                 {emailError && <p className="error-text">{emailError}</p>}
 
                 {/* message */}
-                <label className='contact-form-label' htmlFor="message">{strings.ContactForm.messageLabel}</label>
+                <label className="contact-form-label" htmlFor="message">
+                  {strings.ContactForm.messageLabel}
+                </label>
                 <textarea
-                  className='contact-form-textarea'
+                  className="contact-form-textarea"
                   id="message"
                   name="message"
                   rows="5"
@@ -172,14 +178,16 @@ const ContactForm = () => {
 
                 {/* reCAPTCHA */}
                 <ReCAPTCHA
-                  className='contact-form-recaptcha'
+                  className="contact-form-recaptcha"
                   sitekey={process.env.REACT_APP_RECAPTCHA_KEY}
                   onChange={handleCaptchaChange}
                 />
                 {captchaError && <p className="error-text">{captchaError}</p>}
 
                 <button type="submit" disabled={loading || !captchaToken}>
-                  {loading ? strings.ContactForm.loadingText : strings.ContactForm.submitText}
+                  {loading
+                    ? strings.ContactForm.loadingText
+                    : strings.ContactForm.submitText}
                 </button>
               </form>
             </>
