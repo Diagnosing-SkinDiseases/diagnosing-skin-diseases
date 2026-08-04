@@ -139,6 +139,10 @@
   
 }
 
+.summary-container:has(.overview-list)::before {
+  background-color: #e7f9dd;
+}
+
 .summary-container > div > ul  > li > a, .summary-container > div > ul {
     font-size: 22px;
 }
