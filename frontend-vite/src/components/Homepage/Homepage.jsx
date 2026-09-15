@@ -125,13 +125,13 @@ function Homepage() {
 
   // Function to set the image height to 50% of the card's height
   const adjustCardImages = () => {
-    const cards = document.querySelectorAll(".card");
-    cards.forEach((card) => {
-      const img = card.querySelector(".card-img-top");
-      if (img) {
-        img.style.height = `${card.offsetHeight * 0.5}px`;
-      }
-    });
+    // const cards = document.querySelectorAll(".card");
+    // cards.forEach((card) => {
+    //   const img = card.querySelector(".card-img-top");
+    //   if (img) {
+    //     img.style.height = `${card.offsetHeight * 0.5}px`;
+    //   }
+    // });
   };
 
   useEffect(() => {
