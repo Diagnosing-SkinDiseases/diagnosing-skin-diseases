@@ -19,7 +19,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.3.0",
     "mongoose": "^8.9.5",
-    "nodemailer": "^7.0.9",
+    "nodemailer": "^10.0.10",
     "qrcode": "^1.5.4",
     "speakeasy": "^2.0.0"
   }
