@@ -3,6 +3,11 @@
 /frontend/.env
 /frontend/build/
 
+# Frontend vite
+/frontend-vite/node_modules
+/frontend-vite/.env
+/frontend-vite/build
+
 # Backend
 /backend/node_modules/
 /backend/.env
