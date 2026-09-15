@@ -1,0 +1,332 @@
+import React from "react";
+import ArticleContentType from "./enums";
+import VideoComponent from "./VideoComponent";
+import styles from "./styles";
+
+import DOMPurify from "dompurify";
+import InternalLink from "../Reusable/InternalLink";
+
+import parse, { domToReact } from "html-react-parser";
+
+const isInternalUrl = (url = "") => {
+  try {
+    const parsed = new URL(url, window.location.origin);
+    return parsed.origin === window.location.origin;
+  } catch {
+    return false;
+  }
+};
+
+const toRelativeUrl = (url = "") => {
+  try {
+    const parsed = new URL(url, window.location.origin);
+
+    return `${parsed.pathname}${parsed.search}${parsed.hash}`;
+  } catch {
+    return url;
+  }
+};
+
+// Allow only what you need for paragraphs
+const SANITIZE_CFG = {
+  ALLOWED_TAGS: [
+    "p",
+    "br",
+    "strong",
+    "b",
+    "em",
+    "i",
+    "u",
+    "a",
+    "ul",
+    "ol",
+    "li",
+    "blockquote",
+    "code",
+    "pre",
+    "span",
+  ],
+  ALLOWED_ATTR: ["href", "target", "rel", "title", "class"],
+};
+
+// Add the safe-link hook once (avoid stacking in HMR)
+if (typeof window !== "undefined" && !window.__DP_HOOK_ADDED__) {
+  DOMPurify.addHook("afterSanitizeAttributes", (node) => {
+    if (node.nodeName === "A") {
+      const href = node.getAttribute("href") || "";
+      // Kill javascript: etc. (DOMPurify already blocks, this is extra belt)
+      if (!/^https?:\/\//i.test(href) && !href.startsWith("#")) {
+        node.removeAttribute("href");
+      }
+      if (!node.getAttribute("target")) node.setAttribute("target", "_blank");
+      node.setAttribute("rel", "noopener noreferrer");
+    }
+  });
+  window.__DP_HOOK_ADDED__ = true;
+}
+
+function sanitize(html) {
+  return DOMPurify.sanitize(html, SANITIZE_CFG);
+}
+
+const toSlug = (text) =>
+  text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "") // remove special chars
+    .replace(/\s+/g, "-");
+
+/**
+ * parseData function parses the article content based on its type.
+ * @param {Object} data - The data object containing type and content of the article element.
+ * @param {number} index - The index of the article element.
+ * @returns {JSX.Element|null} - Returns the JSX element corresponding to the parsed article element, or null if no match.
+ */
+const parseData = (
+  { type, content },
+  index,
+  firstH1Index,
+  setSelectedImage,
+) => {
+  switch (type) {
+    case ArticleContentType.HEADER1: {
+      const normalized = toSlug(content);
+
+      return (
+        <div key={index} id={normalized} className="art-h1">
+          {index !== firstH1Index && <hr className="art-hr" />}
+          <h2>{content}</h2>
+        </div>
+      );
+    }
+    case ArticleContentType.HEADER2:
+      return (
+        <div key={index} id={content}>
+          <h2 className="art-h2">{content}</h2>
+        </div>
+      );
+    case ArticleContentType.SUBTYPE:
+      return (
+        <div key={index} id={content} className="art-subtype">
+          <hr className="art-hr" />
+          <h1>{content}</h1>
+        </div>
+      );
+    case ArticleContentType.PARAGRAPH: {
+      let html = content;
+
+      const hasTags = /<\s*[a-zA-Z]/.test(html);
+
+      if (!hasTags) {
+        html = html.replace(/\n/g, "<br>");
+      }
+
+      const clean = sanitize(html);
+
+      const hasBlock =
+        /<(p|div|ul|ol|li|h[1-6]|blockquote|pre|table|hr)\b/i.test(clean);
+
+      const Wrapper = hasBlock ? "div" : "p";
+
+      const parsedContent = parse(clean, {
+        replace: (node) => {
+          if (node.name !== "a") return undefined;
+
+          const href = node.attribs?.href;
+
+          if (!href) return undefined;
+
+          const children = domToReact(node.children);
+
+          if (isInternalUrl(href)) {
+            return (
+              <InternalLink
+                to={toRelativeUrl(href)}
+                className={node.attribs?.class}
+              >
+                {children}
+              </InternalLink>
+            );
+          }
+
+          return (
+            <a
+              href={href}
+              className={node.attribs?.class}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {children}
+            </a>
+          );
+        },
+      });
+
+      return (
+        <Wrapper className="art-p" key={index}>
+          {parsedContent}
+        </Wrapper>
+      );
+    }
+    case ArticleContentType.IMAGE:
+      return (
+        <div key={index} className="container">
+          <img
+            src={content}
+            alt="Converted"
+            className="d-block mx-auto"
+            style={{ cursor: "pointer", maxWidth: "100%" }}
+            onClick={() => setSelectedImage(content)}
+          />
+        </div>
+      );
+    case ArticleContentType.VIDEO:
+      // Function to extract YouTube video ID from URL
+
+      function extractVimeoIframeSrc(input) {
+        // If they pasted just a URL, accept it directly.
+        try {
+          const u = new URL(input.trim());
+          if (u.hostname.includes("vimeo.com")) return u.toString();
+        } catch {}
+
+        // Prefer DOM parsing (browser)
+        if (typeof window !== "undefined" && "DOMParser" in window) {
+          const doc = new DOMParser().parseFromString(
+            String(input),
+            "text/html",
+          );
+          const iframe = doc.querySelector('iframe[src*="vimeo.com"]');
+          if (iframe) {
+            let src = iframe.getAttribute("src") || "";
+            src = src.replace(/&amp;/g, "&").trim(); // decode entities
+            try {
+              return new URL(src, "https://player.vimeo.com").toString();
+            } catch {
+              return src;
+            }
+          }
+        }
+
+        // Fallback: regex
+        const m = String(input).match(/<iframe[^>]+src=["']([^"']+)["']/i);
+        if (m) {
+          let src = m[1].replace(/&amp;/g, "&").trim();
+          try {
+            return new URL(src, "https://player.vimeo.com").toString();
+          } catch {
+            return src;
+          }
+        }
+
+        return null; // not found
+      }
+
+      let videoSrc = extractVimeoIframeSrc(content);
+
+      return <VideoComponent key={index} videoSrc={videoSrc}></VideoComponent>;
+    case ArticleContentType.SUBTITLE:
+      return (
+        <p key={index} style={styles.subtitle}>
+          {content}
+        </p>
+      );
+    default:
+      return null;
+  }
+};
+
+/**
+ * generateSummary function creates a summary with hyperlinks to headers within the article.
+ * @param {Array} content - An array containing objects representing different types of content in the article.
+ * @returns {JSX.Element} - Returns a JSX element for the summary.
+ */
+const generateSummary = (content = [], overviewArticles = []) => {
+  const hasValidTreeLink = content.some((c) => {
+    if (c.type !== ArticleContentType.TREELINKINPUT) return false;
+
+    try {
+      const parsed = JSON.parse(c.content);
+      return Array.isArray(parsed) && parsed.length > 0;
+    } catch {
+      return false;
+    }
+  });
+
+  return (
+    <div>
+      {/* Overview summary */}
+      {hasValidTreeLink && overviewArticles.length > 0 && (
+        <ul className="overview-list">
+          <li className="overview-list-label">OVERVIEW:</li>
+
+          {overviewArticles.map((article, index) => (
+            <li key={`overview-${article._id || index}`}>
+              <InternalLink to={article.url} className="summary-link">
+                {article.title}
+              </InternalLink>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {/* HEADER1 summary */}
+      {content.filter((item) => item.type === ArticleContentType.HEADER1)
+        .length > 0 && (
+        <ul className="summary-list">
+          <li className="summary-list-label">SECTIONS:</li>
+
+          {content
+            .filter((item) => item.type === ArticleContentType.HEADER1)
+            .map(({ content }, index) => {
+              const normalized = toSlug(content);
+
+              return (
+                <li key={index}>
+                  <a href={`#${normalized}`} className="summary-link">
+                    {content}
+                  </a>
+                </li>
+              );
+            })}
+        </ul>
+      )}
+
+      {/* SUBTYPE summary */}
+      {content.filter((item) => item.type === ArticleContentType.SUBTYPE)
+        .length > 0 && (
+        <ul className="subtype-list">
+          <li className="subtype-list-label">SUBTYPE:</li>
+
+          {content
+            .filter((item) => item.type === ArticleContentType.SUBTYPE)
+            .map(({ content }, index) => (
+              <li key={`sub-${index}`}>
+                <a href={`#${content}`} className="summary-link">
+                  {content}
+                </a>
+              </li>
+            ))}
+        </ul>
+      )}
+    </div>
+  );
+};
+/**
+ * renderError function renders an error message with a dynamic email link.
+ * @param {string} message - The error message containing a placeholder for email.
+ * @param {string} email - The email address to be included in the message.
+ * @returns {JSX.Element} - Returns a JSX element for the error message.
+ */
+const renderError = (message, email) => {
+  const parts = message.split("emailAddress");
+  return (
+    <>
+      {parts[0]}
+      <a href={`mailto:${email}`}>{email}</a>
+      {parts[1]}
+    </>
+  );
+};
+
+export { parseData, generateSummary, renderError };

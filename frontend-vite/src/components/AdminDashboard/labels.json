@@ -1,0 +1,44 @@
+{
+    "buttonLabels": {
+        "add": {
+            "tree" : "Add tree",
+            "article" : "Add article",
+            "definition" : "Add definition",
+            "title" : "Add Header 1",
+            "subtitle" : "Add Header 2",
+            "paragraph" : "Add Paragraph",
+            "subtype" : "Add Subtype"
+        },
+        "publish": {
+            "publish" : "Publish",
+            "unpublish" : "Unpublish"
+        },
+        "remove": "Remove"
+    },
+    "filterOption" : {
+        "all" : "All",
+        "published" : "Published",
+        "unpublished" : "Unpublished"
+    },
+    "searchPlaceholder": "Search",
+    "publishState" : {
+        "published" : "Published",
+        "added" : "Added"
+    },
+    "definitionLabels": {
+        "title": "Term",
+        "definition": "Definition"
+    },
+    "articlePlaceholders": {
+        "title": "Title",
+        "contentLabel": "Article text"
+    },
+    "contentEditorBtns": {
+        "save": "Save",
+        "preview": "Preview", 
+        "publish": "Publish",
+        "addGroup": "Add section",
+        "deleteGroup": "Delete section"
+    },
+    "imageLabel" : "Upload image"
+}

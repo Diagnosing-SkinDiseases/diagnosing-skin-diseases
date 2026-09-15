@@ -1,0 +1,172 @@
+.navbar {
+  font-family: var(--primary-font);
+  color: var(--nav-text);
+  display: flex;
+  justify-content: space-around;
+  background-color: white;
+  z-index: 1000;
+  padding: 0%;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  padding-right: 25px;
+
+  height: 100px;
+  gap: 10px;
+
+  background-image:
+    url("../../assets/DSD-line-top-1920.png"),
+    url("../../assets/DSD-line-bottom-1920.png");
+
+  background-position: top center, bottom center;
+  background-repeat: repeat-x, repeat-x;
+
+  background-size: 124em auto, 123em auto;
+}
+
+.nav-item {
+  flex-grow: 1;
+  text-align: center;
+  position: relative;
+  font-weight: 500;
+  background-color: white;
+  border-radius: 10px;
+  width: 80px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition-duration: 0.4s;
+}
+
+.nav-link {
+  display: block;
+  padding: 0.5em;
+  text-decoration: none;
+  color: var(--nav-text);
+  border-radius: 10px;
+  transition-duration: 0.4s;
+}
+
+.navbar-link-text {
+  margin: 0em;
+  font-size: 1.5em;
+}
+
+.nav-active {
+  background-color: var(--nav-hover);
+  border: 2px solid var(--interactive-color)
+}
+
+.nav-hover {
+  background-color: var(--nav-hover);
+  border: 2px solid var(--interactive-color)
+}
+
+.navbar-tree-meta.nav-active {
+  background-color: var(--nav-hover);
+  border: 2px solid var(--interactive-color-tree)
+}
+
+.navbar-tree-meta.nav-hover {
+  background-color: var(--nav-hover);
+  border: 2px solid var(--interactive-color-tree)
+}
+
+/* Apply a subtle highlight and lift effect to nav items on hover */
+/* .nav-item:hover {
+  background-color: var(--nav-hover);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+  transform: translateY(-2px);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease,
+    transform 0.3s ease;
+} */
+
+/* Dropdown */
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  font-weight: bold;
+  width: 100%;
+  background-color: var(--nav-back_ground);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 12px 16px;
+  z-index: 1;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 2px;
+}
+
+.nav-item:hover .dropdown-content {
+  display: block;
+}
+
+.has-dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.subtab-item {
+  display: block;
+  margin: 10px 0;
+  background-color: var(--nav-back_ground);
+  text-decoration: none;
+  padding: 10px;
+  font-weight: normal;
+  font-size: 1.25em
+}
+
+.subtab-item:hover {
+  background-color: var(--nav-hover);
+  color: var(--nav-text);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+}
+
+.subtab-item a {
+  color: var(--nav-text);
+  text-decoration: none;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: var(--nav-back_ground);
+}
+
+.has-nested-dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content .dropdown-content {
+  left: 100%;
+  top: 0;
+}
+
+.nav-logo-container {
+  display: flex;
+  justify-content: center;
+  width: 222px;
+  margin-right: 0.5em;
+  margin-left: 1em;
+}
+
+.nav-logo {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+@media (max-width: 1400px) {
+
+  .navbar-link-text {
+    font-size: 1em
+  }
+
+  .nav-link {
+    height: 100%;
+  }
+
+  .nav-logo-container {
+    margin-left: 10px;
+    width: 200px
+  }
+}

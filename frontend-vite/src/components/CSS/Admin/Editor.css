@@ -1,0 +1,323 @@
+.editor {
+  max-width: 80%;
+  margin: 2em auto;
+  border-radius: 4px;
+}
+
+/* ---------- Definition ---------- */
+.definition,
+.article {
+  display: flex;
+  flex-direction: column;
+}
+
+.definition .input-group,
+.article .input-group {
+  margin-bottom: 2em;
+}
+
+.definition .input-group label,
+.article .input-group label {
+  display: block;
+  color: var(--header-text);
+}
+
+.definition .input-group input,
+.definition .input-group textarea,
+.article .input-group input,
+.article .input-group textarea {
+  width: 100%;
+  padding: 0.6em;
+  box-sizing: border-box;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5em;
+}
+
+#definition-title,
+#definition-paragraph {
+  border-radius: 0.5em;
+}
+
+.input-group input {
+  height: 3em;
+}
+
+.input-group textarea {
+  min-height: 10em;
+  resize: vertical;
+  overflow: auto;
+}
+
+.definition .input-group textarea.autosize {
+  height: auto;
+  /* Initial height should be auto to start at min-height */
+  overflow-y: hidden;
+  /* Hide the scrollbar initially */
+}
+
+/* ---------- Article ---------- */
+
+.label {
+  margin-bottom: 0.5em;
+  margin-top: 1em;
+  color: var(--header-text);
+}
+
+#art-title {
+  font-size: 1.7em;
+  font-weight: 600;
+}
+
+/* #title {
+  font-size: 1.5em;
+  font-weight: 450;
+}
+
+#subtitle {
+  font-size: 1.2em;
+  font-weight: 350;
+} */
+
+/* Hide the remove button for the default title block */
+.default-title .delete-button {
+  display: none;
+}
+.delete-button-container {
+  display: flex;
+  align-items: flex-start;
+  padding-left: 0.5em;
+  margin-top: 1em;
+}
+
+.delete-button {
+  margin-left: 0.5em;
+  /* margin-bottom: 0.5em; */
+}
+
+.content-input {
+  flex-grow: 1;
+}
+
+.content-input .art-title input,
+.content-input .art-subtitle input,
+.content-input .art-paragraph textarea {
+  width: 100%;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 0.5em;
+  box-sizing: border-box;
+}
+
+/* Ensures the wrapper takes the full width */
+.content-input-wrapper {
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  width: 100%;
+  margin-bottom: 0.5em;
+}
+
+/* ---------- Article | Add Content Buttons ---------- */
+.add-content-btn-container {
+  width: 100%;
+  display: flex;
+  justify-content: align-start;
+  flex-wrap: wrap;
+}
+
+.add-media-content-btn {
+  border-radius: 50%;
+  width: 2.5em;
+  height: 2.5em;
+  border: none;
+  background: var(--btn-color);
+  cursor: pointer;
+  color: #fff;
+}
+
+.drag-handle {
+  /* Example brown */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  user-select: none;
+  background: var(--btn-color);
+  cursor: pointer;
+  color: #fff;
+  border-radius: 50%;
+  
+  width: 2em;
+  height: 2em;
+
+  min-width: 2em;
+  min-height: 2em;
+
+  margin-top: 1em;
+  margin-right: 1em;
+}
+
+.sortable-block {
+  display: flex;
+}
+
+.add-content-btn {
+  margin: 4px 0.5em;
+}
+
+/* ---------- Article | Video, Image ---------- */
+.video-input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 0.5em;
+  width: 100%;
+  margin-top: 1em;
+}
+
+.video-container {
+  position: relative;
+  width: 50em;
+  height: 25em;
+  padding-top: 40%;
+  margin-bottom: 1rem;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video-preview {
+  height: 100%;
+  width: 100%;
+}
+
+.input-row,
+.image-preview-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.video-url-input {
+  flex-grow: 1;
+  padding: 0.3em;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.image-upload-input,
+.image-preview {
+  margin-bottom: 0.5em;
+}
+
+.image-preview {
+  max-height: 20em;
+  margin-bottom: 0.5em;
+}
+
+.image-input-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 2em;
+}
+
+.fa-upload-icon {
+  color: var(--btn-color);
+  font-size: 5em;
+}
+
+.image-upload-label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: solid 1px var(--btn-color);
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1em;
+}
+
+.upload-label-text {
+  align-items: center;
+  padding-top: 0.3em;
+  color: var(--header-text);
+}
+
+.art-paragraph-editor-btn {
+ max-width: 35px;
+ max-height: 35px;
+}
+
+.art-paragraph-editor-btn.is-active {
+  background-color: var(--interactive-color);
+}
+
+.pe-toolbar {
+  display: flex;
+  align-items: center;
+  margin: 6px 0;
+  justify-content: space-between;
+}
+
+.pe-toolbar.hidden {
+  display: none;
+}
+
+.art-pe-tb-left {
+  display: flex;
+  gap: 2px; 
+}
+
+.pe-surface {
+  min-height: 160px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+  line-height: 1.5;
+  background: #fff;
+}
+
+.pe-info {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #666;
+}
+
+.tree-link-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 60%
+}
+
+.tree-link-header {
+  font-weight: bold;
+  margin-top: 30px;
+  color: var(--header-text);
+  font-size: 20px;
+}
+
+.tree-link-label {
+  margin-right: 2px;
+  color: var(--header-text)
+}
+
+.tree-link-input {
+  margin-right: 8px;
+}
+
+.tree-link-input-container {
+  margin-bottom: 10px;
+  margin-left: 6px;
+}

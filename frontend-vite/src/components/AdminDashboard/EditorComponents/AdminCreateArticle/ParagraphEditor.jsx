@@ -1,0 +1,532 @@
+import React, { useEffect, useRef, useState } from "react";
+import DOMPurify from "dompurify";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faList,
+  faListOl,
+  faLink,
+  faUnlink,
+  faBold,
+  faItalic,
+  faFont,
+  faLevelDownAlt,
+  faUnderline,
+} from "@fortawesome/free-solid-svg-icons";
+
+// ---- DOMPurify config & hooks (register once) ----
+const SANITIZE_CFG = {
+  ALLOWED_TAGS: [
+    "p",
+    "br",
+    "strong",
+    "b",
+    "em",
+    "i",
+    "u",
+    "a",
+    "ul",
+    "ol",
+    "li",
+    "blockquote",
+    "code",
+    "pre",
+    "span",
+  ],
+  ALLOWED_ATTR: ["href", "target", "rel", "title", "class"],
+};
+
+// Hook runs once; do not add inside sanitize()
+DOMPurify.addHook("afterSanitizeAttributes", (node) => {
+  if (node.nodeName === "A") {
+    const a = node;
+    const href = a.getAttribute("href") || "";
+    const isHttp = /^https?:\/\//i.test(href);
+    if (isHttp && !a.getAttribute("target")) a.setAttribute("target", "_blank");
+    a.setAttribute("rel", "noopener noreferrer");
+  }
+});
+
+function sanitize(html) {
+  return DOMPurify.sanitize(html, SANITIZE_CFG);
+}
+
+// ---- caret utility ----
+function placeCaretAtEnd(el) {
+  const range = document.createRange();
+  range.selectNodeContents(el);
+  range.collapse(false);
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+}
+
+function getSelectionContainer() {
+  const sel = window.getSelection();
+  if (!sel || sel.rangeCount === 0) return null;
+  const node = sel.anchorNode;
+  return node?.nodeType === 1 ? node : node?.parentElement || null;
+}
+
+export default function ParagraphEditor({
+  value,
+  onChange,
+  index,
+  selectedContent,
+}) {
+  const [mode, setMode] = useState("clean"); // "clean" | "raw"
+  const [text, setText] = useState(value || "");
+  const [tb, setTb] = useState({
+    isBold: false,
+    isItalic: false,
+    isUnderline: false,
+    inUL: false,
+    inOL: false,
+  });
+
+  const cleanRef = useRef(null);
+  const rawRef = useRef(null);
+
+  // Seed the clean (contentEditable) surface only when entering Clean mode
+  useEffect(() => {
+    if (mode === "clean" && cleanRef.current) {
+      cleanRef.current.innerHTML = sanitize(text);
+      // optional: put caret at end on first entry
+      placeCaretAtEnd(cleanRef.current);
+    }
+  }, [mode]); // if you want to re-seed when external `value` changes, widen deps
+
+  // Keep internal state in sync if parent value changes externally
+  useEffect(() => {
+    setText(normalizeToParagraph(value) || "");
+    if (mode === "clean" && cleanRef.current) {
+      cleanRef.current.innerHTML = sanitize(value || "");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
+
+  // once on mount
+  useEffect(() => {
+    try {
+      document.execCommand("defaultParagraphSeparator", false, "p");
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    if (mode !== "clean") return;
+    const onSelChange = () => recomputeToolbarState();
+    document.addEventListener("selectionchange", onSelChange);
+    // compute once when entering Clean mode
+    recomputeToolbarState();
+    return () => document.removeEventListener("selectionchange", onSelChange);
+  }, [mode]);
+
+  function recomputeToolbarState() {
+    if (mode !== "clean") return; // We only show live states in Clean mode
+    const container = getSelectionContainer();
+
+    // queryCommandState is fine for inline styles
+    let isBold = false,
+      isItalic = false,
+      isUnderline = false;
+    try {
+      isBold = document.queryCommandState("bold");
+      isItalic = document.queryCommandState("italic");
+      isUnderline = document.queryCommandState("underline");
+    } catch {}
+
+    // list/link via DOM proximity (more reliable across browsers)
+    const inUL = !!container?.closest("ul");
+    const inOL = !!container?.closest("ol");
+    const inLink = !!container?.closest("a");
+
+    setTb({ isBold, isItalic, isUnderline, inUL, inOL, inLink });
+  }
+
+  function normalizeToParagraph(html) {
+    const trimmed = (html || "").trim();
+
+    // If it already starts with <p>, <ul>, <ol>, <blockquote>, etc., leave it
+    if (/^<(p|ul|ol|blockquote|pre|h[1-6])[\s>]/i.test(trimmed)) {
+      return trimmed;
+    }
+
+    // If it's empty string, return a blank <p>
+    if (trimmed === "") {
+      return "<p></p>";
+    }
+
+    // Otherwise, wrap in a paragraph
+    return `<p>${trimmed}</p>`;
+  }
+
+  // optional: shift+Enter = <br>
+  const handleCleanKeyDown = (e) => {
+    if (e.key === "Enter" && e.shiftKey) {
+      e.preventDefault();
+      document.execCommand("insertLineBreak");
+    }
+  };
+
+  function ensureParagraphAroundSelection() {
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0) return;
+    // Find a reasonable element from the selection
+    const node = sel.anchorNode;
+    const el = node && (node.nodeType === 1 ? node : node.parentElement);
+    if (!el) return;
+
+    // If we're still inside an LI, do nothing
+    if (el.closest("li")) return;
+
+    // Otherwise, format the current block as a <p>
+    try {
+      document.execCommand("formatBlock", false, "p");
+    } catch {}
+  }
+
+  // ---- Clean mode (contentEditable) handlers ----
+  const handleCleanInput = (e) => {
+    // trust the browser while typing; no DOM rewrite
+    const dirty = e.currentTarget.innerHTML;
+    setText(dirty);
+  };
+
+  // keep sanitizing at the edges:
+  const handleCleanPaste = (e) => {
+    e.preventDefault();
+    const pasted =
+      e.clipboardData.getData("text/html") ||
+      e.clipboardData.getData("text/plain");
+    document.execCommand("insertHTML", false, sanitize(pasted)); // sanitize pasted chunk only
+  };
+
+  const handleCleanBlur = () => {
+    const el = cleanRef.current;
+    if (!el) return;
+    const clean = sanitize(el.innerHTML);
+    if (clean !== el.innerHTML) {
+      el.innerHTML = clean; // one rewrite, not per keystroke
+    }
+    setText(clean);
+    onChange(clean); // store sanitized
+  };
+
+  // ---- Raw mode (textarea) handlers ----
+  const handleRawChange = (e) => setText(e.target.value);
+  const handleRawBlur = () => onChange(sanitize(text));
+
+  // ---- Toolbar actions for both modes ----
+  const applyInClean = (cmd, arg) => {
+    document.execCommand(cmd, false, arg);
+    // Ensure state updates immediately
+    recomputeToolbarState();
+  };
+
+  const wrapInRaw = (before, after = "") => {
+    const ta = rawRef.current;
+    if (!ta) return;
+    const { selectionStart: s, selectionEnd: e, value: v } = ta;
+    const sel = v.slice(s, e);
+    const next = v.slice(0, s) + before + sel + after + v.slice(e);
+    setText(next);
+    requestAnimationFrame(() => {
+      ta.focus();
+      const cursor = s + before.length + sel.length;
+      ta.setSelectionRange(cursor, cursor);
+    });
+  };
+
+  function listifyRaw(ordered = false) {
+    const ta = rawRef.current;
+    if (!ta) return;
+    const { selectionStart: s, selectionEnd: e, value: v } = ta;
+    const startLine = v.lastIndexOf("\n", s - 1) + 1;
+    const endLine = v.indexOf("\n", e);
+    const end = endLine === -1 ? v.length : endLine;
+    const block = v.slice(startLine, end);
+    const lines = block
+      .split("\n")
+      .map((l) => l.trim())
+      .filter(Boolean);
+    const items = lines.map((l) => `<li>${l}</li>`).join("");
+    const wrapped = ordered ? `<ol>${items}</ol>` : `<ul>${items}</ul>`;
+    const next = v.slice(0, startLine) + wrapped + v.slice(end);
+    setText(next);
+    requestAnimationFrame(() => {
+      ta.focus();
+      const pos = startLine + wrapped.length;
+      ta.setSelectionRange(pos, pos);
+    });
+  }
+
+  function removeLinkRaw() {
+    const ta = rawRef.current;
+    if (!ta) return;
+    const { selectionStart: s, selectionEnd: e, value: v } = ta;
+    const open = v.lastIndexOf("<a", s);
+    const close = v.indexOf("</a>", e);
+    if (open !== -1 && close !== -1) {
+      const openEnd = v.indexOf(">", open) + 1;
+      const inner = v.slice(openEnd, close);
+      const next = v.slice(0, open) + inner + v.slice(close + 4);
+      setText(next);
+      requestAnimationFrame(() => {
+        ta.focus();
+        const pos = open + inner.length;
+        ta.setSelectionRange(pos, pos);
+      });
+    }
+  }
+
+  const actions = {
+    bold: () =>
+      mode === "clean"
+        ? applyInClean("bold")
+        : wrapInRaw("<strong>", "</strong>"),
+    italic: () =>
+      mode === "clean" ? applyInClean("italic") : wrapInRaw("<em>", "</em>"),
+    underline: () =>
+      mode === "clean" ? applyInClean("underline") : wrapInRaw("<u>", "</u>"),
+    ul: () => {
+      if (mode === "clean") {
+        applyInClean("insertUnorderedList");
+        // fix the “unlist leaves no <p>” case
+        requestAnimationFrame(() => {
+          ensureParagraphAroundSelection();
+          recomputeToolbarState();
+        });
+      } else {
+        listifyRaw(false);
+      }
+    },
+    ol: () => {
+      if (mode === "clean") {
+        applyInClean("insertOrderedList");
+        requestAnimationFrame(() => {
+          ensureParagraphAroundSelection();
+          recomputeToolbarState();
+        });
+      } else {
+        listifyRaw(true);
+      }
+    },
+    link: () => {
+      const url = prompt("Enter URL");
+      if (!url) return;
+      if (mode === "clean") {
+        applyInClean("createLink", url);
+        const sel = window.getSelection();
+        const a =
+          sel && sel.anchorNode
+            ? sel.anchorNode.parentElement?.closest("a")
+            : null;
+        if (a) {
+          a.setAttribute("target", "_blank");
+          a.setAttribute("rel", "noopener noreferrer");
+        }
+      } else {
+        wrapInRaw(
+          `<a href="${url}" target="_blank" rel="noopener noreferrer">`,
+          "</a>",
+        );
+      }
+    },
+    unlink: () => (mode === "clean" ? applyInClean("unlink") : removeLinkRaw()),
+    br: () =>
+      mode === "clean" ? applyInClean("insertLineBreak") : wrapInRaw("<br>"),
+    indent: () => {
+      if (mode === "clean") {
+        applyInClean("indent");
+        requestAnimationFrame(recomputeToolbarState);
+      } else {
+        wrapInRaw("<blockquote>", "</blockquote>");
+      }
+    },
+    outdent: () => {
+      if (mode === "clean") {
+        applyInClean("outdent");
+        requestAnimationFrame(recomputeToolbarState);
+      } else {
+        // crude raw fallback: remove one level of blockquote
+        const ta = rawRef.current;
+        if (!ta) return;
+        const { value: v, selectionStart: s } = ta;
+        const open = v.lastIndexOf("<blockquote>", s);
+        const close = v.indexOf("</blockquote>", s);
+        if (open !== -1 && close !== -1) {
+          const next =
+            v.slice(0, open) + v.slice(open + 12, close) + v.slice(close + 13);
+          setText(next);
+        }
+      }
+    },
+  };
+
+  const toggleMode = () => setMode((m) => (m === "clean" ? "raw" : "clean"));
+
+  return (
+    <div className={`art-paragraph`}>
+      <label className="label">Paragraph</label>
+
+      <div
+        className={`pe-toolbar ${selectedContent === index ? "" : "hidden"}`}
+      >
+        <div className="art-pe-tb-left">
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={actions.bold}
+            className={`art-paragraph-editor-btn button ${
+              tb.isBold ? "is-active" : ""
+            }`}
+          >
+            <FontAwesomeIcon icon={faBold} />
+          </button>
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={actions.italic}
+            className={`art-paragraph-editor-btn button ${
+              tb.isItalic ? "is-active" : ""
+            }`}
+          >
+            <FontAwesomeIcon icon={faItalic} />
+          </button>
+
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={actions.underline}
+            className={`art-paragraph-editor-btn button ${
+              tb.isUnderline ? "is-active" : ""
+            }`}
+          >
+            <FontAwesomeIcon icon={faUnderline} />
+          </button>
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={actions.ul}
+            className={`art-paragraph-editor-btn button ${
+              tb.inUL ? "is-active" : ""
+            }`}
+          >
+            <FontAwesomeIcon icon={faList} />
+          </button>
+
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={actions.ol}
+            className={`art-paragraph-editor-btn button ${
+              tb.inOL ? "is-active" : ""
+            }`}
+            aria-label="Numbered list"
+            title="Numbered list"
+          >
+            <FontAwesomeIcon icon={faListOl} />
+          </button>
+
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={actions.indent}
+            className="art-paragraph-editor-btn button"
+            aria-label="Indent more"
+            title="Indent more"
+          >
+            {">|"}
+          </button>
+
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={actions.outdent}
+            className="art-paragraph-editor-btn button"
+            aria-label="Indent less"
+            title="Indent less"
+          >
+            {"|<"}
+          </button>
+
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={actions.link}
+            className={`art-paragraph-editor-btn button`}
+          >
+            <FontAwesomeIcon icon={faLink} />
+          </button>
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={actions.unlink}
+            className={`art-paragraph-editor-btn button`}
+          >
+            <FontAwesomeIcon icon={faUnlink} />
+          </button>
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={actions.br}
+            className={`art-paragraph-editor-btn button`}
+          >
+            <FontAwesomeIcon icon={faLevelDownAlt} />
+          </button>
+        </div>
+
+        <div className="art-pe-tb-right">
+          <button
+            type="button"
+            className="art-paragraph-editor-btn button"
+            onClick={toggleMode}
+          >
+            {mode === "clean" ? "</>" : <FontAwesomeIcon icon={faFont} />}
+          </button>
+        </div>
+      </div>
+
+      {mode === "clean" ? (
+        <div
+          ref={cleanRef}
+          className="pe-surface"
+          contentEditable
+          suppressContentEditableWarning
+          onInput={handleCleanInput}
+          onPaste={handleCleanPaste}
+          onBlur={handleCleanBlur}
+          onKeyDown={handleCleanKeyDown}
+        />
+      ) : (
+        <textarea
+          ref={rawRef}
+          className="pe-raw"
+          value={text}
+          onChange={handleRawChange}
+          onBlur={handleRawBlur}
+          rows={6}
+          style={{
+            width: "100%",
+            minHeight: 160,
+            border: "1px solid #ccc",
+            borderRadius: 6,
+            padding: 10,
+            fontFamily:
+              'ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace',
+            lineHeight: 1.4,
+          }}
+          aria-label="Raw HTML editor"
+        />
+      )}
+
+      <div className="pe-info">
+        Mode:{" "}
+        <strong>
+          {mode === "clean"
+            ? "Clean (editable, rendered & sanitized)"
+            : "Raw (editable HTML source)"}
+        </strong>
+      </div>
+    </div>
+  );
+}

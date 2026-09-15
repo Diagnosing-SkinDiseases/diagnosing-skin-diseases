@@ -1,0 +1,68 @@
+import React, { useEffect, useState } from "react";
+import UTNodeFlow from "./UTNodeFlow";
+import "../CSS/UserTreeV2.css";
+
+const UTContent = ({
+  existingTitle,
+  existingTree,
+  existingMidOffsets,
+  existingAboutLink,
+}) => {
+  // Node State
+  const [rootNode, setRootNode] = useState(
+    existingTree !== null
+      ? existingTree
+      : {
+          currentId: "node0",
+          content: "",
+          parentId: null,
+          noChild: [],
+          yesChild: [],
+          xPos: 0,
+          yPos: 0,
+        },
+  );
+
+  const toRelativeUrl = (url = "") => {
+    try {
+      const parsedUrl = new URL(url);
+      return `${parsedUrl.pathname}${parsedUrl.search}${parsedUrl.hash}`;
+    } catch {
+      return url;
+    }
+  };
+
+  return (
+    <>
+      <div className="ut-content-bg">
+        <div className="ut-content-main-content">
+          <h1 className="ut-content-title">{existingTitle}</h1>
+          <p className="ut-intro-text">
+            Answer the Yes / No questions in the tree, which will guide you to
+            diagnosis and connect you to articles with disease information and
+            treatment options.
+          </p>
+          <UTNodeFlow
+            rootNode={rootNode}
+            setRootNode={setRootNode}
+            existingMidOffsets={existingMidOffsets}
+          ></UTNodeFlow>
+
+          <div className="ut-bot-content">
+            <a href={"/"} className="article-nav-secondary ut-nav-btn-mod">
+              Diagnostic Trees
+            </a>
+            <a
+              href={toRelativeUrl(existingAboutLink)}
+              className="article-nav-button ut-nav-btn-mod"
+            >
+              Overview Article
+            </a>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default UTContent;
