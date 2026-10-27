@@ -57,11 +57,11 @@
 
 .tree-flow-header {
     display: flex;
-    width: 100%
+    width: 100%;
 }
 
 .tree-flow-delete {
-    margin-left: auto
+    margin-left: auto;
 }
 
 .tree-flow-text {
@@ -92,7 +92,11 @@
     /* Ensure it's still a circle */
 }
 
-/* Panel styling */
+/*
+ * ============================================================
+ * PANEL STYLING
+ * ============================================================
+ */
 
 .tree-flow-panel-btn-locked {
     background-color: #d0d0d0;
@@ -113,15 +117,15 @@
 }
 
 .tree-flow-panel-label {
-    margin-left: 0.25em
+    margin-left: 0.25em;
 }
 
 .tree-flow-panel-length-input {
-    width: 3em
+    width: 3em;
 }
 
 .tree-flow-panel-angle-input {
-    width: 3em
+    width: 3em;
 }
 
 .tree-flow-multi-select-btn {
@@ -165,14 +169,18 @@
     opacity: 1;
 }
 
-/* =========================================
-   React Flow - Node and Edge Layering
-   ========================================= */
-
 /*
- * Keep the entire edge layer below the
- * node layer.
+ * ============================================================
+ * REACT FLOW NODE / EDGE LAYERING
+ * ============================================================
+ *
+ * Keep arrows visually behind nodes.
+ *
+ * This allows existing arrow connections
+ * to use center-based geometry without
+ * showing lines inside the node rectangles.
  */
+
 .react-flow .react-flow__edges {
     z-index: 0 !important;
 }
@@ -181,10 +189,91 @@
     z-index: 1 !important;
 }
 
-/*
- * Keep individual edges from being elevated
- * above nodes through CSS stacking values.
- */
 .react-flow .react-flow__edge {
     z-index: 0 !important;
 }
+
+/*
+ * ============================================================
+ * ADMIN EDITOR CONNECTION HANDLES
+ * ============================================================
+ *
+ * Handle availability is controlled directly
+ * by Admin QuestionInput.jsx.
+ *
+ * The JSX determines whether each handle:
+ *
+ * - Is visible
+ * - Accepts pointer interaction
+ * - Can create new connections
+ *
+ * CSS does not override those decisions.
+ *
+ * This replaces the previous hover-based
+ * handle visibility implementation.
+ * ============================================================
+ */
+
+/*
+ * Preserve the original editing appearance
+ * of available handles.
+ *
+ * Position and dimensions are supplied by
+ * QuestionInput.jsx through inline styles.
+ */
+.admin-tree-editor-flow .tree-flow-question-node .react-flow__handle {
+    border: 1px solid black;
+    border-radius: 50%;
+    transition: none;
+}
+
+/*
+ * Available connection handles.
+ *
+ * QuestionInput.jsx supplies:
+ * visibility: visible
+ * pointer-events: all
+ *
+ * These handles remain usable for manually
+ * creating new connections.
+ */
+.admin-tree-editor-flow .tree-flow-question-node .react-flow__handle[style*="visibility: visible"] {
+    opacity: 1;
+}
+
+/*
+ * Unavailable connection handles.
+ *
+ * QuestionInput.jsx supplies:
+ * visibility: hidden
+ * pointer-events: none
+ *
+ * The following rule reinforces that state
+ * so unavailable handles cannot be exposed
+ * by hover styling.
+ */
+.admin-tree-editor-flow .tree-flow-question-node .react-flow__handle[style*="visibility: hidden"] {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/*
+ * No hover-based visibility override.
+ *
+ * Previously:
+ *
+ * .tree-flow-question-node:hover
+ * .react-flow__handle {
+ *     opacity: 0.7;
+ * }
+ *
+ * That behavior has been removed because
+ * handle visibility now depends on whether
+ * the associated connection exists.
+ */
+
+/*
+ * ============================================================
+ * END ADMIN EDITOR VISUAL ADJUSTMENTS
+ * ============================================================
+ */
