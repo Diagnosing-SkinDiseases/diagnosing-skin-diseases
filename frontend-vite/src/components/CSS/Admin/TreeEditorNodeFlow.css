@@ -36,12 +36,12 @@
     /* background-color: black; */
 }
 
-.tree-flow-no-edge > path {
+.tree-flow-no-edge>path {
     stroke: red;
     stroke-width: 0.2em;
 }
 
-.tree-flow-yes-edge > path {
+.tree-flow-yes-edge>path {
     stroke: green;
     stroke-width: 0.2em;
 }
@@ -50,7 +50,6 @@
     display: flex;
     margin-top: 1em;
 }
-
 
 .tree-flow-add-yes-child {
     margin-left: auto;
@@ -164,4 +163,28 @@
 .tree-flow-tooltip-container:hover .tooltip-text {
     visibility: visible;
     opacity: 1;
+}
+
+/* =========================================
+   React Flow - Node and Edge Layering
+   ========================================= */
+
+/*
+ * Keep the entire edge layer below the
+ * node layer.
+ */
+.react-flow .react-flow__edges {
+    z-index: 0 !important;
+}
+
+.react-flow .react-flow__nodes {
+    z-index: 1 !important;
+}
+
+/*
+ * Keep individual edges from being elevated
+ * above nodes through CSS stacking values.
+ */
+.react-flow .react-flow__edge {
+    z-index: 0 !important;
 }

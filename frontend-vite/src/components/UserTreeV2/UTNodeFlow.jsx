@@ -94,7 +94,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode, existingMidOffsets }) => {
 
   // Selected Node State
   const [selectedNode, setSelectedNode] = useState(
-    findTreeNodeById(rootNode, "node0")
+    findTreeNodeById(rootNode, "node0"),
   );
 
   // Function to trigger re-render of all nodes
@@ -170,6 +170,8 @@ const NodeFlowInstance = ({ rootNode, setRootNode, existingMidOffsets }) => {
       let formattedNode = {
         id: node.currentId,
         type: "questionInput",
+        // Keep nodes visually in front of all connecting edges.
+        zIndex: 2,
         position: { x: node.xPos, y: node.yPos },
         data: {
           getNodeId: getNodeId,
@@ -188,6 +190,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode, existingMidOffsets }) => {
           sourceHandle: "yes",
           className: "ut-tree-flow-yes-edge",
           type: "detailed",
+          zIndex: 0,
           data: { sourceHandle: "yes", midOffset: findMidOffset(edgeIdYes) },
           selectable: false,
         };
@@ -203,6 +206,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode, existingMidOffsets }) => {
           sourceHandle: "no",
           className: "ut-tree-flow-no-edge",
           type: "detailed",
+          zIndex: 0,
           data: {
             sourceHandle: "no",
             midOffset: findMidOffset(edgeIdNo),
@@ -399,6 +403,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode, existingMidOffsets }) => {
           source: params.source,
           target: params.target,
           sourceHandle: params.sourceHandle,
+          zIndex: 0,
           className:
             params.sourceHandle === "no"
               ? "ut-tree-flow-no-edge"
@@ -413,7 +418,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode, existingMidOffsets }) => {
 
         return eds.concat(newEdge);
       }),
-    [setEdges, rootNode]
+    [setEdges, rootNode],
   );
 
   /**
@@ -457,7 +462,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode, existingMidOffsets }) => {
   const toYesNode = () => {
     if (selectedNode.yesChild.length > 0) {
       setSelectedNode(
-        findTreeNodeById(rootNode, selectedNode.yesChild[0].currentId)
+        findTreeNodeById(rootNode, selectedNode.yesChild[0].currentId),
       );
     }
   };
@@ -465,7 +470,7 @@ const NodeFlowInstance = ({ rootNode, setRootNode, existingMidOffsets }) => {
   const toNoNode = () => {
     if (selectedNode.noChild.length > 0) {
       setSelectedNode(
-        findTreeNodeById(rootNode, selectedNode.noChild[0].currentId)
+        findTreeNodeById(rootNode, selectedNode.noChild[0].currentId),
       );
     }
   };
@@ -481,6 +486,8 @@ const NodeFlowInstance = ({ rootNode, setRootNode, existingMidOffsets }) => {
       nodes={nodes}
       edges={edges}
       edgeTypes={{ detailed: DetailedEdge }}
+      defaultEdgeOptions={{ zIndex: 0 }}
+      elevateEdgesOnSelect={false}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}

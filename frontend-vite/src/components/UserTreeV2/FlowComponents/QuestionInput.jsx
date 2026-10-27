@@ -2,7 +2,13 @@ import { useCallback, useEffect, useState } from "react";
 import { Handle, Position } from "@xyflow/react";
 import { use } from "react";
 
-const handleStyle = { no: { left: 110 }, yes: { left: 130 } };
+// Keep all connection handles at the geometric center of the node.
+// The source handles retain distinct IDs for yes/no edge semantics.
+const centerHandleStyle = {
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+};
 
 function QuestionInput({
   data: {
@@ -35,7 +41,7 @@ function QuestionInput({
 }) {
   const [currentNodeHeight] = useState(nodeHeight ?? 0);
   const [nodeColorClass, setNodeColorClass] = useState(
-    "ut-tree-flow-root-color"
+    "ut-tree-flow-root-color",
   );
 
   const manageNodeColor = () => {
@@ -346,6 +352,7 @@ function QuestionInput({
         <Handle
           type="target"
           position={Position.Top}
+          style={centerHandleStyle}
           isConnectable={isConnectable}
           className="ut-tree-flow-handle ut-hidden"
         />
@@ -357,7 +364,7 @@ function QuestionInput({
         type="source"
         position={Position.Bottom}
         id="no"
-        style={handleStyle.no}
+        style={centerHandleStyle}
         isConnectable={false}
         className={`ut-tree-flow-handle ${
           findNodeById(id)?.noChild?.length > 0 ? "ut-hidden" : "ut-hidden"
@@ -368,7 +375,7 @@ function QuestionInput({
         type="source"
         position={Position.Bottom}
         id="yes"
-        style={handleStyle.yes}
+        style={centerHandleStyle}
         isConnectable={false}
         className={`ut-tree-flow-handle ${
           findNodeById(id)?.yesChild?.length > 0 ? "ut-hidden" : "ut-hidden"
