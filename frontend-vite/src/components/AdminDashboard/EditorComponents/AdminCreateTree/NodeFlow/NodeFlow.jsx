@@ -540,11 +540,21 @@ const NodeFlowInstance = ({
    * ============================================================
    */
 
-  const deleteFlowNode = () => {
-    setNodes((nds) => nds.filter((node) => node.id !== selectedNode.currentId));
-  };
-
   const deleteChild = () => {
+    const deletedNodeIds = new Set();
+
+    const collectDeletedNodeIds = (node) => {
+      if (!node) {
+        return;
+      }
+
+      deletedNodeIds.add(node.currentId);
+      node.noChild.forEach(collectDeletedNodeIds);
+      node.yesChild.forEach(collectDeletedNodeIds);
+    };
+
+    collectDeletedNodeIds(findTreeNodeById(rootNode, selectedNode.currentId));
+
     const deleteNodeRecursively = (node) => {
       if (node.currentId === selectedNode.currentId) {
         return null;
@@ -563,11 +573,17 @@ const NodeFlowInstance = ({
 
     const updatedRootNode = deleteNodeRecursively(rootNode);
 
+    setNodes((nds) => nds.filter((node) => !deletedNodeIds.has(node.id)));
+    setEdges((eds) =>
+      eds.filter(
+        (edge) =>
+          !deletedNodeIds.has(edge.source) && !deletedNodeIds.has(edge.target),
+      ),
+    );
     setRootNode(updatedRootNode);
   };
 
   const onDeleteNode = (event) => {
-    deleteFlowNode();
     deleteChild();
     setSelectedNode(null);
   };
