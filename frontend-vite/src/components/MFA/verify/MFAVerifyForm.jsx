@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import apiUrl from "../../../api";
 
-const MFAVerifyForm = () => {
+const MFAVerifyForm = ({ onVerified, embedded = false }) => {
   const [code, setCode] = useState("");
   const [message, setMessage] = useState("");
 
@@ -22,6 +22,11 @@ const MFAVerifyForm = () => {
         { withCredentials: true }
       );
 
+      if (onVerified) {
+        onVerified();
+        return;
+      }
+
       setMessage("✅ MFA verified! Redirecting…");
 
       // Let cookie propagate, then navigate
@@ -35,7 +40,7 @@ const MFAVerifyForm = () => {
   };
 
   return (
-    <div className="login-card">
+    <div className={`login-card${embedded ? " login-card-embedded" : ""}`}>
       <h2>MFA Verification</h2>
 
       <form onSubmit={handleSubmit}>

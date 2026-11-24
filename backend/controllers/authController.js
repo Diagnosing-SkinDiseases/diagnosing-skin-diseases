@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 
 // Login User
 const loginUser = async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, expectedUserId } = req.body;
 
   try {
     const user = await User.findOne({ username });
@@ -15,6 +15,10 @@ const loginUser = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    if (expectedUserId && String(user._id) !== String(expectedUserId)) {
+      return res.status(403).json({ error: "REAUTH_ACCOUNT_MISMATCH" });
     }
 
     const token = jwt.sign(
@@ -46,7 +50,7 @@ const loginUser = async (req, res) => {
 
 // Auth Me
 const authMe = (req, res) => {
-  res.sendStatus(200);
+  res.status(200).json({ userId: String(req.user.userId) });
 };
 
 // Logout User

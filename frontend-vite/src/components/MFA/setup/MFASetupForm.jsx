@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import apiUrl from "../../../api";
 
-const MFASetupForm = () => {
+const MFASetupForm = ({ onVerified, embedded = false }) => {
   const [qrCodeUrl, setQrCodeUrl] = useState("");
   const [code, setCode] = useState("");
   const [message, setMessage] = useState("");
@@ -42,6 +42,11 @@ const MFASetupForm = () => {
         { withCredentials: true }
       );
 
+      if (onVerified) {
+        onVerified();
+        return;
+      }
+
       setMessage("✅ MFA setup complete!");
 
       setTimeout(() => {
@@ -54,7 +59,7 @@ const MFASetupForm = () => {
   };
 
   return (
-    <div className="login-card">
+    <div className={`login-card${embedded ? " login-card-embedded" : ""}`}>
       {!qrCodeUrl ? (
         <p>Loading MFA setup…</p>
       ) : (

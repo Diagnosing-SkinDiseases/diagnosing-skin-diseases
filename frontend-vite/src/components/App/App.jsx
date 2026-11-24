@@ -13,7 +13,7 @@ import {
   default as BuildUserTree,
   default as UserTree,
 } from "../UserTree/UserTrees/BuildUserTree";
-import { AuthProvider } from "./AuthContext";
+import { AuthProvider, useAuth } from "./AuthContext";
 import NotFoundPage from "../Error/NotFound";
 
 // Admin Imports
@@ -32,18 +32,20 @@ import RouteTracker from "../Analytics/RouteTracker";
 
 initGA();
 
-// This function wraps your Routes and uses useAuth to access the auth state
 function ProtectedRoute({ children }) {
-  return <AuthProvider>{children}</AuthProvider>;
+  const { routeReady } = useAuth();
+  return routeReady ? children : null;
 }
 
-function App() {
+function AppContent() {
+  const { renderLocation } = useAuth();
+
   return (
     <div className="app-container">
       <NavBarComponent></NavBarComponent>
       <div className="content-container">
         <RouteTracker />
-        <Routes>
+        <Routes location={renderLocation}>
           {/* Admin */}
           {/* Admin - Trees */}
           <Route
@@ -257,6 +259,14 @@ function App() {
         </a>
       </footer>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
 

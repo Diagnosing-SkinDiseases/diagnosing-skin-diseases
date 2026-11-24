@@ -224,7 +224,10 @@ const ContentEditor = ({ contentType }) => {
    * @param {string} newStatus - the new status for the item
    * @return {void}
    */
-  const updateItem = (newStatus, sanitizedContent) => {
+  const updateItem = (newStatus, sanitizedContent, isSaveAttempt = false) => {
+    const requestOptions = {
+      simulateSessionExpiryOnSave: isSaveAttempt,
+    };
     let updatedItem = {
       id: id,
       status: newStatus,
@@ -241,20 +244,20 @@ const ContentEditor = ({ contentType }) => {
     let updatePromise;
     switch (contentType) {
       case ContentTypeEnum.DEFINITION:
-        updatePromise = apiUpdateGlossaryItem(updatedItem);
+        updatePromise = apiUpdateGlossaryItem(updatedItem, requestOptions);
         break;
       case ContentTypeEnum.ARTICLE:
         let parsedArticle = parseArticleContent(sanitizedContent);
         parsedArticle.id = id;
         parsedArticle.status = newStatus;
 
-        updatePromise = apiUpdateArticle(parsedArticle);
+        updatePromise = apiUpdateArticle(parsedArticle, requestOptions);
         break;
       case ContentTypeEnum.TREE:
         if (sanitizedContent) {
           sanitizedContent.id = id;
           sanitizedContent.status = newStatus;
-          updatePromise = apiUpdateTree(sanitizedContent);
+          updatePromise = apiUpdateTree(sanitizedContent, requestOptions);
         } else {
           console.error("Invalid update payload");
           return;
@@ -280,13 +283,16 @@ const ContentEditor = ({ contentType }) => {
    * @param {string} status - the status of the item to be created
    * @return {void}
    */
-  const createItem = (status, sanitizedContent) => {
+  const createItem = (status, sanitizedContent, isSaveAttempt = false) => {
+    const requestOptions = {
+      simulateSessionExpiryOnSave: isSaveAttempt,
+    };
     let createPromise;
     switch (contentType) {
       case ContentTypeEnum.DEFINITION:
         let item = parsedDefinition(sanitizedContent);
         item.status = status;
-        createPromise = apiCreateGlossaryItem(item);
+        createPromise = apiCreateGlossaryItem(item, requestOptions);
         break;
       case ContentTypeEnum.ARTICLE:
         let parsedArticle = parseArticleContent(sanitizedContent);
@@ -297,12 +303,12 @@ const ContentEditor = ({ contentType }) => {
           (block) => block.content.trim() !== "",
         );
 
-        createPromise = apiCreateArticle(parsedArticle);
+        createPromise = apiCreateArticle(parsedArticle, requestOptions);
         break;
       case ContentTypeEnum.TREE:
         if (sanitizedContent) {
           sanitizedContent.status = status;
-          createPromise = apiCreateTree(sanitizedContent);
+          createPromise = apiCreateTree(sanitizedContent, requestOptions);
         } else {
           console.error("Invalid create payload");
           return;
@@ -332,9 +338,9 @@ const ContentEditor = ({ contentType }) => {
       // Check readiness after content is sanitized
       const status = "UNPUBLISHED";
       if (isEditMode) {
-        updateItem(status, sanitizedContent);
+        updateItem(status, sanitizedContent, true);
       } else {
-        createItem(status, sanitizedContent);
+        createItem(status, sanitizedContent, true);
       }
     }
   };
