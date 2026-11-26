@@ -1,9 +1,12 @@
 const nodemailer = require("nodemailer");
+const { isProduction } = require("./environment");
+
+const emailPort = Number(process.env.MFA_RESET_EMAIL_PORT);
 
 const transporter = nodemailer.createTransport({
   host: process.env.MFA_RESET_EMAIL_HOST,
-  port: process.env.MFA_RESET_EMAIL_PORT,
-  secure: process.env.MFA_RESET_EMAIL_PORT == 465, // auto-handle TLS
+  port: emailPort,
+  secure: emailPort === 465,
   auth: {
     user: process.env.MFA_RESET_EMAIL_USER,
     pass: process.env.MFA_RESET_EMAIL_PASS,
@@ -12,7 +15,22 @@ const transporter = nodemailer.createTransport({
 
 async function sendHelloWorldEmail(to, token) {
   // ✅ Build frontend link dynamically
-  const resetLink = `${process.env.MFA_FRONTEND_TEST}/mfa-reset-confirm?token=${token}`;
+  const frontendBaseUrl =
+    process.env.MFA_FRONTEND_URL || process.env.MFA_FRONTEND_TEST;
+
+  if (!frontendBaseUrl) {
+    throw new Error("MFA_FRONTEND_URL must be configured for MFA reset emails");
+  }
+
+  const frontendUrl = new URL(frontendBaseUrl);
+  if (isProduction && frontendUrl.protocol !== "https:") {
+    throw new Error("MFA_FRONTEND_URL must use HTTPS in production");
+  }
+
+  frontendUrl.pathname = "/mfa-reset-confirm";
+  frontendUrl.search = "";
+  frontendUrl.searchParams.set("token", token);
+  const resetLink = frontendUrl.toString();
 
   const info = await transporter.sendMail({
     from: `"Your App" <${process.env.MFA_RESET_EMAIL_USER}>`,

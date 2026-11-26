@@ -68,7 +68,7 @@ export { apiOverviewArticles };
  * @param {*} payload - the payload for the post request as an object
  * @returns the promise for the api response
  */
-const apiCreateArticle = (payload, requestOptions = {}) => {
+const apiCreateArticle = (payload) => {
   /*
     Request payload format: 
     {
@@ -82,7 +82,6 @@ const apiCreateArticle = (payload, requestOptions = {}) => {
   */
   return axios.post(`${apiUrl}/article/create`, payload, {
     withCredentials: true,
-    simulateSessionExpiryOnSave: requestOptions.simulateSessionExpiryOnSave,
   });
 };
 
@@ -143,7 +142,7 @@ const apiGetArticle = (targetId) => {
  * @param {*} payload - the payload for the post request as an object
  * @returns the promise for the api response
  */
-const apiUpdateArticle = (payload, requestOptions = {}) => {
+const apiUpdateArticle = (payload) => {
   /*
     Request payload format: 
     {
@@ -158,7 +157,6 @@ const apiUpdateArticle = (payload, requestOptions = {}) => {
   */
   return axios.patch(`${apiUrl}/article/update/`, payload, {
     withCredentials: true,
-    simulateSessionExpiryOnSave: requestOptions.simulateSessionExpiryOnSave,
   });
 };
 

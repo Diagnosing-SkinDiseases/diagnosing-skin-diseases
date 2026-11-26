@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { isProduction } = require("../utils/environment");
 
 // Login User
 const loginUser = async (req, res) => {
@@ -31,12 +32,10 @@ const loginUser = async (req, res) => {
       { expiresIn: "1h" },
     );
 
-    const isProd = process.env.NODE_ENV === "PRODUCTION";
-
     res.cookie("access_token", token, {
       httpOnly: true,
-      secure: isProd,
-      sameSite: isProd ? "none" : "lax",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
       maxAge: 60 * 60 * 1000,
       path: "/",
     });
@@ -55,11 +54,10 @@ const authMe = (req, res) => {
 
 // Logout User
 const logoutUser = (req, res) => {
-  const isProd = process.env.NODE_ENV === "PRODUCTION";
   res.cookie("access_token", "", {
     httpOnly: true,
-    secure: isProd,
-    sameSite: isProd ? "none" : "lax",
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
     expires: new Date(0),
     path: "/",
   });

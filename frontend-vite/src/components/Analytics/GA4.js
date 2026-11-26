@@ -1,14 +1,14 @@
 import ReactGA from "react-ga4";
 
 export const initGA = () => {
-  if (!import.meta.env.REACT_APP_GA_MEASUREMENT_ID) {
-    console.warn("GA Measurement ID missing");
+  const measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID;
+  if (!measurementId) {
     return;
   }
 
-  ReactGA.initialize(import.meta.env.VITE_GA_MEASUREMENT_ID, {
+  ReactGA.initialize(measurementId, {
     gaOptions: {
-      debug_mode: import.meta.env.NODE_ENV !== "production",
+      debug_mode: import.meta.env.DEV,
     },
   });
 };

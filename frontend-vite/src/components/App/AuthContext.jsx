@@ -10,10 +10,6 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import apiUrl from "../../api";
 import SessionReauthenticationModal from "../Login/SessionReauthenticationModal";
-import {
-  consumeTemporarySave401,
-  createTemporarySave401Error,
-} from "../../dev/temporarySave401";
 
 const AuthContext = createContext(null);
 
@@ -87,15 +83,6 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    // TEMPORARY DEV TEST: reject one explicitly marked Save before it reaches the API.
-    const requestInterceptorId = axios.interceptors.request.use((config) => {
-      if (consumeTemporarySave401(config)) {
-        return Promise.reject(createTemporarySave401Error(config));
-      }
-
-      return config;
-    });
-
     const interceptorId = axios.interceptors.response.use(
       (response) => response,
       (error) => {
@@ -118,7 +105,6 @@ export const AuthProvider = ({ children }) => {
     );
 
     return () => {
-      axios.interceptors.request.eject(requestInterceptorId);
       axios.interceptors.response.eject(interceptorId);
     };
   }, [startSessionRecovery]);

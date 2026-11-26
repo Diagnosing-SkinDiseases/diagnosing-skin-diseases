@@ -15,6 +15,7 @@ const treeRouter = require("./routers/treeRouter.js");
 const articleRouter = require("./routers/articleRouter.js");
 const authRouter = require("./routers/authRouter.js");
 const responseUrlRewrite = require("./middleware/responseUrlRewrite.js");
+const { isProduction } = require("./utils/environment.js");
 
 // Environment variables
 const port = process.env.PORT;
@@ -23,9 +24,34 @@ const mongoPassword = process.env.PASSWORD;
 const mongoDB = process.env.DATABASE;
 
 // Parse allowed origins from env
-const allowedOrigins = process.env.ALLOWED_ORIGINS
+const configuredAllowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(",").map((origin) => origin.trim())
   : [];
+const allowedOrigins = configuredAllowedOrigins
+  .map((origin) => {
+    try {
+      const parsedOrigin = new URL(origin);
+      const hostname = parsedOrigin.hostname.toLowerCase();
+      const isLoopback =
+        hostname === "localhost" ||
+        hostname === "0.0.0.0" ||
+        hostname === "::1" ||
+        hostname === "[::1]" ||
+        hostname.startsWith("127.");
+
+      if (
+        !["http:", "https:"].includes(parsedOrigin.protocol) ||
+        (isProduction && isLoopback)
+      ) {
+        return null;
+      }
+
+      return parsedOrigin.origin;
+    } catch {
+      return null;
+    }
+  })
+  .filter(Boolean);
 
 // App configurations
 app.use(express.json({ limit: "10mb" }));

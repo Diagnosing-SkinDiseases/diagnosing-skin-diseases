@@ -10,6 +10,7 @@ const crypto = require("crypto");
 const speakeasy = require("speakeasy");
 const qrcode = require("qrcode");
 const sendHelloWorldEmail = require("../utils/mailer");
+const { isProduction } = require("../utils/environment");
 
 // Create User
 const createUser = async (req, res) => {
@@ -186,13 +187,12 @@ const mfaVerify = async (req, res) => {
       { expiresIn: "1h" },
     );
 
-    const isProd = process.env.NODE_ENV === "PRODUCTION";
 
     // 🍪 Store in HttpOnly cookie
     res.cookie("access_token", upgradedToken, {
       httpOnly: true,
-      secure: isProd,
-      sameSite: isProd ? "none" : "lax",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
       maxAge: 60 * 60 * 1000,
       path: "/",
     });

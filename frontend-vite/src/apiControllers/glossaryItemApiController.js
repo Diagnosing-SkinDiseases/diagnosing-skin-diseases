@@ -29,7 +29,7 @@ const apiGetAllGlossaryItems = () => {
  * @param {*} payload - the payload for the post request as an object
  * @returns the promise for the api response
  */
-const apiCreateGlossaryItem = (payload, requestOptions = {}) => {
+const apiCreateGlossaryItem = (payload) => {
   /*
     Request payload format: 
     {
@@ -40,7 +40,6 @@ const apiCreateGlossaryItem = (payload, requestOptions = {}) => {
   */
   return axios.post(`${apiUrl}/glossaryItem/create`, payload, {
     withCredentials: true,
-    simulateSessionExpiryOnSave: requestOptions.simulateSessionExpiryOnSave,
   });
 };
 
@@ -95,7 +94,7 @@ const apiGetGlossaryItem = (targetId) => {
  * @param {*} payload - the payload for the post request as an object
  * @returns the promise for the api response
  */
-const apiUpdateGlossaryItem = (payload, requestOptions = {}) => {
+const apiUpdateGlossaryItem = (payload) => {
   /*
     Request payload format: 
     {
@@ -107,7 +106,6 @@ const apiUpdateGlossaryItem = (payload, requestOptions = {}) => {
   */
   return axios.patch(`${apiUrl}/glossaryItem/update/`, payload, {
     withCredentials: true,
-    simulateSessionExpiryOnSave: requestOptions.simulateSessionExpiryOnSave,
   });
 };
 

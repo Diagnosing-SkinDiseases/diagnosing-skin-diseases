@@ -39,7 +39,7 @@ const apiGetAllTrees = () => {
  * @param {*} payload - the payload for the post request as an object
  * @returns the promise for the api response
  */
-const apiCreateTree = (payload, requestOptions = {}) => {
+const apiCreateTree = (payload) => {
   /*
     Note:
     Node = {
@@ -68,7 +68,6 @@ const apiCreateTree = (payload, requestOptions = {}) => {
   */
   return axios.post(`${apiUrl}/tree/create`, payload, {
     withCredentials: true,
-    simulateSessionExpiryOnSave: requestOptions.simulateSessionExpiryOnSave,
   });
 };
 
@@ -141,7 +140,7 @@ const apiGetTree = (targetId) => {
  * @param {*} payload - the payload for the post request as an object
  * @returns the promise for the api response
  */
-const apiUpdateTree = (payload, requestOptions = {}) => {
+const apiUpdateTree = (payload) => {
   /*
     Note:
     Node = {
@@ -171,7 +170,6 @@ const apiUpdateTree = (payload, requestOptions = {}) => {
   */
   return axios.patch(`${apiUrl}/tree/update/`, payload, {
     withCredentials: true,
-    simulateSessionExpiryOnSave: requestOptions.simulateSessionExpiryOnSave,
   });
 };
 
